@@ -1114,6 +1114,18 @@ export function buildConcourse(
   const sJunction = kit.hangingSign("sign.junction", mats, scene, root, registry, C.height);
   sJunction.position.x = 0;
   sJunction.position.z = 45;
+  // route branding at the entry — the stretch before the notice board
+  const sIntake = kit.wallSign("sign.intake", mats, scene, root, registry, 1.3, 0.4);
+  sIntake.position = new Vector3(C.xHalf - 0.08, 2.3, 3.0);
+  sIntake.rotation.y = Math.PI / 2;
+  // ceiling cove — a soft dark line where wall meets ceiling on both
+  // runs, so the junction reads as a finished edge not a hard seam
+  for (const sx of [-1, 1]) {
+    const cove = kit.plane(`dress.cove.${sx}`, 55, 0.14, mats.aoStrip, scene, root);
+    cove.position = new Vector3(sx * (C.xHalf - 0.03), 2.93, zc);
+    cove.rotation.y = sx > 0 ? Math.PI / 2 : -Math.PI / 2;
+    cove.rotation.z = Math.PI; // solid edge up at the ceiling line
+  }
 
   // clinic shuttered counter LEFT z 35–40
   const counter = kit.box("clinic.counter", 0.6, 1.05, 4.2, mats.steel, scene, root);

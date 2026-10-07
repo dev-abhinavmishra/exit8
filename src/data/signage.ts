@@ -106,6 +106,13 @@ export const SIGNS: SignSpec[] = [
     arrow: "right",
     tone: "amber",
   },
+  {
+    id: "sign.intake",
+    title: "NORTH INTAKE",
+    sub: "LOOP 7 ENTRY · INSPECTION POINT SOUTH",
+    arrow: "right",
+    tone: "cyan",
+  },
 ];
 
 /** Diegetic micro-copy; used on posters, terminals, notices. */
