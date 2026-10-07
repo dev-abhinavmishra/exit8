@@ -43,8 +43,8 @@ export function buildAmbientWalker(
   // muted slate — clearly a person, clearly staff, clearly NOT the
   // near-black anomaly silhouettes
   const coat = new StandardMaterial("ambient.walker.coat", scene);
-  coat.diffuseColor = new Color3(0.16, 0.17, 0.19);
-  coat.specularColor = new Color3(0.04, 0.04, 0.04);
+  coat.diffuseColor = new Color3(0.1, 0.11, 0.13);
+  coat.specularColor = new Color3(0.02, 0.02, 0.02);
   const skin = new StandardMaterial("ambient.walker.head", scene);
   skin.diffuseColor = new Color3(0.4, 0.34, 0.3);
   skin.specularColor = new Color3(0.03, 0.03, 0.03);

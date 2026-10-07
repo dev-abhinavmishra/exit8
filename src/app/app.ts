@@ -9,6 +9,7 @@ import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 import type { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import { DefaultRenderingPipeline } from "@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline";
+import { GlowLayer } from "@babylonjs/core/Layers/glowLayer";
 import type { Engine } from "@babylonjs/core/Engines/engine";
 import type { WebGPUEngine } from "@babylonjs/core/Engines/webgpuEngine";
 import { buildConcourse, LAYOUT, type ConcourseWorld } from "../world/generation/concourse";
@@ -87,6 +88,7 @@ export class App {
   private caps: CapabilityReport;
   private tier!: TierSpec;
   private pipeline: DefaultRenderingPipeline | null = null;
+  private glow: GlowLayer | null = null;
   private rig: InspectionRig | null = null;
   private focus = new FocusResolver();
   private focused: Interactable | null = null;
@@ -502,6 +504,19 @@ export class App {
     } else if (!this.tier.post && this.pipeline) {
       this.pipeline.dispose();
       this.pipeline = null;
+    }
+    // medium tier gets the single cheap pass instead of the pipeline:
+    // a gentle GlowLayer so troffers/signage/readouts bloom into the
+    // dark without the grain/CA/vignette stack
+    if (this.tier.tier === "medium" && !this.glow) {
+      this.glow = new GlowLayer("fx.glow", this.scene, {
+        mainTextureRatio: 0.5,
+        blurKernelSize: 48,
+      });
+      this.glow.intensity = 0.32;
+    } else if (this.tier.tier !== "medium" && this.glow) {
+      this.glow.dispose();
+      this.glow = null;
     }
   }
 
