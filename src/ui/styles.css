@@ -375,6 +375,47 @@
 .na-hud .use-prompt.on {
   opacity: 1;
 }
+/* touch-only controls — hidden unless the device has a coarse pointer */
+.na-hud .touch-ui {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+@media (hover: none), (pointer: coarse) {
+  .na-hud .touch-ui {
+    display: block;
+  }
+}
+.na-hud .touch-ui button {
+  position: absolute;
+  pointer-events: auto;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 190, 165, 0.35);
+  background: rgba(10, 10, 12, 0.55);
+  color: var(--bone);
+  font-family: inherit;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  backdrop-filter: blur(2px);
+}
+.na-hud .touch-ui .touch-use {
+  right: 26px;
+  bottom: 84px;
+}
+.na-hud .touch-ui .touch-use.armed {
+  border-color: var(--amber);
+  color: var(--amber);
+  box-shadow: 0 0 14px rgba(217, 175, 94, 0.25);
+}
+.na-hud .touch-ui .touch-pause {
+  right: 26px;
+  top: 62px;
+  font-size: 11px;
+  opacity: 0.75;
+}
 .na-hud .commit-hint {
   position: absolute;
   bottom: 26px;

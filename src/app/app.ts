@@ -205,6 +205,16 @@ export class App {
       if (this.state === "playing") this.pause();
       else if (this.state === "paused") this.resume();
     });
+    // touch-only controls (USE arms via setUsePrompt when a focus exists)
+    this.ui.bindTouchHandlers(
+      () => {
+        if (this.focused && this.state === "playing") this.focused.onUse();
+      },
+      () => {
+        if (this.state === "playing") this.pause();
+        else if (this.state === "paused") this.resume();
+      },
+    );
     this.ui.setStability(this.loop.stability.current);
     this.loop.stability.onChange((v) => this.ui?.setStability(v));
 

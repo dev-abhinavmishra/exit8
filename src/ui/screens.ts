@@ -21,6 +21,10 @@ export class GameUi {
   private root: HTMLDivElement;
   private screens = new Map<string, HTMLDivElement>();
   private hud: HTMLDivElement;
+  private touchUse: HTMLButtonElement | null = null;
+  private touchPause: HTMLButtonElement | null = null;
+  private touchUseHandler: () => void = () => {};
+  private touchPauseHandler: () => void = () => {};
   private veil: HTMLDivElement;
   private veilLabel: HTMLDivElement;
   private captions: HTMLDivElement;
@@ -670,6 +674,10 @@ export class GameUi {
       <div class="reticle"></div>
       <div class="use-prompt"></div>
       <div class="commit-hint">COMMIT AT AN INSPECTION POINT</div>
+      <div class="touch-ui">
+        <button class="touch-pause" aria-label="Pause">II</button>
+        <button class="touch-use" aria-label="Interact">USE</button>
+      </div>
     `;
     this.stabilityEl = {
       num: h.querySelector(".stability .n") as HTMLElement,
@@ -679,13 +687,28 @@ export class GameUi {
     };
     this.commitHint = h.querySelector(".commit-hint") as HTMLDivElement;
     this.usePrompt = h.querySelector(".use-prompt") as HTMLDivElement;
+    this.touchUse = h.querySelector(".touch-use") as HTMLButtonElement;
+    this.touchPause = h.querySelector(".touch-pause") as HTMLButtonElement;
+    // stop the look/move sticks from claiming taps that land on buttons
+    for (const b of [this.touchUse, this.touchPause]) {
+      b.addEventListener("touchstart", (e) => e.stopPropagation(), { passive: true });
+    }
+    this.touchUse.addEventListener("click", () => this.touchUseHandler());
+    this.touchPause.addEventListener("click", () => this.touchPauseHandler());
     return h;
+  }
+
+  /** Wire the touch-only buttons (visible on coarse pointers). */
+  bindTouchHandlers(use: () => void, pause: () => void): void {
+    this.touchUseHandler = use;
+    this.touchPauseHandler = pause;
   }
 
   /** Focus prompt under the reticle — "FIELD NOTE — …" / terminal labels. */
   setUsePrompt(text: string | null, key = "E"): void {
     this.usePrompt.textContent = text ? `[${key}] ${text}` : "";
     this.usePrompt.classList.toggle("on", text !== null);
+    this.touchUse?.classList.toggle("armed", text !== null);
   }
 
   setStability(v: number): void {
