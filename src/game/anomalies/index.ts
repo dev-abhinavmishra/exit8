@@ -68,6 +68,8 @@ import { guideCross } from "./guideCross";
 import { shutterAjar } from "./shutterAjar";
 import { recordsBreach } from "./recordsBreach";
 import { galleryFrost } from "./galleryFrost";
+import { vendDead } from "./vendDead";
+import { sheetsCleared } from "./sheetsCleared";
 import { doorStuck } from "./doorStuck";
 import { walkerCrowd } from "./walkerCrowd";
 import { lightFollows } from "./lightFollows";
@@ -186,4 +188,6 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   bayplateGone,
   ventSlats,
   extGone,
+  vendDead,
+  sheetsCleared,
 ];

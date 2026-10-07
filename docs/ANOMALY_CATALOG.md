@@ -234,8 +234,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     bare dark slot. Look up. Subtle. (slice)
 49. ★ `ext.missing` — the extinguisher beside the fire point is gone;
     the cabinet, sign, and bracket shadow all remain. Subtle. (slice)
+50. ★ `vend.dead` — the cold-dispense unit's lit face is dark: no brand
+    band, no product rows, no hum. Unmistakable. (slice)
+51. ★ `sheets.cleared` — every memo on the notice board is gone; bare
+    cork, pins and all. Subtle. (slice)
 
-Slice count: **90 implemented — the full catalog**. New hooks:
+Slice count: **92 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

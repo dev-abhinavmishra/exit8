@@ -21,7 +21,7 @@ import { Color4 } from "@babylonjs/core/Maths/math.color";
 import type { Scene } from "@babylonjs/core/scene";
 import { WorldRegistry } from "../registry";
 import { buildMaterials, type MaterialSet } from "../materials/library";
-import { buildTextureSet, makeVendingFace, type TextureSet } from "./textures";
+import { buildTextureSet, drawNote, makeVendingFace, type TextureSet } from "./textures";
 import { RngStream } from "../../game/state/rng";
 import { SIGNS } from "../../data/signage";
 import * as kit from "./kit";
@@ -123,6 +123,30 @@ function hazardBandMaterial(scene: Scene): StandardMaterial {
   _hazardBandMat.diffuseTexture = tex;
   _hazardBandMat.specularColor = Color3.Black();
   return _hazardBandMat;
+}
+
+let _paperMat: StandardMaterial | null = null;
+/** Xerox-paper notice sheets — a shared CWA memo texture, legible dim. */
+function paperMaterial(scene: Scene): StandardMaterial {
+  if (_paperMat) return _paperMat;
+  const t = new DynamicTexture("tex.noticeSheet", { width: 192, height: 256 }, scene, true);
+  drawNote(t, {
+    title: "NIGHT ROTA — W/C 7",
+    lines: [
+      "SURVEY LOOP 7: 22:00–06:00",
+      "FILE AT BOTH POINTS",
+      "LOG ALL DIVERGENCES",
+      "GALLERY: NO ENTRY",
+      "LIFT S-2: OUT OF SERVICE",
+      "REPORT TO DESK 4",
+    ],
+  });
+  _paperMat = new StandardMaterial("mat.paper", scene);
+  _paperMat.diffuseTexture = t;
+  _paperMat.emissiveTexture = t;
+  _paperMat.emissiveColor = new Color3(0.35, 0.35, 0.33); // readable in dim zones
+  _paperMat.specularColor = new Color3(0.02, 0.02, 0.02);
+  return _paperMat;
 }
 
 let _doorGlassMat: StandardMaterial | null = null;
@@ -565,6 +589,22 @@ export function buildConcourse(
   const board = kit.box("notice.board", 0.05, 1.1, 1.6, mats.rubber, scene, root);
   board.position = new Vector3(C.xHalf - 0.08, 1.7, 7);
   registry.register("notice.board", board);
+  // pinned notices — children of the board so notice.* anomalies carry
+  // them. Local −x is the corridor face.
+  const papers: [number, number, number][] = [
+    [-0.28, 0.32, 0.03],
+    [0.18, 0.28, -0.02],
+    [-0.05, -0.1, 0.02],
+    [0.35, -0.18, -0.03],
+    [-0.38, -0.25, 0.05],
+  ];
+  papers.forEach(([pz, py, tilt], i) => {
+    const sheet = kit.plane(`notice.sheet.${i}`, 0.24, 0.32, paperMaterial(scene), scene);
+    sheet.parent = board;
+    sheet.position = new Vector3(-0.028, py, pz);
+    sheet.rotation.y = Math.PI / 2; // front face toward corridor (−x)
+    sheet.rotation.z = tilt;
+  });
   mats.poster.forEach((pm, i) => {
     const p = kit.plane(`poster.${i}`, 0.55, 0.82, pm, scene, root);
     p.position = new Vector3(-C.xHalf + 0.065, 1.75, 4.5 + i * 1.1);
@@ -668,6 +708,31 @@ export function buildConcourse(
   for (const sx of [-1, 1]) {
     const pil = kit.box(`dress.pilaster.${sx}`, 0.12, C.height, 0.2, mats.steel, scene, root);
     pil.position = new Vector3(sx * (C.xHalf - 0.06), C.height / 2, 45.9);
+  }
+
+  // sprinkler drops — stem + head every ~6 m, alternating lanes
+  for (let i = 0; i < 9; i++) {
+    const sz = 4 + i * 6;
+    const sx = i % 2 === 0 ? -1.15 : 1.15;
+    const stem = kit.box(`dress.sprinkler.${i}.stem`, 0.02, 0.22, 0.02, mats.steel, scene, root);
+    stem.position = new Vector3(sx, C.height - 0.11, sz);
+    const head = CreateCylinder(
+      `dress.sprinkler.${i}.head`,
+      { height: 0.025, diameter: 0.07, tessellation: 10 },
+      scene,
+    );
+    head.material = mats.steel;
+    head.parent = root;
+    head.position = new Vector3(sx, C.height - 0.23, sz);
+  }
+
+  // door thresholds — worn brass strip under each airlock door line
+  for (const [tz, tag] of [
+    [0, "n"],
+    [55, "s"],
+  ] as const) {
+    const th = kit.box(`dress.threshold.${tag}`, 3.56, 0.012, 0.1, mats.steel, scene, root);
+    th.position = new Vector3(0, 0.008, tz);
   }
 
   // vending unit — the sparse right-wall stretch z 34–46 after the
