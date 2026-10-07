@@ -216,6 +216,7 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
   // ─── shell ───────────────────────────────────────────────────────
   const floor = kit.box("floor", C.xHalf * 2 + 0.3, 0.1, len, mats.terrazzo, scene, root);
   floor.position = new Vector3(0, -0.05, zc);
+  registry.register("floor", floor);
   colliders.push(kit.collider("floorCol", C.xHalf * 2 + 0.3, 0.1, len, floor.position.clone(), scene, root));
 
   const ceil = kit.box("ceiling", C.xHalf * 2 + 0.3, 0.1, len, mats.ceiling, scene, root);
@@ -332,7 +333,7 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
   mats.poster.forEach((pm, i) => {
     const p = kit.plane(`poster.${i}`, 0.55, 0.82, pm, scene, root);
     p.position = new Vector3(-C.xHalf + 0.065, 1.75, 4.5 + i * 1.1);
-    p.rotation.y = Math.PI / 2;
+    p.rotation.y = -Math.PI / 2;
     registry.register(`poster.${i}`, p);
   });
 

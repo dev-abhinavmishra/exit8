@@ -207,46 +207,60 @@ function makeCondensation(scene: Scene): DynamicTexture {
   return finish(t);
 }
 
+export interface PosterDef {
+  title: string;
+  sub: string[];
+  bg: string;
+  fg: string;
+}
+
 /** Fictional notice posters — municipal micro-copy, never real branding. */
+export const POSTER_DEFS: PosterDef[] = [
+  {
+    title: "QUIET HOURS",
+    sub: ["CONCOURSE OBSERVES", "22:00 – 06:00", "CIVIC WORKS AUTHORITY"],
+    bg: "#20242a",
+    fg: "#e8a33d",
+  },
+  {
+    title: "SORT YOUR REFUSE",
+    sub: ["ORGANICS · GLASS · MIXED", "BAY 12 · RECORDS WALL", "AIDER CITY BYLAW 44-C"],
+    bg: "#1d2b2b",
+    fg: "#4fa8b8",
+  },
+  {
+    title: "REPORT DRIFT",
+    sub: ["UNLOGGED CHANGES ARE", "A ROUTE SAFETY ISSUE", "DIAL 7-700 INTERNAL"],
+    bg: "#2a2024",
+    fg: "#d8d5cd",
+  },
+];
+
+/** Redraw a poster texture in place — used at build and by poster anomalies. */
+export function drawPoster(t: DynamicTexture, d: PosterDef): void {
+  const w = 256;
+  const h = 384;
+  const c = ctx(t);
+  c.fillStyle = d.bg;
+  c.fillRect(0, 0, w, h);
+  c.strokeStyle = d.fg;
+  c.lineWidth = 6;
+  c.strokeRect(10, 10, w - 20, h - 20);
+  c.fillStyle = d.fg;
+  c.font = "bold 24px Arial, sans-serif";
+  c.textAlign = "center";
+  c.fillText(d.title, w / 2, 76);
+  c.font = "16px Arial, sans-serif";
+  d.sub.forEach((line, j) => c.fillText(line, w / 2, 150 + j * 44));
+  c.font = "15px Arial, sans-serif";
+  c.fillText("— 7 —", w / 2, h - 40);
+  t.update();
+}
+
 function makePosters(scene: Scene): DynamicTexture[] {
-  const defs = [
-    {
-      title: "QUIET HOURS",
-      sub: ["CONCOURSE OBSERVES", "22:00 – 06:00", "CIVIC WORKS AUTHORITY"],
-      bg: "#20242a",
-      fg: "#e8a33d",
-    },
-    {
-      title: "SORT YOUR REFUSE",
-      sub: ["ORGANICS · GLASS · MIXED", "BAY 12 · RECORDS WALL", "AIDER CITY BYLAW 44-C"],
-      bg: "#1d2b2b",
-      fg: "#4fa8b8",
-    },
-    {
-      title: "REPORT DRIFT",
-      sub: ["UNLOGGED CHANGES ARE", "A ROUTE SAFETY ISSUE", "DIAL 7-700 INTERNAL"],
-      bg: "#2a2024",
-      fg: "#d8d5cd",
-    },
-  ];
-  return defs.map((d, i) => {
-    const w = 256;
-    const h = 384;
-    const t = tex(`tex.poster.${i}`, w, h, scene);
-    const c = ctx(t);
-    c.fillStyle = d.bg;
-    c.fillRect(0, 0, w, h);
-    c.strokeStyle = d.fg;
-    c.lineWidth = 6;
-    c.strokeRect(10, 10, w - 20, h - 20);
-    c.fillStyle = d.fg;
-    c.font = "bold 30px Arial, sans-serif";
-    c.textAlign = "center";
-    c.fillText(d.title, w / 2, 76);
-    c.font = "20px Arial, sans-serif";
-    d.sub.forEach((line, j) => c.fillText(line, w / 2, 150 + j * 44));
-    c.font = "15px Arial, sans-serif";
-    c.fillText("— 7 —", w / 2, h - 40);
+  return POSTER_DEFS.map((d, i) => {
+    const t = tex(`tex.poster.${i}`, 256, 384, scene);
+    drawPoster(t, d);
     return finish(t);
   });
 }

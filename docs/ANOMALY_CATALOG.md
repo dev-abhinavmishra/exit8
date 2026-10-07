@@ -23,6 +23,11 @@ Target ≥ 24 across six groups. ★ = implemented.
 7. ★ `poster.missing` — middle notice-board poster gone. Subtle. (slice)
 8. ★ `cctv.gaze` — clinic-bend CCTV lens tracks the player in range.
    Subtle. (slice)
+9. ★ `poster.changed` — REPORT DRIFT poster's copy is rewritten. Subtle.
+   (slice)
+10. ★ `cctv.sleeps` — clinic-bend camera's red lens is dead. Subtle. (slice)
+11. ★ `stripe.wrong` — south commit stripe glows red, not amber. Subtle.
+    (slice)
 
 ## Group B — spatial/architectural (5)
 
@@ -36,6 +41,8 @@ Target ≥ 24 across six groups. ★ = implemented.
    skew < 3 %). Subtle.
 6. ★ `door.ajar` — right-wall service door hinged open, dark
    service void behind. Moderate. (slice)
+7. ★ `door.breathes` — service leaf presses a few cm out and settles on a
+   long uneven rhythm. Subtle. (slice)
 
 ## Group C — lighting/shadow (4)
 
@@ -44,11 +51,16 @@ Target ≥ 24 across six groups. ★ = implemented.
 2. `light.delay` — lights respond late to player passage (~1.5 s lag).
 3. ★ `shadow.sourceless` — a soft shadow blob sweeps the clinic floor,
    no caster. Moderate. (slice)
-4. `light.avoids` — one object stays lit while its zone dims. Moderate.
+4. ★ `light.avoids` — one gallery troffer sits dark in a lit run. Subtle.
+   (slice)
 5. ★ `light.out` — clinic zone's fixture run dies outright, z 32–46 falls
    dark. Unmistakable. (slice)
 6. ★ `light.flicker` — gallery zone strobes on a seeded irregular
    cadence. Moderate. (slice)
+
+Also: ★ `totem.sways` — junction totem swings gently on its hangers
+(object group). ★ `clock.spins` — clock hands whirl forward
+(object group).
 
 ## Group D — sound-led (3)
 
@@ -62,14 +74,18 @@ Target ≥ 24 across six groups. ★ = implemented.
    inside ~40° of view; face away and it isn't running. Moderate. (slice)
 4. ★ `machine.rattle` — junction machine over-revs into a fast low rattle.
    Moderate. (slice)
+5. ★ `footsteps.ahead` — your step is repeated ~0.9 s later from ~5 m in
+   FRONT of you. Moderate. (slice)
+6. ★ `vent.groan` — gallery vent exhales a pressure groan when you pass
+   within ~4 m. Moderate. (slice)
 
 ## Group E — character/creature (3, all original designs)
 
 1. ★ `watcher.far` — motionless dark figure at the junction end; gone
    (with a single soft step) by the time you reach z≈45. Unmistakable.
    (slice)
-2. `counter.worker` — a hand-only silhouette slides paperwork under the
-   shuttered counter. Moderate.
+2. ★ `counter.worker` — a dark hand slides a paper slip out from under
+   the clinic shutter, holds, withdraws. Moderate. (slice)
 3. `gaze.shift` — pictogram figures' facing changes between loops. Subtle.
 
 ## Group F — systemic (3)
@@ -84,10 +100,10 @@ Target ≥ 24 across six groups. ★ = implemented.
 5. ★ `terminal.notice` — a handbill on the south airlock terminal
    misdirects inspectors to the north point. Subtle. (slice)
 
-Slice count: **21 implemented** of 24 target. New audio hooks:
-`audio.setMachineGainScale(fn)` (machine.silence), `audio.playChime(pos)`
-(announce.spatial). New texture hooks: `drawClockFace(t, numerals?)`,
-`drawSign(t, spec)`.
+Slice count: **30 implemented** — past the 24 target. New hooks:
+`audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
+`audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
+`drawPoster(t, def)` + `POSTER_DEFS`.
 
 Balance: ≥⅓ subtle, ⅓ moderate, ⅓ unmistakable/threatening. ≤2 major
 shocks per first run. Every sound-led anomaly carries a visual cue path.

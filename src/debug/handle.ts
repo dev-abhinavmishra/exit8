@@ -27,6 +27,13 @@ export interface DebugHandle {
   tris(): number;
   screenshot(width?: number, height?: number): Promise<string>;
   registry(): string[];
+  /** transform + visibility of any scene mesh by name (registry or not) */
+  meshInfo(name: string): {
+    pos: [number, number, number];
+    rot: [number, number, number];
+    visible: boolean;
+    enabled: boolean;
+  } | null;
   ready: boolean;
 }
 
@@ -69,6 +76,18 @@ export function installDebugHandle(app: App): void {
       }) as Promise<string>;
     },
     registry: () => refs().world.registry.names(),
+    meshInfo: (name) => {
+      const m = refs().scene.getMeshByName(name);
+      if (!m) return null;
+      const p = m.getAbsolutePosition();
+      const r = m.rotation;
+      return {
+        pos: [p.x, p.y, p.z],
+        rot: [r.x, r.y, r.z],
+        visible: m.isVisible,
+        enabled: m.isEnabled(),
+      };
+    },
   };
   Object.defineProperty(h, "seed", { get: () => refs().runSeed, enumerable: true });
   (window as unknown as { __nightaudit: DebugHandle }).__nightaudit = h;

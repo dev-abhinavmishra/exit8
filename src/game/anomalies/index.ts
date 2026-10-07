@@ -25,6 +25,16 @@ import { tempDrift } from "./tempDrift";
 import { machineSilence } from "./machineSilence";
 import { announceSpatial } from "./announceSpatial";
 import { shadowSourceless } from "./shadowSourceless";
+import { lightAvoids } from "./lightAvoids";
+import { clockSpins } from "./clockSpins";
+import { footstepsAhead } from "./footstepsAhead";
+import { doorBreathes } from "./doorBreathes";
+import { totemSways } from "./totemSways";
+import { stripeWrong } from "./stripeWrong";
+import { cctvSleeps } from "./cctvSleeps";
+import { ventGroan } from "./ventGroan";
+import { posterChanged } from "./posterChanged";
+import { counterWorker } from "./counterWorker";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -48,4 +58,14 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   machineSilence,
   announceSpatial,
   shadowSourceless,
+  lightAvoids,
+  clockSpins,
+  footstepsAhead,
+  doorBreathes,
+  totemSways,
+  stripeWrong,
+  cctvSleeps,
+  ventGroan,
+  posterChanged,
+  counterWorker,
 ];

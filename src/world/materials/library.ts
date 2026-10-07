@@ -122,7 +122,8 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   const poster = tex.posters.map((t, i) => {
     const m = new StandardMaterial(`mat.poster.${i}`, scene);
     m.diffuseTexture = t;
-    m.emissiveColor = new Color3(0.22, 0.22, 0.22);
+    m.emissiveTexture = t;
+    m.emissiveColor = new Color3(0.3, 0.3, 0.3);
     m.specularColor = new Color3(0.03, 0.03, 0.03);
     return m;
   });

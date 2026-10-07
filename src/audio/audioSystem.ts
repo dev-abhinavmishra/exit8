@@ -290,6 +290,31 @@ export class AudioSystem {
     this.caption("distant rumble", null);
   }
 
+  /** Low vent groan — a slow pressure swell, used by vent anomalies. */
+  playGroan(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.playbackRate.setValueAtTime(0.6, t0);
+    src.playbackRate.linearRampToValueAtTime(0.32, t0 + 1.4);
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.setValueAtTime(240, t0);
+    lp.frequency.linearRampToValueAtTime(90, t0 + 1.4);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(0.16 * sp.gain, t0 + 0.5);
+    g.gain.linearRampToValueAtTime(0, t0 + 1.5);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    src.connect(lp).connect(g).connect(pan).connect(this.bus("ambience"));
+    src.start(t0, 0.4, 1.6);
+    this.caption("vent groan", pos);
+  }
+
   /** Two-tone PA chime — ding-dong, used by announce anomalies. */
   playChime(pos: Vector3): void {
     if (!this.ctx) return;
