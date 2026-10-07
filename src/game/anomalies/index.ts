@@ -88,6 +88,8 @@ import { liftCalls } from "./liftCalls";
 import { benchSit } from "./benchSit";
 import { stainSpread } from "./stainSpread";
 import { signGhost } from "./signGhost";
+import { hallStretch } from "./hallStretch";
+import { vanishMisaligned } from "./vanishMisaligned";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -174,4 +176,6 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   benchSit,
   stainSpread,
   signGhost,
+  hallStretch,
+  vanishMisaligned,
 ];

@@ -37,13 +37,16 @@ Target ≥ 24 across six groups. ★ = implemented.
 1. ★ `doorway.extra` — an extra open doorway with a lit room beyond on a
    wall that is solid in baseline. Unmistakable. Cue: sightline + light
    spill. (slice)
-2. `hall.stretch` — corridor segment subtly lengthens (+4 m). Moderate.
+2. ★ `hall.stretch` — the south airlock has slid four metres back;
+   the corridor continues four unlit metres past the last troffer.
+   Unmistakable. (slice)
 3. ★ `depth.mismatch` — a service door at z≈46 opens onto a gallery
    ~12 m deep inside a 12 cm wall. Unmistakable. (slice)
 4. ★ `sightline.impossible` — a second airlock, sealed and signed, walls
    the corridor at z≈38 where it always continued. Unmistakable. (slice)
-5. `vanish.misaligned` — perspective vanishing point offset (camera-space
-   skew < 3 %). Subtle.
+5. ★ `vanish.misaligned` — the frame rolls a fraction of a degree off
+   level and the corridor's depth breathes on incommensurate cycles,
+   always inside 3 %. Subtle. (slice)
 6. ★ `door.ajar` — right-wall service door hinged open, dark
    service void behind. Moderate. (slice)
 7. ★ `door.breathes` — service leaf presses a few cm out and settles on a
@@ -224,7 +227,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     mid-corridor, in perfect institutional lettering. Unmistakable.
     (slice)
 
-Slice count: **84 implemented** — past the 24 target. New hooks:
+Slice count: **86 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
