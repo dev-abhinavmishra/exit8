@@ -748,6 +748,78 @@ export function buildConcourse(
     th.position = new Vector3(0, 0.008, tz);
   }
 
+  // tactile warning pads — truncated-dome field on the corridor side of
+  // each door line, where the guide strip ends
+  for (const [pz, tag] of [
+    [0.62, "n"],
+    [54.38, "s"],
+  ] as const) {
+    const pad = kit.plane(`dress.tactile.${tag}`, 3.0, 0.46, mats.domePad, scene, root);
+    pad.position = new Vector3(0, 0.006, pz);
+    pad.rotation.x = Math.PI / 2;
+  }
+
+  // fire-alarm call points — the small red boxes every institutional
+  // corridor hangs at shoulder height
+  for (const [sx, pz] of [
+    [-1, 43.4],
+    [1, 8.5],
+    [1, 48.6],
+  ] as const) {
+    const cp = kit.box(`dress.callpoint.${pz}`, 0.05, 0.14, 0.1, mats.cabinetRed, scene, root);
+    cp.position = new Vector3(sx * (C.xHalf - 0.05), 1.38, pz);
+    const tab = kit.box(`dress.callpoint.${pz}.tab`, 0.012, 0.06, 0.05, mats.trofferLit, scene, root);
+    tab.position = new Vector3(sx * (C.xHalf - 0.082), 1.38, pz);
+  }
+
+  // emergency light units — twin-lamp boxes high on the walls, always
+  // a dead warm glass (the corridor runs on the troffers)
+  for (const [sx, pz] of [
+    [-1, 7.5],
+    [-1, 33.2],
+    [1, 50.0],
+  ] as const) {
+    const el = kit.box(`dress.emlight.${pz}`, 0.07, 0.11, 0.3, mats.steel, scene, root);
+    el.position = new Vector3(sx * (C.xHalf - 0.05), 2.62, pz);
+    for (const dz of [-0.09, 0.09]) {
+      const lamp = kit.box(
+        `dress.emlight.${pz}.lamp${dz < 0 ? "a" : "b"}`,
+        0.04,
+        0.06,
+        0.06,
+        mats.trofferDim,
+        scene,
+        root,
+      );
+      lamp.position = new Vector3(sx * (C.xHalf - 0.09), 2.62, pz + dz);
+    }
+  }
+
+  // maintenance access hatches — recessed steel panels flush with the
+  // wall skin, with a quarter-turn keyhole slot
+  for (const [sx, pz] of [
+    [-1, 5.6],
+    [1, 34.4],
+    [-1, 51.4],
+  ] as const) {
+    const h = kit.box(`dress.hatch.${pz}`, 0.03, 0.72, 0.52, mats.steel, scene, root);
+    h.position = new Vector3(sx * (C.xHalf - 0.025), 1.3, pz);
+    const slot = kit.box(`dress.hatch.${pz}.slot`, 0.014, 0.05, 0.014, mats.rubber, scene, root);
+    slot.position = new Vector3(sx * (C.xHalf - 0.045), 1.3, pz + 0.18);
+  }
+
+  // damp staining — dark washes bleeding down from the ceiling line in
+  // the oldest stretches of the route
+  for (const [sx, pz, w] of [
+    [-1, 10.4, 1.1],
+    [1, 46.2, 0.9],
+    [-1, 41.5, 0.7],
+  ] as const) {
+    const st = kit.plane(`dress.stain.${pz}`, w, 1.5, mats.aoStrip, scene, root);
+    st.position = new Vector3(sx * (C.xHalf - 0.065), 1.9, pz);
+    st.rotation.y = sx > 0 ? -Math.PI / 2 : Math.PI / 2;
+  }
+
   // scuff wear — dark shoe-sheen marks ground into the terrazzo at the
   // two places everyone stands: inside each airlock door and at the
   // commit stripes

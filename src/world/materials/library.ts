@@ -32,6 +32,8 @@ export interface MaterialSet {
   anomalousRoom: StandardMaterial;
   guideStrip: StandardMaterial;
   lightShaft: StandardMaterial;
+  /** truncated-dome tactile warning pads at the airlock thresholds */
+  domePad: StandardMaterial;
 }
 
 export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
@@ -122,6 +124,14 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   guideStrip.diffuseTexture = tex.guideStrip;
   tex.guideStrip.uScale = 1;
   tex.guideStrip.vScale = 8; // ~0.8 m bar pitch along a 6.4 m segment
+
+  // tactile warning pad — amber truncated-dome field, unlit texture so
+  // the dots keep their painted highlight under any zone lighting
+  const domePad = new StandardMaterial("mat.domePad", scene);
+  domePad.diffuseTexture = tex.domePad;
+  domePad.emissiveTexture = tex.domePad;
+  domePad.emissiveColor = new Color3(0.42, 0.4, 0.34);
+  domePad.specularColor = new Color3(0.02, 0.02, 0.02);
 
   // fake volumetric shaft under each troffer — additive, unlit
   const lightShaft = new StandardMaterial("mat.lightShaft", scene);
@@ -220,5 +230,6 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     anomalousRoom,
     guideStrip,
     lightShaft,
+    domePad,
   };
 }

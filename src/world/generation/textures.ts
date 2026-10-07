@@ -45,6 +45,7 @@ export interface TextureSet {
   fadeStrip: DynamicTexture; // linear fade — fake ambient occlusion
   guideStrip: DynamicTexture; // tactile guide bar channels for the floor
   lightShaft: DynamicTexture; // soft volumetric cone under a troffer
+  domePad: DynamicTexture; // truncated-dome warning pad at door thresholds
 }
 
 /** Speckled terrazzo with brass divider strips. Tiles every 1.2 m. */
@@ -466,6 +467,7 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     fadeStrip: drawFadeStrip(tex("tex.fadeStrip", 256, 64, scene), "up"),
     guideStrip: makeGuideStrip(scene),
     lightShaft: makeLightShaft(scene),
+    domePad: makeDomePad(scene),
   };
 }
 
@@ -483,6 +485,37 @@ function makeGuideStrip(scene: Scene): DynamicTexture {
     c.fillRect(x - 5, 6, 10, 116);
     c.fillStyle = "#4a4024";
     c.fillRect(x + 5, 6, 2, 116); // righthand shadow edge
+  }
+  t.update();
+  return finish(t);
+}
+
+/** Tactile warning pad: the truncated-dome field laid before each
+ * airlock door line — amber mat with a raised dot grid, lit edge. */
+function makeDomePad(scene: Scene): DynamicTexture {
+  const t = tex("tex.domePad", 256, 64, scene);
+  const c = ctx(t);
+  c.scale(2, 2);
+  c.fillStyle = "#5d5130";
+  c.fillRect(0, 0, 128, 32);
+  for (let ry = 0; ry < 3; ry++) {
+    for (let rx = 0; rx < 12; rx++) {
+      const x = 8 + rx * 10 + (ry % 2) * 5;
+      const y = 8 + ry * 9;
+      // dot = pale crown + dark under-edge
+      c.fillStyle = "#4a4024";
+      c.beginPath();
+      c.arc(x, y + 0.8, 3, 0, Math.PI * 2);
+      c.fill();
+      c.fillStyle = "#a8934f";
+      c.beginPath();
+      c.arc(x, y, 3, 0, Math.PI * 2);
+      c.fill();
+      c.fillStyle = "#c2ad67";
+      c.beginPath();
+      c.arc(x - 0.7, y - 0.8, 1.1, 0, Math.PI * 2);
+      c.fill();
+    }
   }
   t.update();
   return finish(t);
