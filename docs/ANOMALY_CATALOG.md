@@ -245,8 +245,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 54. ★ `fountain.runs` — the drinking fountain runs by itself: bubbler
     raised, water column standing, pools in the basin and on the floor.
     Moderate. (slice)
+55. ★ `panel.open` — the breaker panel on the west wall hangs open on
+    its hinge, dark bus and breaker rows inside. It was shut. Subtle.
+    (slice)
 
-Slice count: **95 implemented — the full catalog**. New hooks:
+Slice count: **96 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

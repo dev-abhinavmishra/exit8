@@ -99,6 +99,7 @@ import { extGone } from "./extGone";
 import { aidGone } from "./aidGone";
 import { phoneOffhook } from "./phoneOffhook";
 import { fountainRuns } from "./fountainRuns";
+import { panelOpen } from "./panelOpen";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -194,6 +195,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   aidGone,
   phoneOffhook,
   fountainRuns,
+  panelOpen,
   vendDead,
   sheetsCleared,
 ];

@@ -130,6 +130,50 @@ export function buildFixtures(
   aidLatch.parent = aid;
   aidLatch.position = new Vector3(-0.035, -0.08, 0.12);
 
+  // ---- breaker panel, west wall z≈38 — grey flush-mount cabinet with a
+  //      hinged door leaf over dark breaker rows; fills the bare span
+  //      between the second bench and the hose reel. Registered nodes
+  //      (not merged): panel.open swings the door ----
+  const elecPaint = new StandardMaterial("mat.elec.paint", scene);
+  elecPaint.diffuseColor = new Color3(0.2, 0.21, 0.2);
+  elecPaint.emissiveColor = new Color3(0.004, 0.004, 0.004);
+  elecPaint.specularColor = new Color3(0.05, 0.05, 0.05);
+  const elecDark = new StandardMaterial("mat.elec.dark", scene);
+  elecDark.diffuseColor = new Color3(0.04, 0.04, 0.045);
+  elecDark.specularColor = new Color3(0, 0, 0);
+  const elec = new TransformNode("elec.panel", scene);
+  elec.parent = root;
+  elec.position = new Vector3(-WALL_X + 0.04, 1.5, 38);
+  registry.register("elec.panel", elec);
+  const elecBody = kit.box("elec.panel.body", 0.05, 0.62, 0.42, elecPaint, scene);
+  elecBody.parent = elec;
+  // dark bus interior with three breaker rows behind the door
+  const elecBus = kit.box("elec.panel.bus", 0.012, 0.5, 0.3, elecDark, scene);
+  elecBus.parent = elec;
+  elecBus.position = new Vector3(0.012, 0, 0);
+  for (const i of [0, 1, 2]) {
+    const brk = kit.box(`elec.panel.brk.${i}`, 0.014, 0.05, 0.22, mats.wallPanel, scene);
+    brk.parent = elec;
+    brk.position = new Vector3(0.019, 0.16 - i * 0.16, 0);
+  }
+  // door leaf hinged at the south edge; +rotation.y swings it into the corridor
+  const doorPivot = new TransformNode("elec.panel.door", scene);
+  doorPivot.parent = elec;
+  doorPivot.position = new Vector3(0.032, 0, -0.2);
+  registry.register("elec.panel.door", doorPivot);
+  const elecDoor = kit.box("elec.panel.leaf", 0.012, 0.58, 0.4, elecPaint, scene);
+  elecDoor.parent = doorPivot;
+  elecDoor.position = new Vector3(0, 0, 0.2);
+  const elecWarn = kit.box("elec.panel.warn", 0.008, 0.1, 0.14, mats.guideStrip, scene);
+  elecWarn.parent = elecDoor;
+  elecWarn.position = new Vector3(0.006, 0.1, -0.05);
+  const elecLamp = kit.box("elec.panel.lamp", 0.012, 0.02, 0.03, mats.trofferDim, scene);
+  elecLamp.parent = elecDoor;
+  elecLamp.position = new Vector3(0.006, -0.22, -0.05);
+  const elecConduit = kit.box("elec.panel.conduit", 0.03, 1.1, 0.03, mats.rubber, scene);
+  elecConduit.parent = elec;
+  elecConduit.position = new Vector3(-0.02, -0.85, 0);
+
   buildImpossibleFacade(scene, root, mats, registry);
   buildLiftLobby(scene, root, mats, registry);
   buildGuideStrip(scene, root, mats, registry);
