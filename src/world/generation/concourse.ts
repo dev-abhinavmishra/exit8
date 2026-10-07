@@ -362,6 +362,24 @@ export function buildConcourse(
   ceil.position = new Vector3(0, C.height + 0.05, zc);
   colliders.push(kit.collider("ceilCol", C.xHalf * 2 + 0.3, 0.1, len, ceil.position.clone(), scene, root));
 
+  // ceiling tee-bar grid — the read when you look up between troffers
+  for (let z = 1.2; z < C.z1; z += 1.2) {
+    const bar = kit.box(
+      `dress.ceilseam.${z.toFixed(1)}`,
+      C.xHalf * 2 - 0.1,
+      0.014,
+      0.04,
+      mats.rubber,
+      scene,
+      root,
+    );
+    bar.position = new Vector3(0, C.height - 0.004, z);
+  }
+  for (const x of [-0.6, 0.6]) {
+    const rail = kit.box(`dress.ceilrail.${x}`, 0.04, 0.014, len - 0.1, mats.rubber, scene, root);
+    rail.position = new Vector3(x, C.height - 0.004, zc);
+  }
+
   // Skirting + wall caps — left wall has feature bands, right wall carries
   // the gallery glass z 20–32.
   kit.wallRun("wall.left.0", -C.xHalf, 0, 12, C.height, mats.wallPanel, scene, root, registry);
@@ -500,6 +518,20 @@ export function buildConcourse(
   const cab = kit.box("records.cabinets", 0.18, 2.1, 18, mats.steel, scene, root);
   cab.position = new Vector3(-C.xHalf + 0.16, 1.15, 22);
   registry.register("records.cabinets", cab);
+  // drawer grid on the bank face — the close-up read was one flat slab.
+  // Merges into the static batches; anomalies overlay their own geometry.
+  for (const y of [0.55, 0.95, 1.35, 1.75]) {
+    const hs = kit.box(`dress.cabseam.h.${y}`, 0.014, 0.016, 17.6, mats.rubber, scene, root);
+    hs.position = new Vector3(-C.xHalf + 0.255, y, 22);
+  }
+  for (const z of [14.6, 17.6, 20.6, 23.6, 26.6, 29.6]) {
+    const vs = kit.box(`dress.cabseam.v.${z}`, 0.014, 1.5, 0.02, mats.rubber, scene, root);
+    vs.position = new Vector3(-C.xHalf + 0.255, 1.15, z);
+  }
+  for (const z of [15.5, 18.5, 21.5, 24.5, 27.5, 30.5]) {
+    const pull = kit.box(`dress.cabpull.${z}`, 0.03, 0.05, 0.24, mats.steel, scene, root);
+    pull.position = new Vector3(-C.xHalf + 0.265, 1.55, z);
+  }
   colliders.push(
     kit.collider("records.col", 0.3, 2.2, 18, new Vector3(-C.xHalf + 0.18, 1.1, 22), scene, root),
   );
