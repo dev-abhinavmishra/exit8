@@ -165,8 +165,19 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     approach, a dark figure stands dead centre in the airlock beyond
     the threshold — the judgment resolves before you reach it.
     Unmistakable. (slice)
+21. ★ `cctv.all` — every dome in the corridor tracks you at once; they
+    hand you off down the line as you walk. Unmistakable. (slice)
+22. ★ `guide.cross` — the tactile guide strip jumps the corridor:
+    right-of-centre south of the junction, LEFT of centre north of it.
+    Moderate. (slice)
+23. ★ `shutter.ajar` — the clinic shutter sits a hand's width off the
+    counter; the gap beneath shows only dark. Moderate. (slice)
+24. ★ `records.breach` — one records drawer gapes open, proud of the
+    cabinet face, hollow and unlit inside. Subtle. (slice)
+25. ★ `gallery.frost` — the observation glass has gone blind: panes
+    fogged solid, nothing on the other side to see. Moderate. (slice)
 
-Slice count: **59 implemented** — past the 24 target. New hooks:
+Slice count: **64 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

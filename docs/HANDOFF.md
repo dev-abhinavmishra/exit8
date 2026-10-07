@@ -229,6 +229,13 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - `figure.south` (**58**): figure inside the south airlock at z=58.7;
   the inner doors part at player z>53.8 revealing it centered through
   the gap. Rubber boxes + a small head-tilt (rotation.z) sell it.
+- Anomalies 60–64 (cctv.all, guide.cross, shutter.ajar, records.breach,
+  gallery.frost) landed together. Traps hit: `world.materials` NOT
+  `world.mats`; AnomalyInstance requires `update` (no-op ok); cctv.N is
+  a TransformNode (meshInfo null) — probe `cctv.N.lens` absolute pos
+  instead; records.cabinets face x=-1.55 (drawer proud at -1.48);
+  guide segs all home at x=+0.72; `?anomaly=<id>` URL param applies the
+  anomaly at LOOP 1 — much faster than forceAnomaly+commit for probes.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 

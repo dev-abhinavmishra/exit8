@@ -63,6 +63,11 @@ import { airlockBreach } from "./airlockBreach";
 import { tracksWet } from "./tracksWet";
 import { chalkMarks } from "./chalkMarks";
 import { figureSouth } from "./figureSouth";
+import { cctvAll } from "./cctvAll";
+import { guideCross } from "./guideCross";
+import { shutterAjar } from "./shutterAjar";
+import { recordsBreach } from "./recordsBreach";
+import { galleryFrost } from "./galleryFrost";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -124,4 +129,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   tracksWet,
   chalkMarks,
   figureSouth,
+  cctvAll,
+  guideCross,
+  shutterAjar,
+  recordsBreach,
+  galleryFrost,
 ];
