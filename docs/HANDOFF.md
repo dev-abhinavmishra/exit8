@@ -4,13 +4,19 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 
 ## Where we are
 
-- M0 (docs + scaffold) and M1 (vertical slice) landed on branch
-  `devin/…-vertical-slice` → merged to main (check `git log`).
-- Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller,
+- M0 (docs + scaffold) and M1 (vertical slice) landed on PR #1
+  (`devin/night-audit-vertical-slice`) — reviewed commit 943be24, fixes at
+  86acf2a. Devin Review: all 10 findings fixed + triaged. NOT yet merged.
+- Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller
+  (collision via `camera.cameraDirection` + `collisionCoordinator` import),
   Loop 7 concourse (procedural), commit thresholds, stability index,
   3 anomalies (`clock.reverse`, `doorway.extra`, `footsteps.extra`),
-  procedural audio, start/pause/settings/results, v1 saves, vitest +
-  playwright suites, Vercel-ready `vercel.json`.
+  procedural audio (seeded `audio.synth`/`audio.ambient` streams),
+  start/pause/settings/results, v1 saves, vitest + playwright suites,
+  Vercel-ready `vercel.json`.
+- E2E-verified live: 6-case direction probe, wall clamps ±1.4, commit
+  judging ±16/+12, all 3 anomalies visible, SECURED@100 + LOST@0 results,
+  zero console errors. Recorded; evidence posted on PR #1.
 - Next up per the attached brief: M2 visual benchmark (Blender kit /
   baked lighting / KTX2) or M3 systems (chapters, evidence, practice +
   daily seed modes, catalog, validator, gamepad, mobile). Expand the
@@ -33,7 +39,14 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 && npm run test:e2e && npm run validate:assets && npm run build`.
 - E2E runs the WebGL2 path (headless has no WebGPU). Debug surface:
   `window.__nightaudit` (see `src/debug/handle.ts`), `?debug`, `?engine=`,
-  `?seed=`, `?anomaly=`, `?e2e=1` (stable clock/no random idle rumbles).
+  `?seed=`, `?anomaly=`, `?e2e=1`.
+- `?e2e=1` pins `TIERS.low` + no rumble — REQUIRED under SwiftShader (~1 fps
+  at high tier starves the 60 Hz stepper and timeouts look like hangs).
+- Babylon traps learned: `camera.cameraDirection` is WORLD-space (don't
+  un-rotate; position writes bypass collision); `_collideWithWorld` needs
+  `import "@babylonjs/core/Collisions/collisionCoordinator"` or the first
+  move throws and silently kills the RAF loop; `applyQuality()` re-resolves
+  the tier — tier overrides belong inside it.
 
 ## User-context notes (from prior sessions)
 
@@ -45,4 +58,6 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   off `origin/main`, expect `origin/main` to move mid-session.
 - SwiftShader test box: playwright `browser.newContext` can flake on first
   try (retry passes); in-engine screenshot > `page.screenshot` on WebGL
-  pages; kill orphan chromes before debugging a "hang".
+  pages; kill orphan chromes before debugging a "hang"; `fuser -k 4177/tcp`
+  kills stale previews that shadow the strictPort suite; a saved
+  `night-audit-e2e-testing` skill documents the debug handle + probes.
