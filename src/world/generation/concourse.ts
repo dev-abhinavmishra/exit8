@@ -162,8 +162,8 @@ function doorGlassMaterial(scene: Scene): StandardMaterial {
   if (_doorGlassMat) return _doorGlassMat;
   _doorGlassMat = new StandardMaterial("mat.doorGlass", scene);
   _doorGlassMat.diffuseColor = new Color3(0.04, 0.055, 0.065);
-  _doorGlassMat.specularColor = new Color3(0.45, 0.5, 0.55);
-  _doorGlassMat.emissiveColor = new Color3(0.008, 0.012, 0.016);
+  _doorGlassMat.specularColor = new Color3(0.2, 0.22, 0.24);
+  _doorGlassMat.emissiveColor = new Color3(0.006, 0.009, 0.012);
   return _doorGlassMat;
 }
 
@@ -273,6 +273,25 @@ function buildAirlock(
     const win = kit.box(`door.${side}.inner.${tag}.win`, 0.22, 0.4, 0.12, glass, scene);
     win.parent = leaf;
     win.position = new Vector3(0, 1.72 - leafH / 2, 0);
+    // wired glass — the faint criss-cross laminate inside safety panes
+    for (const [mx, mtag] of [
+      [-0.06, "l"],
+      [0.06, "r"],
+    ] as const) {
+      const mesh = kit.box(
+        `door.${side}.inner.${tag}.winmesh.v.${mtag}`,
+        0.006,
+        0.38,
+        0.004,
+        mats.rubber,
+        scene,
+      );
+      mesh.parent = leaf;
+      mesh.position = new Vector3(mx, 1.72 - leafH / 2, faceZ);
+    }
+    const meshH = kit.box(`door.${side}.inner.${tag}.winmesh.h`, 0.2, 0.006, 0.004, mats.rubber, scene);
+    meshH.parent = leaf;
+    meshH.position = new Vector3(0, 1.72 - leafH / 2, faceZ);
   }
   // overhead guide track the leaves ride — the rail line above the
   // doorway is what sells these as sliding doors
@@ -1332,6 +1351,26 @@ export function buildConcourse(
     const vent = kit.box(`junction.machine.vent.${i}`, 0.02, 0.03, 0.7, mats.rubber, scene);
     vent.parent = machine;
     vent.position = new Vector3(0.41, -0.45 - i * 0.08, 0);
+  }
+  // control strip — three status lamps in a row + maker's plate, so the
+  // corridor face reads as equipment, not a slab
+  const lampRow = [mats.cabinetRed, mats.guideStrip, mats.trofferDim];
+  lampRow.forEach((lm, i) => {
+    const lamp = kit.box(`junction.machine.swl.${i}`, 0.025, 0.03, 0.03, lm, scene);
+    lamp.parent = machine;
+    lamp.position = new Vector3(0.41, 0.78, -0.3 + i * 0.12);
+  });
+  const plate = kit.box("junction.machine.plate", 0.015, 0.14, 0.4, mats.wallPanel, scene);
+  plate.parent = machine;
+  plate.position = new Vector3(0.41, 0.2, 0.1);
+  // top conduit stubs — it feeds upward into the tray run
+  for (const [sz, stag] of [
+    [-0.3, "a"],
+    [0.25, "b"],
+  ] as const) {
+    const stub = kit.box(`junction.machine.stub.${stag}`, 0.05, 0.75, 0.05, mats.steel, scene);
+    stub.parent = machine;
+    stub.position = new Vector3(0.2, 1.3, sz);
   }
 
   // ─── doorway.extra: hidden lit room behind right wall at z≈37 ────
