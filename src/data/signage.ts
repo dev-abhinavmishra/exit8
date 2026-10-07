@@ -68,6 +68,13 @@ export const SIGNS: SignSpec[] = [
     arrow: "none",
     tone: "dark",
   },
+  {
+    id: "sign.fire.point",
+    title: "FIRE POINT",
+    sub: "HOSE · EXTINGUISHER · ALARM",
+    arrow: "none",
+    tone: "dark",
+  },
 ];
 
 /** Diegetic micro-copy; used on posters, terminals, notices. */

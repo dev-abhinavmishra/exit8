@@ -25,6 +25,7 @@ import { SIGNS } from "../../data/signage";
 import * as kit from "./kit";
 import { buildScatter, type ScatterPool } from "./scatter";
 import { buildAmbientWalker, type AmbientWalker } from "./ambientWalker";
+import { buildFixtures } from "./fixtures";
 
 export const LAYOUT = {
   corridor: { xHalf: 1.8, z0: 0, z1: 55, height: 3.0 },
@@ -472,10 +473,11 @@ export function buildConcourse(
   // signs
   const sGallery = kit.wallSign("sign.gallery", mats, scene, root, registry, 1.5, 0.45);
   sGallery.position = new Vector3(C.xHalf - 0.08, 2.5, 26);
-  sGallery.rotation.y = -Math.PI / 2;
+  // plane front face is −z: right wall (+x) needs +π/2 to face the room
+  sGallery.rotation.y = Math.PI / 2;
   const sClinic = kit.wallSign("sign.clinic", mats, scene, root, registry, 1.5, 0.45);
   sClinic.position = new Vector3(-C.xHalf + 0.08, 2.5, 37);
-  sClinic.rotation.y = Math.PI / 2;
+  sClinic.rotation.y = -Math.PI / 2;
   const sJunction = kit.hangingSign("sign.junction", mats, scene, root, registry, C.height);
   sJunction.position.x = 0;
   sJunction.position.z = 45;
@@ -625,6 +627,7 @@ export function buildConcourse(
   const scatter = buildScatter(scene, root, mats, runSeed);
   const ambientWalker = buildAmbientWalker(scene, root, mats, registry);
   ambientWalker.reset();
+  buildFixtures(scene, root, mats, registry);
 
   return {
     root,

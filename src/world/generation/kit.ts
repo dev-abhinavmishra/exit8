@@ -215,20 +215,21 @@ export function bench(
   scene: Scene,
   parent: TransformNode,
   registry: WorldRegistry,
+  name = "bench",
 ): TransformNode {
-  const root = new TransformNode("bench", scene);
+  const root = new TransformNode(name, scene);
   root.parent = parent;
   const slats = 5;
   for (let i = 0; i < slats; i++) {
-    const slat = box(`bench.slat.${i}`, 1.8, 0.04, 0.09, mats.steel, scene, root);
+    const slat = box(`${name}.slat.${i}`, 1.8, 0.04, 0.09, mats.steel, scene, root);
     slat.position = new Vector3(0, 0.45, -0.24 + i * 0.12);
-    registry.register(`bench.slat.${i}`, slat);
+    registry.register(`${name}.slat.${i}`, slat);
   }
-  const legL = box("bench.legL", 0.06, 0.45, 0.55, mats.steel, scene, root);
+  const legL = box(`${name}.legL`, 0.06, 0.45, 0.55, mats.steel, scene, root);
   legL.position = new Vector3(-0.8, 0.225, 0);
-  const legR = box("bench.legR", 0.06, 0.45, 0.55, mats.steel, scene, root);
+  const legR = box(`${name}.legR`, 0.06, 0.45, 0.55, mats.steel, scene, root);
   legR.position = new Vector3(0.8, 0.225, 0);
-  registry.register("bench", root);
+  registry.register(name, root);
   return root;
 }
 
