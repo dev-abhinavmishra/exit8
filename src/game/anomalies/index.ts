@@ -44,6 +44,8 @@ import { signDrift } from "./signDrift";
 import { terminalGlitch } from "./terminalGlitch";
 import { memoryPersist } from "./memoryPersist";
 import { lightDelay } from "./lightDelay";
+import { routeReacts } from "./routeReacts";
+import { sightlineImpossible } from "./sightlineImpossible";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -86,4 +88,6 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   terminalGlitch,
   memoryPersist,
   lightDelay,
+  routeReacts,
+  sightlineImpossible,
 ];

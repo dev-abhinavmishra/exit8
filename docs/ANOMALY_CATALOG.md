@@ -36,7 +36,8 @@ Target ≥ 24 across six groups. ★ = implemented.
    spill. (slice)
 2. `hall.stretch` — corridor segment subtly lengthens (+4 m). Moderate.
 3. `depth.mismatch` — a doorway's visible depth exceeds available space.
-4. `sightline.impossible` — looking back, the airlock appears twice.
+4. ★ `sightline.impossible` — a second airlock, sealed and signed, walls
+   the corridor at z≈38 where it always continued. Unmistakable. (slice)
 5. `vanish.misaligned` — perspective vanishing point offset (camera-space
    skew < 3 %). Subtle.
 6. ★ `door.ajar` — right-wall service door hinged open, dark
@@ -103,8 +104,9 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 1. ★ `memory.persist` — a scatter detail placed last loop returns at the
    exact same spot while everything else re-dresses. Subtle. (slice)
 2. `ui.disagree` — the airlock terminal shows last loop's judgment wrong.
-3. `route.reacts` — the corridor repeats a sound the player made last loop
-   (e.g. their knock on glass).
+3. ★ `route.reacts` — after 2.6s of stillness the corridor replays your
+   last few footsteps at your own cadence, from where you took them.
+   Moderate. (slice)
 4. ★ `air.haze` — fog density roughly doubles, hemi drops a notch; the far
    end stops resolving. Moderate. (slice)
 5. ★ `terminal.notice` — a handbill on the south airlock terminal
@@ -114,7 +116,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 7. ★ `terminal.glitch` — both airlock terminals briefly insist a
    divergence was filed and stability reads 0. Subtle. (slice)
 
-Slice count: **40 implemented** — past the 24 target. New hooks:
+Slice count: **42 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

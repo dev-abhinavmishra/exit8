@@ -10,7 +10,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller
   (collision via `camera.cameraDirection` + `collisionCoordinator` import),
   Loop 7 concourse (procedural), commit thresholds, stability index,
-  **40 anomalies** (was 3 — 24 target passed) registered via
+  **42 anomalies** (was 3 — 24 target passed) registered via
   `anomalies/index.ts` (`ALL_ANOMALIES` — register there, not in app.ts),
   procedural audio (seeded `audio.synth`/`audio.ambient` streams),
   start/pause/settings/results, v1 saves, vitest + playwright suites,
@@ -37,7 +37,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   `view()` added to the debug handle (yaw/pitch getter; `look()` is
   a setter). e2e stubs `navigator.getGamepads` via addInitScript.
 - **Route archive live** (bde5a73): ROUTE ARCHIVE on the start
-  screen — stats table + DIVERGENCE REGISTER of all 40 defs sorted by
+  screen — stats table + DIVERGENCE REGISTER of all 42 defs sorted by
   chapter; discovered ids render name/chapter/category/detectability,
   unfound ones show redacted rows. `ui.setArchiveData(stats, ids)`
   populates from save at boot. NOTE: seeded saves in e2e must carry
@@ -135,6 +135,16 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   tracks which zone the player's z sits in and dims the zone they LEFT
   1.5s after crossing (holds 1.0s). Zones named entry/gallery/clinic/
   junction; excludes tags are per-zone ("zone.gallery" etc).
+- Batch (**42**): `route.reacts` (records player footsteps by sim-time;
+  after 2.6s idle replays them at original cadence from their own
+  positions — playback suspends if the player steps, steps pushed while
+  not playing). `sightline.impossible`: fixtures.buildImpossibleFacade
+  prebuilds a DISABLED airlock facade at z=38 (side walls + lintel +
+  sealed slidingDoor + shared exit-south sign mat + collider child);
+  anomaly setEnabled(true)s it. TRAP: kit.wallSign AND kit.slidingDoor
+  auto-register — reusing a specId or kit.name twice crashes boot with
+  "registry duplicate"; borrow art via mats.sign.get() + kit.plane
+  instead. PlayerController.onFootstep(cb) → unsub.
   `ambient.walker` registered in WorldRegistry; update() runs in
   app.sim. Trap: e2e archive spec had "0 OF 31 FILED" hardcoded — now
   regex-matched; specs CANNOT import src/game/anomalies (Node can't
