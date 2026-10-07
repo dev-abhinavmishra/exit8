@@ -13,6 +13,9 @@ import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { PointLight } from "@babylonjs/core/Lights/pointLight";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
+import { ParticleSystem } from "@babylonjs/core/Particles/particleSystem";
+import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
+import { Color4 } from "@babylonjs/core/Maths/math.color";
 import type { Scene } from "@babylonjs/core/scene";
 import { WorldRegistry } from "../registry";
 import { buildMaterials, type MaterialSet } from "../materials/library";
@@ -205,7 +208,11 @@ function buildAirlock(
   };
 }
 
-export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
+export function buildConcourse(
+  scene: Scene,
+  runSeed: string,
+  opts: { reducedMotion?: boolean } = {},
+): ConcourseWorld {
   const registry = new WorldRegistry();
   const dressRng = new RngStream("loop.dressing", runSeed);
   const tex = buildTextureSet(scene, dressRng, SIGNS);
@@ -559,6 +566,43 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
   spill.diffuse = new Color3(1.0, 0.85, 0.62);
   spill.intensity = 0.0; // anomaly raises it
   spill.range = 9;
+
+  // dust motes drifting through the troffer light — one additive
+  // particle system filling the corridor volume; skipped entirely when
+  // the player asks for reduced motion
+  if (!opts.reducedMotion) {
+    const dotTex = new DynamicTexture("tex.dustdot", { width: 32, height: 32 }, scene, false);
+    const dctx = dotTex.getContext() as unknown as CanvasRenderingContext2D;
+    const dg = dctx.createRadialGradient(16, 16, 1, 16, 16, 15);
+    dg.addColorStop(0, "rgba(255,250,235,0.9)");
+    dg.addColorStop(0.5, "rgba(255,250,235,0.25)");
+    dg.addColorStop(1, "rgba(255,250,235,0)");
+    dctx.fillStyle = dg;
+    dctx.fillRect(0, 0, 32, 32);
+    dotTex.update();
+    const dust = new ParticleSystem("fx.dust", 400, scene);
+    dust.particleTexture = dotTex;
+    const dustAnchor = new TransformNode("fx.dust.anchor", scene);
+    dustAnchor.parent = root;
+    dust.emitter = dustAnchor;
+    dust.createBoxEmitter(
+      new Vector3(-0.015, 0.012, -0.015),
+      new Vector3(0.015, 0.045, 0.015),
+      new Vector3(-C.xHalf + 0.2, 0.35, 0),
+      new Vector3(C.xHalf - 0.2, C.height - 0.2, 55),
+    );
+    dust.emitRate = 30;
+    dust.minLifeTime = 6;
+    dust.maxLifeTime = 12;
+    dust.minSize = 0.006;
+    dust.maxSize = 0.02;
+    dust.color1 = new Color4(1, 0.96, 0.86, 0.16);
+    dust.color2 = new Color4(0.9, 0.88, 0.8, 0.1);
+    dust.colorDead = new Color4(1, 1, 1, 0);
+    dust.blendMode = ParticleSystem.BLENDMODE_ADD;
+    dust.gravity = Vector3.Zero();
+    dust.start();
+  }
 
   // condensation patch on the glass gallery (footsteps.extra visual cue)
   const condensation = kit.plane("anomaly.condensation", 1.6, 1.6, mats.condensation, scene, root);

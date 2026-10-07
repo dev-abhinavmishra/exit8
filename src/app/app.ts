@@ -123,7 +123,9 @@ export class App {
     this.scene.fogDensity = 0.012;
     this.scene.fogColor = new Color3(0.03, 0.035, 0.04);
 
-    this.world = buildConcourse(this.scene, this.runSeed);
+    this.world = buildConcourse(this.scene, this.runSeed, {
+      reducedMotion: settings.accessibility.reducedMotion,
+    });
     this.player = new PlayerController(this.scene, this.canvas, settings);
     this.audio = new AudioSystem(settings, new RngStream("audio.synth", this.runSeed));
     this.rig = buildInspectionRig(this.scene, this.player.camera, this.tier);
