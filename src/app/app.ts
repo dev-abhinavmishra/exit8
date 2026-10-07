@@ -41,6 +41,11 @@ export interface UrlParams {
   e2e: boolean;
 }
 
+/** Deterministic per-UTC-day run seed for the daily route. */
+export function dailySeed(): string {
+  return `daily-${new Date().toISOString().slice(0, 10)}`;
+}
+
 export function parseUrl(search: string): UrlParams {
   const q = new URLSearchParams(search);
   const engine = q.get("engine");
@@ -78,6 +83,7 @@ export class App {
   private focus = new FocusResolver();
   private focused: Interactable | null = null;
   private stats = { correct: 0, mistakes: 0 };
+  private filed: { name: string; chapter: number }[] = [];
   private runSeed: string;
 
   constructor(
@@ -137,6 +143,7 @@ export class App {
 
     this.ui = new GameUi(this.uiHost, settings, {
       onStart: () => this.startRun(),
+      onDaily: () => this.dailyRoute(),
       onResume: () => this.resume(),
       onRestart: () => this.restart(),
       onSettingsChanged: () => this.onSettingsChanged(),
@@ -145,6 +152,8 @@ export class App {
         location.reload();
       },
     });
+    const day = dailySeed().slice(6);
+    this.ui.setDailyLabel(day, this.save.get().progression.dailies.includes(day));
     if (created.note) this.ui.setStartNote(created.note, true);
     else if (this.save.consumeResetNotice()) {
       this.ui.setStartNote("Save data on this device was corrupted and has been reset.", true);
@@ -261,9 +270,24 @@ export class App {
     location.href = u.toString();
   }
 
+  /** The daily route — one deterministic seed per UTC day, same for everyone. */
+  private dailyRoute(): void {
+    const u = new URL(location.href);
+    u.searchParams.delete("anomaly");
+    u.searchParams.set("seed", dailySeed());
+    location.href = u.toString();
+  }
+
   private onJudgment(s: LoopState): void {
     if (s.judgment?.correct) this.stats.correct += 1;
     else this.stats.mistakes += 1;
+    // a correct retreat files the active divergence into the route log
+    if (s.judgment?.correct && s.activeAnomaly) {
+      const def = this.anomalies.get(s.activeAnomaly);
+      if (!this.filed.some((f) => f.name === def.displayName)) {
+        this.filed.push({ name: def.displayName, chapter: def.chapter });
+      }
+    }
     this.ui.setLoopIndex(s.loopIndex + 1);
     this.ui.setChapter(s.chapter);
   }
@@ -271,12 +295,20 @@ export class App {
   private onEnd(outcome: "secure" | "lost"): void {
     this.state = "results";
     document.exitPointerLock?.();
+    // stamp the daily route if this run was one
+    if (this.runSeed.startsWith("daily-")) {
+      const day = this.runSeed.slice(6);
+      this.save.update((d) => {
+        if (!d.progression.dailies.includes(day)) d.progression.dailies.push(day);
+      });
+    }
     const discovered = this.save.get().progression.discovered.length;
     this.ui.showResults(outcome, this.loop.state, {
       loops: this.loop.state.loopIndex,
       correct: this.stats.correct,
       mistakes: this.stats.mistakes,
       discovered,
+      filed: this.filed,
     });
   }
 

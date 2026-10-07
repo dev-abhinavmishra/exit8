@@ -18,6 +18,7 @@ export interface Progression {
   discovered: string[]; // anomaly ids encountered
   discoveries: string[]; // evidence ids found
   endings: string[]; // "standard" | "investigative"
+  dailies: string[]; // ISO dates of completed daily routes
 }
 
 export interface SaveData {
@@ -41,6 +42,7 @@ export function defaultProgression(): Progression {
     discovered: [],
     discoveries: [],
     endings: [],
+    dailies: [],
   };
 }
 

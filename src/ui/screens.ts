@@ -8,6 +8,7 @@ import type { LoopState } from "../game/loop/loopManager";
 
 export interface UiCallbacks {
   onStart(): void;
+  onDaily(): void;
   onResume(): void;
   onRestart(): void;
   onSettingsChanged(): void;
@@ -31,6 +32,7 @@ export class GameUi {
   private debugEl: HTMLDivElement;
   private captionQueue: { el: HTMLDivElement; until: number }[] = [];
   private cb: UiCallbacks;
+  private dailyBtn: HTMLButtonElement | null = null;
 
   constructor(
     host: HTMLElement,
@@ -115,6 +117,8 @@ export class GameUi {
     body.appendChild(
       this.btn(COPY.startScreen.begin, "new inspection run", () => this.cb.onStart(), "primary"),
     );
+    this.dailyBtn = this.btn("DAILY ROUTE", "same shift for everyone, today", () => this.cb.onDaily());
+    body.appendChild(this.dailyBtn);
     body.appendChild(
       this.btn("SETTINGS", "video · controls · audio · accessibility", () => this.openSettingsFrom("start")),
     );
@@ -124,6 +128,12 @@ export class GameUi {
     note.textContent = "WebGPU preferred · WebGL 2 fallback · WASD to walk, mouse to look, Esc pauses.";
     body.appendChild(note);
     return this.screen("start", panel);
+  }
+
+  /** Label the daily-route button with today's date / filed state. */
+  setDailyLabel(date: string, filed: boolean): void {
+    const s = this.dailyBtn?.querySelector(".sub");
+    if (s) s.textContent = filed ? `${date} — already filed` : `${date} — same shift for everyone`;
   }
 
   setStartNote(text: string, warn = false): void {
@@ -436,7 +446,13 @@ export class GameUi {
   showResults(
     outcome: "secure" | "lost",
     state: LoopState,
-    stats: { loops: number; correct: number; mistakes: number; discovered: number },
+    stats: {
+      loops: number;
+      correct: number;
+      mistakes: number;
+      discovered: number;
+      filed: { name: string; chapter: number }[];
+    },
   ): void {
     const screenEl = this.screens.get("results");
     if (!screenEl) return;
@@ -466,6 +482,34 @@ export class GameUi {
       table.appendChild(tr);
     }
     body.appendChild(table);
+
+    const log = document.createElement("div");
+    log.className = "na-route-log";
+    const logHead = document.createElement("div");
+    logHead.className = "h";
+    logHead.textContent = "FILED DIVERGENCES";
+    log.appendChild(logHead);
+    if (stats.filed.length === 0) {
+      const none = document.createElement("div");
+      none.className = "row muted";
+      none.textContent = "route filed clean — nothing logged";
+      log.appendChild(none);
+    } else {
+      for (const f of stats.filed) {
+        const row = document.createElement("div");
+        row.className = "row";
+        const nm = document.createElement("span");
+        nm.textContent = f.name;
+        const ch = document.createElement("span");
+        ch.className = "ch";
+        ch.textContent = `CH ${["I", "II", "III"][f.chapter - 1] ?? "I"}`;
+        row.appendChild(nm);
+        row.appendChild(ch);
+        log.appendChild(row);
+      }
+    }
+    body.appendChild(log);
+
     body.appendChild(this.btn("FILE ANOTHER SHIFT", "new run", () => this.cb.onRestart(), "primary"));
     this.show("results");
   }

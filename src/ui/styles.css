@@ -301,6 +301,38 @@
   letter-spacing: 0.22em;
   color: var(--dim);
 }
+.na-route-log {
+  margin-top: 18px;
+  border: 1px solid var(--edge);
+  background: rgba(16, 20, 26, 0.55);
+}
+.na-route-log .h {
+  padding: 8px 12px;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  color: var(--dim);
+  border-bottom: 1px solid var(--edge);
+}
+.na-route-log .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 7px 12px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+.na-route-log .row + .row {
+  border-top: 1px solid rgba(58, 61, 64, 0.5);
+}
+.na-route-log .row .ch {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--amber);
+}
+.na-route-log .row.muted {
+  color: var(--dim);
+  font-style: italic;
+}
 .na-hud .loop-tag .ch {
   margin-left: 10px;
   padding-left: 10px;
