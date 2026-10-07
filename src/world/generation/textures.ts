@@ -815,3 +815,73 @@ export function makeRouteMap(scene: Scene): DynamicTexture {
   t.update();
   return finish(t);
 }
+
+/** Night staffing rota — the framed duty board near the intake: a typed
+ *  table of inspector codes, shift times and clearance marks. */
+export function makeRotaBoard(scene: Scene): DynamicTexture {
+  const t = tex("tex.rota", 512, 384, scene);
+  const c = ctx(t);
+  c.fillStyle = "#232629";
+  c.fillRect(0, 0, 512, 384);
+  c.strokeStyle = "#3d4045";
+  c.lineWidth = 4;
+  c.strokeRect(6, 6, 500, 372);
+  c.fillStyle = "#d8a045";
+  c.font = "bold 20px Arial, sans-serif";
+  c.textAlign = "center";
+  c.fillText("ROUTE STAFFING — NIGHT", 256, 36);
+  c.fillStyle = "#8a9099";
+  c.font = "12px Arial, sans-serif";
+  c.fillText("INSPECTION LOOP 7 · ROUTE INTEGRITY DIVISION", 256, 56);
+  // table header
+  const cols = ["INSPECTOR", "SHIFT", "ROUTE", "CLEARANCE"];
+  const xs = [80, 200, 310, 420];
+  c.textAlign = "left";
+  c.font = "bold 13px Arial, sans-serif";
+  c.fillStyle = "#a8adb5";
+  cols.forEach((col, i) => c.fillText(col, (xs[i] ?? 0) - 30, 82));
+  c.strokeStyle = "#3d4045";
+  c.lineWidth = 1;
+  c.beginPath();
+  c.moveTo(24, 92);
+  c.lineTo(488, 92);
+  c.stroke();
+  // rows
+  const rows: readonly (readonly [string, string, string, string])[] = [
+    ["N-104", "22–06", "RESERVE", "FILED"],
+    ["N-117", "00–08", "LOOP 7", "ACTIVE"],
+    ["N-122", "22–06", "LOOP 9", "FILED"],
+    ["N-131", "00–08", "SURFACE", "FILED"],
+    ["N-140", "22–06", "LOOP 7", "RELIEF"],
+    ["N-147", "00–08", "RESERVE", "STANDBY"],
+    ["N-153", "22–06", "LOOP 4", "FILED"],
+  ];
+  c.font = "13px 'Courier New', monospace";
+  for (let r = 0; r < rows.length; r++) {
+    const row = rows[r];
+    if (!row) continue;
+    const y = 112 + r * 30;
+    const active = row[3] === "ACTIVE";
+    c.fillStyle = active ? "#e8c078" : "#7d838c";
+    row.forEach((v, i) => c.fillText(v, (xs[i] ?? 0) - 30, y));
+    c.strokeStyle = "#2e3134";
+    c.beginPath();
+    c.moveTo(24, y + 8);
+    c.lineTo(488, y + 8);
+    c.stroke();
+  }
+  // footnote stamp
+  c.save();
+  c.translate(430, 330);
+  c.rotate(-0.18);
+  c.strokeStyle = "rgba(216,160,69,0.75)";
+  c.lineWidth = 2;
+  c.strokeRect(-58, -16, 116, 30);
+  c.fillStyle = "rgba(216,160,69,0.75)";
+  c.font = "bold 12px Arial, sans-serif";
+  c.textAlign = "center";
+  c.fillText("AUDITED", 0, 4);
+  c.restore();
+  t.update();
+  return finish(t);
+}

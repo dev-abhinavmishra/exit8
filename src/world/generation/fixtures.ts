@@ -13,7 +13,7 @@ import { CreateCylinder } from "@babylonjs/core/Meshes/Builders/cylinderBuilder"
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import type { Scene } from "@babylonjs/core/scene";
-import { makeRouteMap } from "./textures";
+import { makeRotaBoard, makeRouteMap } from "./textures";
 import type { MaterialSet } from "../materials/library";
 import type { WorldRegistry } from "../registry";
 import * as kit from "./kit";
@@ -153,6 +153,19 @@ function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, reg
   const mapFace = kit.plane("dress.routemap", 0.7, 0.5, mapMat, scene, root);
   mapFace.position = new Vector3(WALL_X - 0.052, 1.62, 35.8);
   mapFace.rotation.y = Math.PI / 2;
+
+  // ---- night staffing rota — framed duty board on the west wall at
+  //      the intake end, opposite the NORTH INTAKE sign ----
+  const rotaTex = makeRotaBoard(scene);
+  const rotaMat = new StandardMaterial("mat.rota", scene);
+  rotaMat.diffuseTexture = rotaTex;
+  rotaMat.specularColor = Color3.Black();
+  rotaMat.emissiveColor = new Color3(0.09, 0.09, 0.08);
+  const rotaFrame = kit.box("dress.rota.frame", 0.04, 0.62, 0.82, mats.steel, scene, root);
+  rotaFrame.position = new Vector3(-WALL_X + 0.03, 1.6, 2.4);
+  const rotaFace = kit.plane("dress.rota", 0.76, 0.56, rotaMat, scene, root);
+  rotaFace.position = new Vector3(-WALL_X + 0.052, 1.6, 2.4);
+  rotaFace.rotation.y = -Math.PI / 2;
 
   // ---- worn floor wayfinding: a painted route arrow, faded into the
   //      terrazzo at approach points ----

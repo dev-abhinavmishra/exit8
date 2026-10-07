@@ -472,6 +472,10 @@ export function buildConcourse(
   // that makes the room read as occupied space, not void
   const gcove = kit.box("dress.gal.cove", 0.06, 0.05, 11.4, mats.trofferLit, scene, root);
   gcove.position = new Vector3(C.xHalf + 1.3, 2.36, 26);
+  // one desk carries a lit monitor face toward the glass — the
+  // occupied-room cue at walking distance
+  const gmon = kit.box("dress.gal.monitor", 0.02, 0.26, 0.38, mats.trofferLit, scene, root);
+  gmon.position = new Vector3(C.xHalf + 0.46, 0.88, 26.5);
   registry.register("wall.gallery.back", galleryBack);
   kit.wallRun("wall.right.2", C.xHalf, 32, 55, C.height, mats.wallPanel, scene, root, registry);
 
