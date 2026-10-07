@@ -75,6 +75,13 @@ export const SIGNS: SignSpec[] = [
     arrow: "none",
     tone: "dark",
   },
+  {
+    id: "sign.lift",
+    title: "SERVICE LIFT",
+    sub: "OUT OF SERVICE · DIAL 7-700",
+    arrow: "none",
+    tone: "dark",
+  },
 ];
 
 /** Diegetic micro-copy; used on posters, terminals, notices. */

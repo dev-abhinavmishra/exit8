@@ -154,6 +154,13 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   app.sim. Trap: e2e archive spec had "0 OF 31 FILED" hardcoded — now
   regex-matched; specs CANNOT import src/game/anomalies (Node can't
   resolve Babylon deep subpaths — extensionless builders 404 in node).
+- Lift lobby at z=49.5 east wall (junction): `lift.lobby` TransformNode,
+  `lift.door.-1`/`lift.door.1` leaves, `lift.panel`, `lift.panel.lamp`
+  all registered — anchors for a future `lift.arrives`/`door.ajar` def.
+  Materials trap: mats.steel/mats.door are metallic — with the weak env
+  reflection they render near-black as door leaves; wallPanel on a box
+  reads as pale steel doors framed by the dark rubber `lift.reveal`.
+  Sign spec `sign.lift` added to SIGNS (required or wallSign throws).
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
