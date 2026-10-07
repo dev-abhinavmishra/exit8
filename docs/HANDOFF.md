@@ -203,6 +203,22 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - `clock.missing` (**52**): hides the whole `clock` root via
   `registry.get("clock.face").parent` (root itself is unregistered —
   face+rim+pin+hands all die together).
+- `bin.wanders` (**53**), `bench.moved` (**55**): plain position drifts
+  on registered nodes. Fixture `WALL_X = 1.74` (NOT the corridor
+  xHalf=1.8 — baseline bin.x=1.5, bench.south.x=-1.29; bench.south has
+  no collider so it slides freely).
+- `notice.amends` (**54**): drawSign with a cloned spec — the
+  `sign.notice.board` DynamicTexture is shared; redraw in place and
+  restore the original spec on cleanup.
+- `airlock.breach` (**56**): `al.${side}.cap` had to be registered
+  explicitly (kit.box does NOT auto-register — only bench/wallSign/
+  hangingSign/slidingDoor/troffer/clock do). Cap colliders are NOT in
+  the registry — find them via `world.colliders.find(c => c.name ===
+"al.north.capCol")`. Throat boxes get `checkCollisions = true`
+  directly; `ctx.player.position` (not getPosition).
+- Probe timing learned: after teleport-commit, `anomaly()` still reads
+  the PREVIOUS loop until JUDGE_DELAY (0.55 sim-s — many real seconds
+  at e2e ~2fps) elapses. Poll `loop() >= 2` before sampling.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 

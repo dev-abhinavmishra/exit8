@@ -56,6 +56,10 @@ import { shaftGlow } from "./shaftGlow";
 import { watcherFollows } from "./watcherFollows";
 import { postersMirror } from "./postersMirror";
 import { clockMissing } from "./clockMissing";
+import { binWanders } from "./binWanders";
+import { noticeAmends } from "./noticeAmends";
+import { benchMoved } from "./benchMoved";
+import { airlockBreach } from "./airlockBreach";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -110,4 +114,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   watcherFollows,
   postersMirror,
   clockMissing,
+  binWanders,
+  noticeAmends,
+  benchMoved,
+  airlockBreach,
 ];

@@ -142,8 +142,21 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     same paper, same order, every word backwards. Subtle. (slice)
 13. ★ `clock.missing` — the master clock is simply gone: face, rim,
     hands, all of it. Moderate. (slice)
+14. ★ `bin.wanders` — the service bin at the south end sits a stride
+    into the walkway, a metre off its wall berth. Moderate. (slice)
+15. ★ `notice.amends` — the NOTICE board above the north inner door now
+    reads "INSPECTIONS SUSPENDED UNTIL FURTHER NOTICE". Same paper,
+    same type — only the bulletin changed. Subtle. (slice)
+16. ★ `bench.moved` — the mid-corridor bench has been dragged nearly a
+    metre into the left walkway. Moderate. (slice)
+17. ★ `airlock.breach` — the steel cap sealing the north end is gone;
+    where a blank wall closed the loop, an unlit concrete throat runs
+    three metres past the survey line and stops dead. One distant point
+    of light. Only visible from inside the north airlock looking back —
+    the groan fires when you step across the missing threshold.
+    Unmistakable. (slice)
 
-Slice count: **52 implemented** — past the 24 target. New hooks:
+Slice count: **56 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

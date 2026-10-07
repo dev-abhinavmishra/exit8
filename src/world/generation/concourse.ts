@@ -132,6 +132,7 @@ function buildAirlock(
   const endZ = side === "north" ? z0 : z1;
   const cap = kit.box(`al.${side}.cap`, w, h, 0.12, mats.steel, scene, al);
   cap.position = new Vector3(0, h / 2, endZ);
+  registry.register(`al.${side}.cap`, cap);
   colliders.push(kit.collider(`al.${side}.capCol`, w, h, 0.12, cap.position.clone(), scene, al));
 
   // commit stripe on the floor at the commit plane
