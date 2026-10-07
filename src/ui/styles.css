@@ -1,0 +1,405 @@
+/* NIGHT AUDIT UI — municipal terminal language: dark panels, amber
+   wayfinding, monospace micro-labels, restrained motion. */
+
+:root {
+  --bg: #10141a;
+  --panel: rgba(16, 20, 26, 0.92);
+  --edge: #3a3d40;
+  --fg: #c9c6bc;
+  --dim: #8f8a80;
+  --amber: #e8a33d;
+  --cyan: #4fa8b8;
+  --ok: #7fd4a0;
+  --bad: #d86a5a;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.na-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  font-family: var(--mono);
+  color: var(--fg);
+  z-index: 10;
+}
+
+.na-root * {
+  box-sizing: border-box;
+}
+
+/* ── fade veil (airlock cycle + transitions) ─────────────────── */
+.na-veil {
+  position: absolute;
+  inset: 0;
+  background: #05070a;
+  opacity: 0;
+  transition: opacity 420ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.na-veil.on {
+  opacity: 1;
+}
+.na-veil .label {
+  color: var(--dim);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* ── screen chrome ───────────────────────────────────────────── */
+.na-screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 7, 10, 0.55);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+.na-screen.on {
+  display: flex;
+}
+
+.na-panel {
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  min-width: 420px;
+  max-width: 560px;
+  max-height: 82vh;
+  overflow: auto;
+  padding: 0;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+}
+
+.na-panel header {
+  padding: 18px 24px 12px;
+  border-bottom: 1px solid var(--edge);
+}
+.na-panel header .kicker {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--amber);
+  text-transform: uppercase;
+}
+.na-panel header h1 {
+  margin: 6px 0 0;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--fg);
+}
+.na-panel .body {
+  padding: 18px 24px 24px;
+}
+
+.na-brief {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--dim);
+  margin: 0 0 18px;
+  white-space: pre-line;
+}
+.na-brief strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.na-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid var(--edge);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 13px 16px;
+  margin: 8px 0;
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    background 120ms ease,
+    color 120ms ease;
+}
+.na-btn:hover,
+.na-btn:focus-visible {
+  border-color: var(--amber);
+  color: var(--amber);
+  outline: none;
+  background: rgba(232, 163, 61, 0.06);
+}
+.na-btn.primary {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+.na-btn.danger:hover,
+.na-btn.danger:focus-visible {
+  border-color: var(--bad);
+  color: var(--bad);
+}
+.na-btn .sub {
+  display: block;
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.12em;
+  margin-top: 3px;
+  text-transform: none;
+}
+
+.na-note {
+  font-size: 11px;
+  color: var(--dim);
+  margin-top: 14px;
+  line-height: 1.6;
+}
+.na-note.warn {
+  color: var(--bad);
+}
+
+/* ── settings ────────────────────────────────────────────────── */
+.na-field {
+  margin: 14px 0;
+}
+.na-field label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 6px;
+}
+.na-field label .val {
+  color: var(--amber);
+}
+.na-field input[type="range"] {
+  width: 100%;
+  accent-color: var(--amber);
+  height: 22px;
+  background: transparent;
+}
+.na-field .seg {
+  display: flex;
+  gap: 6px;
+}
+.na-field .seg button {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--edge);
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 4px;
+  cursor: pointer;
+}
+.na-field .seg button.on {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+.na-field input[type="checkbox"] {
+  accent-color: var(--amber);
+  width: 16px;
+  height: 16px;
+}
+.na-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--fg);
+  margin: 10px 0;
+  cursor: pointer;
+}
+.na-check span {
+  letter-spacing: 0.08em;
+}
+
+.na-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--edge);
+}
+.na-tabs button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 12px 6px;
+  cursor: pointer;
+}
+.na-tabs button.on {
+  color: var(--amber);
+  border-bottom-color: var(--amber);
+}
+
+/* ── HUD ─────────────────────────────────────────────────────── */
+.na-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: none;
+}
+.na-hud.on {
+  display: block;
+}
+.na-hud .reticle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin: -2px;
+  border-radius: 50%;
+  background: rgba(201, 198, 188, 0.5);
+}
+.na-hud .stability {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--dim);
+  text-align: right;
+}
+.na-hud .stability b {
+  display: block;
+  color: var(--fg);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.na-hud .stability .bar {
+  width: 120px;
+  height: 2px;
+  background: var(--edge);
+  margin-top: 5px;
+}
+.na-hud .stability .bar i {
+  display: block;
+  height: 100%;
+  background: var(--amber);
+  transition: width 300ms ease;
+}
+.na-hud .loop-tag {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--dim);
+}
+.na-hud .commit-hint {
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  background: rgba(16, 20, 26, 0.7);
+  padding: 8px 18px;
+  border: 1px solid var(--edge);
+}
+.na-hud .commit-hint.contrast {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+/* ── captions ────────────────────────────────────────────────── */
+.na-captions {
+  position: absolute;
+  bottom: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+}
+.na-caption {
+  background: rgba(5, 7, 10, 0.78);
+  color: var(--fg);
+  font-size: 13px;
+  padding: 5px 14px;
+  border-left: 2px solid var(--amber);
+  letter-spacing: 0.06em;
+}
+.na-caption .dir {
+  color: var(--cyan);
+  margin-right: 8px;
+}
+
+/* ── results stamp ───────────────────────────────────────────── */
+.na-stamp {
+  font-size: 34px;
+  letter-spacing: 0.3em;
+  padding: 10px 22px;
+  border: 3px solid;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+.na-stamp.ok {
+  color: var(--ok);
+  border-color: var(--ok);
+}
+.na-stamp.bad {
+  color: var(--bad);
+  border-color: var(--bad);
+}
+
+.na-stats {
+  width: 100%;
+  margin: 8px 0 16px;
+  border-collapse: collapse;
+}
+.na-stats td {
+  font-size: 12px;
+  padding: 7px 4px;
+  border-bottom: 1px solid var(--edge);
+  color: var(--dim);
+}
+.na-stats td:last-child {
+  text-align: right;
+  color: var(--fg);
+}
+
+/* ── debug overlay ───────────────────────────────────────────── */
+.na-debug {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  font-size: 10px;
+  line-height: 1.7;
+  color: #7fd4a0;
+  background: rgba(5, 7, 10, 0.8);
+  border: 1px solid #2a4432;
+  padding: 8px 12px;
+  white-space: pre;
+  display: none;
+  pointer-events: none;
+}
+.na-debug.on {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .na-panel {
+    min-width: 0;
+    width: 92vw;
+  }
+}
