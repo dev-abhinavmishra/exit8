@@ -134,8 +134,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
    (slice)
 10. ★ `shaft.glow` — one troffer panel goes dark while the light shaft
     it poured keeps hanging under it. Subtle. (slice)
+11. ★ `watcher.follows` — a figure stands in the north airlock behind
+    you at loop start; it gains ~1.4 m/s only while unobserved (soft
+    dragging steps), freezes under gaze, yields like watcher.far if
+    you retreat past it inside the corridor. Unmistakable. (slice)
 
-Slice count: **49 implemented** — past the 24 target. New hooks:
+Slice count: **50 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

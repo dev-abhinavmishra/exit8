@@ -191,6 +191,12 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   `shafts: TransformNode[]`; lightOut/lightDelay/lightFlicker toggle
   them with the lamps. shaft.glow dims one panel via
   `shaftNode.name.slice(6)` → troffer name.
+- `watcher.follows` (**50**): figure STARTs INSIDE the north airlock
+  (z=-3.4) behind spawn (player re-enters at z=-2.4 facing +z — the
+  corridor loops south→north). Vanish check requires figZ>0.8 so it
+  doesn't insta-despawn while still in the airlock. Facing check reads
+  ctx.player.camera.rotation.y (no player.view() — that's the debug
+  handle's); forward = (sin yaw, cos yaw).
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
