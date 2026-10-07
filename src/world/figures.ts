@@ -17,6 +17,7 @@
 import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 import { CreateCylinder } from "@babylonjs/core/Meshes/Builders/cylinderBuilder";
 import { CreateSphere } from "@babylonjs/core/Meshes/Builders/sphereBuilder";
+import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
@@ -129,6 +130,22 @@ function faceTexture(name: string, scene: Scene): DynamicTexture {
   c.moveTo(88, 100);
   c.quadraticCurveTo(86, 114, 82, 122);
   c.stroke();
+  t.update();
+  return t;
+}
+
+// soft radial contact shadow — grounds the figure on the terrazzo
+// instead of letting feet float on a lit slab
+function blobTexture(name: string, scene: Scene): DynamicTexture {
+  const t = new DynamicTexture(name, { width: 128, height: 128 }, scene, true);
+  t.hasAlpha = true;
+  const c = t.getContext();
+  const g = c.createRadialGradient(64, 64, 6, 64, 64, 62);
+  g.addColorStop(0, "rgba(0,0,0,0.5)");
+  g.addColorStop(0.7, "rgba(0,0,0,0.26)");
+  g.addColorStop(1, "rgba(0,0,0,0)");
+  c.fillStyle = g;
+  c.fillRect(0, 0, 128, 128);
   t.update();
   return t;
 }
@@ -281,6 +298,20 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
     face.position = new Vector3(0, 0.17, 0.112);
     face.parent = headPivot;
   }
+
+  // contact shadow — rides the root so it follows patrols and freezes
+  // with watchers; the stride bob lifts it at most 3 cm, invisible
+  const shadowMat = new StandardMaterial(`${name}.blobshadow`, scene);
+  shadowMat.diffuseTexture = blobTexture(`${name}.blobshadow.tex`, scene);
+  shadowMat.useAlphaFromDiffuseTexture = true;
+  shadowMat.disableLighting = true;
+  shadowMat.alphaMode = 2;
+  shadowMat.backFaceCulling = false;
+  const blob = CreatePlane(`${name}.blobshadow`, { width: 0.75, height: 0.55 }, scene);
+  blob.material = shadowMat;
+  blob.rotation.x = -Math.PI / 2;
+  blob.position = new Vector3(0, 0.012, 0);
+  blob.parent = g;
 
   return { root: g, headPivot, hips, arms, headMesh };
 }
