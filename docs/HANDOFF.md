@@ -10,24 +10,27 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller
   (collision via `camera.cameraDirection` + `collisionCoordinator` import),
   Loop 7 concourse (procedural), commit thresholds, stability index,
-  **14 anomalies** (was 3) registered via `anomalies/index.ts`
-  (`ALL_ANOMALIES` — register there, not in app.ts), procedural audio
-  (seeded `audio.synth`/`audio.ambient` streams), start/pause/settings/
-  results, v1 saves, vitest + playwright suites, Vercel-ready `vercel.json`.
-- Catalog now (14/24): clock.reverse, doorway.extra, footsteps.extra,
-  light.out, light.flicker, sign.flip, poster.missing, slat.missing,
-  door.ajar, watcher.far, cctv.gaze, air.haze, terminal.notice,
-  machine.rattle. New baseline props they hang on: zone lights registered
-  as `light.zone.<name>`, service door recess (right wall z≈15.5:
-  `service.door.leaf`), vent grilles (`vent.grille.0-2`), CCTV lens glint
-  (`cctv.N.lens`), baseboards. See docs/ANOMALY_CATALOG.md ★ marks.
-- E2E-verified live: 6-case direction probe, wall clamps ±1.4, commit
-  judging ±16/+12, SECURED@100 + LOST@0, per-anomaly forced screenshots
-  (?anomaly=<id>), zero console errors. 13/13 e2e green on catalog build.
+  **30 anomalies** (was 3 — 24 target passed) registered via
+  `anomalies/index.ts` (`ALL_ANOMALIES` — register there, not in app.ts),
+  procedural audio (seeded `audio.synth`/`audio.ambient` streams),
+  start/pause/settings/results, v1 saves, vitest + playwright suites,
+  Vercel-ready `vercel.json`.
+- **Chapters are live** (b3d517f): `1 + floor(correct/2)` cap 3, HUD shows
+  CH I/II/III. Tiering: ch1 = quiet 17 (signs/posters/props/stills), ch2 =
+  motion + watchers (sways, spins, breathes, groans, watcher.far,
+  counter.worker, cctv.gaze), ch3 = building-lying (light.out,
+  machine.silence, temp.drift, air.haze, announce.spatial). Rates
+  0.5/0.55/0.6, stability gain 12/10/9 → a clean win is 6 loops.
+- Baseline props anomalies hang on: `light.zone.<name>` point lights,
+  service door recess (right z≈15.5), vent grilles, CCTV `cctv.N.lens`,
+  baseboards, `floor`, posters `poster.0-2`. See ANOMALY_CATALOG.md.
+- E2E-verified live: direction probe, wall clamps, commit judging,
+  SECURED@100 + LOST@0, per-anomaly forced screenshots (?anomaly=<id>),
+  chapter ladder (2 correct → CH II). 13/13 e2e green (~5m — SECURED
+  spec now needs 6 loops).
 - Next up per the attached brief: M2 visual benchmark (Blender kit /
-  baked lighting / KTX2) or M3 systems (chapters, evidence, practice +
-  daily seed modes, catalog, validator, gamepad, mobile). Keep expanding
-  the anomaly count toward 24 — new anomalies are data + hooks, not refactors.
+  baked lighting / KTX2) or rest of M3 (evidence/archive UI, practice +
+  daily seed modes, catalog validator, gamepad, mobile).
 
 ## Conventions this repo already follows
 
@@ -56,11 +59,17 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   the tier — tier overrides belong inside it.
 - Anomaly gotchas: lights aren't meshes — `registry.register` accepts
   `as unknown as AbstractMesh` casts; sign copy lives in a shared
-  DynamicTexture (`drawSign(tex, spec)` rewrites in place, `excludes`
-  tag groups keep anomalies from stacking); meshes cloned via
+  DynamicTexture (`drawSign`/`drawPoster`/`drawClockFace` rewrite in
+  place, `excludes` tag groups keep anomalies from stacking);
   `g.dispose(false, true)` cleanup kills children too — snapshot every
   field you mutate and restore it in `cleanup()`; zone troffer swaps are
-  `materials.trofferLit ↔ trofferDim` on the zone's `troffers` list.
+  `materials.trofferLit ↔ trofferDim`; **Babylon CreatePlane front face
+  is −z**: a wall plane on x<0 needs `rotation.y = −π/2` to face the
+  room (+π/2 turns it into the wall → backface-culled, invisible —
+  posters shipped invisible for 3 commits before catching this);
+  texture-only materials in dark zones need `emissiveTexture` bound,
+  not just flat `emissiveColor`. `__nightaudit.meshInfo(name)` dumps
+  pos/rot/visibility for probes.
 
 ## User-context notes (from prior sessions)
 
