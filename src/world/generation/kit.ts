@@ -240,7 +240,9 @@ export function fireCabinet(
   parent: TransformNode,
   registry: WorldRegistry,
 ): AbstractMesh {
-  const body = box("fireCabinet", 0.5, 0.65, 0.18, mats.cabinetRed, scene, parent);
+  // surface-mount cabinet: 0.18 deep off the wall, 0.5 wide along it —
+  // corridor-facing front (was a protruding column pre-fix)
+  const body = box("fireCabinet", 0.18, 0.65, 0.5, mats.cabinetRed, scene, parent);
   registry.register("fireCabinet", body);
   return body;
 }

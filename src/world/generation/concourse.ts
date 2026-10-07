@@ -897,6 +897,16 @@ export function buildConcourse(
     pipe.position = new Vector3(-C.xHalf + 0.1, C.height - 0.4 - i * 0.12, 47);
     registry.register(`junction.pipe.${i}`, pipe);
   }
+  // vertical risers dropping the ceiling run into the machine bay +
+  // one full-height stack past the bank — junction.pipe.* merges
+  for (let i = 0; i < 2; i++) {
+    const riser = kit.box(`junction.pipe.r${i}`, 0.06, 0.62, 0.06, mats.steel, scene, root);
+    riser.position = new Vector3(-C.xHalf + 0.1, 2.2, 46.6 + i * 0.5);
+  }
+  const stack = kit.box("junction.pipe.stack", 0.09, 2.7, 0.09, mats.steel, scene, root);
+  stack.position = new Vector3(-C.xHalf + 0.12, 1.35, 44.3);
+  const stackBase = kit.box("junction.pipe.stackbase", 0.16, 0.3, 0.16, mats.rubber, scene, root);
+  stackBase.position = new Vector3(-C.xHalf + 0.12, 0.15, 44.3);
   const machine = kit.box("junction.machine", 0.8, 1.9, 1.2, mats.steel, scene, root);
   machine.position = new Vector3(-C.xHalf + 0.45, 0.95, 47.5);
   registry.register("junction.machine", machine);
@@ -904,6 +914,31 @@ export function buildConcourse(
   const machineLamp = kit.box("junction.machine.lamp", 0.06, 0.06, 0.06, mats.trofferLit, scene, root);
   machineLamp.position = new Vector3(-C.xHalf + 0.86, 1.7, 47.2);
   registry.register("junction.machine.lamp", machineLamp);
+  // machine face detail — gauge dial, vent slats, access seam (children
+  // of the cabinet so they ride any anomaly that moves it)
+  const gauge = CreateCylinder(
+    "junction.machine.gauge",
+    { height: 0.03, diameter: 0.16, tessellation: 14 },
+    scene,
+  );
+  gauge.material = mats.rubber;
+  gauge.parent = machine;
+  gauge.rotation.z = Math.PI / 2;
+  gauge.position = new Vector3(0.41, 0.55, -0.2);
+  const gaugeFace = CreateCylinder(
+    "junction.machine.dial",
+    { height: 0.035, diameter: 0.12, tessellation: 14 },
+    scene,
+  );
+  gaugeFace.material = mats.trofferLit;
+  gaugeFace.parent = machine;
+  gaugeFace.rotation.z = Math.PI / 2;
+  gaugeFace.position = new Vector3(0.41, 0.55, -0.2);
+  for (let i = 0; i < 4; i++) {
+    const vent = kit.box(`junction.machine.vent.${i}`, 0.02, 0.03, 0.7, mats.rubber, scene);
+    vent.parent = machine;
+    vent.position = new Vector3(0.41, -0.45 - i * 0.08, 0);
+  }
 
   // ─── doorway.extra: hidden lit room behind right wall at z≈37 ────
   // Disabled in baseline; the anomaly enables it. Its doorway opening

@@ -96,6 +96,12 @@ function faceTexture(name: string, scene: Scene): DynamicTexture {
     c.quadraticCurveTo(cx, 57, cx + 12, 61);
     c.stroke();
   }
+  // brim shadow — the service cap throws a soft band over the brow
+  const shade = c.createLinearGradient(0, 26, 0, 66);
+  shade.addColorStop(0, "rgba(20,14,12,0.55)");
+  shade.addColorStop(1, "rgba(20,14,12,0)");
+  c.fillStyle = shade;
+  c.fillRect(0, 26, 128, 40);
   // nose — ridge shadow + nostril hint
   c.strokeStyle = "#4d3a32";
   c.lineWidth = 3;
@@ -161,14 +167,17 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
 
   // materials — inspector palette unless overridden
   const coat = new StandardMaterial(`${name}.coat`, scene);
-  coat.diffuseColor = sil ? new Color3(0.02, 0.02, 0.03) : new Color3(0.1, 0.11, 0.13);
-  coat.specularColor = new Color3(0.02, 0.02, 0.02);
+  // darker slate — under direct troffers 0.1 still read as pale mannequin
+  coat.diffuseColor = sil ? new Color3(0.02, 0.02, 0.03) : new Color3(0.05, 0.055, 0.07);
+  coat.specularColor = new Color3(0.015, 0.015, 0.015);
+  coat.specularPower = 128;
   const skin = new StandardMaterial(`${name}.skin`, scene);
   skin.diffuseColor = sil ? coat.diffuseColor.clone() : new Color3(0.4, 0.34, 0.3);
   skin.specularColor = new Color3(0.03, 0.03, 0.03);
-  const hair = new StandardMaterial(`${name}.hair`, scene);
-  hair.diffuseColor = sil ? coat.diffuseColor.clone() : new Color3(0.09, 0.07, 0.06);
-  hair.specularColor = new Color3(0.02, 0.02, 0.02);
+  const card = new StandardMaterial(`${name}.card`, scene);
+  card.diffuseColor = new Color3(0.8, 0.79, 0.74);
+  card.emissiveColor = new Color3(0.18, 0.18, 0.16);
+  card.specularColor = new Color3(0.04, 0.04, 0.04);
   const shoeMat = new StandardMaterial(`${name}.shoe`, scene);
   shoeMat.diffuseColor = sil ? coat.diffuseColor.clone() : new Color3(0.05, 0.05, 0.06);
   shoeMat.specularColor = new Color3(0.06, 0.06, 0.06);
@@ -200,6 +209,8 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
     box(`${name}.stripe`, 0.45, 0.09, 0.26, band, scene, g, 0, 1.28, 0);
     // collar + lapels — the coat closes up the front
     box(`${name}.collar`, 0.3, 0.07, 0.24, use(coat), scene, g, 0, 1.585, 0.01);
+    // chest ID card — a white clip badge on the left breast
+    box(`${name}.idcard`, 0.05, 0.07, 0.008, card, scene, g, 0.11, 1.37, 0.128);
     const lapel = new StandardMaterial(`${name}.lapel`, scene);
     lapel.diffuseColor = new Color3(0.05, 0.055, 0.065);
     // thin angled panels catch a white specular streak under the
@@ -239,19 +250,35 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
   headMesh.position = new Vector3(0, 0.19, 0);
   headMesh.parent = headPivot;
   if (!sil) {
-    // hair cap — slightly proud of the skull
-    const cap = CreateSphere(`${name}.hair`, { diameter: 0.235, segments: 10 }, scene);
-    cap.material = use(hair);
-    cap.scaling = new Vector3(1.02, 0.72, 1.0);
-    cap.position = new Vector3(0, 0.27, -0.015);
-    cap.parent = headPivot;
+    // peaked service cap — crown, band, and brim over the skull
+    const crown = CreateCylinder(
+      `${name}.cap.crown`,
+      { height: 0.09, diameter: 0.21, tessellation: 14 },
+      scene,
+    );
+    crown.material = use(coat);
+    crown.position = new Vector3(0, 0.315, 0);
+    crown.parent = headPivot;
+    const band = CreateCylinder(
+      `${name}.cap.band`,
+      { height: 0.028, diameter: 0.205, tessellation: 14 },
+      scene,
+    );
+    band.material = use(shoeMat);
+    band.position = new Vector3(0, 0.275, 0);
+    band.parent = headPivot;
+    box(`${name}.cap.brim`, 0.15, 0.015, 0.13, use(shoeMat), scene, headPivot, 0, 0.272, 0.13);
     // face plate — drawn texture on a thin slab against the skull front
     const faceMat = new StandardMaterial(`${name}.face`, scene);
     faceMat.diffuseTexture = faceTexture(`${name}.face.tex`, scene);
-    faceMat.specularColor = new Color3(0.02, 0.02, 0.02);
+    // near-zero specular — the plate was catching a white glint blob
+    faceMat.specularColor = new Color3(0.004, 0.004, 0.004);
+    faceMat.specularPower = 128;
     const face = CreateBox(`${name}.faceplate`, { width: 0.17, height: 0.22, depth: 0.008 }, scene);
     face.material = faceMat;
-    face.position = new Vector3(0, 0.17, 0.1);
+    // proud of the skull's front tip (z≈0.1056) — it poked through as a
+    // pale diamond artifact before
+    face.position = new Vector3(0, 0.17, 0.112);
     face.parent = headPivot;
   }
 

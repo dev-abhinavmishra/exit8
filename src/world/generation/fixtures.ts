@@ -8,6 +8,7 @@
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateCylinder } from "@babylonjs/core/Meshes/Builders/cylinderBuilder";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import type { Scene } from "@babylonjs/core/scene";
@@ -27,10 +28,34 @@ export function buildFixtures(
   // ---- fire point dressing: the existing fireCabinet (right z≈18)
   //      gains its dark-glass window + FIRE POINT label so it reads
   //      as the institutional fitting it's meant to be ----
-  const glass = kit.plane("fire.point.glass", 0.36, 0.5, mats.darkGlass, scene, root);
-  glass.position = new Vector3(WALL_X - 0.11, 1.4, 18);
+  const cab = registry.mesh("fireCabinet");
+  // glass pane is a child of the cabinet — prop.displaced mirrors the
+  // whole unit (cabinet, window, and contents) to the opposite wall
+  const glass = kit.plane("fire.point.glass", 0.36, 0.5, mats.darkGlass, scene);
+  glass.parent = cab;
+  glass.position = new Vector3(-0.095, 0, 0); // just proud of the front face
   glass.rotation.y = Math.PI / 2;
   registry.register("fire.point.glass", glass);
+  // hose reel + valve wheel + nozzle behind the dark glass — readable as
+  // dim shapes at 45% alpha, fully visible under fire.open
+  const reel = CreateCylinder("fire.cab.reel", { height: 0.05, diameter: 0.3, tessellation: 16 }, scene);
+  reel.material = mats.rubber;
+  reel.parent = cab;
+  reel.rotation.z = Math.PI / 2;
+  reel.position = new Vector3(0, 0.06, -0.02);
+  const reelHub = CreateCylinder("fire.cab.hub", { height: 0.07, diameter: 0.09, tessellation: 12 }, scene);
+  reelHub.material = mats.steel;
+  reelHub.parent = cab;
+  reelHub.rotation.z = Math.PI / 2;
+  reelHub.position = new Vector3(-0.01, 0.06, -0.02);
+  const valve = CreateCylinder("fire.cab.valve", { height: 0.03, diameter: 0.1, tessellation: 12 }, scene);
+  valve.material = mats.steel;
+  valve.parent = cab;
+  valve.rotation.z = Math.PI / 2;
+  valve.position = new Vector3(-0.06, -0.2, 0.08);
+  const nozzle = kit.box("fire.cab.nozzle", 0.05, 0.16, 0.05, mats.rubber, scene);
+  nozzle.parent = cab;
+  nozzle.position = new Vector3(-0.02, -0.18, -0.12);
   const label = kit.wallSign("sign.fire.point", mats, scene, root, registry, 0.5, 0.16);
   label.position = new Vector3(WALL_X - 0.06, 1.95, 18);
   label.rotation.y = Math.PI / 2;
@@ -199,13 +224,31 @@ function buildLiftLobby(scene: Scene, root: TransformNode, mats: MaterialSet, re
   const sill = kit.box("lift.sill", 0.11, 0.04, 1.56, mats.steel, scene, node);
   sill.position = new Vector3(WALL_X - 0.055, 0.02, 0);
 
-  // call panel: dead lamp + button
+  // call panel: dead lamp + a single worn button on a beveled face
   const panel = kit.box("lift.panel", 0.05, 0.22, 0.12, mats.steel, scene, node);
   panel.position = new Vector3(WALL_X - 0.05, 1.35, 0.95);
   const lamp = kit.box("lift.panel.lamp", 0.03, 0.05, 0.05, mats.trofferDim, scene, node);
   lamp.position = new Vector3(WALL_X - 0.08, 1.42, 0.95);
   registry.register("lift.panel.lamp", lamp);
   registry.register("lift.panel", panel);
+  // button + key slot — children of the panel, ride lift.* anomalies
+  const btn = CreateCylinder("lift.panel.btn", { height: 0.02, diameter: 0.045, tessellation: 12 }, scene);
+  btn.material = mats.rubber;
+  btn.parent = panel;
+  btn.rotation.z = Math.PI / 2;
+  btn.position = new Vector3(-0.026, -0.03, 0);
+  const btnRing = CreateCylinder(
+    "lift.panel.ring",
+    { height: 0.012, diameter: 0.06, tessellation: 12 },
+    scene,
+  );
+  btnRing.material = mats.steel;
+  btnRing.parent = panel;
+  btnRing.rotation.z = Math.PI / 2;
+  btnRing.position = new Vector3(-0.022, -0.03, 0);
+  const keySlot = kit.box("lift.panel.key", 0.012, 0.05, 0.015, mats.rubber, scene);
+  keySlot.parent = panel;
+  keySlot.position = new Vector3(-0.026, 0.06, 0);
 
   // OUT OF SERVICE plaque above the doors
   const plaque = kit.wallSign("sign.lift", mats, scene, node, registry, 0.9, 0.3);
