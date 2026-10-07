@@ -2,10 +2,13 @@
  * Grounded first-person controller. Custom input (pointer lock with drag
  * fallback + touch), accel/decel, capsule collision via Babylon's built-in
  * ellipsoid-vs-mesh path, procedural head motion tied to real speed.
+ * The collision coordinator is a lazy side-effect import — without it the
+ * first cameraDirection move throws and kills the render loop.
  * The sim owns position; the camera renders it.
  */
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import "@babylonjs/core/Collisions/collisionCoordinator";
 import type { Scene } from "@babylonjs/core/scene";
 import type { Settings } from "../accessibility/settings";
 import { LAYOUT } from "../world/generation/concourse";
@@ -178,7 +181,7 @@ export class PlayerController {
     const input = this.enabled ? this.inputVector() : { forward: 0, strafe: 0 };
     const fwd = new Vector3(Math.sin(this.yaw), 0, Math.cos(this.yaw));
     const right = new Vector3(fwd.z, 0, -fwd.x);
-    const wish = fwd.scale(input.forward).add(right.scale(-input.strafe));
+    const wish = fwd.scale(input.forward).add(right.scale(input.strafe));
     const wishLen = wish.length();
     if (wishLen > 1) wish.scaleInPlace(1 / wishLen);
 
@@ -188,8 +191,9 @@ export class PlayerController {
     this.velocity.z += (target.z - this.velocity.z) * Math.min(1, rate * dt);
 
     const delta = this.velocity.scale(dt);
-    this.camera.cameraDirection.set(0, 0, 0);
-    this.camera.position.addInPlace(delta);
+    // cameraDirection is the collision-checked movement path (world-space,
+    // consumed once per render); position writes bypass the collider entirely.
+    this.camera.cameraDirection.addInPlace(delta);
 
     // collision ellipsoid rides camera height; keep eye level fixed here
     const bob = this.headBob(dt);

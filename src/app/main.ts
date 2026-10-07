@@ -29,9 +29,16 @@ async function main(): Promise<void> {
     setTimeout(() => splash?.remove(), 600);
   } catch (e) {
     if (splash) {
-      splash.innerHTML = `<div class="mark">BOOT FAULT</div><div class="sub" style="text-transform:none;letter-spacing:0.04em">${String(
-        e instanceof Error ? e.message : e,
-      )}</div>`;
+      // textContent only — the message can contain attacker-controlled input
+      // (e.g. a crafted ?anomaly= value) and must never reach innerHTML.
+      const mark = splash.querySelector(".mark");
+      const sub = splash.querySelector(".sub");
+      if (mark) mark.textContent = "BOOT FAULT";
+      if (sub) {
+        sub.textContent = String(e instanceof Error ? e.message : e);
+        (sub as HTMLElement).style.textTransform = "none";
+        (sub as HTMLElement).style.letterSpacing = "0.04em";
+      }
       splash.classList.remove("done");
     }
     throw e;

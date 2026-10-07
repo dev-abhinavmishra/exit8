@@ -133,6 +133,7 @@ export class SaveStore {
   resetAll(): void {
     try {
       this.storage.removeItem(SAVE_KEY);
+      this.storage.removeItem(`${SAVE_KEY}.corrupt`);
     } catch {
       /* ignore */
     }

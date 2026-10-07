@@ -5,9 +5,7 @@ const BASE = "/?e2e=1&engine=webgl";
 async function ready(page: Page, extra = "") {
   await page.goto(`${BASE}&seed=e2e-boot${extra}`);
   await page.waitForFunction(
-    () =>
-      (window as unknown as { __nightaudit?: { ready?: boolean } }).__nightaudit
-        ?.ready === true,
+    () => (window as unknown as { __nightaudit?: { ready?: boolean } }).__nightaudit?.ready === true,
     null,
     { timeout: 60_000 },
   );
@@ -31,9 +29,7 @@ test.describe("boot", () => {
     await ready(page);
     await page.getByRole("button", { name: /BEGIN SHIFT/ }).click();
     await page.waitForFunction(
-      () =>
-        (window as unknown as { __nightaudit: { state(): string } }).__nightaudit.state() ===
-        "playing",
+      () => (window as unknown as { __nightaudit: { state(): string } }).__nightaudit.state() === "playing",
     );
     await expect(page.locator(".na-hud.on")).toBeVisible();
     const loop = await page.evaluate(() =>
@@ -46,9 +42,7 @@ test.describe("boot", () => {
     await ready(page);
     await page.getByRole("button", { name: /BEGIN SHIFT/ }).click();
     const z0 = await page.evaluate(
-      () =>
-        (window as unknown as { __nightaudit: { pos(): { z: number } } }).__nightaudit.pos()
-          .z,
+      () => (window as unknown as { __nightaudit: { pos(): { z: number } } }).__nightaudit.pos().z,
     );
     await page.evaluate(() =>
       (window as unknown as { __nightaudit: { key(c: string, d: boolean): void } }).__nightaudit.key(
@@ -57,10 +51,7 @@ test.describe("boot", () => {
       ),
     );
     await page.waitForFunction(
-      (z) =>
-        (window as unknown as { __nightaudit: { pos(): { z: number } } }).__nightaudit.pos()
-          .z >
-        z + 1.5,
+      (z) => (window as unknown as { __nightaudit: { pos(): { z: number } } }).__nightaudit.pos().z > z + 1.5,
       z0,
       { timeout: 15_000 },
     );
@@ -77,16 +68,12 @@ test.describe("boot", () => {
     await page.getByRole("button", { name: /BEGIN SHIFT/ }).click();
     await page.keyboard.press("Escape");
     await page.waitForFunction(
-      () =>
-        (window as unknown as { __nightaudit: { state(): string } }).__nightaudit.state() ===
-        "paused",
+      () => (window as unknown as { __nightaudit: { state(): string } }).__nightaudit.state() === "paused",
     );
     await expect(page.locator("text=HOLD ON LOOP 7")).toBeVisible();
     await page.getByRole("button", { name: "RESUME" }).click();
     await page.waitForFunction(
-      () =>
-        (window as unknown as { __nightaudit: { state(): string } }).__nightaudit.state() ===
-        "playing",
+      () => (window as unknown as { __nightaudit: { state(): string } }).__nightaudit.state() === "playing",
     );
   });
 
@@ -112,17 +99,14 @@ test.describe("boot", () => {
     await page.locator(".seg button", { hasText: "low" }).first().click();
     await page.reload();
     await page.waitForFunction(
-      () =>
-        (window as unknown as { __nightaudit?: { ready?: boolean } }).__nightaudit
-          ?.ready === true,
+      () => (window as unknown as { __nightaudit?: { ready?: boolean } }).__nightaudit?.ready === true,
       null,
       { timeout: 60_000 },
     );
     const saved = await page.evaluate(() => {
       const raw = localStorage.getItem("nightaudit.save");
       return raw
-        ? (JSON.parse(raw) as { settings: { video: { quality: string } } }).settings.video
-            .quality
+        ? (JSON.parse(raw) as { settings: { video: { quality: string } } }).settings.video.quality
         : null;
     });
     expect(saved).toBe("low");

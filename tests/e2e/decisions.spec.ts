@@ -5,10 +5,8 @@ import { test, expect, type Page } from "@playwright/test";
 // small inline functions that reference the handle directly.
 const NA = "window.__nightaudit";
 
-const stability = (page: Page) =>
-  page.evaluate(`${NA}.stability()`) as Promise<number>;
-const anomaly = (page: Page) =>
-  page.evaluate(`${NA}.anomaly()`) as Promise<string | null>;
+const stability = (page: Page) => page.evaluate(`${NA}.stability()`) as Promise<number>;
+const anomaly = (page: Page) => page.evaluate(`${NA}.anomaly()`) as Promise<string | null>;
 
 async function boot(page: Page, params: string) {
   await page.goto(`/?e2e=1&engine=webgl&seed=e2e-decide${params}`);
@@ -24,33 +22,22 @@ test.describe("judgment", () => {
     await boot(page, "&anomaly=none");
     const s0 = await stability(page);
     await page.evaluate(`${NA}.teleport(0, 0, 58)`);
-    await page.waitForFunction(
-      `${NA}.state() === "playing" && ${NA}.pos().z < 0`,
-      null,
-      { timeout: 20_000 },
-    );
+    await page.waitForFunction(`${NA}.state() === "playing" && ${NA}.pos().z < 0`, null, { timeout: 20_000 });
     expect(await stability(page)).toBeGreaterThan(s0);
   });
 
-  test("anomalous route + retreat (north) raises stability and logs discovery", async ({
-    page,
-  }) => {
+  test("anomalous route + retreat (north) raises stability and logs discovery", async ({ page }) => {
     await boot(page, "&anomaly=clock.reverse");
     expect(await anomaly(page)).toBe("clock.reverse");
     const s0 = await stability(page);
     await page.evaluate(`${NA}.teleport(0, 0, -2.95)`);
-    await page.waitForFunction(
-      `${NA}.state() === "playing" && ${NA}.pos().z > -2.6`,
-      null,
-      { timeout: 20_000 },
-    );
+    await page.waitForFunction(`${NA}.state() === "playing" && ${NA}.pos().z > -2.6`, null, {
+      timeout: 20_000,
+    });
     expect(await stability(page)).toBeGreaterThan(s0);
     const discovered = await page.evaluate(() => {
       const raw = localStorage.getItem("nightaudit.save");
-      return raw
-        ? (JSON.parse(raw) as { progression: { discovered: string[] } }).progression
-            .discovered
-        : [];
+      return raw ? (JSON.parse(raw) as { progression: { discovered: string[] } }).progression.discovered : [];
     });
     expect(discovered).toContain("clock.reverse");
   });
@@ -59,11 +46,7 @@ test.describe("judgment", () => {
     await boot(page, "&anomaly=doorway.extra");
     const s0 = await stability(page);
     await page.evaluate(`${NA}.teleport(0, 0, 58)`);
-    await page.waitForFunction(
-      `${NA}.state() === "playing" && ${NA}.pos().z < 0`,
-      null,
-      { timeout: 20_000 },
-    );
+    await page.waitForFunction(`${NA}.state() === "playing" && ${NA}.pos().z < 0`, null, { timeout: 20_000 });
     expect(await stability(page)).toBeLessThan(s0);
   });
 
@@ -71,11 +54,9 @@ test.describe("judgment", () => {
     await boot(page, "&anomaly=none");
     const s0 = await stability(page);
     await page.evaluate(`${NA}.teleport(0, 0, -2.95)`);
-    await page.waitForFunction(
-      `${NA}.state() === "playing" && ${NA}.pos().z > -2.6`,
-      null,
-      { timeout: 20_000 },
-    );
+    await page.waitForFunction(`${NA}.state() === "playing" && ${NA}.pos().z > -2.6`, null, {
+      timeout: 20_000,
+    });
     expect(await stability(page)).toBeLessThan(s0);
   });
 
@@ -90,11 +71,9 @@ test.describe("judgment", () => {
         .then(() => true)
         .catch(() => false);
       if (done) break;
-      await page.waitForFunction(
-        `${NA}.state() === "playing" && ${NA}.pos().z < 0`,
-        null,
-        { timeout: 12_000 },
-      );
+      await page.waitForFunction(`${NA}.state() === "playing" && ${NA}.pos().z < 0`, null, {
+        timeout: 12_000,
+      });
     }
     await expect(page.locator("text=ROUTE SECURED")).toBeVisible({ timeout: 15_000 });
   });

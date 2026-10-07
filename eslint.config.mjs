@@ -8,7 +8,7 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   prettier,
   {
-    ignores: ["dist/", "node_modules/", "test-results/", "playwright-report/", "coverage/"],
+    ignores: ["dist/", "node_modules/", "test-results/", "playwright-report/", "coverage/", "public/"],
   },
   {
     files: ["**/*.{ts,mts,mjs}"],

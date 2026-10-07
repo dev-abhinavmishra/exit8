@@ -111,9 +111,7 @@ export class GameUi {
       this.btn(COPY.startScreen.begin, "new inspection run", () => this.cb.onStart(), "primary"),
     );
     body.appendChild(
-      this.btn("SETTINGS", "video · controls · audio · accessibility", () =>
-        this.openSettingsFrom("start"),
-      ),
+      this.btn("SETTINGS", "video · controls · audio · accessibility", () => this.openSettingsFrom("start")),
     );
     const note = document.createElement("p");
     note.className = "na-note";
@@ -134,9 +132,7 @@ export class GameUi {
   private buildPause(): HTMLDivElement {
     const { panel, body } = this.panel("INSPECTION PAUSED", "HOLD ON LOOP 7");
     body.appendChild(this.btn("RESUME", "back to the concourse", () => this.cb.onResume(), "primary"));
-    body.appendChild(
-      this.btn("SETTINGS", null, () => this.openSettingsFrom("pause")),
-    );
+    body.appendChild(this.btn("SETTINGS", null, () => this.openSettingsFrom("pause")));
     body.appendChild(
       this.btn("ABANDON SHIFT", "end this run — progress is kept", () => this.cb.onRestart(), "danger"),
     );
@@ -427,7 +423,7 @@ export class GameUi {
   }
 
   private buildResults(): HTMLDivElement {
-    const { panel, body } = this.panel("SHIFT REPORT", "—");
+    const { panel, body } = this.panel(FICTION_SUB(), "SHIFT REPORT");
     body.id = "na-results-body";
     return this.screen("results", panel);
   }

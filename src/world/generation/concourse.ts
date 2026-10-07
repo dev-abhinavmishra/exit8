@@ -371,10 +371,10 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
   registry.register("clinic.shutter", shutter);
   colliders.push(kit.collider("clinic.shutter.col", 0.1, 1.4, 4.4, shutter.position.clone(), scene, root));
 
-  // master clock LEFT z=24 at gallery midpoint
+  // master clock LEFT z=24, mounted above the records cabinets (top y=2.2)
   kit.clock(mats, scene, root, registry);
   const clockRoot = registry.get("clock.face").parent as TransformNode;
-  clockRoot.position = new Vector3(-C.xHalf + 0.1, 2.2, 24);
+  clockRoot.position = new Vector3(-C.xHalf + 0.1, 2.52, 24);
   clockRoot.rotation.y = Math.PI / 2;
 
   // CCTV at four corners
@@ -486,7 +486,7 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
       face: registry.mesh("clock.face"),
     },
     anchors: {
-      clock: new Vector3(-C.xHalf + 0.1, 2.2, 24),
+      clock: new Vector3(-C.xHalf + 0.1, 2.52, 24),
       junctionMachine: new Vector3(-C.xHalf + 0.45, 1.4, 47.5),
       vents: [new Vector3(-1.7, 2.9, 8), new Vector3(1.7, 2.9, 30), new Vector3(-1.7, 2.9, 50)],
     },

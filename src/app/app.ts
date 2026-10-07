@@ -12,6 +12,7 @@ import { RngStream } from "../game/state/rng";
 import { PlayerController } from "../player/controller";
 import { AudioSystem } from "../audio/audioSystem";
 import { SaveStore } from "../game/state/save";
+import type { Settings } from "../accessibility/settings";
 import { AnomalyRegistry } from "../game/anomalies/registry";
 import { LoopManager, type LoopState } from "../game/loop/loopManager";
 import { Stepper } from "../engine/stepper";
@@ -100,7 +101,7 @@ export class App {
     const created = await createRenderer(this.canvas, settings.video.engine, this.caps);
     this.engine = created.engine;
     this.rendererKind = created.kind;
-    this.tier = TIERS[resolveTier(settings.video.quality, this.caps)];
+    this.tier = this.resolveTierFor(settings);
     this.engine.setHardwareScalingLevel(this.tier.hardwareScaling / settings.video.renderScale);
 
     this.scene = new Scene(this.engine);
@@ -112,7 +113,7 @@ export class App {
 
     this.world = buildConcourse(this.scene, this.runSeed);
     this.player = new PlayerController(this.scene, this.canvas, settings);
-    this.audio = new AudioSystem(settings);
+    this.audio = new AudioSystem(settings, new RngStream("audio.synth", this.runSeed));
     this.rig = buildInspectionRig(this.scene, this.player.camera, this.tier);
     this.applyQuality();
 
@@ -175,6 +176,8 @@ export class App {
     );
     if (this.params.anomaly) this.loop.forceAnomaly(this.params.anomaly);
     this.loop.start();
+    // the player's own cadence — footsteps.extra layers a second one on top
+    this.player.onFootstep((pos, intensity) => this.audio.playFootstep(pos, intensity));
     this.ui.setStability(this.loop.stability.current);
     this.loop.stability.onChange((v) => this.ui?.setStability(v));
 
@@ -198,7 +201,11 @@ export class App {
     const ambientRng = new RngStream("audio.ambient", this.runSeed);
     const unlock = () => {
       this.audio.unlock();
-      this.audio.startAmbience(this.world.anchors.vents, this.world.anchors.junctionMachine, ambientRng);
+      this.audio.startAmbience(this.world.anchors.vents, this.world.anchors.junctionMachine, ambientRng, {
+        noRumble: this.params.e2e,
+      });
+      // a first gesture arriving while paused must not un-mute the scene
+      if (this.state === "paused") this.audio.suspend();
       this.audio.onCaption((e) => this.ui?.caption(e.text, e.direction));
       document.removeEventListener("pointerdown", unlock);
       document.removeEventListener("keydown", unlock);
@@ -279,12 +286,22 @@ export class App {
     this.player.camera.fov = (s.video.fov * Math.PI) / 180;
     this.applyQuality();
     this.audio.applyVolumes();
+    this.loop?.setAnomalyContext({
+      reducedEffects: s.accessibility.reducedMotion,
+      visualCues: s.accessibility.visualSoundCues,
+    });
     this.save.persist();
+  }
+
+  /** e2e pins the cheapest tier for deterministic software-GL runs. */
+  private resolveTierFor(s: Settings): TierSpec {
+    if (this.params.e2e && this.params.quality === "auto") return TIERS.low;
+    return TIERS[resolveTier(s.video.quality, this.caps)];
   }
 
   private applyQuality(): void {
     const s = this.save.get().settings;
-    this.tier = TIERS[resolveTier(s.video.quality, this.caps)];
+    this.tier = this.resolveTierFor(s);
     this.rig?.setTier(this.tier);
     if (this.engine) {
       this.engine.setHardwareScalingLevel(this.tier.hardwareScaling / s.video.renderScale);

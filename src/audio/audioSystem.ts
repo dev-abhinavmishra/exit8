@@ -27,7 +27,10 @@ export class AudioSystem {
   private rumbleTimer = 0;
   private ambienceStarted = false;
 
-  constructor(private readonly settings: Settings) {}
+  constructor(
+    private readonly settings: Settings,
+    private readonly rng: RngStream,
+  ) {}
 
   /** Must be called from a user gesture. Idempotent. */
   unlock(): void {
@@ -52,7 +55,7 @@ export class AudioSystem {
     const ch = this.noiseBuffer.getChannelData(0);
     let last = 0;
     for (let i = 0; i < len; i++) {
-      const white = Math.random() * 2 - 1;
+      const white = this.rng.draw() * 2 - 1;
       last = (last + 0.02 * white) / 1.02; // brownish
       ch[i] = last * 3.2;
     }
@@ -132,10 +135,10 @@ export class AudioSystem {
     const t0 = this.ctx.currentTime;
     const src = this.ctx.createBufferSource();
     src.buffer = this.noiseBuffer;
-    src.playbackRate.value = 0.9 + Math.random() * 0.3;
+    src.playbackRate.value = 0.9 + this.rng.draw() * 0.3;
     const bp = this.ctx.createBiquadFilter();
     bp.type = "bandpass";
-    bp.frequency.value = 320 + Math.random() * 120;
+    bp.frequency.value = 320 + this.rng.draw() * 120;
     bp.Q.value = 1.1;
     const g = this.ctx.createGain();
     const sp = this.spatialParams(pos);
@@ -150,12 +153,18 @@ export class AudioSystem {
       .connect(g)
       .connect(pan)
       .connect(this.bus(anomalous ? "anomaly" : "footsteps"));
-    src.start(t0, Math.random() * 1.4, 0.2);
+    src.start(t0, this.rng.draw() * 1.4, 0.2);
     if (anomalous) this.caption("footsteps — not yours", pos);
   }
 
-  /** Ambient bed: HVAC noise + fluorescent hum + rare structure rumbles. */
-  startAmbience(ventPositions: Vector3[], machinePos: Vector3, rng: RngStream): void {
+  /** Ambient bed: HVAC noise + fluorescent hum + rare structure rumbles.
+   *  noRumble (e2e) keeps the bed fully deterministic across runs. */
+  startAmbience(
+    ventPositions: Vector3[],
+    machinePos: Vector3,
+    rng: RngStream,
+    opts: { noRumble?: boolean } = {},
+  ): void {
     if (!this.ctx || !this.noiseBuffer || this.ambienceStarted) return;
     this.ambienceStarted = true;
     const ctx = this.ctx;
@@ -219,17 +228,27 @@ export class AudioSystem {
     };
 
     // rare distant rumble — seeded so runs are reproducible
-    const scheduleRumble = () => {
-      this.rumbleTimer = rng.range(45, 120);
-    };
-    scheduleRumble();
-    this.rumbleScheduler = (dt: number) => {
-      this.rumbleTimer -= dt;
-      if (this.rumbleTimer <= 0) {
-        this.playRumble(rng);
-        scheduleRumble();
-      }
-    };
+    if (!opts.noRumble) {
+      const scheduleRumble = () => {
+        this.rumbleTimer = rng.range(45, 120);
+      };
+      scheduleRumble();
+      this.rumbleScheduler = (dt: number) => {
+        this.rumbleTimer -= dt;
+        if (this.rumbleTimer <= 0) {
+          this.playRumble(rng);
+          scheduleRumble();
+        }
+      };
+    }
+  }
+
+  /** Suspend/resume the whole graph (pause menu, tab hidden). */
+  suspend(): void {
+    if (this.ctx && this.ctx.state === "running") void this.ctx.suspend();
+  }
+  resume(): void {
+    if (this.ctx && this.ctx.state === "suspended") void this.ctx.resume();
   }
 
   private ventUpdaters: (() => void)[] = [];
@@ -382,13 +401,5 @@ export class AudioSystem {
     g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.05);
     src.connect(hp).connect(g).connect(this.bus("ui"));
     src.start(t0, 0.5, 0.08);
-  }
-
-  suspend(): void {
-    void this.ctx?.suspend();
-  }
-
-  resume(): void {
-    void this.ctx?.resume();
   }
 }

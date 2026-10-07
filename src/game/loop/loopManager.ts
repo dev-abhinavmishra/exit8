@@ -93,6 +93,12 @@ export class LoopManager {
     this.emit();
   }
 
+  /** Settings toggles that anomalies read — updated mid-run by App. */
+  setAnomalyContext(flags: { reducedEffects: boolean; visualCues: boolean }): void {
+    this.anomalyCtx.reducedEffects = flags.reducedEffects;
+    this.anomalyCtx.visualCues = flags.visualCues;
+  }
+
   get state(): LoopState {
     return {
       loopIndex: this.loopIndex,

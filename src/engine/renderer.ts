@@ -21,10 +21,10 @@ export interface CreatedEngine {
 // by tools/assets/copy-webgpu-assets.mjs (predev/prebuild). Keeps WebGPU
 // shader translation fully offline (the "no network calls" contract).
 const base = import.meta.env.BASE_URL || "/";
-const glslangJs = `${base}webgpu/glslang.js`;
-const glslangWasm = `${base}webgpu/glslang.wasm`;
-const twgslJs = `${base}webgpu/twgsl.js`;
-const twgslWasm = `${base}webgpu/twgsl.wasm`;
+const glslangJs = `${base}webgpu/glslang/glslang.js`;
+const glslangWasm = `${base}webgpu/glslang/glslang.wasm`;
+const twgslJs = `${base}webgpu/twgsl/twgsl.js`;
+const twgslWasm = `${base}webgpu/twgsl/twgsl.wasm`;
 
 const WEBGPU_INIT_TIMEOUT_MS = 8000;
 

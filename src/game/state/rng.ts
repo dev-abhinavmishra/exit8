@@ -34,6 +34,7 @@ export type StreamName =
   | "loop.dressing" // per-loop harmless baseline variance (poster nudges etc.)
   | "anomaly.runtime" // intra-anomaly variance (flicker patterns, cadence)
   | "audio.ambient" // rumble scheduling, ambience texture
+  | "audio.synth" // synthesized-source jitter (footsteps, noise buffer)
   | "ui.feedback"
   | "e2e.stub";
 
@@ -42,6 +43,7 @@ const STREAM_SALTS: Record<StreamName, number> = {
   "loop.dressing": 0x85ebca6b,
   "anomaly.runtime": 0xc2b2ae35,
   "audio.ambient": 0x27d4eb2f,
+  "audio.synth": 0x5bf03635,
   "ui.feedback": 0x165667b1,
   "e2e.stub": 0xd3a2646c,
 };
