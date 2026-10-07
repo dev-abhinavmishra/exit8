@@ -60,6 +60,9 @@ import { binWanders } from "./binWanders";
 import { noticeAmends } from "./noticeAmends";
 import { benchMoved } from "./benchMoved";
 import { airlockBreach } from "./airlockBreach";
+import { tracksWet } from "./tracksWet";
+import { chalkMarks } from "./chalkMarks";
+import { figureSouth } from "./figureSouth";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -118,4 +121,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   noticeAmends,
   benchMoved,
   airlockBreach,
+  tracksWet,
+  chalkMarks,
+  figureSouth,
 ];

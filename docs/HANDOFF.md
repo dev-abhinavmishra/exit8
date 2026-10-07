@@ -219,6 +219,16 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - Probe timing learned: after teleport-commit, `anomaly()` still reads
   the PREVIOUS loop until JUDGE_DELAY (0.55 sim-s — many real seconds
   at e2e ~2fps) elapses. Poll `loop() >= 2` before sampling.
+- `tracks.wet` (**57**): CreatePlane prints, `rotation.x=π/2` lays them
+  flat facing +y (same as scatter papers), `rotation.z` sets march yaw.
+  New StandardMaterial inside activate() — must dispose on cleanup.
+- `chalk.marks` (**59**): the WEST wall z 12–32 is the records cabinet
+  bank — it protrudes to x=-1.55, so decals at the panel face (-1.74)
+  are INSIDE it. Wall decals belong on z 33–55 (requires
+  wall.left.2/3). Thin CreateBoxes, not planes (no facing question).
+- `figure.south` (**58**): figure inside the south airlock at z=58.7;
+  the inner doors part at player z>53.8 revealing it centered through
+  the gap. Rubber boxes + a small head-tilt (rotation.z) sell it.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 

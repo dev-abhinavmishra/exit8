@@ -155,8 +155,18 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     of light. Only visible from inside the north airlock looking back —
     the groan fires when you step across the missing threshold.
     Unmistakable. (slice)
+18. ★ `tracks.wet` — footprints print themselves onto the terrazzo one
+    step at a time, marching down-corridor with nobody making them;
+    each lands with a wet squelch. Unmistakable. (slice)
+19. ★ `chalk.marks` — tally gates scratched into the west panels past
+    the records bank, counting something nobody will name. Subtle.
+    (slice)
+20. ★ `figure.south` — when the south doors part for the commit
+    approach, a dark figure stands dead centre in the airlock beyond
+    the threshold — the judgment resolves before you reach it.
+    Unmistakable. (slice)
 
-Slice count: **56 implemented** — past the 24 target. New hooks:
+Slice count: **59 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
