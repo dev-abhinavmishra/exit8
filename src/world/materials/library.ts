@@ -32,26 +32,36 @@ export interface MaterialSet {
 export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   const wallPanel = new PBRMaterial("mat.wallPanel", scene);
   wallPanel.albedoTexture = tex.wallPanel;
+  // repeat so the baked seam lines read as a panel module — unscaled it
+  // stretches across 20m walls and every seam blurs away
+  tex.wallPanel.uScale = 8;
+  tex.wallPanel.vScale = 1;
   wallPanel.roughness = 0.55;
   wallPanel.metallic = 0.02;
   wallPanel.environmentIntensity = 0.5;
 
   const terrazzo = new PBRMaterial("mat.terrazzo", scene);
   terrazzo.albedoTexture = tex.terrazzo;
-  tex.terrazzo.uScale = 3;
-  tex.terrazzo.vScale = 3;
+  // brass divider strips every ~1m across / ~2.75m along the corridor —
+  // a bay rhythm that keeps the 55m floor from reading as one slab
+  tex.terrazzo.uScale = 4;
+  tex.terrazzo.vScale = 20;
   terrazzo.roughness = 0.38;
   terrazzo.metallic = 0.05;
   terrazzo.environmentIntensity = 0.7;
 
   const ceiling = new PBRMaterial("mat.ceiling", scene);
   ceiling.albedoTexture = tex.ceilingTile;
+  tex.ceilingTile.uScale = 6;
+  tex.ceilingTile.vScale = 60;
   ceiling.roughness = 0.9;
   ceiling.metallic = 0;
   ceiling.environmentIntensity = 0.3;
 
   const steel = new PBRMaterial("mat.steel", scene);
   steel.albedoTexture = tex.steel;
+  tex.steel.uScale = 2;
+  tex.steel.vScale = 2;
   steel.roughness = 0.34;
   steel.metallic = 0.88;
   steel.environmentIntensity = 1.0;
@@ -64,6 +74,8 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
 
   const concrete = new PBRMaterial("mat.concrete", scene);
   concrete.albedoTexture = tex.concrete;
+  tex.concrete.uScale = 4;
+  tex.concrete.vScale = 4;
   concrete.roughness = 0.85;
   concrete.metallic = 0;
   concrete.environmentIntensity = 0.3;

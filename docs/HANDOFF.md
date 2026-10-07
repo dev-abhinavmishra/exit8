@@ -82,6 +82,9 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   pixel-identical so drift != divergence. Never registered; evidence
   notes never sit on bare floor so papers can't be mistaken for them.
   ConcourseWorld gains `scatter`; rebaseline() calls refresh.
+- **Texture density pass** (this commit): uScale/vScale on wallPanel
+  (u8), terrazzo (u4/v20 brass grid), ceilingTile, steel, concrete —
+  surfaces were unstretched across 20m runs so every baked seam blurred.
 - Next up per the attached brief: rest of M3 (mobile controls, full
   accessibility pass), M2 (baked lighting / KTX2), M4 (second ending
   groundwork already in: 'investigative' via dossier).
