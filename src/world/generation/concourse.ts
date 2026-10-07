@@ -103,8 +103,9 @@ export interface ConcourseWorld {
 let _hazardBandMat: StandardMaterial | null = null;
 function hazardBandMaterial(scene: Scene): StandardMaterial {
   if (_hazardBandMat) return _hazardBandMat;
-  const tex = new DynamicTexture("tex.hazardBand", { width: 256, height: 32 }, scene, true);
+  const tex = new DynamicTexture("tex.hazardBand", { width: 512, height: 64 }, scene, true);
   const c = tex.getContext() as unknown as CanvasRenderingContext2D;
+  c.scale(2, 2);
   c.fillStyle = "#c79b27";
   c.fillRect(0, 0, 256, 32);
   c.fillStyle = "#1b1c1e";

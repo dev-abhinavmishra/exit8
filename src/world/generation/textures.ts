@@ -49,7 +49,7 @@ export interface TextureSet {
 
 /** Speckled terrazzo with brass divider strips. Tiles every 1.2 m. */
 function makeTerrazzo(scene: Scene, rng: RngStream): DynamicTexture {
-  const s = 512;
+  const s = 1024;
   const t = tex("tex.terrazzo", s, s, scene);
   const c = ctx(t);
   c.fillStyle = "#8f8a80";
@@ -57,7 +57,7 @@ function makeTerrazzo(scene: Scene, rng: RngStream): DynamicTexture {
   for (let i = 0; i < 5200; i++) {
     const x = rng.draw() * s;
     const y = rng.draw() * s;
-    const r = rng.draw() * 2.2 + 0.4;
+    const r = rng.draw() * 4.4 + 0.8;
     const v = rng.draw();
     c.fillStyle =
       v < 0.55
@@ -71,17 +71,17 @@ function makeTerrazzo(scene: Scene, rng: RngStream): DynamicTexture {
   }
   // brass divider strips on quarter grid
   c.fillStyle = "#7d6f45";
-  c.fillRect(0, 0, s, 5);
-  c.fillRect(0, 0, 5, s);
+  c.fillRect(0, 0, s, 10);
+  c.fillRect(0, 0, 10, s);
   c.fillStyle = "rgba(255,240,200,0.25)";
-  c.fillRect(5, 0, 2, s);
-  c.fillRect(0, 5, s, 2);
+  c.fillRect(10, 0, 4, s);
+  c.fillRect(0, 10, s, 4);
   return finish(t);
 }
 
 /** Off-white wall panel: micro grain + vertical seams + baseboard scuff. */
 function makeWallPanel(scene: Scene, rng: RngStream): DynamicTexture {
-  const s = 256;
+  const s = 512;
   const t = tex("tex.wallPanel", s, s, scene);
   const c = ctx(t);
   c.fillStyle = "#e7e4dc";
@@ -93,8 +93,8 @@ function makeWallPanel(scene: Scene, rng: RngStream): DynamicTexture {
   }
   // panel seam lines (1200mm module rendered on 1 panel = center seam)
   c.fillStyle = "rgba(120,118,110,0.55)";
-  c.fillRect(0, 0, 2, s);
-  c.fillRect(s - 2, 0, 2, s);
+  c.fillRect(0, 0, 4, s);
+  c.fillRect(s - 4, 0, 4, s);
   // scuff band near the bottom
   const grad = c.createLinearGradient(0, s * 0.82, 0, s);
   grad.addColorStop(0, "rgba(90,88,80,0)");
@@ -105,7 +105,7 @@ function makeWallPanel(scene: Scene, rng: RngStream): DynamicTexture {
 }
 
 function makeCeilingTile(scene: Scene, rng: RngStream): DynamicTexture {
-  const s = 256;
+  const s = 512;
   const t = tex("tex.ceilingTile", s, s, scene);
   const c = ctx(t);
   c.fillStyle = "#d8d5cd";
@@ -116,13 +116,13 @@ function makeCeilingTile(scene: Scene, rng: RngStream): DynamicTexture {
     c.fillRect(rng.draw() * s, rng.draw() * s, 1.5, 1.5);
   }
   c.strokeStyle = "rgba(100,98,92,0.7)";
-  c.lineWidth = 3;
+  c.lineWidth = 6;
   c.strokeRect(0, 0, s, s);
   return finish(t);
 }
 
 function makeSteel(scene: Scene, rng: RngStream): DynamicTexture {
-  const s = 256;
+  const s = 512;
   const t = tex("tex.steel", s, s, scene);
   const c = ctx(t);
   c.fillStyle = "#aeb2b5";
@@ -134,32 +134,32 @@ function makeSteel(scene: Scene, rng: RngStream): DynamicTexture {
   }
   for (let i = 0; i < 90; i++) {
     c.fillStyle = `rgba(60,62,66,${0.05 + rng.draw() * 0.08})`;
-    c.fillRect(rng.draw() * s, rng.draw() * s, rng.draw() * 30, 1);
+    c.fillRect(rng.draw() * s, rng.draw() * s, rng.draw() * 60, 2);
   }
   return finish(t);
 }
 
 /** Security shutter: horizontal slats. */
 function makeShutter(scene: Scene, rng: RngStream): DynamicTexture {
-  const s = 256;
+  const s = 512;
   const t = tex("tex.shutter", s, s, scene);
   const c = ctx(t);
   c.fillStyle = "#8e9296";
   c.fillRect(0, 0, s, s);
-  for (let y = 0; y < s; y += 16) {
+  for (let y = 0; y < s; y += 32) {
     c.fillStyle = "rgba(40,42,46,0.85)";
-    c.fillRect(0, y, s, 3);
+    c.fillRect(0, y, s, 6);
     const g = 150 + rng.int(0, 24);
     c.fillStyle = `rgb(${g},${g + 3},${g + 6})`;
-    c.fillRect(0, y + 3, s, 13);
+    c.fillRect(0, y + 6, s, 26);
     c.fillStyle = "rgba(255,255,255,0.12)";
-    c.fillRect(0, y + 3, s, 2);
+    c.fillRect(0, y + 6, s, 4);
   }
   return finish(t);
 }
 
 function makeConcrete(scene: Scene, rng: RngStream): DynamicTexture {
-  const s = 256;
+  const s = 512;
   const t = tex("tex.concrete", s, s, scene);
   const c = ctx(t);
   c.fillStyle = "#7c7870";
@@ -167,13 +167,13 @@ function makeConcrete(scene: Scene, rng: RngStream): DynamicTexture {
   for (let i = 0; i < 2400; i++) {
     const g = 105 + rng.int(0, 45);
     c.fillStyle = `rgba(${g},${g - 2},${g - 6},0.4)`;
-    c.fillRect(rng.draw() * s, rng.draw() * s, 1 + rng.draw() * 2, 1 + rng.draw() * 2);
+    c.fillRect(rng.draw() * s, rng.draw() * s, 2 + rng.draw() * 4, 2 + rng.draw() * 4);
   }
   return finish(t);
 }
 
 function makeSmudge(scene: Scene, rng: RngStream): DynamicTexture {
-  const s = 256;
+  const s = 512;
   const t = tex("tex.smudge", s, s, scene);
   const c = ctx(t);
   c.fillStyle = "#808080";
@@ -181,7 +181,7 @@ function makeSmudge(scene: Scene, rng: RngStream): DynamicTexture {
   for (let i = 0; i < 140; i++) {
     const x = rng.draw() * s;
     const y = rng.draw() * s;
-    const r = 8 + rng.draw() * 40;
+    const r = 16 + rng.draw() * 80;
     const grad = c.createRadialGradient(x, y, 0, x, y, r);
     const v = 118 + rng.int(0, 24);
     grad.addColorStop(0, `rgba(${v},${v},${v},0.5)`);
@@ -244,6 +244,8 @@ export function drawPoster(t: DynamicTexture, d: PosterDef, mirror = false): voi
   const w = 256;
   const h = 384;
   const c = ctx(t);
+  const sz = t.getSize();
+  c.scale(sz.width / w, sz.height / h);
   c.fillStyle = d.bg;
   c.fillRect(0, 0, w, h);
   if (mirror) {
@@ -268,7 +270,7 @@ export function drawPoster(t: DynamicTexture, d: PosterDef, mirror = false): voi
 
 function makePosters(scene: Scene): DynamicTexture[] {
   return POSTER_DEFS.map((d, i) => {
-    const t = tex(`tex.poster.${i}`, 256, 384, scene);
+    const t = tex(`tex.poster.${i}`, 512, 768, scene);
     drawPoster(t, d);
     return finish(t);
   });
@@ -279,6 +281,8 @@ export function drawNote(t: DynamicTexture, d: { title: string; lines: string[] 
   const w = 256;
   const h = 352;
   const c = ctx(t);
+  const sz = t.getSize();
+  c.scale(sz.width / w, sz.height / h);
   c.fillStyle = "#d9d3c2";
   c.fillRect(0, 0, w, h);
   // typed-paper grain: a few faint horizontal rules
@@ -316,6 +320,8 @@ export function drawNote(t: DynamicTexture, d: { title: string; lines: string[] 
 export function drawClockFace(t: DynamicTexture, numerals?: number[]): void {
   const s = 256;
   const c = ctx(t);
+  const ts = t.getSize().width;
+  c.scale(ts / s, ts / s);
   c.clearRect(0, 0, s, s);
   c.fillStyle = "#eceae3";
   c.beginPath();
@@ -352,7 +358,7 @@ export function drawClockFace(t: DynamicTexture, numerals?: number[]): void {
 }
 
 function makeClockFace(scene: Scene): DynamicTexture {
-  const t = tex("tex.clockFace", 256, 256, scene);
+  const t = tex("tex.clockFace", 384, 384, scene);
   t.hasAlpha = true;
   drawClockFace(t);
   return finish(t);
@@ -400,6 +406,8 @@ export function drawSign(t: DynamicTexture, spec: SignSpec): void {
   const w = 512;
   const h = 160;
   const c = ctx(t);
+  const sz = t.getSize();
+  c.scale(sz.width / w, sz.height / h);
   const tones = {
     amber: { bg: "#23262c", fg: "#e8a33d", edge: "#e8a33d" },
     cyan: { bg: "#1e2a2c", fg: "#7fd4e0", edge: "#4fa8b8" },
@@ -425,17 +433,17 @@ export function drawSign(t: DynamicTexture, spec: SignSpec): void {
 }
 
 function makeSignTexture(spec: SignSpec, scene: Scene): DynamicTexture {
-  const t = tex(`tex.${spec.id}`, 512, 160, scene);
+  const t = tex(`tex.${spec.id}`, 768, 240, scene);
   drawSign(t, spec);
   return finish(t);
 }
 
 /** Live airlock terminal — rewritten per loop transition. */
 function makeTerminal(scene: Scene): DynamicTexture {
-  const t = tex("tex.terminal", 512, 256, scene);
+  const t = tex("tex.terminal", 768, 384, scene);
   const c = ctx(t);
   c.fillStyle = "#10141a";
-  c.fillRect(0, 0, 512, 256);
+  c.fillRect(0, 0, 768, 384);
   return finish(t);
 }
 
@@ -464,8 +472,9 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
 /** Tactile guide strip tile: dim amber channel with three raised bars
  * running along the walk direction. Tiles seamlessly in v. */
 function makeGuideStrip(scene: Scene): DynamicTexture {
-  const t = tex("tex.guideStrip", 128, 128, scene);
+  const t = tex("tex.guideStrip", 256, 256, scene);
   const c = ctx(t);
+  c.scale(2, 2);
   c.fillStyle = "#6b5d33";
   c.fillRect(0, 0, 128, 128);
   for (const u of [0.2, 0.5, 0.8]) {
@@ -519,6 +528,8 @@ export function drawTerminal(
   lines: { header: string; rows: { label: string; value: string; tone?: "ok" | "warn" | "bad" }[] },
 ): void {
   const c = ctx(t);
+  const sz = t.getSize();
+  c.scale(sz.width / 512, sz.height / 256);
   c.fillStyle = "#10141a";
   c.fillRect(0, 0, 512, 256);
   c.strokeStyle = "#3a3d40";

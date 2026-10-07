@@ -374,7 +374,7 @@ export class App {
     const mesh = CreatePlane(`evidence.${note.id}`, { width: 0.24, height: 0.33 }, this.scene);
     mesh.position.copyFrom(note.pos);
     mesh.rotation.copyFrom(note.rot);
-    const t = new DynamicTexture(`tex.${note.id}`, { width: 256, height: 352 }, this.scene, true);
+    const t = new DynamicTexture(`tex.${note.id}`, { width: 384, height: 528 }, this.scene, true);
     drawNote(t, { title: note.title, lines: note.lines });
     t.update();
     const mat = new StandardMaterial(`mat.${note.id}`, this.scene);

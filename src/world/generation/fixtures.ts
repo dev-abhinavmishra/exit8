@@ -84,10 +84,11 @@ function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, reg
 
   // ---- worn floor wayfinding: a painted route arrow, faded into the
   //      terrazzo at approach points ----
-  const arrowTex = new DynamicTexture("tex.floorArrow", { width: 128, height: 256 }, scene, true);
+  const arrowTex = new DynamicTexture("tex.floorArrow", { width: 256, height: 512 }, scene, true);
   arrowTex.hasAlpha = true;
   {
     const c = arrowTex.getContext() as unknown as CanvasRenderingContext2D;
+    c.scale(2, 2);
     c.clearRect(0, 0, 128, 256);
     c.fillStyle = "rgba(214,206,186,0.5)";
     c.font = "bold 110px Arial, sans-serif";
@@ -102,7 +103,7 @@ function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, reg
     c.fill();
     // wear: erase streaks so the paint reads ground-in
     c.globalCompositeOperation = "destination-out";
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 120; i++) {
       const y = Math.floor(Math.abs(Math.sin(i * 12.9898)) * 43758.5453) % 256;
       c.fillStyle = "rgba(0,0,0,0.35)";
       c.fillRect(0, y, 128, 2);

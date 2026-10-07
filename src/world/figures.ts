@@ -49,8 +49,9 @@ export interface FigureOpts {
 // against the front of the skull. Kept low-contrast — institutional
 // neutral, unsettling by restraint rather than by expression.
 function faceTexture(name: string, scene: Scene): DynamicTexture {
-  const t = new DynamicTexture(name, { width: 128, height: 160 }, scene, true);
+  const t = new DynamicTexture(name, { width: 256, height: 320 }, scene, true);
   const c = t.getContext();
+  (c as unknown as CanvasRenderingContext2D).scale(2, 2);
   // skin base — matches the head material, shading toward jaw
   const skin = c.createLinearGradient(0, 0, 0, 160);
   skin.addColorStop(0, "#8a6f5e");
