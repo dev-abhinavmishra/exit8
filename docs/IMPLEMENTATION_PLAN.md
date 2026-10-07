@@ -1,6 +1,8 @@
 # NIGHT AUDIT — Implementation Plan
 
-Status: Milestone 0 complete, Milestone 1 (vertical slice) implemented.
+Status: M0–M4 complete on PR #1 (89 anomalies — the full catalog); M5 in
+flight — static merge, benchmark route, a11y audit, cross-browser QA
+done; deploy pending.
 Last updated: session devin-d97050964c444f44940cef29c8bf3e9a (2026-10-07)
 
 ## Product
@@ -78,16 +80,25 @@ No React: the DOM layer is a thin settings/menu shell over the canvas.
   index + consequence model, 3 anomalies (clock, doorway, footsteps),
   procedural audio bed, start/pause/settings/results screens, versioned
   save, vitest + playwright suites, production build, Vercel config.
-- **M2 — Visual benchmark**: Blender-authored modular kit (or reproducible
-  Blender-Python generators), baked lightmaps, KTX2 textures, hero prop
-  high/low bake, benchmark route + capture.
-- **M3 — Systems complete**: all 3 chapters, evidence/archive, daily+custom
-  seeds, practice mode, anomaly catalog, full accessibility pass, gamepad,
-  anomaly validator, mobile controls.
-- **M4 — Content complete**: ≥24 anomalies across the 6 groups, two endings,
-  full audio mix, credits.
-- **M5 — Optimization & release**: Meshopt/KTX2 pipeline, LODs, streaming,
-  profiling vs budgets, cross-browser QA, deploy, final docs.
+- **M2 — Visual benchmark (done, procedural interpretation)**: the
+  Blender/KTX2 route never materialized (no authoring pipeline), so depth
+  came from the procedural kit — services/wear dressing, AO strips,
+  grime decals, dust, volumetric shafts, bay plates, route decals — plus
+  the high-tier post pipeline (bloom/grain/CA/vignette/tone mapping).
+  Benchmark route + capture shipped as `docs/BENCHMARK.md`.
+- **M3 — Systems complete (done)**: all 3 chapters, evidence/archive,
+  daily+custom seeds, practice mode, anomaly catalog, full accessibility
+  pass (`docs/ACCESSIBILITY.md`), gamepad, anomaly validator, mobile
+  controls.
+- **M4 — Content complete (done)**: 89 anomalies across the 6 groups —
+  far past the ≥24 target — three endings (secure/lost/dossier),
+  audio mix with anomaly-bus ducking, credits screen.
+- **M5 — Optimization & release (mostly done)**: static-mesh merge
+  (`src/world/merge.ts`, −22% draws), profiling vs budgets
+  (BENCHMARK.md), cross-browser QA (`XB=1` firefox/webkit smoke, 4/4
+  green), a11y + postfx e2e coverage. Meshopt/KTX2 N/A (no external
+  assets); LODs assessed — at ≤11k visible tris the binding constraint
+  is draw calls, which LOD can't reduce. Remaining: deploy.
 
 ## Task graph (M1 dependencies)
 
