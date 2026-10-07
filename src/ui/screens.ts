@@ -135,7 +135,8 @@ export class GameUi {
     const note = document.createElement("p");
     note.className = "na-note";
     note.id = "na-start-note";
-    note.textContent = "WebGPU preferred · WebGL 2 fallback · WASD to walk, mouse to look, Esc pauses.";
+    note.textContent =
+      "WebGPU preferred · WebGL 2 fallback · WASD to walk, mouse to look, Esc pauses. Gamepad & touch supported.";
     body.appendChild(note);
     return this.screen("start", panel);
   }

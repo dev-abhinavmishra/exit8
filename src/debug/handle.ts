@@ -20,6 +20,8 @@ export interface DebugHandle {
   setStability(v: number): void;
   /** look direction */
   look(yaw: number, pitch?: number): void;
+  /** current view angles */
+  view(): { yaw: number; pitch: number };
   /** synth keydown for e2e movement without pointer lock */
   key(code: string, down: boolean): void;
   fps(): number;
@@ -60,6 +62,10 @@ export function installDebugHandle(app: App): void {
       refs().player.teleport(refs().player.position.clone(), yaw);
       if (pitch !== undefined) refs().player.camera.rotation.x = pitch;
     },
+    view: () => ({
+      yaw: refs().player.camera.rotation.y,
+      pitch: refs().player.camera.rotation.x,
+    }),
     key: (code, down) => {
       const ev = new KeyboardEvent(down ? "keydown" : "keyup", { code, bubbles: true });
       window.dispatchEvent(ev);

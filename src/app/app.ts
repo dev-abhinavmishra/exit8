@@ -204,12 +204,23 @@ export class App {
     this.loop.start();
     // the player's own cadence — footsteps.extra layers a second one on top
     this.player.onFootstep((pos, intensity) => this.audio.playFootstep(pos, intensity));
+    // gamepad: A uses the focused interactable, start toggles pause
+    this.player.onPadButton(0, () => {
+      if (this.focused && this.state === "playing") this.focused.onUse();
+    });
+    this.player.onPadButton(9, () => {
+      if (this.state === "playing") this.pause();
+      else if (this.state === "paused") this.resume();
+    });
     this.ui.setStability(this.loop.stability.current);
     this.loop.stability.onChange((v) => this.ui?.setStability(v));
 
     this.stepper = new Stepper((dt) => this.sim(dt));
     this.engine.runRenderLoop(() => {
       const dt = this.engine.getDeltaTime() / 1000;
+      // pad buttons edge-fire every frame — the sim freezes while paused,
+      // and resume needs the same button that opened the pause screen
+      this.player.pollPadButtons();
       if (this.state === "playing") {
         this.stepper.advance(dt);
       } else if (this.state === "menu") {

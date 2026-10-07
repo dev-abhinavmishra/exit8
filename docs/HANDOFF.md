@@ -28,7 +28,15 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   SECURED@100 + LOST@0, per-anomaly forced screenshots (?anomaly=<id>),
   chapter ladder (2 correct → CH II). 13/13 e2e green (~5m — SECURED
   spec now needs 6 loops).
-- **Route archive live** (this commit): ROUTE ARCHIVE on the start
+- **Gamepad live** (this commit): `pollPadAxes` in the sim step
+  (left stick move, right stick look, quadratic deadzone, shares
+  sensitivity/invertY), `pollPadButtons` in the RENDER loop — buttons
+  must edge-fire while the sim is frozen in pause or resume can't
+  fire (the stuck-pause bug the e2e caught). A=focused interactable,
+  Start=pause toggle. `player.onPadButton(i, fn)` registers edges.
+  `view()` added to the debug handle (yaw/pitch getter; `look()` is
+  a setter). e2e stubs `navigator.getGamepads` via addInitScript.
+- **Route archive live** (bde5a73): ROUTE ARCHIVE on the start
   screen — stats table + DIVERGENCE REGISTER of all 31 defs sorted by
   chapter; discovered ids render name/chapter/category/detectability,
   unfound ones show redacted rows. `ui.setArchiveData(stats, ids)`

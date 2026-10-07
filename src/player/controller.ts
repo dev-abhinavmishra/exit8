@@ -43,6 +43,9 @@ export class PlayerController {
   private touchLookLast = { x: 0, y: 0 };
   private touchMoveId: number | null = null;
   private touchMoveStart = { x: 0, y: 0 };
+  private padButtonsPrev: boolean[] = [];
+  private padButtonListeners = new Map<number, (() => void)[]>();
+  private padMove: InputState | null = null;
   enabled = true;
 
   constructor(
@@ -168,16 +171,72 @@ export class PlayerController {
     return this.pointerLocked;
   }
 
+  /** Rising-edge gamepad button listener (0=A interact, 9=start). */
+  onPadButton(idx: number, fn: () => void): void {
+    const l = this.padButtonListeners.get(idx) ?? [];
+    l.push(fn);
+    this.padButtonListeners.set(idx, l);
+  }
+
+  /**
+   * Rising-edge button check — driven from the RENDER loop (not the fixed
+   * sim step) so pad buttons still fire while the sim is frozen in pause.
+   */
+  pollPadButtons(): void {
+    const pads = navigator.getGamepads?.() ?? [];
+    const gp = [...pads].find((p) => p !== null) ?? null;
+    if (!gp) {
+      this.padButtonsPrev = [];
+      return;
+    }
+    for (const [i, listeners] of this.padButtonListeners) {
+      if ((gp.buttons[i]?.pressed ?? false) && !this.padButtonsPrev[i]) {
+        for (const fn of listeners) fn();
+      }
+    }
+    this.padButtonsPrev = gp.buttons.map((b) => b.pressed);
+  }
+
+  /** Standard-mapping pad axes: left stick move, right stick look. Sim-step. */
+  private pollPadAxes(dt: number): void {
+    const pads = navigator.getGamepads?.() ?? [];
+    const gp = [...pads].find((p) => p !== null) ?? null;
+    if (!gp) {
+      this.padMove = null;
+      return;
+    }
+    const dz = (v: number) => (Math.abs(v) < 0.18 ? 0 : v * Math.abs(v)); // quadratic
+    // right-stick look — same sensitivity + invertY path as the mouse
+    const rx = dz(gp.axes[2] ?? 0);
+    const ry = dz(gp.axes[3] ?? 0);
+    if (this.enabled && (rx !== 0 || ry !== 0)) {
+      const rate = 2.6 * this.settings.controls.sensitivity;
+      this.yaw -= rx * rate * dt;
+      this.pitch -= ry * rate * dt * (this.settings.controls.invertY ? -1 : 1);
+      this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, this.pitch));
+    }
+    const lx = dz(gp.axes[0] ?? 0);
+    const ly = dz(gp.axes[1] ?? 0);
+    this.padMove = lx === 0 && ly === 0 ? null : { forward: -ly, strafe: lx };
+  }
+
   private inputVector(): InputState {
     const s = this.settings.controls;
-    const fwd = (this.keys.has(s.keyForward) ? 1 : 0) - (this.keys.has(s.keyBack) ? 1 : 0);
-    const strafe = (this.keys.has(s.keyRight) ? 1 : 0) - (this.keys.has(s.keyLeft) ? 1 : 0);
+    let fwd = (this.keys.has(s.keyForward) ? 1 : 0) - (this.keys.has(s.keyBack) ? 1 : 0);
+    let strafe = (this.keys.has(s.keyRight) ? 1 : 0) - (this.keys.has(s.keyLeft) ? 1 : 0);
+    if (this.padMove) {
+      fwd += this.padMove.forward;
+      strafe += this.padMove.strafe;
+    }
+    fwd = Math.max(-1, Math.min(1, fwd));
+    strafe = Math.max(-1, Math.min(1, strafe));
     if (this.touchMove) return this.touchMove;
     return { forward: fwd, strafe };
   }
 
   /** Fixed-step sim update. */
   update(dt: number): void {
+    this.pollPadAxes(dt);
     const input = this.enabled ? this.inputVector() : { forward: 0, strafe: 0 };
     const fwd = new Vector3(Math.sin(this.yaw), 0, Math.cos(this.yaw));
     const right = new Vector3(fwd.z, 0, -fwd.x);
