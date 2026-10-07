@@ -55,6 +55,9 @@ export interface LightZone {
   name: string;
   point: PointLight;
   troffers: AbstractMesh[];
+  /** corridor z extents this zone covers (for passage-tracking anomalies) */
+  z0: number;
+  z1: number;
   /** zone color target for lighting anomalies */
   baseDiffuse: Color3;
 }
@@ -313,7 +316,14 @@ export function buildConcourse(
     point.diffuse = new Color3(1.0, 0.93, 0.8);
     point.intensity = 6.5;
     point.range = (zd.z1 - zd.z0) * 0.9 + 8;
-    zones.push({ name: zd.name, point, troffers, baseDiffuse: point.diffuse.clone() });
+    zones.push({
+      name: zd.name,
+      point,
+      troffers,
+      z0: zd.z0,
+      z1: zd.z1,
+      baseDiffuse: point.diffuse.clone(),
+    });
     // lighting anomalies address zones by name through the registry
     registry.register(point.name, point as unknown as AbstractMesh);
   }

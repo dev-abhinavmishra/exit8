@@ -48,7 +48,8 @@ Target ≥ 24 across six groups. ★ = implemented.
 
 1. ★ `temp.drift` — gallery zone migrates ~3500 K → ~6500 K over ~20 s.
    Subtle. (slice)
-2. `light.delay` — lights respond late to player passage (~1.5 s lag).
+2. ★ `light.delay` — lights respond late to player passage (~1.5 s lag);
+   the zone you just left drops dark after you cross. Moderate. (slice)
 3. ★ `shadow.sourceless` — a soft shadow blob sweeps the clinic floor,
    no caster. Moderate. (slice)
 4. ★ `light.avoids` — one gallery troffer sits dark in a lit run. Subtle.
@@ -113,7 +114,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 7. ★ `terminal.glitch` — both airlock terminals briefly insist a
    divergence was filed and stability reads 0. Subtle. (slice)
 
-Slice count: **39 implemented** — past the 24 target. New hooks:
+Slice count: **40 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

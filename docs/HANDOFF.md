@@ -10,7 +10,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller
   (collision via `camera.cameraDirection` + `collisionCoordinator` import),
   Loop 7 concourse (procedural), commit thresholds, stability index,
-  **39 anomalies** (was 3 — 24 target passed) registered via
+  **40 anomalies** (was 3 — 24 target passed) registered via
   `anomalies/index.ts` (`ALL_ANOMALIES` — register there, not in app.ts),
   procedural audio (seeded `audio.synth`/`audio.ambient` streams),
   start/pause/settings/results, v1 saves, vitest + playwright suites,
@@ -37,7 +37,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   `view()` added to the debug handle (yaw/pitch getter; `look()` is
   a setter). e2e stubs `navigator.getGamepads` via addInitScript.
 - **Route archive live** (bde5a73): ROUTE ARCHIVE on the start
-  screen — stats table + DIVERGENCE REGISTER of all 39 defs sorted by
+  screen — stats table + DIVERGENCE REGISTER of all 40 defs sorted by
   chapter; discovered ids render name/chapter/category/detectability,
   unfound ones show redacted rows. `ui.setArchiveData(stats, ids)`
   populates from save at boot. NOTE: seeded saves in e2e must carry
@@ -131,6 +131,10 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   spot in `last`; the anomaly re-places one at that exact spot even if
   this loop's draw excluded it. buildScatter gained an optional
   registry param.
+- `light.delay` (**40**): LightZone gains z0/z1 extents; the anomaly
+  tracks which zone the player's z sits in and dims the zone they LEFT
+  1.5s after crossing (holds 1.0s). Zones named entry/gallery/clinic/
+  junction; excludes tags are per-zone ("zone.gallery" etc).
   `ambient.walker` registered in WorldRegistry; update() runs in
   app.sim. Trap: e2e archive spec had "0 OF 31 FILED" hardcoded — now
   regex-matched; specs CANNOT import src/game/anomalies (Node can't

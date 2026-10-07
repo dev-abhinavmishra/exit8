@@ -43,6 +43,7 @@ import { posterSwapped } from "./posterSwapped";
 import { signDrift } from "./signDrift";
 import { terminalGlitch } from "./terminalGlitch";
 import { memoryPersist } from "./memoryPersist";
+import { lightDelay } from "./lightDelay";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -84,4 +85,5 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   signDrift,
   terminalGlitch,
   memoryPersist,
+  lightDelay,
 ];
