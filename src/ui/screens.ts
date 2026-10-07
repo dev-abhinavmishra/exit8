@@ -11,6 +11,7 @@ export interface UiCallbacks {
   onStart(): void;
   onDaily(): void;
   onPractice(): void;
+  onCustom(seed: string): void;
   onResume(): void;
   onRestart(): void;
   onSettingsChanged(): void;
@@ -132,6 +133,24 @@ export class GameUi {
     body.appendChild(
       this.btn("PRACTICE ROUTE", "endless loops · judgment feedback · no stakes", () => this.cb.onPractice()),
     );
+    // custom seed: a named shift code — same seed always means the same
+    // route, so inspectors can compare notes
+    const row = document.createElement("div");
+    row.className = "na-route-row";
+    const seedIn = document.createElement("input");
+    seedIn.className = "na-seed-in";
+    seedIn.placeholder = "SHIFT CODE — e.g. ledger-7";
+    seedIn.maxLength = 48;
+    seedIn.setAttribute("aria-label", "custom route seed");
+    const go = this.btn("CUSTOM ROUTE", null, () => this.cb.onCustom(seedIn.value.trim()));
+    go.classList.add("na-seed-go");
+    seedIn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") this.cb.onCustom(seedIn.value.trim());
+      e.stopPropagation();
+    });
+    row.appendChild(seedIn);
+    row.appendChild(go);
+    body.appendChild(row);
     body.appendChild(
       this.btn("ROUTE ARCHIVE", "case file — filed divergences & records", () => this.show("archive")),
     );

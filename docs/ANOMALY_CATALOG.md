@@ -92,7 +92,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
    squared up toward your approach, dead still the whole loop. Moderate.
 5. ★ `walker.absent` — he simply isn't there this loop. Subtle —
    you have to have learned he's always there.
-6. `gaze.shift` — pictogram figures' facing changes between loops. Subtle.
+6. ★ `poster.swapped` — two notice-board posters trade artwork. Subtle.
+7. ★ `sign.drift` — a big wall sign has slid half a metre and cants.
+   Subtle.
+8. `gaze.shift` — pictogram figures' facing changes between loops. Subtle.
 
 ## Group F — systemic (3)
 
@@ -107,8 +110,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
    misdirects inspectors to the north point. Subtle. (slice)
 6. ★ `fire.open` — the fire cabinet's dark-glass window is gone; the
    cabinet stands open on its bare red face. Subtle. (slice)
+7. ★ `terminal.glitch` — both airlock terminals briefly insist a
+   divergence was filed and stability reads 0. Subtle. (slice)
 
-Slice count: **35 implemented** — past the 24 target. New hooks:
+Slice count: **38 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

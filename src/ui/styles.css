@@ -143,6 +143,36 @@
   border-color: var(--bad);
   color: var(--bad);
 }
+.na-route-row {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+.na-seed-in {
+  flex: 1;
+  min-width: 0;
+  background: rgba(232, 163, 61, 0.04);
+  border: 1px solid var(--edge);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0 12px;
+}
+.na-seed-in::placeholder {
+  color: var(--dim);
+  opacity: 0.55;
+}
+.na-seed-in:focus-visible {
+  border-color: var(--amber);
+  outline: none;
+}
+.na-btn.na-seed-go {
+  width: auto;
+  margin: 0;
+  white-space: nowrap;
+}
 .na-btn .sub {
   display: block;
   font-size: 10px;

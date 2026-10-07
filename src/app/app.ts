@@ -157,6 +157,7 @@ export class App {
       onStart: () => this.startRun(),
       onDaily: () => this.dailyRoute(),
       onPractice: () => this.practiceRoute(),
+      onCustom: (seed) => this.customRoute(seed),
       onResume: () => this.resume(),
       onRestart: () => this.restart(),
       onSettingsChanged: () => this.onSettingsChanged(),
@@ -402,6 +403,16 @@ export class App {
     const u = new URL(location.href);
     u.searchParams.delete("anomaly");
     u.searchParams.set("seed", dailySeed());
+    location.href = u.toString();
+  }
+
+  /** A named shift code — same seed, same route, shareable. */
+  private customRoute(seed: string): void {
+    if (!seed) return;
+    const u = new URL(location.href);
+    u.searchParams.delete("anomaly");
+    u.searchParams.delete("practice");
+    u.searchParams.set("seed", seed);
     location.href = u.toString();
   }
 
