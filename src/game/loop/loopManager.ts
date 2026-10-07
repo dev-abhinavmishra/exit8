@@ -37,7 +37,7 @@ export interface LoopEvents {
   onPhaseChange?: (s: LoopState) => void;
   onJudgment?: (s: LoopState) => void;
   onFade?: (opacity: number, label: string | null) => void;
-  onEnd?: (outcome: "secure" | "lost") => void;
+  onEnd?: (outcome: "secure" | "lost" | "practice") => void;
 }
 
 const CHAPTER_ANOMALY_RATE = [0, 0.5, 0.55, 0.6];
@@ -74,6 +74,8 @@ export class LoopManager {
       reducedEffects: false,
       visualCues: true,
     },
+    /** practice mode: judgments still score but the route never ends. */
+    private readonly training = false,
   ) {
     this.anomalyRolls = new RngStream("loop.roll", runSeed);
     this.anomalyRuntime = new RngStream("anomaly.runtime", runSeed);
@@ -128,6 +130,14 @@ export class LoopManager {
   /** e2e/debug: force the next loop's anomaly (or "none"). */
   forceAnomaly(id: string | null): void {
     this.forcedAnomalyId = id;
+  }
+
+  /** Training runs don't die — the pause menu ends them into a report. */
+  endTraining(): void {
+    if (this.phase === "ended") return;
+    this.phase = "ended";
+    this.events.onEnd?.("practice");
+    this.emit();
   }
 
   private updateTerminals(
@@ -208,6 +218,11 @@ export class LoopManager {
       (this.pendingCommit === "retreat" && !!this.activeDef);
     const result = this.stability.judge(correct, this.chapter);
     if (correct) this.correctCount += 1;
+    // training keeps the stakes visible but clamps instead of terminating
+    if (this.training && result.outcome !== "continue") {
+      this.stability.set(result.outcome === "secure" ? 85 : 15);
+      result.outcome = "continue";
+    }
 
     // progression bookkeeping
     const discovered = this.activeDef?.id;

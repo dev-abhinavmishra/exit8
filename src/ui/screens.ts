@@ -9,6 +9,7 @@ import type { LoopState } from "../game/loop/loopManager";
 export interface UiCallbacks {
   onStart(): void;
   onDaily(): void;
+  onPractice(): void;
   onResume(): void;
   onRestart(): void;
   onSettingsChanged(): void;
@@ -119,6 +120,9 @@ export class GameUi {
     );
     this.dailyBtn = this.btn("DAILY ROUTE", "same shift for everyone, today", () => this.cb.onDaily());
     body.appendChild(this.dailyBtn);
+    body.appendChild(
+      this.btn("PRACTICE ROUTE", "endless loops · judgment feedback · no stakes", () => this.cb.onPractice()),
+    );
     body.appendChild(
       this.btn("SETTINGS", "video · controls · audio · accessibility", () => this.openSettingsFrom("start")),
     );
@@ -444,7 +448,7 @@ export class GameUi {
   }
 
   showResults(
-    outcome: "secure" | "lost",
+    outcome: "secure" | "lost" | "practice",
     state: LoopState,
     stats: {
       loops: number;
@@ -452,6 +456,7 @@ export class GameUi {
       mistakes: number;
       discovered: number;
       filed: { name: string; chapter: number }[];
+      practice?: boolean;
     },
   ): void {
     const screenEl = this.screens.get("results");
@@ -459,8 +464,13 @@ export class GameUi {
     const body = screenEl.querySelector(".body") as HTMLDivElement;
     body.innerHTML = "";
     const stamp = document.createElement("div");
-    stamp.className = `na-stamp ${outcome === "secure" ? "ok" : "bad"}`;
-    stamp.textContent = outcome === "secure" ? COPY.results.secured : COPY.results.lost;
+    const practice = stats.practice === true;
+    stamp.className = `na-stamp ${practice || outcome === "secure" ? "ok" : "bad"}`;
+    stamp.textContent = practice
+      ? "PRACTICE SHIFT"
+      : outcome === "secure"
+        ? COPY.results.secured
+        : COPY.results.lost;
     body.appendChild(stamp);
     const table = document.createElement("table");
     table.className = "na-stats";

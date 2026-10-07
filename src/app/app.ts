@@ -37,6 +37,7 @@ export interface UrlParams {
   anomaly: string | null;
   engine: "auto" | "webgl" | "webgpu";
   quality: "auto" | "low" | "medium" | "high" | "ultra";
+  practice: boolean;
   debug: boolean;
   e2e: boolean;
 }
@@ -60,6 +61,7 @@ export function parseUrl(search: string): UrlParams {
         : "auto",
     debug: q.get("debug") === "1" || q.get("debug") === "true",
     e2e: q.get("e2e") === "1",
+    practice: q.get("practice") === "1",
   };
 }
 
@@ -144,6 +146,7 @@ export class App {
     this.ui = new GameUi(this.uiHost, settings, {
       onStart: () => this.startRun(),
       onDaily: () => this.dailyRoute(),
+      onPractice: () => this.practiceRoute(),
       onResume: () => this.resume(),
       onRestart: () => this.restart(),
       onSettingsChanged: () => this.onSettingsChanged(),
@@ -180,6 +183,7 @@ export class App {
         reducedEffects: settings.accessibility.reducedMotion,
         visualCues: settings.accessibility.visualSoundCues,
       },
+      this.params.practice,
     );
     if (this.params.anomaly) this.loop.forceAnomaly(this.params.anomaly);
     this.loop.start();
@@ -262,10 +266,25 @@ export class App {
   }
 
   private restart(): void {
+    // in practice mode, abandoning an in-flight run ends it into a report
+    // instead of reloading; from the results screen it just starts fresh
+    if (this.params.practice && this.state !== "results" && this.state !== "boot") {
+      this.loop.endTraining();
+      return;
+    }
     // cleanest possible reset: reload with a fresh seed (all state is in
     // the page; the save persists records)
     const u = new URL(location.href);
     u.searchParams.delete("anomaly");
+    u.searchParams.set("seed", `run-${Math.floor(Math.random() * 1e9).toString(36)}`);
+    location.href = u.toString();
+  }
+
+  /** Endless training route — judgments still score, the route never ends. */
+  private practiceRoute(): void {
+    const u = new URL(location.href);
+    u.searchParams.delete("anomaly");
+    u.searchParams.set("practice", "1");
     u.searchParams.set("seed", `run-${Math.floor(Math.random() * 1e9).toString(36)}`);
     location.href = u.toString();
   }
@@ -288,11 +307,23 @@ export class App {
         this.filed.push({ name: def.displayName, chapter: def.chapter });
       }
     }
+    // practice mode tells you what the truth was — that's the training
+    if (this.params.practice && s.judgment) {
+      const name = s.activeAnomaly ? this.anomalies.get(s.activeAnomaly).displayName : null;
+      const msg = s.judgment.correct
+        ? name
+          ? `DIVERGENCE FILED — ${name}`
+          : "ROUTE CLEAR — nothing to file"
+        : name
+          ? `MISSED — ${name} was in play`
+          : "FALSE FILING — route was clear";
+      this.ui.caption(msg, null);
+    }
     this.ui.setLoopIndex(s.loopIndex + 1);
     this.ui.setChapter(s.chapter);
   }
 
-  private onEnd(outcome: "secure" | "lost"): void {
+  private onEnd(outcome: "secure" | "lost" | "practice"): void {
     this.state = "results";
     document.exitPointerLock?.();
     // stamp the daily route if this run was one
@@ -309,6 +340,7 @@ export class App {
       mistakes: this.stats.mistakes,
       discovered,
       filed: this.filed,
+      practice: outcome === "practice",
     });
   }
 

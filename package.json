@@ -2,7 +2,7 @@
   "name": "night-audit",
   "version": "0.1.0",
   "private": true,
-  "description": "NIGHT AUDIT — an original first-person anomaly-detection psychological-horror game for the web (Babylon.js + TypeScript + Vite).",
+  "description": "NIGHT AUDIT \u2014 an original first-person anomaly-detection psychological-horror game for the web (Babylon.js + TypeScript + Vite).",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,7 +15,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "validate:assets": "node tools/validation/validate-assets.mjs",
-    "optimize:assets": "node tools/assets/optimize.mjs"
+    "optimize:assets": "node tools/assets/optimize.mjs",
+    "validate:catalog": "vitest run tests/unit/catalog.spec.ts"
   },
   "dependencies": {
     "@babylonjs/core": "^9.29.0",

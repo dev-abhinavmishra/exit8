@@ -105,5 +105,8 @@ Slice count: **30 implemented** — past the 24 target. New hooks:
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
 
-Balance: ≥⅓ subtle, ⅓ moderate, ⅓ unmistakable/threatening. ≤2 major
-shocks per first run. Every sound-led anomaly carries a visual cue path.
+Balance: per-loop exposure aims for roughly thirds across subtle /
+moderate / unmistakable — enforced by weights, not catalog counts (the
+catalog is quiet-first by design: 15 subtle / 12 moderate / 4
+unmistakable at 30 defs). ≤2 major shocks per first run. Every
+sound-led anomaly carries a visual cue path.

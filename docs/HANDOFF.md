@@ -28,6 +28,17 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   SECURED@100 + LOST@0, per-anomaly forced screenshots (?anomaly=<id>),
   chapter ladder (2 correct → CH II). 13/13 e2e green (~5m — SECURED
   spec now needs 6 loops).
+- **Practice mode live** (this commit): PRACTICE ROUTE button →
+  `?practice=1`, judgments still score but a SECURED/LOST bounds-hit
+  clamps stability to 85/15 and keeps running. Each judgment captions
+  the truth (DIVERGENCE FILED — <name> / MISSED — <name> / FALSE
+  FILING / ROUTE CLEAR). ABANDON SHIFT ends into a "PRACTICE SHIFT"
+  report. LoopManager gains `training` ctor flag + `endTraining()`,
+  `onEnd` outcome widened to "secure"|"lost"|"practice".
+- **Catalog validator**: `tests/unit/catalog.spec.ts` (run via
+  `npm run validate:catalog`) — unique ids, def contract, ≥24 defs,
+  per-chapter entries, sane detectability spread (≥4 each, subtle
+  largest — the ⅓ rule in ANOMALY_CATALOG is per-loop weight mix).
 - **Daily route live** (770a5ee): DAILY ROUTE button → seed
   `daily-YYYY-MM-DD` (UTC), completion stamped in
   `save.progression.dailies`, button flips to 'already filed'. Results
