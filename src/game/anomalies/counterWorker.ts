@@ -9,6 +9,7 @@ import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import type { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import type { AnomalyDef } from "./types";
 
 const Z = 37;
@@ -43,10 +44,22 @@ export const counterWorker: AnomalyDef = {
     paper.rotation.x = Math.PI / 2;
     paper.parent = g;
 
-    // the hand — flattened dark form just clear of the shutter line
-    const hand = CreateBox("anomaly.worker.hand", { width: 0.09, height: 0.03, depth: 0.17 }, scene);
+    // the hand — flattened dark form just clear of the shutter line,
+    // with a wrist cuff trailing under the shutter and finger hints so
+    // it reads as a hand, not a slab
+    const hand = CreateBox("anomaly.worker.hand", { width: 0.09, height: 0.03, depth: 0.15 }, scene);
     hand.material = ctx.world.materials.rubber;
     hand.parent = g;
+    const cuff = CreateBox("anomaly.worker.cuff", { width: 0.085, height: 0.05, depth: 0.1 }, scene);
+    cuff.material = ctx.world.materials.rubber;
+    cuff.parent = g;
+    const fingers: AbstractMesh[] = [];
+    for (let i = 0; i < 4; i++) {
+      const f = CreateBox(`anomaly.worker.finger.${i}`, { width: 0.016, height: 0.018, depth: 0.05 }, scene);
+      f.material = ctx.world.materials.rubber;
+      f.parent = g;
+      fingers.push(f);
+    }
 
     const IN_X = -1.62; // tucked under the shutter
     const OUT_X = -1.3; // slid out onto the counter top
@@ -56,6 +69,13 @@ export const counterWorker: AnomalyDef = {
     const place = (x: number) => {
       paper.position.set(x, Y, Z);
       hand.position.set(x - 0.12, Y + 0.02, Z);
+      // cuff trails the wrist under the shutter; fingertips lead in
+      // the direction of travel (+x — the slide is along the counter)
+      cuff.position.set(x - 0.23, Y + 0.005, Z);
+      fingers.forEach((f, i) => {
+        f.position.set(x - 0.03, Y + 0.012, Z + (i - 1.5) * 0.02);
+        f.rotation.y = Math.PI / 2;
+      });
     };
     place(IN_X);
 

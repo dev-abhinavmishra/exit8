@@ -6,11 +6,12 @@
  * normal so any future behavior change reads as a divergence.
  */
 import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
-import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
+import type { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { Scene } from "@babylonjs/core/scene";
+import { buildFigure } from "../figures";
 import type { MaterialSet } from "../materials/library";
 import type { WorldRegistry } from "../registry";
 
@@ -36,68 +37,22 @@ export function buildAmbientWalker(
   _mats: MaterialSet,
   registry: WorldRegistry,
 ): AmbientWalker {
-  const g = new TransformNode("ambient.walker", scene);
-  g.parent = root;
+  // shared humanoid: shoes, trouser legs, tapered coat, collar + lapels,
+  // hi-vis band, hands, sphere skull + hair + drawn face. Hip/arm pivots
+  // keep the ".hip." / ".arm." names walker.crowd's clone filters for.
+  const fig = buildFigure(scene, root, "ambient.walker", { kind: "inspector" });
+  const g = fig.root;
   registry.register("ambient.walker", g);
+  const legPivots = fig.hips;
+  const armPivots = fig.arms;
 
-  // muted slate — clearly a person, clearly staff, clearly NOT the
-  // near-black anomaly silhouettes
-  const coat = new StandardMaterial("ambient.walker.coat", scene);
-  coat.diffuseColor = new Color3(0.1, 0.11, 0.13);
-  coat.specularColor = new Color3(0.02, 0.02, 0.02);
-  const skin = new StandardMaterial("ambient.walker.head", scene);
-  skin.diffuseColor = new Color3(0.4, 0.34, 0.3);
-  skin.specularColor = new Color3(0.03, 0.03, 0.03);
-  const band = new StandardMaterial("ambient.walker.band", scene);
-  band.emissiveColor = new Color3(0.9, 0.68, 0.22).scale(0.55);
-  band.disableLighting = true;
-
-  const body = CreateBox("ambient.walker.body", { width: 0.46, height: 1.3, depth: 0.26 }, scene);
-  body.material = coat;
-  body.position = new Vector3(0, 0.98, 0);
-  body.parent = g;
-  const shoulders = CreateBox("ambient.walker.shoulders", { width: 0.58, height: 0.13, depth: 0.3 }, scene);
-  shoulders.material = coat;
-  shoulders.position = new Vector3(0, 1.6, 0);
-  shoulders.parent = g;
-  const head = CreateBox("ambient.walker.head", { width: 0.2, height: 0.28, depth: 0.22 }, scene);
-  head.material = skin;
-  head.position = new Vector3(0, 1.8, 0);
-  head.parent = g;
-  // hi-vis stripe — the Authority's inspectors wear one
-  const stripe = CreateBox("ambient.walker.stripe", { width: 0.47, height: 0.09, depth: 0.27 }, scene);
-  stripe.material = band;
-  stripe.position = new Vector3(0, 1.28, 0);
-  stripe.parent = g;
-
-  // stepping legs + counter-swinging arms on hip/shoulder pivots —
-  // the stride reads at 40 m where a static box reads as a pillar
-  const legPivots: TransformNode[] = [];
-  for (const sx of [-1, 1]) {
-    const hip = new TransformNode(`ambient.walker.hip.${sx}`, scene);
-    hip.parent = g;
-    hip.position = new Vector3(sx * 0.12, 0.78, 0);
-    const leg = CreateBox(`ambient.walker.leg.${sx}`, { width: 0.14, height: 0.72, depth: 0.16 }, scene);
-    leg.material = coat;
-    leg.position = new Vector3(0, -0.36, 0);
-    leg.parent = hip;
-    legPivots.push(hip);
-  }
-  const armPivots: TransformNode[] = [];
-  for (const sx of [-1, 1]) {
-    const sh = new TransformNode(`ambient.walker.arm.${sx}`, scene);
-    sh.parent = g;
-    sh.position = new Vector3(sx * 0.3, 1.58, 0);
-    const arm = CreateBox(`ambient.walker.armMesh.${sx}`, { width: 0.09, height: 0.58, depth: 0.12 }, scene);
-    arm.material = coat;
-    arm.position = new Vector3(0, -0.29, 0);
-    arm.parent = sh;
-    armPivots.push(sh);
-  }
   // the case file he carries — a pale clipboard at the end of the left arm
+  const clipMat = new StandardMaterial("ambient.walker.clip", scene);
+  clipMat.diffuseColor = new Color3(0.82, 0.79, 0.72);
+  clipMat.specularColor = new Color3(0.02, 0.02, 0.02);
   const clip = CreateBox("ambient.walker.clip", { width: 0.2, height: 0.28, depth: 0.02 }, scene);
-  clip.material = skin;
-  clip.position = new Vector3(0.02, -0.62, 0.08);
+  clip.material = clipMat;
+  clip.position = new Vector3(0.02, -0.68, 0.1);
   clip.parent = armPivots[0]!;
 
   let z = HOME_Z;

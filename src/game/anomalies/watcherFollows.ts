@@ -4,9 +4,8 @@
  * on and soft dragging steps close the distance behind you. Retreat
  * past it and it is simply gone — a step where it stood.
  */
-import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
-import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { buildFigure } from "../../world/figures";
 import type { AnomalyDef } from "./types";
 
 // stands inside the north airlock behind the spawn point — a glance
@@ -32,20 +31,14 @@ export const watcherFollows: AnomalyDef = {
   activate(ctx) {
     const world = ctx.world;
     const scene = ctx.scene;
-    const g = new TransformNode("anomaly.watcher.follows", scene);
-    g.parent = world.root;
-    const body = CreateBox("anomaly.wf.body", { width: 0.5, height: 1.42, depth: 0.28 }, scene);
-    body.material = world.materials.rubber;
-    body.position = new Vector3(START.x, 0.86, START.z);
-    body.parent = g;
-    const shoulders = CreateBox("anomaly.wf.shoulders", { width: 0.64, height: 0.14, depth: 0.32 }, scene);
-    shoulders.material = world.materials.rubber;
-    shoulders.position = new Vector3(START.x, 1.55, START.z);
-    shoulders.parent = g;
-    const head = CreateBox("anomaly.wf.head", { width: 0.22, height: 0.32, depth: 0.24 }, scene);
-    head.material = world.materials.rubber;
-    head.position = new Vector3(START.x, 1.78, START.z);
-    head.parent = g;
+    // featureless silhouette on the shared humanoid rig — gains ground
+    // only while unobserved, so it moves the whole root, not the parts
+    const fig = buildFigure(scene, world.root, "anomaly.watcher.follows", {
+      kind: "silhouette",
+      material: world.materials.rubber,
+    });
+    const g = fig.root;
+    g.rotation.y = 0; // it faces the direction it closes — toward you, +z
 
     let z = START.z;
     let x = START.x;
@@ -53,11 +46,10 @@ export const watcherFollows: AnomalyDef = {
     let gone = false;
 
     const place = () => {
-      for (const m of [body, shoulders, head]) {
-        m.position.x = x;
-        m.position.z = z;
-      }
+      g.position.x = x;
+      g.position.z = z;
     };
+    place();
 
     return {
       update(dt) {

@@ -4,11 +4,9 @@
  * the far end as if checking the roster, and slides back. Nobody has
  * gallery access on this shift.
  */
-import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
-import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { buildFigure } from "../../world/figures";
 import type { AnomalyDef } from "./types";
 
 const X = 2.05; // behind the glass plane (right wall inner ~1.74)
@@ -31,21 +29,18 @@ export const glassEyes: AnomalyDef = {
   dangerous: false,
   activate(ctx) {
     const { scene, world } = ctx;
-    const fig = new TransformNode("anomaly.glassfig", scene);
-    fig.parent = world.root;
-    // barely-lit silhouette: dark rubber with a faint cold lift so the
-    // shape reads through the 0.45-alpha dark glass without glowing
+    // barely-lit silhouette: dark with a faint cold lift so the shape
+    // reads through the 0.45-alpha dark glass without glowing
     const mat = new StandardMaterial("anomaly.glassfig.mat", scene);
     mat.diffuseColor = new Color3(0.02, 0.02, 0.03);
     mat.emissiveColor = new Color3(0.05, 0.055, 0.07);
-    const body = CreateBox("anomaly.glassfig.body", { width: 0.44, height: 1.72, depth: 0.24 }, scene);
-    body.material = mat;
-    body.position = new Vector3(0, 0.86, 0);
-    body.parent = fig;
-    const head = CreateBox("anomaly.glassfig.head", { width: 0.2, height: 0.26, depth: 0.2 }, scene);
-    head.material = mat;
-    head.position = new Vector3(0, 1.85, 0);
-    head.parent = fig;
+    const built = buildFigure(scene, world.root, "anomaly.glassfig", {
+      kind: "silhouette",
+      material: mat,
+      heightScale: 1.04,
+    });
+    const fig = built.root;
+    fig.rotation.y = -Math.PI / 2; // profile to the glass — it paces along it
     fig.position.set(X, 0, Z0);
 
     let z = Z0;
