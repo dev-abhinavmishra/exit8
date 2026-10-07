@@ -182,6 +182,9 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   adjacent middle segments via setEnabled(false). Strip is the
   corridor's memorization line — it can also anchor guide.misaligned /
   guide.reversed later.
+- `guide.misaligned` (**48**): 3 adjacent `guide.seg.N` yaw ±~0.1
+  (middle larger) — an S-bend, unmistakable at range. Restore in
+  cleanup keeps orig rotation.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 

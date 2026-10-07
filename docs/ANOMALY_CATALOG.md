@@ -129,8 +129,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 8. ★ `guide.missing` — a run of the tactile guide strip is absent mid-
    corridor: the amber channel breaks for six metres and resumes.
    Moderate. (slice)
+9. ★ `guide.misaligned` — three adjacent strip segments yaw out of
+   true: the amber line jogs mid-run then straightens. Unmistakable.
+   (slice)
 
-Slice count: **47 implemented** — past the 24 target. New hooks:
+Slice count: **48 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
