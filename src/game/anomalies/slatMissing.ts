@@ -12,12 +12,14 @@ export const slatMissing: AnomalyDef = {
   detectability: "subtle",
   weight: 1,
   progressionRange: [0, 100],
-  requires: ["bench.slat.2"],
+  requires: ["bench.slat.2", "bench.south.slat.0"],
   excludes: ["prop.bench"],
   testSeed: "test.slat.missing",
   dangerous: false,
   activate(ctx) {
-    const slat = ctx.world.registry.mesh("bench.slat.2");
+    // either bench, any of the five slats — seeded per loop
+    const bench = ctx.rng.pick(["bench", "bench.south"]);
+    const slat = ctx.world.registry.mesh(`${bench}.slat.${ctx.rng.int(0, 5)}`);
     slat.isVisible = false;
     return {
       update() {},

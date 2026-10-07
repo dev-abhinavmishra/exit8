@@ -27,6 +27,7 @@ export function buildFixtures(
   const glass = kit.plane("fire.point.glass", 0.36, 0.5, mats.darkGlass, scene, root);
   glass.position = new Vector3(WALL_X - 0.11, 1.4, 18);
   glass.rotation.y = Math.PI / 2;
+  registry.register("fire.point.glass", glass);
   const label = kit.wallSign("sign.fire.point", mats, scene, root, registry, 0.5, 0.16);
   label.position = new Vector3(WALL_X - 0.06, 1.95, 18);
   label.rotation.y = Math.PI / 2;

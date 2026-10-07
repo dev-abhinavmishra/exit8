@@ -37,6 +37,8 @@ import { posterChanged } from "./posterChanged";
 import { counterWorker } from "./counterWorker";
 import { walkerBackwards } from "./walkerBackwards";
 import { walkerStare } from "./walkerStare";
+import { walkerAbsent } from "./walkerAbsent";
+import { fireOpen } from "./fireOpen";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -72,4 +74,6 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   counterWorker,
   walkerBackwards,
   walkerStare,
+  walkerAbsent,
+  fireOpen,
 ];

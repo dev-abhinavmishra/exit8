@@ -20,7 +20,7 @@ const SPEED = 1.05;
 const PAUSE_S = 5;
 const HOME_Z = 16; // loop-rebaseline spot — always mid-corridor on loop 1
 
-export type WalkerMode = "normal" | "backwards" | "stare";
+export type WalkerMode = "normal" | "backwards" | "stare" | "absent";
 
 export interface AmbientWalker {
   update(dt: number): void;
@@ -82,11 +82,18 @@ export function buildAmbientWalker(
       z = HOME_Z;
       dir = 1;
       pauseT = 0;
+      g.setEnabled(true);
       g.position.set(0.55, 0, z);
       g.rotation.y = dir > 0 ? 0 : Math.PI;
     },
     setMode(m: WalkerMode) {
       mode = m;
+      if (m === "absent") {
+        // he is simply not there this loop — the routine has a hole in it
+        g.setEnabled(false);
+        return;
+      }
+      g.setEnabled(true);
       if (m === "stare") {
         // stops where he is, squared up to face the player's approach
         pauseT = 0;
@@ -95,6 +102,7 @@ export function buildAmbientWalker(
     },
     update(dt) {
       bobT += dt;
+      if (mode === "absent") return;
       if (mode === "stare") {
         // dead still except the slightest drift of the head
         g.position.set(0.55, 0, z);
