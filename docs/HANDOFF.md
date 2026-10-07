@@ -242,6 +242,10 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   a leaf. `instantiateHierarchy` needs the InstancedMesh side-effect
   import. Behind-glass silhouettes need a faint emissive (~0.05) to read
   through alpha-0.45 darkGlass.
+- Anomalies 69–73 (sign.wrongway, terminal.black, bin.flipped,
+  hatch.open, strip.grows): sign retexture = `materials.sign.get(specId)
+.diffuseTexture` + drawSign(clone); airlock terminals are
+  `al.<side>.terminal` planes; hanging signs live at x=0 (not walls).
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 

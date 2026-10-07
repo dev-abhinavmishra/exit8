@@ -187,8 +187,19 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 29. ★ `glass.eyes` — a dim shape paces the observation gallery behind
     the glass; nobody has gallery access on this shift. Moderate.
     (slice)
+30. ★ `sign.wrongway` — the junction sign's arrow flips to point at a
+    lift lobby that isn't there. Subtle. (slice)
+31. ★ `terminal.black` — both airlock judgment terminals are dead
+    unlit glass. Moderate. (slice)
+32. ★ `bin.flipped` — the service bin lies knocked on its side, slid
+    from its spot. Subtle. (slice)
+33. ★ `hatch.open` — a service hatch stands open in the east wall,
+    door ajar, revealing an unlit maintenance void. Moderate. (slice)
+34. ★ `strip.grows` — the tactile guide strip continues through the
+    north airlock to the cap; the line leads somewhere it never led.
+    Subtle. (slice)
 
-Slice count: **68 implemented** — past the 24 target. New hooks:
+Slice count: **73 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

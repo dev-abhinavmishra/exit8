@@ -72,6 +72,11 @@ import { doorStuck } from "./doorStuck";
 import { walkerCrowd } from "./walkerCrowd";
 import { lightFollows } from "./lightFollows";
 import { glassEyes } from "./glassEyes";
+import { signWrongway } from "./signWrongway";
+import { terminalBlack } from "./terminalBlack";
+import { binFlipped } from "./binFlipped";
+import { hatchOpen } from "./hatchOpen";
+import { stripGrows } from "./stripGrows";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -142,4 +147,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   walkerCrowd,
   lightFollows,
   glassEyes,
+  signWrongway,
+  terminalBlack,
+  binFlipped,
+  hatchOpen,
+  stripGrows,
 ];
