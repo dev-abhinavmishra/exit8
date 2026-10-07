@@ -19,15 +19,19 @@ export const hatchOpen: AnomalyDef = {
   detectability: "moderate",
   weight: 0.85,
   progressionRange: [10, 100],
-  requires: ["wall.right.2"],
+  requires: ["wall.right.2", "hatch.plate"],
   excludes: ["gallery", "door.ajar", "depth.mismatch"],
   testSeed: "test.hatch.open",
   dangerous: false,
   activate(ctx) {
     const { scene, world, rng } = ctx;
     const created: AbstractMesh[] = [];
-    const z = rng.range(34, 50);
-    const y = rng.range(1.15, 1.5);
+    // the hatch that has always been shut stands open — the baseline
+    // plate hides; the void and ajar door appear where it sat
+    const plate = world.registry.mesh("hatch.plate");
+    plate.setEnabled(false);
+    const z = plate.position.z;
+    const y = plate.position.y;
 
     // the black maintenance void
     const void_ = CreateBox("anomaly.hatch.void", { width: 0.05, height: 0.9, depth: 0.6 }, scene);
@@ -65,6 +69,7 @@ export const hatchOpen: AnomalyDef = {
     return {
       update() {},
       cleanup() {
+        plate.setEnabled(true);
         for (const m of created) m.dispose();
         created.length = 0;
       },

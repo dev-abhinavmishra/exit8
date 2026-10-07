@@ -7,6 +7,9 @@
  */
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
+import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import type { Scene } from "@babylonjs/core/scene";
 import type { MaterialSet } from "../materials/library";
 import type { WorldRegistry } from "../registry";
@@ -44,6 +47,106 @@ export function buildFixtures(
   buildImpossibleFacade(scene, root, mats, registry);
   buildLiftLobby(scene, root, mats, registry);
   buildGuideStrip(scene, root, mats, registry);
+  buildDressing(scene, root, mats, registry);
+}
+
+/** Second-pass dressing — the small fixed details that turn geometry
+ * into a place: records bay plates, a shut service hatch, worn floor
+ * wayfinding, ceiling vent grilles, conduit risers. All static, all
+ * part of the baseline a player memorizes. */
+function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, registry: WorldRegistry): void {
+  // ---- records bay plates: steel label frames with pale slips, six
+  //      bays down the cabinet bank ----
+  const CABINET_FACE = -1.55;
+  for (const z of [15.5, 18.5, 21.5, 24.5, 27.5, 30.5]) {
+    const plate = kit.box(`bay.plate.${z}`, 0.02, 0.1, 0.16, mats.steel, scene, root);
+    plate.position = new Vector3(CABINET_FACE + 0.02, 1.92, z);
+    const slip = kit.box(
+      `bay.plate.${z}.slip`,
+      0.012,
+      0.06,
+      0.12,
+      mats.sign.get("sign.notice.board") ?? mats.steel,
+      scene,
+      root,
+    );
+    slip.position = new Vector3(CABINET_FACE + 0.032, 1.92, z);
+    registry.register(`bay.plate.${z}`, plate);
+  }
+
+  // ---- the service hatch that is always shut (east wall, z=40) ----
+  const hatch = kit.box("hatch.plate", 0.05, 0.95, 0.65, mats.steel, scene, root);
+  hatch.position = new Vector3(WALL_X - 0.02, 1.3, 40);
+  registry.register("hatch.plate", hatch);
+  // its hinge screws + recessed pull so it reads as a hatch, not a panel
+  const pull = kit.box("hatch.plate.pull", 0.03, 0.12, 0.05, mats.rubber, scene, root);
+  pull.position = new Vector3(WALL_X - 0.05, 1.3, 40.22);
+
+  // ---- worn floor wayfinding: a painted route arrow, faded into the
+  //      terrazzo at approach points ----
+  const arrowTex = new DynamicTexture("tex.floorArrow", { width: 128, height: 256 }, scene, true);
+  arrowTex.hasAlpha = true;
+  {
+    const c = arrowTex.getContext() as unknown as CanvasRenderingContext2D;
+    c.clearRect(0, 0, 128, 256);
+    c.fillStyle = "rgba(214,206,186,0.5)";
+    c.font = "bold 110px Arial, sans-serif";
+    c.textAlign = "center";
+    c.fillText("7", 64, 105);
+    c.fillRect(52, 128, 24, 80);
+    c.beginPath();
+    c.moveTo(64, 236);
+    c.lineTo(30, 200);
+    c.lineTo(98, 200);
+    c.closePath();
+    c.fill();
+    // wear: erase streaks so the paint reads ground-in
+    c.globalCompositeOperation = "destination-out";
+    for (let i = 0; i < 60; i++) {
+      const y = Math.floor(Math.abs(Math.sin(i * 12.9898)) * 43758.5453) % 256;
+      c.fillStyle = "rgba(0,0,0,0.35)";
+      c.fillRect(0, y, 128, 2);
+    }
+    arrowTex.update();
+  }
+  const arrowMat = new StandardMaterial("mat.floorArrow", scene);
+  arrowMat.diffuseTexture = arrowTex;
+  arrowMat.opacityTexture = arrowTex;
+  arrowMat.disableLighting = true;
+  arrowMat.backFaceCulling = false;
+  for (const [x, z] of [
+    [-0.35, 10],
+    [0.3, 30],
+    [0.05, 48],
+  ]) {
+    const decal = CreatePlane(`floor.arrow.${z}`, { width: 0.5, height: 1.0 }, scene);
+    decal.material = arrowMat;
+    decal.position = new Vector3(x, 0.012, z);
+    decal.rotation.x = -Math.PI / 2; // face up; canvas-bottom = +z (south)
+    decal.parent = root;
+    registry.register(`floor.arrow.${z}`, decal);
+  }
+
+  // ---- ceiling vent grilles: dark slatted panels between troffers ----
+  for (const z of [8, 24, 44]) {
+    const vent = kit.box(`ceiling.vent.${z}`, 0.6, 0.04, 0.9, mats.rubber, scene, root);
+    vent.position = new Vector3(z === 24 ? -0.8 : 0.8, 2.97, z);
+    for (let i = 0; i < 4; i++) {
+      const slat = kit.box(`ceiling.vent.${z}.${i}`, 0.56, 0.05, 0.1, mats.steel, scene, root);
+      slat.position = new Vector3(vent.position.x, 2.96, z - 0.3 + i * 0.2);
+    }
+  }
+
+  // ---- conduit risers: thin vertical runs pinned to wall faces ----
+  for (const [x, z] of [
+    [-WALL_X + 0.03, 11],
+    [WALL_X - 0.03, 21],
+    [-WALL_X + 0.03, 36],
+    [WALL_X - 0.03, 47],
+  ]) {
+    const pipe = kit.box(`conduit.${z}`, 0.07, 3.0, 0.07, mats.steel, scene, root);
+    pipe.position = new Vector3(x, 1.5, z);
+  }
 }
 
 /** Tactile guide strip: the raised amber channel that runs the corridor

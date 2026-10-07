@@ -246,6 +246,20 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   hatch.open, strip.grows): sign retexture = `materials.sign.get(specId)
 .diffuseTexture` + drawSign(clone); airlock terminals are
   `al.<side>.terminal` planes; hanging signs live at x=0 (not walls).
+- Anomalies 74–86 (catalog now COMPLETE at 86): `airlock.south` is a
+  single TransformNode — `al.position.z += n` slides the whole assembly
+  (doors, cap, stripe, terminal, sign, ALL child colliders) so
+  hall.stretch = move node + shift `LAYOUT.southAirlock/commitSouthZ`
+  (mutable via `as { z0: number }` cast — LAYOUT is `as const` readonly)
+  - filler floor/walls + pushed wall colliders into `world.colliders`.
+    Camera at `ctx.player.camera` (NOT world.camera). Sign-material
+    recipe that reads like built-ins: `diffuseTexture` + flat
+    `emissiveColor 0.45` + `specularColor 0.02`, `t.hasAlpha = false`,
+    NO disableLighting. CreatePlane fronts draw textures MIRRORED —
+    `p.scaling.x = -1` fixes; a box's back face shows texture dark/faint —
+    dual-face hanging signs need two flipped planes, not one box.
+    kit.box does NOT register — mullions/vents/pipes exist only via
+    `scene.getMeshByName`.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
