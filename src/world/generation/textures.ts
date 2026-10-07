@@ -561,6 +561,64 @@ export function drawTerminal(
   t.update();
 }
 
+/** Vending machine face: backlit brand band over a dark glass column of
+ *  product silhouettes. All signage copy stays inside CWA fiction. */
+export function makeVendingFace(scene: Scene): DynamicTexture {
+  const t = tex("tex.vendingFace", 256, 512, scene);
+  const c = ctx(t);
+  c.scale(2, 2); // drawn against a 128×256 reference frame
+  // dark glass field
+  const glass = c.createLinearGradient(0, 0, 128, 0);
+  glass.addColorStop(0, "#0d1114");
+  glass.addColorStop(0.5, "#131a1f");
+  glass.addColorStop(1, "#0b0e11");
+  c.fillStyle = glass;
+  c.fillRect(0, 0, 128, 256);
+  // brand band — lit header, institutional cyan
+  c.fillStyle = "#12333a";
+  c.fillRect(0, 0, 128, 30);
+  c.fillStyle = "#7fc4cf";
+  c.font = "bold 11px Arial, sans-serif";
+  c.textAlign = "center";
+  c.fillText("COLD DISPENSE", 64, 13);
+  c.font = "8px Arial, sans-serif";
+  c.fillStyle = "#4d7d86";
+  c.fillText("CWA CANTEEN SERVICES", 64, 24);
+  // product columns: 4 cols × 4 rows of dim bottles/cartons behind glass
+  const rng = (i: number) => Math.abs(Math.sin(i * 91.345)) % 1;
+  const tones = ["#28465a", "#4a3a28", "#3d4a2d", "#4a2d33", "#2d3d4a"];
+  for (let r = 0; r < 4; r++) {
+    const y = 44 + r * 38;
+    // shelf line
+    c.fillStyle = "rgba(180,200,205,0.25)";
+    c.fillRect(8, y + 26, 112, 2);
+    for (let col = 0; col < 4; col++) {
+      const x = 12 + col * 27;
+      const h = 18 + Math.floor(rng(r * 7 + col) * 8);
+      c.fillStyle = tones[(r + col) % tones.length] ?? "#28465a";
+      c.fillRect(x, y + 26 - h, 16, h);
+      c.fillStyle = "rgba(220,235,240,0.5)";
+      c.fillRect(x + 2, y + 28 - h, 3, 3); // glint
+      c.fillStyle = "rgba(0,0,0,0.35)";
+      c.fillRect(x, y + 20, 16, 4); // label shadow
+    }
+  }
+  // glass sheen — diagonal highlight
+  const sheen = c.createLinearGradient(0, 0, 128, 256);
+  sheen.addColorStop(0.35, "rgba(255,255,255,0)");
+  sheen.addColorStop(0.5, "rgba(200,225,235,0.10)");
+  sheen.addColorStop(0.65, "rgba(255,255,255,0)");
+  c.fillStyle = sheen;
+  c.fillRect(0, 0, 128, 256);
+  // dispense flap at the base
+  c.fillStyle = "#07090b";
+  c.fillRect(24, 216, 80, 30);
+  c.strokeStyle = "#2b3438";
+  c.lineWidth = 2;
+  c.strokeRect(26, 218, 76, 26);
+  return finish(t);
+}
+
 /** Linear fade strip for fake-AO — opaque at `head`, transparent at the
  *  tail. Direction "up" puts the solid edge at v=0 (bottom of a wall). */
 export function drawFadeStrip(t: DynamicTexture, dir: "up" | "down"): DynamicTexture {

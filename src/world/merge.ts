@@ -27,6 +27,8 @@ const STATIC_PREFIXES = [
   "dress.ceilseam.",
   "dress.ceilrail.",
   "dress.ao.",
+  "dress.rail.",
+  "dress.pilaster.",
   "conduit.",
   "baseboard.",
   "junction.pipe.",

@@ -21,7 +21,7 @@ import { Color4 } from "@babylonjs/core/Maths/math.color";
 import type { Scene } from "@babylonjs/core/scene";
 import { WorldRegistry } from "../registry";
 import { buildMaterials, type MaterialSet } from "../materials/library";
-import { buildTextureSet, type TextureSet } from "./textures";
+import { buildTextureSet, makeVendingFace, type TextureSet } from "./textures";
 import { RngStream } from "../../game/state/rng";
 import { SIGNS } from "../../data/signage";
 import * as kit from "./kit";
@@ -546,6 +546,10 @@ export function buildConcourse(
     p.position = new Vector3(-C.xHalf + 0.065, 1.75, 4.5 + i * 1.1);
     p.rotation.y = -Math.PI / 2;
     registry.register(`poster.${i}`, p);
+    // recessed frame — child of the poster so poster.* anomalies carry it
+    const pframe = kit.box(`poster.${i}.frame`, 0.62, 0.89, 0.025, mats.steel, scene);
+    pframe.parent = p;
+    pframe.position = new Vector3(0, 0, 0.013);
   });
 
   // Hanging totem at z=12
@@ -626,6 +630,48 @@ export function buildConcourse(
     const base = kit.box(`baseboard.${sx}`, 0.06, 0.14, len, mats.rubber, scene, root);
     base.position = new Vector3(sx * (C.xHalf - 0.03), 0.07, zc);
   }
+
+  // continuous wainscot bumper rail — splits the big wall fields
+  // horizontally like a real concourse; runs behind furniture, which
+  // occludes the overlap (rail x sits inside cabinet/bench volumes)
+  for (const sx of [-1, 1]) {
+    const rail = kit.box(`dress.rail.${sx}`, 0.035, 0.09, len, mats.steel, scene, root);
+    rail.position = new Vector3(sx * (C.xHalf - 0.018), 1.04, zc);
+  }
+
+  // pilaster pair at the service-junction mouth (z≈46) — the corridor's
+  // only structural marker before the south airlock
+  for (const sx of [-1, 1]) {
+    const pil = kit.box(`dress.pilaster.${sx}`, 0.12, C.height, 0.2, mats.steel, scene, root);
+    pil.position = new Vector3(sx * (C.xHalf - 0.06), C.height / 2, 45.9);
+  }
+
+  // vending unit — the sparse right-wall stretch z 34–46 after the
+  // gallery. Registered as one node so it can anchor anomalies later.
+  const vend = new TransformNode("prop.vending", scene);
+  vend.parent = root;
+  vend.position = new Vector3(C.xHalf - 0.36, 0, 41.5);
+  const vendBody = kit.box("prop.vend.body", 0.52, 1.92, 0.95, mats.steel, scene, vend);
+  vendBody.position = new Vector3(0.06, 0.96, 0);
+  const vendTex = makeVendingFace(scene);
+  const vendMat = new StandardMaterial("mat.vendingFace", scene);
+  vendMat.diffuseTexture = vendTex;
+  vendMat.emissiveTexture = vendTex;
+  vendMat.emissiveColor = new Color3(0.45, 0.45, 0.45);
+  vendMat.specularColor = new Color3(0.12, 0.12, 0.12);
+  const vendFace = kit.plane("prop.vend.face", 0.72, 1.62, vendMat, scene, vend);
+  vendFace.position = new Vector3(-0.205, 1.02, -0.06);
+  vendFace.rotation.y = Math.PI / 2; // front face toward corridor (−x)
+  const vendCoin = kit.box("prop.vend.coin", 0.06, 0.5, 0.18, mats.rubber, scene, vend);
+  vendCoin.position = new Vector3(-0.22, 1.15, 0.34);
+  const vendSlot = kit.box("prop.vend.slot", 0.065, 0.025, 0.07, mats.steel, scene, vend);
+  vendSlot.position = new Vector3(-0.225, 1.22, 0.34);
+  const vendKick = kit.box("prop.vend.kick", 0.54, 0.12, 0.93, mats.rubber, scene, vend);
+  vendKick.position = new Vector3(0.06, 0.06, 0);
+  registry.register("prop.vending", vend);
+  colliders.push(
+    kit.collider("prop.vend.col", 0.7, 1.95, 1.0, new Vector3(C.xHalf - 0.36, 0.98, 41.5), scene, root),
+  );
 
   // ─── services + wear dressing ────────────────────────────────────
   // Cable tray + conduit along both ceiling edges, strap hangers,
