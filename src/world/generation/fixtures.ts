@@ -68,6 +68,38 @@ export function buildFixtures(
   const bin = kit.box("bin", 0.34, 0.6, 0.34, mats.rubber, scene, root);
   bin.position = new Vector3(WALL_X - 0.24, 0.3, 51.5);
   registry.register("bin", bin);
+  // rim lip + dark liner mouth + a steel band — children so bin.*
+  // anomalies carry them
+  const binRim = kit.box("bin.rim", 0.38, 0.05, 0.38, mats.steel, scene);
+  binRim.parent = bin;
+  binRim.position = new Vector3(0, 0.28, 0);
+  const binLiner = kit.box("bin.liner", 0.3, 0.04, 0.3, mats.rubber, scene);
+  binLiner.parent = bin;
+  binLiner.position = new Vector3(0, 0.265, 0);
+  const binBand = kit.box("bin.band", 0.345, 0.07, 0.345, mats.steel, scene);
+  binBand.parent = bin;
+  binBand.position = new Vector3(0, -0.12, 0);
+
+  // ---- fire hose reel cabinet, left wall z≈44.6 — red accent in the
+  //      dark stretch before the service junction ----
+  const hoseCab = kit.box("dress.hose.cab", 0.12, 0.6, 0.5, mats.cabinetRed, scene, root);
+  hoseCab.position = new Vector3(-WALL_X + 0.07, 1.35, 44.6);
+  const hoseReel = CreateCylinder(
+    "dress.hose.reel",
+    { height: 0.05, diameter: 0.34, tessellation: 20 },
+    scene,
+  );
+  hoseReel.material = mats.cabinetRed;
+  hoseReel.parent = root;
+  hoseReel.position = new Vector3(-WALL_X + 0.14, 1.38, 44.6);
+  hoseReel.rotation.z = Math.PI / 2;
+  const hoseHub = CreateCylinder("dress.hose.hub", { height: 0.06, diameter: 0.08, tessellation: 12 }, scene);
+  hoseHub.material = mats.steel;
+  hoseHub.parent = root;
+  hoseHub.position = new Vector3(-WALL_X + 0.155, 1.38, 44.6);
+  hoseHub.rotation.z = Math.PI / 2;
+  const hoseNoz = kit.box("dress.hose.nozzle", 0.04, 0.16, 0.04, mats.steel, scene, root);
+  hoseNoz.position = new Vector3(-WALL_X + 0.14, 1.14, 44.75);
 
   buildImpossibleFacade(scene, root, mats, registry);
   buildLiftLobby(scene, root, mats, registry);
