@@ -14,11 +14,11 @@ test.describe("cross-browser smoke", () => {
     });
     await page.getByRole("button", { name: /BEGIN SHIFT/ }).click();
     await page.waitForFunction("window.__nightaudit.loop() === 1", undefined, { timeout: 30_000 });
-    const p0 = await page.evaluate(() => window.__nightaudit.pos());
+    const p0 = (await page.evaluate("window.__nightaudit.pos()")) as { z: number };
     await page.keyboard.down("KeyW");
     await page.waitForTimeout(1_500);
     await page.keyboard.up("KeyW");
-    const p1 = await page.evaluate(() => window.__nightaudit.pos());
+    const p1 = (await page.evaluate("window.__nightaudit.pos()")) as { z: number };
     expect(p1.z).toBeGreaterThan(p0.z + 0.4);
     expect(errors).toEqual([]);
   });
@@ -32,9 +32,7 @@ test.describe("cross-browser smoke", () => {
     });
     await page.getByRole("button", { name: /BEGIN SHIFT/ }).click();
     await page.waitForFunction("window.__nightaudit.loop() === 1", undefined, { timeout: 30_000 });
-    await page.evaluate(() => {
-      window.__nightaudit.teleport(0, 0, 58);
-    });
+    await page.evaluate("window.__nightaudit.teleport(0, 0, 58)");
     await page.waitForFunction("window.__nightaudit.loop() === 2", undefined, { timeout: 40_000 });
     expect(errors).toEqual([]);
   });

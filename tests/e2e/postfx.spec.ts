@@ -15,13 +15,13 @@ test.describe("high tier post pipeline", () => {
     });
     await page.getByRole("button", { name: /BEGIN SHIFT/ }).click();
     await page.waitForFunction("window.__nightaudit.loop() === 1", undefined, { timeout: 40_000 });
-    const draws = await page.evaluate(async () => {
+    const draws = (await page.evaluate(`(async () => {
       const app = window.__nightaudit;
       const d0 = app.draws();
       await new Promise((r) => requestAnimationFrame(r));
       await new Promise((r) => requestAnimationFrame(r));
       return app.draws() - d0;
-    });
+    })()`)) as number;
     expect(draws).toBeGreaterThan(30); // the corridor is actually drawing
     expect(errors).toEqual([]);
   });
