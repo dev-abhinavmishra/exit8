@@ -7,11 +7,13 @@
  */
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
 import { CreateCylinder } from "@babylonjs/core/Meshes/Builders/cylinderBuilder";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import type { Scene } from "@babylonjs/core/scene";
+import { makeRouteMap } from "./textures";
 import type { MaterialSet } from "../materials/library";
 import type { WorldRegistry } from "../registry";
 import * as kit from "./kit";
@@ -138,6 +140,19 @@ function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, reg
   // its hinge screws + recessed pull so it reads as a hatch, not a panel
   const pull = kit.box("hatch.plate.pull", 0.03, 0.12, 0.05, mats.rubber, scene, root);
   pull.position = new Vector3(WALL_X - 0.05, 1.3, 40.22);
+
+  // ---- LOOP 7 route map — a framed schematic panel on the east wall,
+  //      the corridor's memorization anchor ----
+  const mapTex = makeRouteMap(scene);
+  const mapMat = new StandardMaterial("mat.routemap", scene);
+  mapMat.diffuseTexture = mapTex;
+  mapMat.specularColor = Color3.Black();
+  mapMat.emissiveColor = new Color3(0.09, 0.09, 0.08);
+  const mapFrame = kit.box("dress.routemap.frame", 0.04, 0.56, 0.76, mats.steel, scene, root);
+  mapFrame.position = new Vector3(WALL_X - 0.03, 1.62, 35.8);
+  const mapFace = kit.plane("dress.routemap", 0.7, 0.5, mapMat, scene, root);
+  mapFace.position = new Vector3(WALL_X - 0.052, 1.62, 35.8);
+  mapFace.rotation.y = Math.PI / 2;
 
   // ---- worn floor wayfinding: a painted route arrow, faded into the
   //      terrazzo at approach points ----
@@ -296,6 +311,10 @@ function buildLiftLobby(scene: Scene, root: TransformNode, mats: MaterialSet, re
     const leaf = kit.box(`lift.door.${sx}`, 0.035, 2.3, 0.66, mats.wallPanel, scene, node);
     leaf.position = new Vector3(WALL_X - 0.05, 1.15, sx * 0.36);
     registry.register(`lift.door.${sx}`, leaf);
+    // dark hinge edge on the leaf's outer side — children ride lift.door
+    const edge = kit.box(`lift.door.${sx}.edge`, 0.008, 2.3, 0.025, mats.rubber, scene);
+    edge.parent = leaf;
+    edge.position = new Vector3(0, 0, -sx * 0.32);
   }
   const lintel = kit.box("lift.lintel", 0.09, 0.3, 1.56, mats.steel, scene, node);
   lintel.position = new Vector3(WALL_X - 0.04, 2.48, 0);

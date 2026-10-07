@@ -745,3 +745,73 @@ export function makeFasciaBand(scene: Scene): DynamicTexture {
   t.update();
   return finish(t);
 }
+
+/** LOOP 7 route diagram — the framed schematic panel: a single amber
+ *  route line with stops, north up, and a YOU ARE HERE marker near the
+ *  intake end. The corridor's memorization anchor. */
+export function makeRouteMap(scene: Scene): DynamicTexture {
+  const t = tex("tex.routemap", 512, 384, scene);
+  const c = ctx(t);
+  // board
+  c.fillStyle = "#1e2124";
+  c.fillRect(0, 0, 512, 384);
+  c.strokeStyle = "#3a3d42";
+  c.lineWidth = 4;
+  c.strokeRect(8, 8, 496, 368);
+  c.fillStyle = "#c8cdd4";
+  c.font = "bold 24px Arial, sans-serif";
+  c.textAlign = "center";
+  c.fillText("INSPECTION LOOP 7", 256, 46);
+  c.fillStyle = "#8a9099";
+  c.font = "15px Arial, sans-serif";
+  c.fillText("MUNICIPAL SERVICES CONCOURSE · LEVEL −2", 256, 72);
+  // the route line
+  c.strokeStyle = "#d8a045";
+  c.lineWidth = 7;
+  c.lineCap = "round";
+  c.beginPath();
+  c.moveTo(256, 110);
+  c.lineTo(256, 320);
+  c.stroke();
+  // stops
+  const stops: [number, string, boolean][] = [
+    [110, "NORTH INTAKE", true],
+    [168, "RECORDS WALL", false],
+    [232, "JUNCTION S-2", false],
+    [320, "INSPECTION POINT", false],
+  ];
+  c.fillStyle = "#d8a045";
+  for (const [y, label] of stops) {
+    c.beginPath();
+    c.arc(256, y, 8, 0, Math.PI * 2);
+    c.fill();
+    c.textAlign = "left";
+    c.font = "bold 16px Arial, sans-serif";
+    c.fillText(label, 286, y + 5);
+  }
+  // heading marker at the south end
+  c.beginPath();
+  c.moveTo(244, 336);
+  c.lineTo(268, 336);
+  c.lineTo(256, 354);
+  c.closePath();
+  c.fill();
+  // YOU ARE HERE just below the intake stop
+  c.fillStyle = "#c8cdd4";
+  c.textAlign = "right";
+  c.font = "bold 14px Arial, sans-serif";
+  c.fillText("YOU ARE HERE", 236, 132);
+  c.strokeStyle = "#c8cdd4";
+  c.lineWidth = 2;
+  c.beginPath();
+  c.moveTo(238, 128);
+  c.lineTo(250, 122);
+  c.stroke();
+  // filing footnote
+  c.fillStyle = "#8a9099";
+  c.textAlign = "center";
+  c.font = "13px Arial, sans-serif";
+  c.fillText("FILE ALL DIVERGENCES AT THE INSPECTION POINT", 256, 372);
+  t.update();
+  return finish(t);
+}
