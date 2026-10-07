@@ -17,6 +17,7 @@ import { ParticleSystem } from "@babylonjs/core/Particles/particleSystem";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { CreateCylinder } from "@babylonjs/core/Meshes/Builders/cylinderBuilder";
+import { CreateSphere } from "@babylonjs/core/Meshes/Builders/sphereBuilder";
 import { Color4 } from "@babylonjs/core/Maths/math.color";
 import type { Scene } from "@babylonjs/core/scene";
 import { WorldRegistry } from "../registry";
@@ -348,6 +349,14 @@ function buildAirlock(
   // bulkhead lamp over the inner door on the vestibule side
   const bulk = kit.box(`al.${side}.bulkhead`, 0.3, 0.09, 0.07, mats.trofferLit, scene, al);
   bulk.position = new Vector3(w / 2 - 0.12, 2.7, doorZ + (side === "north" ? -0.55 : 0.55));
+  // dome camera watching the vestibule — stem + tinted hemisphere
+  const domeStem = kit.box(`dress.dome.${side}.stem`, 0.03, 0.1, 0.03, mats.steel, scene, al);
+  domeStem.position = new Vector3(-w / 2 + 0.3, h - 0.05, zc + (side === "north" ? -1.0 : 1.0));
+  const dome = CreateSphere(`dress.dome.${side}.ball`, { diameter: 0.16, segments: 8 }, scene);
+  dome.material = mats.rubber;
+  dome.parent = al;
+  dome.scaling.y = 0.6;
+  dome.position = new Vector3(-w / 2 + 0.3, h - 0.14, zc + (side === "north" ? -1.0 : 1.0));
 
   return {
     frame: doorNode,
@@ -580,6 +589,10 @@ export function buildConcourse(
   for (const z of [15.5, 18.5, 21.5, 24.5, 27.5, 30.5]) {
     const pull = kit.box(`dress.cabpull.${z}`, 0.03, 0.05, 0.24, mats.steel, scene, root);
     pull.position = new Vector3(-C.xHalf + 0.265, 1.55, z);
+    // index-card label holder above each pull — what an archive bank
+    // actually carries on every drawer
+    const lbl = kit.box(`dress.cablabel.${z}`, 0.022, 0.07, 0.16, mats.rubber, scene, root);
+    lbl.position = new Vector3(-C.xHalf + 0.26, 1.68, z);
   }
   colliders.push(
     kit.collider("records.col", 0.3, 2.2, 18, new Vector3(-C.xHalf + 0.18, 1.1, 22), scene, root),
@@ -734,6 +747,24 @@ export function buildConcourse(
     const th = kit.box(`dress.threshold.${tag}`, 3.56, 0.012, 0.1, mats.steel, scene, root);
     th.position = new Vector3(0, 0.008, tz);
   }
+
+  // scuff wear — dark shoe-sheen marks ground into the terrazzo at the
+  // two places everyone stands: inside each airlock door and at the
+  // commit stripes
+  const scuffSpots: [number, number, number][] = [
+    [0.5, 0.9, 0.3],
+    [-0.6, 1.1, -0.25],
+    [0.4, 56.2, -0.2],
+    [-0.5, 57.5, 0.35],
+    [0.7, 54.2, 0.15],
+    [-0.4, 0.6, -0.3],
+  ];
+  scuffSpots.forEach(([sx, sz, sr], i) => {
+    const sc = kit.plane(`dress.scuff.${i}`, 0.9, 0.35, mats.aoStrip, scene, root);
+    sc.position = new Vector3(sx, 0.014, sz);
+    sc.rotation.x = Math.PI / 2; // face up
+    sc.rotation.z = sr;
+  });
 
   // vending unit — the sparse right-wall stretch z 34–46 after the
   // gallery. Registered as one node so it can anchor anomalies later.
