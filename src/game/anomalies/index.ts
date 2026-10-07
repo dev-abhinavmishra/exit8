@@ -82,6 +82,12 @@ import { glassWriting } from "./glassWriting";
 import { totemReversed } from "./totemReversed";
 import { doorSlow } from "./doorSlow";
 import { cabinetRows } from "./cabinetRows";
+import { mullionMissing } from "./mullionMissing";
+import { galleryLit } from "./galleryLit";
+import { liftCalls } from "./liftCalls";
+import { benchSit } from "./benchSit";
+import { stainSpread } from "./stainSpread";
+import { signGhost } from "./signGhost";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -162,4 +168,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   totemReversed,
   doorSlow,
   cabinetRows,
+  mullionMissing,
+  galleryLit,
+  liftCalls,
+  benchSit,
+  stainSpread,
+  signGhost,
 ];

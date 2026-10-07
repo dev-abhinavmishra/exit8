@@ -209,8 +209,22 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     fourteen seconds where there used to be two. Subtle. (slice)
 39. ★ `cabinet.rows` — the whole records bank gapes: every drawer
     mouth open at a different depth, all dark. Unmistakable. (slice)
+40. ★ `mullion.missing` — one upright in the glass run is gone;
+    twelve metres of unsupported glazing. Subtle. (slice)
+41. ★ `gallery.lit` — the observation room behind the dark glass has
+    its lights on; an empty lit office watching the corridor.
+    Moderate. (slice)
+42. ★ `lift.calls` — the dead lift is being called: lamp burning,
+    chime answering, leaves shut. Moderate. (slice)
+43. ★ `bench.sit` — someone is sitting on the waiting bench, facing
+    the records wall. Unmistakable. (slice)
+44. ★ `stain.spread` — a spill has crept out from under the records
+    wall onto the terrazzo. Subtle. (slice)
+45. ★ `sign.ghost` — a hanging sign you have never read hangs
+    mid-corridor, in perfect institutional lettering. Unmistakable.
+    (slice)
 
-Slice count: **78 implemented** — past the 24 target. New hooks:
+Slice count: **84 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
