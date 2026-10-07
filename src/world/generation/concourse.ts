@@ -301,6 +301,29 @@ function buildAirlock(
   // corridor approach (north, -z => 0); the north sign faces south, +z
   above.rotation.y = side === "north" ? Math.PI : 0;
 
+  // interior dressing — the vestibule is a room you stand inside twice per
+  // loop; merge-prefixed pieces fold into the corridor's static batches.
+  for (const sx of [-1, 1]) {
+    const base = kit.box(`baseboard.al.${side}.${sx}`, 0.04, 0.12, z1 - z0 - 0.1, mats.rubber, scene, al);
+    base.position = new Vector3((sx * (w - 0.14)) / 2, 0.06, zc);
+    const ao = kit.plane(`dress.ao.al.${side}.${sx}`, z1 - z0 - 0.2, 0.4, mats.aoStrip, scene);
+    ao.parent = al;
+    ao.position = new Vector3((sx * (w - 0.13)) / 2, 0.24, zc);
+    ao.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
+  }
+  const conduit = kit.box(`dress.conduit.al.${side}`, 0.04, 0.04, z1 - z0 - 0.2, mats.steel, scene, al);
+  conduit.position = new Vector3(w / 2 - 0.14, 2.62, zc);
+  for (let i = 0; i < 3; i++) {
+    const sz = z0 + ((z1 - z0) / 4) * (i + 1);
+    const seam = kit.box(`dress.seam.al.${side}.${i}`, w - 0.15, 0.012, 0.05, mats.rubber, scene, al);
+    seam.position = new Vector3(0, 0.006, sz);
+  }
+  const drain = kit.box(`dress.drain.al.${side}`, 0.3, 0.016, 0.5, mats.steel, scene, al);
+  drain.position = new Vector3(0.6, 0.008, zc + (side === "north" ? -1.4 : 1.4));
+  // bulkhead lamp over the inner door on the vestibule side
+  const bulk = kit.box(`al.${side}.bulkhead`, 0.3, 0.09, 0.07, mats.trofferLit, scene, al);
+  bulk.position = new Vector3(w / 2 - 0.12, 2.7, doorZ + (side === "north" ? -0.55 : 0.55));
+
   return {
     frame: doorNode,
     left: d.left,
