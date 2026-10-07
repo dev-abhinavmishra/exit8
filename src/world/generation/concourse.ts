@@ -297,6 +297,8 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
     point.intensity = 6.5;
     point.range = (zd.z1 - zd.z0) * 0.9 + 8;
     zones.push({ name: zd.name, point, troffers, baseDiffuse: point.diffuse.clone() });
+    // lighting anomalies address zones by name through the registry
+    registry.register(point.name, point as unknown as AbstractMesh);
   }
 
   const hemi = new HemisphericLight("light.hemi", new Vector3(0, 1, 0), scene);
@@ -346,9 +348,42 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
     kit.collider("bench.col", 1.9, 0.7, 0.7, new Vector3(-C.xHalf + 0.45, 0.35, 16), scene, root),
   );
 
+  // recessed service door RIGHT z≈15.5 — baseline shut; door.ajar opens it
+  const sframe = kit.box("service.door.frame", 0.14, 2.2, 1.0, mats.steel, scene, root);
+  sframe.position = new Vector3(C.xHalf - 0.07, 1.1, 15.5);
+  const sslit = kit.box("service.door.slit", 0.02, 2.05, 0.8, mats.rubber, scene, root);
+  sslit.position = new Vector3(C.xHalf - 0.1, 1.02, 15.5);
+  const sleaf = kit.box("service.door.leaf", 0.06, 2.1, 0.88, mats.door, scene, root);
+  sleaf.position = new Vector3(C.xHalf - 0.12, 1.05, 15.5);
+  registry.register("service.door.frame", sframe);
+  registry.register("service.door.leaf", sleaf);
+  registry.register("service.door.slit", sslit);
+
   // fire cabinet RIGHT z≈18
   const cabFire = kit.fireCabinet(mats, scene, root, registry);
   cabFire.position = new Vector3(C.xHalf - 0.12, 1.4, 18);
+
+  // vent grilles at the ambience anchors (high on the walls)
+  const ventSpots: [number, number][] = [
+    [-1, 8],
+    [1, 30],
+    [-1, 50],
+  ];
+  ventSpots.forEach(([sx, vz], i) => {
+    const g = kit.box(`vent.grille.${i}`, 0.08, 0.4, 0.9, mats.steel, scene, root);
+    g.position = new Vector3(sx * (C.xHalf - 0.04), C.height - 0.1, vz);
+    for (let s = 0; s < 4; s++) {
+      const sl = kit.box(`vent.grille.${i}.slat.${s}`, 0.03, 0.05, 0.8, mats.rubber, scene, root);
+      sl.position = new Vector3(sx * (C.xHalf - 0.09), C.height - 0.24 + s * 0.1, vz);
+    }
+    registry.register(`vent.grille.${i}`, g);
+  });
+
+  // baseboard trim grounds the walls
+  for (const sx of [-1, 1]) {
+    const base = kit.box(`baseboard.${sx}`, 0.06, 0.14, len, mats.rubber, scene, root);
+    base.position = new Vector3(sx * (C.xHalf - 0.03), 0.07, zc);
+  }
 
   // signs
   const sGallery = kit.wallSign("sign.gallery", mats, scene, root, registry, 1.5, 0.45);

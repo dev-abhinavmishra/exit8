@@ -258,6 +258,11 @@ export function cctv(
   dome.material = mats.rubber;
   dome.parent = root;
   dome.scaling.y = 0.7;
+  // lens glint on the dome's forward edge — makes the watch direction readable
+  const lens = CreateDisc(`${name}.lens`, { radius: 0.025, tessellation: 16 }, scene);
+  lens.material = mats.cabinetRed;
+  lens.parent = root;
+  lens.position = new Vector3(0, -0.03, 0.078);
   const mount = box(`${name}.mount`, 0.05, 0.12, 0.05, mats.steel, scene, root);
   mount.position.y = 0.1;
   registry.register(name, root);

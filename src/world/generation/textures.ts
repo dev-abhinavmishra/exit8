@@ -290,10 +290,10 @@ function makeClockFace(scene: Scene): DynamicTexture {
   return finish(t);
 }
 
-function makeSignTexture(spec: SignSpec, scene: Scene): DynamicTexture {
+/** Redraw a sign texture in place — used at build and by signage anomalies. */
+export function drawSign(t: DynamicTexture, spec: SignSpec): void {
   const w = 512;
   const h = 160;
-  const t = tex(`tex.${spec.id}`, w, h, scene);
   const c = ctx(t);
   const tones = {
     amber: { bg: "#23262c", fg: "#e8a33d", edge: "#e8a33d" },
@@ -315,6 +315,12 @@ function makeSignTexture(spec: SignSpec, scene: Scene): DynamicTexture {
     c.fillStyle = spec.tone === "dark" ? tones.fg : "#c9c6bc";
     c.fillText(spec.sub, w / 2, 122);
   }
+  t.update();
+}
+
+function makeSignTexture(spec: SignSpec, scene: Scene): DynamicTexture {
+  const t = tex(`tex.${spec.id}`, 512, 160, scene);
+  drawSign(t, spec);
   return finish(t);
 }
 

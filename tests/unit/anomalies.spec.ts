@@ -2,13 +2,13 @@ import { describe, expect, it } from "vitest";
 import { AnomalyRegistry } from "../../src/game/anomalies/registry";
 import { RngStream } from "../../src/game/state/rng";
 import { clockReverse } from "../../src/game/anomalies/clockReverse";
-import { doorwayExtra } from "../../src/game/anomalies/doorwayExtra";
 import { footstepsExtra } from "../../src/game/anomalies/footstepsExtra";
+import { ALL_ANOMALIES } from "../../src/game/anomalies";
 import type { AnomalyDef } from "../../src/game/anomalies/types";
 
 const registry = () => {
   const r = new AnomalyRegistry();
-  for (const d of [clockReverse, doorwayExtra, footstepsExtra]) r.register(d);
+  for (const d of ALL_ANOMALIES) r.register(d);
   return r;
 };
 

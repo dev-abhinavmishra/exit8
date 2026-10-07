@@ -27,9 +27,7 @@ import { createRenderer, type RendererKind } from "../engine/renderer";
 import { GameUi } from "../ui/screens";
 import { buildInspectionRig, type InspectionRig } from "../world/lighting/rig";
 import { FocusResolver, type Interactable } from "../game/interaction/focus";
-import { clockReverse } from "../game/anomalies/clockReverse";
-import { doorwayExtra } from "../game/anomalies/doorwayExtra";
-import { footstepsExtra } from "../game/anomalies/footstepsExtra";
+import { ALL_ANOMALIES } from "../game/anomalies";
 import { installDebugHandle } from "../debug/handle";
 
 export type AppState = "boot" | "menu" | "playing" | "paused" | "results";
@@ -93,7 +91,7 @@ export class App {
     if (params.quality !== "auto") settings.video.quality = params.quality;
     this.caps = detectCapabilities();
     this.runSeed = params.seed;
-    for (const d of [clockReverse, doorwayExtra, footstepsExtra]) this.anomalies.register(d);
+    for (const d of ALL_ANOMALIES) this.anomalies.register(d);
   }
 
   async boot(): Promise<void> {
