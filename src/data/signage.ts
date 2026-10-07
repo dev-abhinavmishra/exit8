@@ -92,6 +92,13 @@ export const SIGNS: SignSpec[] = [
     arrow: "none",
     tone: "dark",
   },
+  {
+    id: "sign.directory",
+    title: "ROUTE DIRECTORY",
+    sub: "NORTH INTAKE · JUNCTION S-2 · INSPECTION POINT",
+    arrow: "right",
+    tone: "amber",
+  },
 ];
 
 /** Diegetic micro-copy; used on posters, terminals, notices. */

@@ -798,7 +798,7 @@ export function buildConcourse(
   // maintenance access hatches — recessed steel panels flush with the
   // wall skin, with a quarter-turn keyhole slot
   for (const [sx, pz] of [
-    [-1, 5.6],
+    [-1, 2.6],
     [1, 34.4],
     [-1, 51.4],
   ] as const) {
@@ -819,6 +819,50 @@ export function buildConcourse(
     st.position = new Vector3(sx * (C.xHalf - 0.065), 1.9, pz);
     st.rotation.y = sx > 0 ? -Math.PI / 2 : Math.PI / 2;
   }
+
+  // wall-mounted route directory on the quiet stretch past the notices
+  const dir = kit.wallSign("sign.directory", mats, scene, root, registry, 1.3, 0.34);
+  dir.position = new Vector3(C.xHalf - 0.06, 1.86, 10.9);
+  dir.rotation.y = Math.PI / 2;
+
+  // PA horns — wall-mounted flared speakers high at each end of the run
+  for (const [sx, pz, dirZ] of [
+    [1, 12.2, 1],
+    [-1, 40.5, -1],
+  ] as const) {
+    const base = kit.box(`dress.pahorn.${pz}`, 0.06, 0.16, 0.14, mats.steel, scene, root);
+    base.position = new Vector3(sx * (C.xHalf - 0.05), 2.5, pz);
+    const horn = CreateCylinder(
+      `dress.pahorn.${pz}.cone`,
+      { height: 0.18, diameterTop: 0.17, diameterBottom: 0.05, tessellation: 12 },
+      scene,
+    );
+    horn.material = mats.rubber;
+    horn.position = new Vector3(sx * (C.xHalf - 0.05), 2.5, pz + dirZ * 0.12);
+    horn.rotation.x = dirZ > 0 ? Math.PI / 2 : -Math.PI / 2;
+  }
+
+  // caution A-frame — the folding wet-floor sign left out mid-route
+  const cautionMat = new StandardMaterial("mat.caution", scene);
+  cautionMat.diffuseColor = new Color3(0.72, 0.5, 0.08);
+  cautionMat.emissiveColor = new Color3(0.16, 0.12, 0.03);
+  cautionMat.specularColor = new Color3(0.08, 0.08, 0.08);
+  const caution = new TransformNode("dress.caution", scene);
+  caution.parent = root;
+  caution.position = new Vector3(0.95, 0, 30.8);
+  caution.rotation.y = 0.22;
+  for (const lean of [-1, 1]) {
+    const panel = kit.box(`dress.caution.panel${lean < 0 ? "a" : "b"}`, 0.36, 0.54, 0.018, cautionMat, scene);
+    panel.parent = caution;
+    panel.position = new Vector3(0, 0.27, lean * 0.088);
+    panel.rotation.x = -lean * 0.32;
+    const band = kit.box(`dress.caution.band${lean < 0 ? "a" : "b"}`, 0.28, 0.09, 0.012, mats.rubber, scene);
+    band.parent = panel;
+    band.position = new Vector3(0, 0.1, lean * 0.018);
+  }
+  const hinge = kit.box("dress.caution.hinge", 0.38, 0.05, 0.05, mats.rubber, scene);
+  hinge.parent = caution;
+  hinge.position = new Vector3(0, 0.56, 0);
 
   // scuff wear — dark shoe-sheen marks ground into the terrazzo at the
   // two places everyone stands: inside each airlock door and at the

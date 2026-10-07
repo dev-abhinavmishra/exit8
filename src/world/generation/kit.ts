@@ -154,6 +154,13 @@ export function hangingSign(
   const rod = box(`sign.${specId}.rod`, 0.03, 0.25, 0.03, mats.steel, scene, parent);
   rod.position = new Vector3(panel.position.x, ceilingY - 0.12, panel.position.z);
   registry.register(`sign.${specId}`, panel);
+  // readable back face — the box's rear face mirrors the texture, which in
+  // this game reads as a false anomaly; cover it with a correctly
+  // oriented plate that rides the panel's anomalies
+  const back = plane(`sign.${specId}.back`, 1.55, 0.45, mat, scene);
+  back.parent = panel;
+  back.position = new Vector3(0, 0, 0.03);
+  back.rotation.y = Math.PI;
   return panel;
 }
 
