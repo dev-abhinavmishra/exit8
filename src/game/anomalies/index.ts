@@ -90,6 +90,9 @@ import { stainSpread } from "./stainSpread";
 import { signGhost } from "./signGhost";
 import { hallStretch } from "./hallStretch";
 import { vanishMisaligned } from "./vanishMisaligned";
+import { arrowPoints } from "./arrowPoints";
+import { bayplateGone } from "./bayplateGone";
+import { ventSlats } from "./ventSlats";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -178,4 +181,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   signGhost,
   hallStretch,
   vanishMisaligned,
+  arrowPoints,
+  bayplateGone,
+  ventSlats,
 ];

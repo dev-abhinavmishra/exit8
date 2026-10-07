@@ -131,6 +131,7 @@ function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, reg
   for (const z of [8, 24, 44]) {
     const vent = kit.box(`ceiling.vent.${z}`, 0.6, 0.04, 0.9, mats.rubber, scene, root);
     vent.position = new Vector3(z === 24 ? -0.8 : 0.8, 2.97, z);
+    registry.register(`ceiling.vent.${z}`, vent);
     for (let i = 0; i < 4; i++) {
       const slat = kit.box(`ceiling.vent.${z}.${i}`, 0.56, 0.05, 0.1, mats.steel, scene, root);
       slat.position = new Vector3(vent.position.x, 2.96, z - 0.3 + i * 0.2);

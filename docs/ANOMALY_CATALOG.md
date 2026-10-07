@@ -226,8 +226,14 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 45. ★ `sign.ghost` — a hanging sign you have never read hangs
     mid-corridor, in perfect institutional lettering. Unmistakable.
     (slice)
+46. ★ `arrow.points` — one worn route decal is re-painted to point
+    north. Only wrong if you remember it was right. Subtle. (slice)
+47. ★ `bayplate.gone` — one of the six records-bank bay plates is
+    simply not there. Subtle. (slice)
+48. ★ `vent.slats` — every louvre in one ceiling grille is gone; a
+    bare dark slot. Look up. Subtle. (slice)
 
-Slice count: **86 implemented — the full catalog**. New hooks:
+Slice count: **89 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
