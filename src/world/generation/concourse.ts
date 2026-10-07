@@ -20,6 +20,7 @@ import { buildTextureSet, type TextureSet } from "./textures";
 import { RngStream } from "../../game/state/rng";
 import { SIGNS } from "../../data/signage";
 import * as kit from "./kit";
+import { buildScatter, type ScatterPool } from "./scatter";
 
 export const LAYOUT = {
   corridor: { xHalf: 1.8, z0: 0, z1: 55, height: 3.0 },
@@ -74,6 +75,8 @@ export interface ConcourseWorld {
     junctionMachine: Vector3;
     vents: Vector3[];
   };
+  /** per-loop harmless scatter — refreshed on every rebaseline */
+  scatter: ScatterPool;
 }
 
 function buildAirlock(
@@ -561,6 +564,8 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
     headerTop.position = new Vector3(0, C.height - 0.175, z);
   }
 
+  const scatter = buildScatter(scene, root, mats, runSeed);
+
   return {
     root,
     registry,
@@ -573,6 +578,7 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
     extraRoom,
     extraRoomSpill: spill,
     condensationPatch: condensation,
+    scatter,
     clock: {
       hourPivot: registry.get("clock.hour.pivot") as TransformNode,
       minutePivot: registry.get("clock.minute.pivot") as TransformNode,

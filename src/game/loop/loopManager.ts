@@ -164,6 +164,9 @@ export class LoopManager {
 
     // roll next loop
     this.loopIndex += 1;
+    // harmless scatter drifts each loop — a changed detail is not a
+    // divergence; keeps memorization honest (loop.dressing stream)
+    this.world.scatter.refresh(this.loopIndex);
     const rate = CHAPTER_ANOMALY_RATE[this.chapter] ?? 0.5;
     if (this.forcedAnomalyId !== null) {
       this.activeDef = this.forcedAnomalyId === "none" ? null : this.anomalies.get(this.forcedAnomalyId);

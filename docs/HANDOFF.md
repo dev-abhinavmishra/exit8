@@ -76,6 +76,12 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   the gallery span), floor expansion seams every 6z, drain grates,
   translucent `grime` decals under vents — all baseline-fixed so any
   change reads as anomaly. Big density lift toward M2's benchmark.
+- **Per-loop scatter** (579d955): `src/world/generation/scatter.ts` —
+  7 ephemera variants re-place 0–3 per rebaseline from
+  `loop.dressing` scoped `loop<N>` — the corridor is never
+  pixel-identical so drift != divergence. Never registered; evidence
+  notes never sit on bare floor so papers can't be mistaken for them.
+  ConcourseWorld gains `scatter`; rebaseline() calls refresh.
 - Next up per the attached brief: rest of M3 (mobile controls, full
   accessibility pass), M2 (baked lighting / KTX2), M4 (second ending
   groundwork already in: 'investigative' via dossier).
