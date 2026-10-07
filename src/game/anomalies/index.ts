@@ -42,6 +42,7 @@ import { fireOpen } from "./fireOpen";
 import { posterSwapped } from "./posterSwapped";
 import { signDrift } from "./signDrift";
 import { terminalGlitch } from "./terminalGlitch";
+import { memoryPersist } from "./memoryPersist";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -82,4 +83,5 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   posterSwapped,
   signDrift,
   terminalGlitch,
+  memoryPersist,
 ];

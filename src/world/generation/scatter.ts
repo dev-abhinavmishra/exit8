@@ -19,11 +19,20 @@ interface ScatterVariant {
   /** unregistered mesh root — hidden between loops */
   node: TransformNode;
   spots: { x: number; z: number; yaw?: number }[];
+  /** where this variant sat at the end of last loop's refresh, if placed */
+  last?: { x: number; z: number; yaw: number };
 }
 
 export interface ScatterPool {
   /** Re-place a seeded subset for this loop index (0 = pre-loop clear). */
   refresh(loopIndex: number): void;
+  /**
+   * memory.persist — re-place the nth previously-placed variant at the
+   * exact spot it occupied last loop, enabled even if this loop's draw
+   * left it out. The corridor re-dresses everything else; one detail
+   * refuses to move.
+   */
+  repeatLast(idx: number): void;
 }
 
 export function buildScatter(
@@ -31,7 +40,13 @@ export function buildScatter(
   parent: TransformNode,
   mats: MaterialSet,
   runSeed: string,
+  registry?: { register(name: string, node: TransformNode): void },
 ): ScatterPool {
+  // registered anchor so anomalies can name scatter as a dependency
+  // without any individual variant becoming a registry node
+  const anchor = new TransformNode("dress.scatter", scene);
+  anchor.parent = parent;
+  registry?.register("dress.scatter", anchor);
   const paper = new StandardMaterial("mat.scatter.paper", scene);
   paper.diffuseColor = new Color3(0.55, 0.52, 0.45);
   paper.specularColor = new Color3(0, 0, 0);
@@ -49,7 +64,7 @@ export function buildScatter(
 
   const node = (name: string) => {
     const n = new TransformNode(`dress.scatter.${name}`, scene);
-    n.parent = parent;
+    n.parent = anchor;
     n.setEnabled(false);
     return n;
   };
@@ -211,10 +226,21 @@ export function buildScatter(
       for (let i = 0; i < k && pool.length > 0; i++) {
         const pick = pool.splice(rng.int(0, pool.length), 1)[0]!;
         const spot = pick.spots[rng.int(0, pick.spots.length)]!;
+        const yaw = spot.yaw ?? rng.range(-0.35, 0.35) + (spot.x < 0 ? 0 : Math.PI);
         pick.node.position.set(spot.x, 0, spot.z);
-        pick.node.rotation.y = spot.yaw ?? rng.range(-0.35, 0.35) + (spot.x < 0 ? 0 : Math.PI);
+        pick.node.rotation.y = yaw;
+        pick.last = { x: spot.x, z: spot.z, yaw };
         pick.node.setEnabled(true);
       }
+    },
+    repeatLast(idx: number) {
+      const cands = variants.filter((v) => v.last !== undefined);
+      const v = cands[idx % cands.length] ?? variants[0];
+      if (!v) return;
+      const at = v.last ?? { ...v.spots[0]!, yaw: 0 };
+      v.node.position.set(at.x, 0, at.z);
+      v.node.rotation.y = at.yaw;
+      v.node.setEnabled(true);
     },
   };
 }

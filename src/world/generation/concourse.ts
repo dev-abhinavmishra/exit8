@@ -624,7 +624,7 @@ export function buildConcourse(
     headerTop.position = new Vector3(0, C.height - 0.175, z);
   }
 
-  const scatter = buildScatter(scene, root, mats, runSeed);
+  const scatter = buildScatter(scene, root, mats, runSeed, registry);
   const ambientWalker = buildAmbientWalker(scene, root, mats, registry);
   ambientWalker.reset();
   buildFixtures(scene, root, mats, registry);

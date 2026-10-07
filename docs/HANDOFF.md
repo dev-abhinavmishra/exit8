@@ -10,7 +10,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller
   (collision via `camera.cameraDirection` + `collisionCoordinator` import),
   Loop 7 concourse (procedural), commit thresholds, stability index,
-  **38 anomalies** (was 3 — 24 target passed) registered via
+  **39 anomalies** (was 3 — 24 target passed) registered via
   `anomalies/index.ts` (`ALL_ANOMALIES` — register there, not in app.ts),
   procedural audio (seeded `audio.synth`/`audio.ambient` streams),
   start/pause/settings/results, v1 saves, vitest + playwright suites,
@@ -37,7 +37,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   `view()` added to the debug handle (yaw/pitch getter; `look()` is
   a setter). e2e stubs `navigator.getGamepads` via addInitScript.
 - **Route archive live** (bde5a73): ROUTE ARCHIVE on the start
-  screen — stats table + DIVERGENCE REGISTER of all 38 defs sorted by
+  screen — stats table + DIVERGENCE REGISTER of all 39 defs sorted by
   chapter; discovered ids render name/chapter/category/detectability,
   unfound ones show redacted rows. `ui.setArchiveData(stats, ids)`
   populates from save at boot. NOTE: seeded saves in e2e must carry
@@ -126,6 +126,11 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   TRAP: kit.wallSign registers `sign.${specId}` and specIds already carry
   the prefix — registry names are `sign.sign.gallery` etc. requires must
   use the double prefix (see signFlip's `sign.${SPEC_ID}`).
+- `memory.persist` (**39**): scatter gains a `dress.scatter` registered
+  anchor node + `repeatLast(idx)` — each variant records last loop's
+  spot in `last`; the anomaly re-places one at that exact spot even if
+  this loop's draw excluded it. buildScatter gained an optional
+  registry param.
   `ambient.walker` registered in WorldRegistry; update() runs in
   app.sim. Trap: e2e archive spec had "0 OF 31 FILED" hardcoded — now
   regex-matched; specs CANNOT import src/game/anomalies (Node can't

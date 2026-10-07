@@ -99,8 +99,8 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 
 ## Group F — systemic (3)
 
-1. `memory.persist` — a harmless detail the player "logged" persists when
-   it should have reset (cross-loop memory signature).
+1. ★ `memory.persist` — a scatter detail placed last loop returns at the
+   exact same spot while everything else re-dresses. Subtle. (slice)
 2. `ui.disagree` — the airlock terminal shows last loop's judgment wrong.
 3. `route.reacts` — the corridor repeats a sound the player made last loop
    (e.g. their knock on glass).
@@ -113,7 +113,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 7. ★ `terminal.glitch` — both airlock terminals briefly insist a
    divergence was filed and stability reads 0. Subtle. (slice)
 
-Slice count: **38 implemented** — past the 24 target. New hooks:
+Slice count: **39 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
