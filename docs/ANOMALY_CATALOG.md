@@ -126,8 +126,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
    cabinet stands open on its bare red face. Subtle. (slice)
 7. ★ `terminal.glitch` — both airlock terminals briefly insist a
    divergence was filed and stability reads 0. Subtle. (slice)
+8. ★ `guide.missing` — a run of the tactile guide strip is absent mid-
+   corridor: the amber channel breaks for six metres and resumes.
+   Moderate. (slice)
 
-Slice count: **46 implemented** — past the 24 target. New hooks:
+Slice count: **47 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

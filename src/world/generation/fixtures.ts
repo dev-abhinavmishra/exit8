@@ -43,6 +43,27 @@ export function buildFixtures(
 
   buildImpossibleFacade(scene, root, mats, registry);
   buildLiftLobby(scene, root, mats, registry);
+  buildGuideStrip(scene, root, mats, registry);
+}
+
+/** Tactile guide strip: the raised amber channel that runs the corridor
+ * right of centre — the line every inspector memorizes. Built in 8
+ * registered segments so anomalies can break its continuity. */
+function buildGuideStrip(
+  scene: Scene,
+  root: TransformNode,
+  mats: MaterialSet,
+  registry: WorldRegistry,
+): void {
+  const SEGMENTS = 8;
+  const Z0 = 3.0;
+  const Z1 = 54.2;
+  const segLen = (Z1 - Z0) / SEGMENTS;
+  for (let i = 0; i < SEGMENTS; i++) {
+    const s = kit.box(`guide.seg.${i}`, 0.34, 0.014, segLen - 0.04, mats.guideStrip, scene, root);
+    s.position = new Vector3(0.72, 0.008, Z0 + segLen * (i + 0.5));
+    registry.register(`guide.seg.${i}`, s);
+  }
 }
 
 /**

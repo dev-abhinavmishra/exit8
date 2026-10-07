@@ -43,6 +43,7 @@ export interface TextureSet {
   signs: Map<string, DynamicTexture>;
   terminal: DynamicTexture; // airlock terminal screen (live-updated)
   fadeStrip: DynamicTexture; // linear fade — fake ambient occlusion
+  guideStrip: DynamicTexture; // tactile guide bar channels for the floor
 }
 
 /** Speckled terrazzo with brass divider strips. Tiles every 1.2 m. */
@@ -448,7 +449,26 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     signs: signMap,
     terminal: makeTerminal(scene),
     fadeStrip: drawFadeStrip(tex("tex.fadeStrip", 256, 64, scene), "up"),
+    guideStrip: makeGuideStrip(scene),
   };
+}
+
+/** Tactile guide strip tile: dim amber channel with three raised bars
+ * running along the walk direction. Tiles seamlessly in v. */
+function makeGuideStrip(scene: Scene): DynamicTexture {
+  const t = tex("tex.guideStrip", 128, 128, scene);
+  const c = ctx(t);
+  c.fillStyle = "#6b5d33";
+  c.fillRect(0, 0, 128, 128);
+  for (const u of [0.2, 0.5, 0.8]) {
+    const x = Math.round(u * 128);
+    c.fillStyle = "#9a8548";
+    c.fillRect(x - 5, 6, 10, 116);
+    c.fillStyle = "#4a4024";
+    c.fillRect(x + 5, 6, 2, 116); // righthand shadow edge
+  }
+  t.update();
+  return finish(t);
 }
 
 /** Rewrite the airlock terminal contents (called per loop transition). */

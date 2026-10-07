@@ -50,6 +50,7 @@ import { depthMismatch } from "./depthMismatch";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
+import { guideMissing } from "./guideMissing";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -98,4 +99,5 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   liftArrives,
   gazeShift,
   paceDissolves,
+  guideMissing,
 ];

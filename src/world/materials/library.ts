@@ -29,6 +29,7 @@ export interface MaterialSet {
   terminal: StandardMaterial;
   condensation: StandardMaterial;
   anomalousRoom: StandardMaterial;
+  guideStrip: StandardMaterial;
 }
 
 export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
@@ -112,6 +113,13 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   const rubber = new StandardMaterial("mat.rubber", scene);
   rubber.diffuseColor = new Color3(0.03, 0.03, 0.035);
   rubber.specularColor = new Color3(0.02, 0.02, 0.02);
+
+  // tactile guide strip — dim amber channel with raised bars; slightly
+  // emissive-free but warmer than the terrazzo so the line reads
+  const guideStrip = new StandardMaterial("mat.guideStrip", scene);
+  guideStrip.diffuseTexture = tex.guideStrip;
+  tex.guideStrip.uScale = 1;
+  tex.guideStrip.vScale = 8; // ~0.8 m bar pitch along a 6.4 m segment
 
   // damp staining / wall wear — translucent dark wash decal
   const grime = new StandardMaterial("mat.grime", scene);
@@ -199,5 +207,6 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     terminal,
     condensation,
     anomalousRoom,
+    guideStrip,
   };
 }

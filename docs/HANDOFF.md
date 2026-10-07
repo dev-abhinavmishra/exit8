@@ -175,6 +175,13 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   drawSign draws an original walking-person glyph (drawFigure, mirrored
   by dir) left of the title — sign.exit.south carries it. Def redraws
   the shared spec texture with the figure flipped like poster.swapped.
+- Tactile guide strip + `guide.missing` (**47**): amber tactile channel
+  down the floor right-of-centre (x=0.72, z 3–54.2) in 8 registered
+  `guide.seg.N` boxes (6.4 m each) — texture `tex.guideStrip` /
+  `mats.guideStrip` (vScale 8 per segment). The anomaly hides 1–3
+  adjacent middle segments via setEnabled(false). Strip is the
+  corridor's memorization line — it can also anchor guide.misaligned /
+  guide.reversed later.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
