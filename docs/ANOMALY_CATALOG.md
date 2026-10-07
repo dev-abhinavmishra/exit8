@@ -28,6 +28,9 @@ Target ≥ 24 across six groups. ★ = implemented.
 10. ★ `cctv.sleeps` — clinic-bend camera's red lens is dead. Subtle. (slice)
 11. ★ `stripe.wrong` — south commit stripe glows red, not amber. Subtle.
     (slice)
+12. ★ `lift.arrives` — the out-of-service lift wakes: call lamp lit,
+    leaves open a hand's width onto a dark shaft, a chime sounds.
+    Moderate. (slice)
 
 ## Group B — spatial/architectural (5)
 
@@ -117,7 +120,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 7. ★ `terminal.glitch` — both airlock terminals briefly insist a
    divergence was filed and stability reads 0. Subtle. (slice)
 
-Slice count: **43 implemented** — past the 24 target. New hooks:
+Slice count: **44 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
