@@ -240,12 +240,17 @@ export const POSTER_DEFS: PosterDef[] = [
 ];
 
 /** Redraw a poster texture in place — used at build and by poster anomalies. */
-export function drawPoster(t: DynamicTexture, d: PosterDef): void {
+export function drawPoster(t: DynamicTexture, d: PosterDef, mirror = false): void {
   const w = 256;
   const h = 384;
   const c = ctx(t);
   c.fillStyle = d.bg;
   c.fillRect(0, 0, w, h);
+  if (mirror) {
+    c.save();
+    c.translate(w, 0);
+    c.scale(-1, 1);
+  }
   c.strokeStyle = d.fg;
   c.lineWidth = 6;
   c.strokeRect(10, 10, w - 20, h - 20);
@@ -257,6 +262,7 @@ export function drawPoster(t: DynamicTexture, d: PosterDef): void {
   d.sub.forEach((line, j) => c.fillText(line, w / 2, 150 + j * 44));
   c.font = "15px Arial, sans-serif";
   c.fillText("— 7 —", w / 2, h - 40);
+  if (mirror) c.restore();
   t.update();
 }
 

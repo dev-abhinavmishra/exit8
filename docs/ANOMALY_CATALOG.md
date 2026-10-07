@@ -138,8 +138,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     you at loop start; it gains ~1.4 m/s only while unobserved (soft
     dragging steps), freezes under gaze, yields like watcher.far if
     you retreat past it inside the corridor. Unmistakable. (slice)
+12. ★ `posters.mirror` — every poster on the board flips horizontally:
+    same paper, same order, every word backwards. Subtle. (slice)
 
-Slice count: **50 implemented** — past the 24 target. New hooks:
+Slice count: **51 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

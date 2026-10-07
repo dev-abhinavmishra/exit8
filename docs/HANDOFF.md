@@ -197,6 +197,9 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   doesn't insta-despawn while still in the airlock. Facing check reads
   ctx.player.camera.rotation.y (no player.view() — that's the debug
   handle's); forward = (sin yaw, cos yaw).
+- `posters.mirror` (**51**): drawPoster gained a `mirror` param
+  (translate+scale(-1) inside the border) — def redraws every
+  poster.N texture mirrored, restores on cleanup.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 

@@ -54,6 +54,7 @@ import { guideMissing } from "./guideMissing";
 import { guideMisaligned } from "./guideMisaligned";
 import { shaftGlow } from "./shaftGlow";
 import { watcherFollows } from "./watcherFollows";
+import { postersMirror } from "./postersMirror";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -106,4 +107,5 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   guideMisaligned,
   shaftGlow,
   watcherFollows,
+  postersMirror,
 ];
