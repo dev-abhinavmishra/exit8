@@ -265,6 +265,41 @@ function makePosters(scene: Scene): DynamicTexture[] {
   });
 }
 
+/** Field-note paper — cream memo stock, typed header, small body lines. */
+export function drawNote(t: DynamicTexture, d: { title: string; lines: string[] }): void {
+  const w = 256;
+  const h = 352;
+  const c = ctx(t);
+  c.fillStyle = "#d9d3c2";
+  c.fillRect(0, 0, w, h);
+  // typed-paper grain: a few faint horizontal rules
+  c.strokeStyle = "rgba(70,60,50,0.18)";
+  c.lineWidth = 1;
+  for (let y = 64; y < h - 40; y += 22) {
+    c.beginPath();
+    c.moveTo(18, y);
+    c.lineTo(w - 18, y);
+    c.stroke();
+  }
+  c.fillStyle = "#262019";
+  c.textAlign = "left";
+  c.font = "bold 15px 'Courier New', monospace";
+  c.fillText(d.title, 18, 40);
+  c.strokeStyle = "#262019";
+  c.lineWidth = 2;
+  c.beginPath();
+  c.moveTo(18, 50);
+  c.lineTo(w - 18, 50);
+  c.stroke();
+  c.font = "14px 'Courier New', monospace";
+  d.lines.forEach((line, j) => c.fillText(line, 18, 84 + j * 22));
+  c.textAlign = "right";
+  c.fillStyle = "rgba(90,70,50,0.7)";
+  c.font = "11px 'Courier New', monospace";
+  c.fillText("CWA/OPS", w - 14, h - 14);
+  t.update();
+}
+
 /**
  * Draw a clock face in place — used at build and by clock anomalies.
  * `numerals[i]` is the numeral drawn at clock position i+1; omit for 1–12.

@@ -31,6 +31,7 @@ export class GameUi {
     ch: HTMLElement;
   };
   private commitHint!: HTMLDivElement;
+  private usePrompt!: HTMLDivElement;
   private debugEl: HTMLDivElement;
   private captionQueue: { el: HTMLDivElement; until: number }[] = [];
   private cb: UiCallbacks;
@@ -176,6 +177,7 @@ export class GameUi {
       dailies: number;
     },
     discoveredIds: string[],
+    notes: { title: string; lines: string[]; found: boolean }[] = [],
   ): void {
     const host = this.archiveBody;
     if (!host) return;
@@ -236,6 +238,45 @@ export class GameUi {
       log.appendChild(row);
     }
     host.appendChild(log);
+
+    if (notes.length > 0) {
+      const doc = document.createElement("div");
+      doc.className = "na-route-log na-archive";
+      const dh = document.createElement("div");
+      dh.className = "h";
+      const found = notes.filter((n) => n.found).length;
+      dh.textContent = `FIELD NOTES — ${found} OF ${notes.length} FILED`;
+      doc.appendChild(dh);
+      for (const n of notes) {
+        const row = document.createElement("div");
+        if (n.found) {
+          row.className = "row";
+          const nm = document.createElement("span");
+          nm.textContent = n.title;
+          const meta = document.createElement("span");
+          meta.className = "ch";
+          meta.textContent = "FILED";
+          row.appendChild(nm);
+          row.appendChild(meta);
+          const det = document.createElement("div");
+          det.className = "row note-lines";
+          det.textContent = n.lines.filter((l) => l.length > 0).join(" ");
+          doc.appendChild(row);
+          doc.appendChild(det);
+        } else {
+          row.className = "row locked";
+          const nm = document.createElement("span");
+          nm.textContent = "—— UNFILED ——";
+          row.appendChild(nm);
+          const meta = document.createElement("span");
+          meta.className = "ch";
+          meta.textContent = "MEMO";
+          row.appendChild(meta);
+          doc.appendChild(row);
+        }
+      }
+      host.appendChild(doc);
+    }
   }
 
   private buildPause(): HTMLDivElement {
@@ -547,6 +588,8 @@ export class GameUi {
       discovered: number;
       filed: { name: string; chapter: number }[];
       practice?: boolean;
+      ending?: "standard" | "investigative" | "lost" | "practice";
+      notes?: string;
     },
   ): void {
     const screenEl = this.screens.get("results");
@@ -558,9 +601,11 @@ export class GameUi {
     stamp.className = `na-stamp ${practice || outcome === "secure" ? "ok" : "bad"}`;
     stamp.textContent = practice
       ? "PRACTICE SHIFT"
-      : outcome === "secure"
-        ? COPY.results.secured
-        : COPY.results.lost;
+      : stats.ending === "investigative"
+        ? "DOSSIER COMPLETE — ROUTE SECURED"
+        : outcome === "secure"
+          ? COPY.results.secured
+          : COPY.results.lost;
     body.appendChild(stamp);
     const table = document.createElement("table");
     table.className = "na-stats";
@@ -569,6 +614,7 @@ export class GameUi {
       ["CORRECT FILINGS", String(stats.correct)],
       ["ERRORS", String(stats.mistakes)],
       ["ANOMALIES DISCOVERED", String(stats.discovered)],
+      ["FIELD NOTES", stats.notes ?? "0/6"],
       ["FINAL STABILITY", `${state.stability}`],
     ];
     for (const [k, v] of rows) {
@@ -622,6 +668,7 @@ export class GameUi {
       <div class="loop-tag">LOOP <b class="n">01</b><span class="ch">CH I</span></div>
       <div class="stability">STABILITY<b class="n">40</b><div class="bar"><i></i></div></div>
       <div class="reticle"></div>
+      <div class="use-prompt"></div>
       <div class="commit-hint">COMMIT AT AN INSPECTION POINT</div>
     `;
     this.stabilityEl = {
@@ -631,7 +678,14 @@ export class GameUi {
       ch: h.querySelector(".loop-tag .ch") as HTMLElement,
     };
     this.commitHint = h.querySelector(".commit-hint") as HTMLDivElement;
+    this.usePrompt = h.querySelector(".use-prompt") as HTMLDivElement;
     return h;
+  }
+
+  /** Focus prompt under the reticle — "FIELD NOTE — …" / terminal labels. */
+  setUsePrompt(text: string | null, key = "E"): void {
+    this.usePrompt.textContent = text ? `[${key}] ${text}` : "";
+    this.usePrompt.classList.toggle("on", text !== null);
   }
 
   setStability(v: number): void {

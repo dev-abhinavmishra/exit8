@@ -4,6 +4,10 @@
  */
 import { Scene } from "@babylonjs/core/scene";
 import { Color4, Color3 } from "@babylonjs/core/Maths/math.color";
+import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
+import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
+import type { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import { DefaultRenderingPipeline } from "@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline";
 import type { Engine } from "@babylonjs/core/Engines/engine";
 import type { WebGPUEngine } from "@babylonjs/core/Engines/webgpuEngine";
@@ -28,6 +32,8 @@ import { GameUi } from "../ui/screens";
 import { buildInspectionRig, type InspectionRig } from "../world/lighting/rig";
 import { FocusResolver, type Interactable } from "../game/interaction/focus";
 import { ALL_ANOMALIES } from "../game/anomalies";
+import { EVIDENCE_NOTES, EVIDENCE_PER_RUN, type EvidenceNote } from "../game/progression/evidence";
+import { drawNote } from "../world/generation/textures";
 import { installDebugHandle } from "../debug/handle";
 
 export type AppState = "boot" | "menu" | "playing" | "paused" | "results";
@@ -157,21 +163,8 @@ export class App {
     });
     const day = dailySeed().slice(6);
     this.ui.setDailyLabel(day, this.save.get().progression.dailies.includes(day));
-    {
-      const p = this.save.get().progression;
-      this.ui.setArchiveData(
-        {
-          runs: p.runsCompleted,
-          secured: p.routesSecured,
-          best: p.bestStability,
-          logged: p.anomaliesLogged,
-          falseClears: p.falseClears,
-          falseAlarms: p.falseAlarms,
-          dailies: p.dailies.length,
-        },
-        p.discovered,
-      );
-    }
+    this.refreshArchive();
+    this.spawnEvidence();
     if (created.note) this.ui.setStartNote(created.note, true);
     else if (this.save.consumeResetNotice()) {
       this.ui.setStartNote("Save data on this device was corrupted and has been reset.", true);
@@ -269,6 +262,11 @@ export class App {
     this.audio.setListener(this.player.position, this.player.forward());
     const fwd = this.player.camera.getForwardRay().direction;
     this.focused = this.focus.resolve(this.scene, this.player.position, fwd);
+    const key = this.save.get().settings.controls.keyInteract;
+    this.ui.setUsePrompt(
+      this.focused ? this.focus.prompt() : null,
+      key.startsWith("Key") ? key.slice(3) : key,
+    );
   }
 
   private startRun(): void {
@@ -315,6 +313,70 @@ export class App {
     location.href = u.toString();
   }
 
+  /** Refresh the archive screen from the save — at boot and after pickups. */
+  private refreshArchive(): void {
+    const p = this.save.get().progression;
+    this.ui.setArchiveData(
+      {
+        runs: p.runsCompleted,
+        secured: p.routesSecured,
+        best: p.bestStability,
+        logged: p.anomaliesLogged,
+        falseClears: p.falseClears,
+        falseAlarms: p.falseAlarms,
+        dailies: p.dailies.length,
+      },
+      p.discovered,
+      EVIDENCE_NOTES.map((n) => ({
+        title: n.title,
+        lines: n.lines,
+        found: p.discoveries.includes(n.id),
+      })),
+    );
+  }
+
+  /** Seeded field notes — only unfiled ones spawn, up to EVIDENCE_PER_RUN. */
+  private spawnEvidence(): void {
+    const rng = new RngStream("evidence", this.runSeed);
+    const unfiled = EVIDENCE_NOTES.filter((n) => !this.save.get().progression.discoveries.includes(n.id));
+    for (let i = unfiled.length - 1; i > 0; i--) {
+      const j = rng.int(0, i + 1);
+      [unfiled[i], unfiled[j]] = [unfiled[j]!, unfiled[i]!];
+    }
+    for (const note of unfiled.slice(0, EVIDENCE_PER_RUN)) this.spawnNote(note);
+  }
+
+  private spawnNote(note: EvidenceNote): void {
+    const mesh = CreatePlane(`evidence.${note.id}`, { width: 0.24, height: 0.33 }, this.scene);
+    mesh.position.copyFrom(note.pos);
+    mesh.rotation.copyFrom(note.rot);
+    const t = new DynamicTexture(`tex.${note.id}`, { width: 256, height: 352 }, this.scene, true);
+    drawNote(t, { title: note.title, lines: note.lines });
+    t.update();
+    const mat = new StandardMaterial(`mat.${note.id}`, this.scene);
+    mat.diffuseTexture = t;
+    mat.emissiveTexture = t; // dark-zone readability — same trap as the posters
+    mat.emissiveColor = new Color3(0.32, 0.32, 0.32);
+    mat.disableLighting = false;
+    mesh.material = mat;
+    this.focus.register({
+      mesh,
+      prompt: `FIELD NOTE — ${note.title}`,
+      onUse: () => this.collectEvidence(note, mesh),
+    });
+  }
+
+  private collectEvidence(note: EvidenceNote, mesh: AbstractMesh): void {
+    mesh.setEnabled(false);
+    if (this.focused?.mesh === mesh) this.focused = null;
+    this.save.update((d) => {
+      if (!d.progression.discoveries.includes(note.id)) d.progression.discoveries.push(note.id);
+    });
+    this.audio.playChime(note.pos);
+    this.ui.caption(`FIELD NOTE FILED — ${note.title}`, null);
+    this.refreshArchive();
+  }
+
   /** The daily route — one deterministic seed per UTC day, same for everyone. */
   private dailyRoute(): void {
     const u = new URL(location.href);
@@ -359,7 +421,16 @@ export class App {
         if (!d.progression.dailies.includes(day)) d.progression.dailies.push(day);
       });
     }
-    const discovered = this.save.get().progression.discovered.length;
+    const prog = this.save.get().progression;
+    const discovered = prog.discovered.length;
+    // a complete dossier upgrades a secured route to the investigative ending
+    const dossier = prog.discoveries.length >= EVIDENCE_NOTES.length;
+    const investigative = outcome === "secure" && dossier;
+    if (investigative && !prog.endings.includes("investigative")) {
+      this.save.update((d) => {
+        d.progression.endings.push("investigative");
+      });
+    }
     this.ui.showResults(outcome, this.loop.state, {
       loops: this.loop.state.loopIndex,
       correct: this.stats.correct,
@@ -367,6 +438,8 @@ export class App {
       discovered,
       filed: this.filed,
       practice: outcome === "practice",
+      ending: investigative ? "investigative" : outcome === "secure" ? "standard" : "lost",
+      notes: `${prog.discoveries.length}/${EVIDENCE_NOTES.length}`,
     });
   }
 

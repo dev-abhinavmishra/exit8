@@ -59,8 +59,9 @@ export function installDebugHandle(app: App): void {
     forceAnomaly: (id) => refs().loop.forceAnomaly(id),
     setStability: (v) => refs().loop.stability.set(v),
     look: (yaw, pitch) => {
-      refs().player.teleport(refs().player.position.clone(), yaw);
-      if (pitch !== undefined) refs().player.camera.rotation.x = pitch;
+      // controller owns pitch/yaw state — writing camera.rotation.x alone is
+      // stomped by the next sim update
+      refs().player.setView(yaw, pitch);
     },
     view: () => ({
       yaw: refs().player.camera.rotation.y,

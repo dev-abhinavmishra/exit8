@@ -57,9 +57,23 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   `daily-YYYY-MM-DD` (UTC), completion stamped in
   `save.progression.dailies`, button flips to 'already filed'. Results
   screen shows FILED DIVERGENCES (name + chapter per correct retreat).
+- **Field notes / evidence live** (cefd961): 6 diegetic memos in
+  `src/game/progression/evidence.ts`; unfiled ones spawn seeded per run
+  (cap 3, `evidence` rng stream) as paper planes `evidence.<id>`;
+  [E] files them → `progression.discoveries[]`, chime, caption. Archive
+  gains FIELD NOTES (full text filed / redacted unfiled); results shows
+  a FIELD NOTES row; all 6 + SECURED → "DOSSIER COMPLETE" stamp and
+  `endings[]` records "investigative" (second ending — M4 groundwork).
+  HUD use-prompt (`setUsePrompt`) now renders the focus label under the
+  reticle for notes AND terminals — it existed but was never drawn.
+  Traps learned: wall-mounted planes sit at |x|=1.735 — wall boxes are
+  0.12 thick so the inner face is 1.74 (1.78 embeds them invisible);
+  `look(yaw,pitch)` needed `player.setView()` — the sim rewrites
+  `camera.rotation.x` from controller pitch every update so the debug
+  setter was a no-op; positive pitch looks DOWN.
 - Next up per the attached brief: M2 visual benchmark (Blender kit /
-  baked lighting / KTX2) or rest of M3 (gamepad,
-  mobile controls, full accessibility pass).
+  baked lighting / KTX2) or rest of M3 (mobile controls, full
+  accessibility pass).
 
 ## Conventions this repo already follows
 

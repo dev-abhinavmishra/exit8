@@ -167,6 +167,13 @@ export class PlayerController {
     this.bobPhase = 0;
   }
 
+  /** Direct view set (debug/tests) — camera.rotation.x is rewritten from
+   * `pitch` every update, so setting the camera alone never sticks. */
+  setView(yaw?: number, pitch?: number): void {
+    if (yaw !== undefined) this.yaw = yaw;
+    if (pitch !== undefined) this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, pitch));
+  }
+
   isPointerLocked(): boolean {
     return this.pointerLocked;
   }
