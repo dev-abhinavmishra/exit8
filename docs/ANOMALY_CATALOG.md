@@ -11,13 +11,15 @@ Target ≥ 24 across six groups. ★ = implemented.
 
 1. ★ `clock.reverse` — master clock hands sweep counter-clockwise at ~8×,
    tick audibly doubled. Moderate. Cue: motion + doubled tick. (slice)
-2. `clock.wrong-face` — clock face numerals reorder. Subtle.
+2. ★ `clock.wrong-face` — two numerals trade places (seeded pair). Subtle.
+   (slice)
 3. ★ `sign.flip` — junction totem's arrow points the wrong way; copy
    unchanged. Subtle. (slice)
 4. ★ `slat.missing` — one of the bench's five seat slats vanishes.
    Subtle. (slice)
-5. `prop.displaced` — fire cabinet relocates to opposite wall. Moderate.
-6. `material.swap` — one wall panel renders as dark glass. Subtle.
+5. ★ `prop.displaced` — fire cabinet relocates to the opposite wall.
+   Moderate. (slice)
+6. ★ `material.swap` — first poster renders as black glass. Subtle. (slice)
 7. ★ `poster.missing` — middle notice-board poster gone. Subtle. (slice)
 8. ★ `cctv.gaze` — clinic-bend CCTV lens tracks the player in range.
    Subtle. (slice)
@@ -32,14 +34,16 @@ Target ≥ 24 across six groups. ★ = implemented.
 4. `sightline.impossible` — looking back, the airlock appears twice.
 5. `vanish.misaligned` — perspective vanishing point offset (camera-space
    skew < 3 %). Subtle.
-6. ★ `door.ajar` — right-wall service door slid a hand's width open, dark
+6. ★ `door.ajar` — right-wall service door hinged open, dark
    service void behind. Moderate. (slice)
 
 ## Group C — lighting/shadow (4)
 
-1. `temp.drift` — one troffer zone migrates to 6500 K over ~20 s. Subtle.
+1. ★ `temp.drift` — gallery zone migrates ~3500 K → ~6500 K over ~20 s.
+   Subtle. (slice)
 2. `light.delay` — lights respond late to player passage (~1.5 s lag).
-3. `shadow.sourceless` — a shadow with no caster crosses the floor.
+3. ★ `shadow.sourceless` — a soft shadow blob sweeps the clinic floor,
+   no caster. Moderate. (slice)
 4. `light.avoids` — one object stays lit while its zone dims. Moderate.
 5. ★ `light.out` — clinic zone's fixture run dies outright, z 32–46 falls
    dark. Unmistakable. (slice)
@@ -52,17 +56,17 @@ Target ≥ 24 across six groups. ★ = implemented.
    offset ~0.4 s; stops when the player stops. Visual accessibility cue:
    faint condensation on the glass gallery in time with steps. Moderate.
    (slice)
-2. `announce.spatial` — PA chime from a speaker that isn't there; caption
-   direction mismatch. Subtle.
-3. `machine.silence` — junction machinery goes silent only when unobserved;
-   resumes on look-away. Moderate. Cue: audio + subtle status lamp.
+2. ★ `announce.spatial` — two-tone PA chime from above the gallery where
+   no speaker exists; seeded 30–60 s cadence. Subtle. (slice)
+3. ★ `machine.silence` — junction hum sounds only while the machine is
+   inside ~40° of view; face away and it isn't running. Moderate. (slice)
 4. ★ `machine.rattle` — junction machine over-revs into a fast low rattle.
    Moderate. (slice)
 
 ## Group E — character/creature (3, all original designs)
 
 1. ★ `watcher.far` — motionless dark figure at the junction end; gone
-   (with a single soft step) by the time you reach z≈43. Unmistakable.
+   (with a single soft step) by the time you reach z≈45. Unmistakable.
    (slice)
 2. `counter.worker` — a hand-only silhouette slides paperwork under the
    shuttered counter. Moderate.
@@ -80,7 +84,10 @@ Target ≥ 24 across six groups. ★ = implemented.
 5. ★ `terminal.notice` — a handbill on the south airlock terminal
    misdirects inspectors to the north point. Subtle. (slice)
 
-Slice count: **14 implemented** of 24 target.
+Slice count: **21 implemented** of 24 target. New audio hooks:
+`audio.setMachineGainScale(fn)` (machine.silence), `audio.playChime(pos)`
+(announce.spatial). New texture hooks: `drawClockFace(t, numerals?)`,
+`drawSign(t, spec)`.
 
 Balance: ≥⅓ subtle, ⅓ moderate, ⅓ unmistakable/threatening. ≤2 major
 shocks per first run. Every sound-led anomaly carries a visual cue path.

@@ -18,6 +18,13 @@ import { cctvGaze } from "./cctvGaze";
 import { airHaze } from "./airHaze";
 import { terminalNotice } from "./terminalNotice";
 import { machineRattle } from "./machineRattle";
+import { clockWrongFace } from "./clockWrongFace";
+import { materialSwap } from "./materialSwap";
+import { propDisplaced } from "./propDisplaced";
+import { tempDrift } from "./tempDrift";
+import { machineSilence } from "./machineSilence";
+import { announceSpatial } from "./announceSpatial";
+import { shadowSourceless } from "./shadowSourceless";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -34,4 +41,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   airHaze,
   terminalNotice,
   machineRattle,
+  clockWrongFace,
+  materialSwap,
+  propDisplaced,
+  tempDrift,
+  machineSilence,
+  announceSpatial,
+  shadowSourceless,
 ];

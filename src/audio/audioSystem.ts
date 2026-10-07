@@ -223,7 +223,8 @@ export class AudioSystem {
     mach.start();
     this.machineUpdater = () => {
       const sp = this.spatialParams(machinePos);
-      machG.gain.value = 0.12 * sp.gain;
+      const duck = this.machineGainScale ? this.machineGainScale() : 1;
+      machG.gain.value = 0.12 * sp.gain * duck;
       machPan.pan.value = sp.pan;
     };
 
@@ -254,6 +255,13 @@ export class AudioSystem {
   private ventUpdaters: (() => void)[] = [];
   private machineUpdater: (() => void) | null = null;
   private rumbleScheduler: ((dt: number) => void) | null = null;
+  private machineGainScale: (() => number) | null = null;
+
+  /** Anomalies duck the junction-machine hum through this (multiplier
+   *  evaluated per update; pass null to clear). */
+  setMachineGainScale(fn: (() => number) | null): void {
+    this.machineGainScale = fn;
+  }
 
   /** Per-frame spatialization refresh; call from sim or render. */
   update(dt: number): void {
@@ -280,6 +288,31 @@ export class AudioSystem {
     src.connect(lp).connect(g).connect(this.bus("ambience"));
     src.start(t0, 0, dur + 0.1);
     this.caption("distant rumble", null);
+  }
+
+  /** Two-tone PA chime — ding-dong, used by announce anomalies. */
+  playChime(pos: Vector3): void {
+    if (!this.ctx) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const notes = [660, 494];
+    notes.forEach((f, i) => {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = f;
+      const g = ctx.createGain();
+      const at = t0 + i * 0.42;
+      g.gain.setValueAtTime(0, at);
+      g.gain.linearRampToValueAtTime(0.07 * sp.gain, at + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.001, at + 0.6);
+      const pan = ctx.createStereoPanner();
+      pan.pan.value = sp.pan;
+      o.connect(g).connect(pan).connect(this.bus("ambience"));
+      o.start(at);
+      o.stop(at + 0.65);
+    });
+    this.caption("PA chime", pos);
   }
 
   /** Clock tick generator — used by baseline and clock anomalies. */

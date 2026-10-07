@@ -251,10 +251,12 @@ function makePosters(scene: Scene): DynamicTexture[] {
   });
 }
 
-function makeClockFace(scene: Scene): DynamicTexture {
+/**
+ * Draw a clock face in place — used at build and by clock anomalies.
+ * `numerals[i]` is the numeral drawn at clock position i+1; omit for 1–12.
+ */
+export function drawClockFace(t: DynamicTexture, numerals?: number[]): void {
   const s = 256;
-  const t = tex("tex.clockFace", s, s, scene);
-  t.hasAlpha = true;
   const c = ctx(t);
   c.clearRect(0, 0, s, s);
   c.fillStyle = "#eceae3";
@@ -271,7 +273,8 @@ function makeClockFace(scene: Scene): DynamicTexture {
     const a = (i / 12) * Math.PI * 2 - Math.PI / 2;
     const r = s / 2 - 34;
     c.font = "bold 22px Arial, sans-serif";
-    c.fillText(String(i), s / 2 + Math.cos(a) * r, s / 2 + Math.sin(a) * r);
+    const n = numerals?.[i - 1] ?? i;
+    c.fillText(String(n), s / 2 + Math.cos(a) * r, s / 2 + Math.sin(a) * r);
   }
   for (let i = 0; i < 60; i++) {
     const a = (i / 60) * Math.PI * 2;
@@ -287,6 +290,13 @@ function makeClockFace(scene: Scene): DynamicTexture {
   c.fillStyle = "#4a4d52";
   c.font = "11px Arial, sans-serif";
   c.fillText("CWA STANDARD", s / 2, s / 2 + 52);
+  t.update();
+}
+
+function makeClockFace(scene: Scene): DynamicTexture {
+  const t = tex("tex.clockFace", 256, 256, scene);
+  t.hasAlpha = true;
+  drawClockFace(t);
   return finish(t);
 }
 
