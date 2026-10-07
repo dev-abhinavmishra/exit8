@@ -608,6 +608,26 @@ export function buildConcourse(
     strip.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
   }
 
+  // dark terrazzo border band along each wall base — station-floor
+  // framing, and it grounds the AO strips
+  for (const sx of [-1, 1]) {
+    const border = kit.plane(`dress.fborder.${sx}`, 0.36, 55, mats.rubber, scene, root);
+    border.position = new Vector3(sx * (C.xHalf - 0.25), 0.009, 27.5);
+    border.rotation.x = -Math.PI / 2;
+  }
+  // expansion joints across the floor — terrazzo slab seams give the
+  // eye a scale ruler down-corridor
+  for (let i = 0; i < 7; i++) {
+    const fz = 4.6 + i * 7.4;
+    const seam = kit.box(`dress.floorseam.${fz.toFixed(1)}`, 3.4, 0.006, 0.028, mats.rubber, scene, root);
+    seam.position = new Vector3(0, 0.007, fz);
+  }
+  // walk-path wear: a faint grime wash where inspectors track feet —
+  // subtle, no hard edges
+  const wear = kit.plane("dress.floorwear", 1.1, 44, mats.grime, scene, root);
+  wear.position = new Vector3(0.05, 0.008, 26);
+  wear.rotation.x = -Math.PI / 2;
+
   // ─── zone dressing ───────────────────────────────────────────────
   // Records wall: cabinet fronts on left z 12–32
   const cab = kit.box("records.cabinets", 0.18, 2.1, 18, mats.steel, scene, root);
