@@ -240,8 +240,13 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     cork, pins and all. Subtle. (slice)
 52. ★ `aid.gone` — the first-aid cabinet before the lift lobby is not
     there; blank wall where the green cross used to be. Subtle. (slice)
+53. ★ `phone.offhook` — the corridor phone's handset is off the cradle,
+    dangling by its cord. Nobody hung it up. Subtle. (slice)
+54. ★ `fountain.runs` — the drinking fountain runs by itself: bubbler
+    raised, water column standing, pools in the basin and on the floor.
+    Moderate. (slice)
 
-Slice count: **93 implemented — the full catalog**. New hooks:
+Slice count: **95 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

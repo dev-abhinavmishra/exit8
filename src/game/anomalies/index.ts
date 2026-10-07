@@ -97,6 +97,8 @@ import { bayplateGone } from "./bayplateGone";
 import { ventSlats } from "./ventSlats";
 import { extGone } from "./extGone";
 import { aidGone } from "./aidGone";
+import { phoneOffhook } from "./phoneOffhook";
+import { fountainRuns } from "./fountainRuns";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -190,6 +192,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   ventSlats,
   extGone,
   aidGone,
+  phoneOffhook,
+  fountainRuns,
   vendDead,
   sheetsCleared,
 ];
