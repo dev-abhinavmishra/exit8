@@ -55,6 +55,8 @@ export interface LightZone {
   name: string;
   point: PointLight;
   troffers: AbstractMesh[];
+  /** fake volumetric shafts hanging under the troffers — die with them */
+  shafts: TransformNode[];
   /** corridor z extents this zone covers (for passage-tracking anomalies) */
   z0: number;
   z1: number;
@@ -299,6 +301,7 @@ export function buildConcourse(
     const zd = zoneDefs[zi];
     if (!zd) continue;
     const troffers: AbstractMesh[] = [];
+    const shafts: TransformNode[] = [];
     for (let z = zd.z0 + 2.5; z < zd.z1; z += 4) {
       for (const x of [-0.9, 0.9]) {
         const t = kit.troffer(
@@ -311,6 +314,25 @@ export function buildConcourse(
         t.position = new Vector3(x, C.height - 0.02, z);
         const diff = registry.mesh(t.name.replace(".frame", ""));
         troffers.push(diff);
+
+        // crossed-plane light shaft under the fixture
+        const shaftNode = new TransformNode(`shaft.${diff.name}`, scene);
+        shaftNode.parent = root;
+        shaftNode.position = new Vector3(x, 1.55, z);
+        registry.register(shaftNode.name, shaftNode);
+        for (const ry of [0, Math.PI / 2]) {
+          const p = kit.plane(
+            `shaft.${diff.name}.${ry === 0 ? "z" : "x"}`,
+            0.85,
+            2.45,
+            mats.lightShaft,
+            scene,
+            shaftNode,
+          );
+          p.rotation.y = ry;
+          p.billboardMode = 0;
+        }
+        shafts.push(shaftNode);
       }
     }
     const point = new PointLight(
@@ -325,6 +347,7 @@ export function buildConcourse(
       name: zd.name,
       point,
       troffers,
+      shafts,
       z0: zd.z0,
       z1: zd.z1,
       baseDiffuse: point.diffuse.clone(),

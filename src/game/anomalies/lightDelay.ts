@@ -33,6 +33,7 @@ export const lightDelay: AnomalyDef = {
       zone.point.intensity = lit ? base : base * 0.12;
       const mat = lit ? ctx.world.materials.trofferLit : ctx.world.materials.trofferDim;
       for (const tr of zone.troffers) tr.material = mat;
+      for (const s of zone.shafts) s.setEnabled(lit);
     };
 
     return {

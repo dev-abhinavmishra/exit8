@@ -1,4 +1,5 @@
 /** PBR material library for the slice. All procedural textures. */
+import { Engine } from "@babylonjs/core/Engines/engine";
 import { PBRMaterial } from "@babylonjs/core/Materials/PBR/pbrMaterial";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
@@ -30,6 +31,7 @@ export interface MaterialSet {
   condensation: StandardMaterial;
   anomalousRoom: StandardMaterial;
   guideStrip: StandardMaterial;
+  lightShaft: StandardMaterial;
 }
 
 export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
@@ -121,6 +123,15 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   tex.guideStrip.uScale = 1;
   tex.guideStrip.vScale = 8; // ~0.8 m bar pitch along a 6.4 m segment
 
+  // fake volumetric shaft under each troffer — additive, unlit
+  const lightShaft = new StandardMaterial("mat.lightShaft", scene);
+  lightShaft.diffuseTexture = tex.lightShaft;
+  lightShaft.emissiveTexture = tex.lightShaft;
+  lightShaft.opacityTexture = tex.lightShaft;
+  lightShaft.disableLighting = true;
+  lightShaft.backFaceCulling = false;
+  lightShaft.alphaMode = Engine.ALPHA_ADD;
+
   // damp staining / wall wear — translucent dark wash decal
   const grime = new StandardMaterial("mat.grime", scene);
   grime.diffuseColor = new Color3(0.05, 0.045, 0.04);
@@ -208,5 +219,6 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     condensation,
     anomalousRoom,
     guideStrip,
+    lightShaft,
   };
 }

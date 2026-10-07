@@ -30,6 +30,7 @@ export const lightFlicker: AnomalyDef = {
       zone.point.intensity = lit ? base : base * 0.08;
       const mat = lit ? ctx.world.materials.trofferLit : ctx.world.materials.trofferDim;
       for (const t of zone.troffers) t.material = mat;
+      for (const s of zone.shafts) s.setEnabled(lit);
     };
     return {
       update(dt) {
@@ -45,6 +46,7 @@ export const lightFlicker: AnomalyDef = {
       cleanup() {
         zone.point.intensity = base;
         for (const t of zone.troffers) t.material = ctx.world.materials.trofferLit;
+        for (const s of zone.shafts) s.setEnabled(true);
       },
     };
   },

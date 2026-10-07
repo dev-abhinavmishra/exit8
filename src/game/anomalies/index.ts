@@ -52,6 +52,7 @@ import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
 import { guideMissing } from "./guideMissing";
 import { guideMisaligned } from "./guideMisaligned";
+import { shaftGlow } from "./shaftGlow";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -102,4 +103,5 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   paceDissolves,
   guideMissing,
   guideMisaligned,
+  shaftGlow,
 ];

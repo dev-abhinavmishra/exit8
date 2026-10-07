@@ -23,11 +23,13 @@ export const lightOut: AnomalyDef = {
     const base = zone.point.intensity;
     zone.point.intensity = 0.02;
     for (const t of zone.troffers) t.material = ctx.world.materials.trofferDim;
+    for (const s of zone.shafts) s.setEnabled(false);
     return {
       update() {},
       cleanup() {
         zone.point.intensity = base;
         for (const t of zone.troffers) t.material = ctx.world.materials.trofferLit;
+        for (const s of zone.shafts) s.setEnabled(true);
       },
     };
   },

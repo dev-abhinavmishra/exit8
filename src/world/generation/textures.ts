@@ -44,6 +44,7 @@ export interface TextureSet {
   terminal: DynamicTexture; // airlock terminal screen (live-updated)
   fadeStrip: DynamicTexture; // linear fade — fake ambient occlusion
   guideStrip: DynamicTexture; // tactile guide bar channels for the floor
+  lightShaft: DynamicTexture; // soft volumetric cone under a troffer
 }
 
 /** Speckled terrazzo with brass divider strips. Tiles every 1.2 m. */
@@ -450,6 +451,7 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     terminal: makeTerminal(scene),
     fadeStrip: drawFadeStrip(tex("tex.fadeStrip", 256, 64, scene), "up"),
     guideStrip: makeGuideStrip(scene),
+    lightShaft: makeLightShaft(scene),
   };
 }
 
@@ -468,6 +470,40 @@ function makeGuideStrip(scene: Scene): DynamicTexture {
     c.fillRect(x + 5, 6, 2, 116); // righthand shadow edge
   }
   t.update();
+  return finish(t);
+}
+
+/** Volumetric light shaft under a troffer: a pale trapezoid, brightest
+ * at the fixture and fading out before the floor. Additive-blended. */
+function makeLightShaft(scene: Scene): DynamicTexture {
+  const w = 64;
+  const h = 256;
+  const t = tex("tex.lightShaft", w, h, scene);
+  const c = ctx(t);
+  c.clearRect(0, 0, w, h);
+  const grad = c.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, "rgba(255,242,214,0.55)");
+  grad.addColorStop(0.4, "rgba(255,240,208,0.28)");
+  grad.addColorStop(1, "rgba(255,238,200,0)");
+  c.fillStyle = grad;
+  c.beginPath();
+  c.moveTo(w * 0.32, 0);
+  c.lineTo(w * 0.68, 0);
+  c.lineTo(w * 0.95, h);
+  c.lineTo(w * 0.05, h);
+  c.closePath();
+  c.fill();
+  // soften the side edges so the cone reads gaseous, not sheet-like
+  const edge = c.createLinearGradient(0, 0, w, 0);
+  edge.addColorStop(0, "rgba(0,0,0,0)");
+  edge.addColorStop(0.5, "rgba(0,0,0,1)");
+  edge.addColorStop(1, "rgba(0,0,0,0)");
+  c.globalCompositeOperation = "destination-in";
+  c.fillStyle = edge;
+  c.fillRect(0, 0, w, h);
+  c.globalCompositeOperation = "source-over";
+  t.update();
+  t.hasAlpha = true;
   return finish(t);
 }
 

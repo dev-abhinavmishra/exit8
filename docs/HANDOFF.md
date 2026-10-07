@@ -185,6 +185,12 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - `guide.misaligned` (**48**): 3 adjacent `guide.seg.N` yaw ±~0.1
   (middle larger) — an S-bend, unmistakable at range. Restore in
   cleanup keeps orig rotation.
+- Volumetric shafts + `shaft.glow` (**49**): every troffer gets a
+  crossed-plane additive shaft (`shaft.<trofferName>` TransformNode,
+  `mat.lightShaft`/`tex.lightShaft` ALPHA_ADD). LightZone gained
+  `shafts: TransformNode[]`; lightOut/lightDelay/lightFlicker toggle
+  them with the lamps. shaft.glow dims one panel via
+  `shaftNode.name.slice(6)` → troffer name.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 

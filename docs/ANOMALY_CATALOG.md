@@ -132,8 +132,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 9. ★ `guide.misaligned` — three adjacent strip segments yaw out of
    true: the amber line jogs mid-run then straightens. Unmistakable.
    (slice)
+10. ★ `shaft.glow` — one troffer panel goes dark while the light shaft
+    it poured keeps hanging under it. Subtle. (slice)
 
-Slice count: **48 implemented** — past the 24 target. New hooks:
+Slice count: **49 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
