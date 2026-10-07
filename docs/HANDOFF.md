@@ -10,7 +10,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller
   (collision via `camera.cameraDirection` + `collisionCoordinator` import),
   Loop 7 concourse (procedural), commit thresholds, stability index,
-  **30 anomalies** (was 3 — 24 target passed) registered via
+  **31 anomalies** (was 3 — 24 target passed) registered via
   `anomalies/index.ts` (`ALL_ANOMALIES` — register there, not in app.ts),
   procedural audio (seeded `audio.synth`/`audio.ambient` streams),
   start/pause/settings/results, v1 saves, vitest + playwright suites,
@@ -28,7 +28,13 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   SECURED@100 + LOST@0, per-anomaly forced screenshots (?anomaly=<id>),
   chapter ladder (2 correct → CH II). 13/13 e2e green (~5m — SECURED
   spec now needs 6 loops).
-- **Practice mode live** (this commit): PRACTICE ROUTE button →
+- **Route archive live** (this commit): ROUTE ARCHIVE on the start
+  screen — stats table + DIVERGENCE REGISTER of all 31 defs sorted by
+  chapter; discovered ids render name/chapter/category/detectability,
+  unfound ones show redacted rows. `ui.setArchiveData(stats, ids)`
+  populates from save at boot. NOTE: seeded saves in e2e must carry
+  `version: 1` or the blob is quarantined as corrupt.
+- **Practice mode live** (46a05f0): PRACTICE ROUTE button →
   `?practice=1`, judgments still score but a SECURED/LOST bounds-hit
   clamps stability to 85/15 and keeps running. Each judgment captions
   the truth (DIVERGENCE FILED — <name> / MISSED — <name> / FALSE
@@ -44,8 +50,8 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   `save.progression.dailies`, button flips to 'already filed'. Results
   screen shows FILED DIVERGENCES (name + chapter per correct retreat).
 - Next up per the attached brief: M2 visual benchmark (Blender kit /
-  baked lighting / KTX2) or rest of M3 (evidence/archive UI, practice
-  mode, catalog validator, gamepad, mobile).
+  baked lighting / KTX2) or rest of M3 (gamepad,
+  mobile controls, full accessibility pass).
 
 ## Conventions this repo already follows
 

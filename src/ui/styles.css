@@ -333,6 +333,18 @@
   color: var(--dim);
   font-style: italic;
 }
+.na-archive {
+  max-height: 38vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.na-archive .row.locked {
+  color: var(--dim);
+  letter-spacing: 0.22em;
+}
+.na-archive .row.locked .ch {
+  color: var(--dim);
+}
 .na-hud .loop-tag .ch {
   margin-left: 10px;
   padding-left: 10px;

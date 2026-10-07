@@ -157,6 +157,21 @@ export class App {
     });
     const day = dailySeed().slice(6);
     this.ui.setDailyLabel(day, this.save.get().progression.dailies.includes(day));
+    {
+      const p = this.save.get().progression;
+      this.ui.setArchiveData(
+        {
+          runs: p.runsCompleted,
+          secured: p.routesSecured,
+          best: p.bestStability,
+          logged: p.anomaliesLogged,
+          falseClears: p.falseClears,
+          falseAlarms: p.falseAlarms,
+          dailies: p.dailies.length,
+        },
+        p.discovered,
+      );
+    }
     if (created.note) this.ui.setStartNote(created.note, true);
     else if (this.save.consumeResetNotice()) {
       this.ui.setStartNote("Save data on this device was corrupted and has been reset.", true);

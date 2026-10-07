@@ -4,6 +4,7 @@
  */
 import type { Settings } from "../accessibility/settings";
 import { COPY } from "../data/signage";
+import { ALL_ANOMALIES } from "../game/anomalies";
 import type { LoopState } from "../game/loop/loopManager";
 
 export interface UiCallbacks {
@@ -34,6 +35,7 @@ export class GameUi {
   private captionQueue: { el: HTMLDivElement; until: number }[] = [];
   private cb: UiCallbacks;
   private dailyBtn: HTMLButtonElement | null = null;
+  private archiveBody: HTMLDivElement | null = null;
 
   constructor(
     host: HTMLElement,
@@ -64,6 +66,7 @@ export class GameUi {
     this.root.appendChild(this.debugEl);
 
     this.screens.set("start", this.buildStart());
+    this.screens.set("archive", this.buildArchive());
     this.screens.set("pause", this.buildPause());
     this.screens.set("settings", this.buildSettings());
     this.screens.set("results", this.buildResults());
@@ -124,6 +127,9 @@ export class GameUi {
       this.btn("PRACTICE ROUTE", "endless loops · judgment feedback · no stakes", () => this.cb.onPractice()),
     );
     body.appendChild(
+      this.btn("ROUTE ARCHIVE", "case file — filed divergences & records", () => this.show("archive")),
+    );
+    body.appendChild(
       this.btn("SETTINGS", "video · controls · audio · accessibility", () => this.openSettingsFrom("start")),
     );
     const note = document.createElement("p");
@@ -146,6 +152,89 @@ export class GameUi {
       n.textContent = text;
       n.classList.toggle("warn", warn);
     }
+  }
+
+  // ── archive ───────────────────────────────────────────────────
+  private buildArchive(): HTMLDivElement {
+    const { panel, body } = this.panel("INSPECTOR RECORD", "ROUTE ARCHIVE");
+    this.archiveBody = document.createElement("div");
+    body.appendChild(this.archiveBody);
+    body.appendChild(this.btn("BACK", null, () => this.show("start")));
+    return this.screen("archive", panel);
+  }
+
+  /** Populate the route archive from the save — called at boot. */
+  setArchiveData(
+    stats: {
+      runs: number;
+      secured: number;
+      best: number;
+      logged: number;
+      falseClears: number;
+      falseAlarms: number;
+      dailies: number;
+    },
+    discoveredIds: string[],
+  ): void {
+    const host = this.archiveBody;
+    if (!host) return;
+    host.innerHTML = "";
+    const ROMAN = ["I", "II", "III"];
+    const discovered = new Set(discoveredIds);
+
+    const table = document.createElement("table");
+    table.className = "na-stats";
+    for (const [k, v] of [
+      ["RUNS FILED", String(stats.runs)],
+      ["ROUTES SECURED", String(stats.secured)],
+      ["BEST STABILITY", String(stats.best)],
+      ["DIVERGENCES LOGGED", String(stats.logged)],
+      ["FALSE CLEARS", String(stats.falseClears)],
+      ["FALSE ALARMS", String(stats.falseAlarms)],
+      ["DAILY ROUTES", String(stats.dailies)],
+    ] as [string, string][]) {
+      const tr = document.createElement("tr");
+      const a = document.createElement("td");
+      a.textContent = k;
+      const b = document.createElement("td");
+      b.textContent = v;
+      tr.appendChild(a);
+      tr.appendChild(b);
+      table.appendChild(tr);
+    }
+    host.appendChild(table);
+
+    const log = document.createElement("div");
+    log.className = "na-route-log na-archive";
+    const head = document.createElement("div");
+    head.className = "h";
+    head.textContent = `DIVERGENCE REGISTER — ${discovered.size} OF ${ALL_ANOMALIES.length} FILED`;
+    log.appendChild(head);
+    const defs = [...ALL_ANOMALIES].sort((a, b) => a.chapter - b.chapter || a.id.localeCompare(b.id));
+    for (const d of defs) {
+      const row = document.createElement("div");
+      if (discovered.has(d.id)) {
+        row.className = "row";
+        const nm = document.createElement("span");
+        nm.textContent = d.displayName;
+        const meta = document.createElement("span");
+        meta.className = "ch";
+        meta.textContent = `CH ${ROMAN[d.chapter - 1]} · ${d.category.toUpperCase()} · ${d.detectability.toUpperCase()}`;
+        row.appendChild(nm);
+        row.appendChild(meta);
+      } else {
+        row.className = "row locked";
+        const nm = document.createElement("span");
+        nm.textContent = "—— UNFILED ——";
+        const meta = document.createElement("span");
+        meta.className = "ch";
+        meta.textContent = `CH ${ROMAN[d.chapter - 1]}`;
+        row.appendChild(nm);
+        row.appendChild(meta);
+      }
+      log.appendChild(row);
+    }
+    host.appendChild(log);
   }
 
   private buildPause(): HTMLDivElement {
@@ -557,7 +646,7 @@ export class GameUi {
     this.stabilityEl.ch.textContent = `CH ${["I", "II", "III"][ch - 1] ?? "I"}`;
   }
 
-  show(id: "start" | "pause" | "settings" | "results" | "none"): void {
+  show(id: "start" | "archive" | "pause" | "settings" | "results" | "none"): void {
     for (const [k, s] of this.screens) s.classList.toggle("on", k === id);
     this.hud.classList.toggle("on", id === "none");
   }
