@@ -26,6 +26,7 @@ import * as kit from "./kit";
 import { buildScatter, type ScatterPool } from "./scatter";
 import { buildAmbientWalker, type AmbientWalker } from "./ambientWalker";
 import { buildFixtures } from "./fixtures";
+import { mergeStaticDressing } from "../merge";
 
 export const LAYOUT = {
   corridor: { xHalf: 1.8, z0: 0, z1: 55, height: 3.0 },
@@ -710,6 +711,7 @@ export function buildConcourse(
   const ambientWalker = buildAmbientWalker(scene, root, mats, registry);
   ambientWalker.reset();
   buildFixtures(scene, root, mats, registry);
+  mergeStaticDressing(root);
 
   return {
     root,

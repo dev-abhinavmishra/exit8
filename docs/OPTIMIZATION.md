@@ -26,15 +26,16 @@ lights per zone vary per tier (`src/engine/quality.ts`).
 | Initial transfer (gzip) | ≤4 MB slice |
 
 **Measured (procedural slice, Low tier, mid-corridor worst case):**
-~440 draw calls / ~8.6k visible tris per frame; `window.__nightaudit.draws()`
-reads the engine's _cumulative_ counter — sample twice a frame apart and
-diff. The budget table above is the merged-kit target for M2; the
-procedural build trades draws for trivially-cheap meshes (~1.4k unique
-small boxes, all frustum-culled). Bundle: 2.8 MB babylon chunk (645 kB
-gzip) + 164 kB app (49 kB gzip). GPU-side cost is fill-rate bound, so
-draw-call reduction is the only real M5 lever: merge same-material static
-geometry per zone **only** for meshes no anomaly reaches by name
-(registry anchors + `getMeshByName` targets must stay separate).
+~340 draw calls / ~8.6k visible tris per frame post-merge (was ~440
+before `src/world/merge.ts` folded ~160 static dressing meshes — trays,
+hangers, seams, grime, conduit, baseboards, pipes — into per-material
+merged meshes; ~22% draw cut). `window.__nightaudit.draws()` reads the
+engine's _cumulative_ counter — sample twice a frame apart and diff. The
+budget table above is the merged-kit target for M2; the remaining draws
+are anomaly-reachable meshes that must stay discrete (walls, troffers,
+cabinets, posters, signage — anything a `requires`/`getMeshByName` path
+can reach). Bundle: 2.8 MB babylon chunk (645 kB gzip) + 164 kB app
+(49 kB gzip).
 
 Audio: decoded buffers ≤ 48 MB total; looped beds are generated nodes,
 not samples.
