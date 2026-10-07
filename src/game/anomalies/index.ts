@@ -93,6 +93,7 @@ import { vanishMisaligned } from "./vanishMisaligned";
 import { arrowPoints } from "./arrowPoints";
 import { bayplateGone } from "./bayplateGone";
 import { ventSlats } from "./ventSlats";
+import { extGone } from "./extGone";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -184,4 +185,5 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   arrowPoints,
   bayplateGone,
   ventSlats,
+  extGone,
 ];

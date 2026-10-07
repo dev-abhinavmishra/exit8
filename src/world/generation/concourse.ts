@@ -15,6 +15,8 @@ import { PointLight } from "@babylonjs/core/Lights/pointLight";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 import { ParticleSystem } from "@babylonjs/core/Particles/particleSystem";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
+import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
+import { CreateCylinder } from "@babylonjs/core/Meshes/Builders/cylinderBuilder";
 import { Color4 } from "@babylonjs/core/Maths/math.color";
 import type { Scene } from "@babylonjs/core/scene";
 import { WorldRegistry } from "../registry";
@@ -97,6 +99,41 @@ export interface ConcourseWorld {
   ambientWalker: AmbientWalker;
 }
 
+/** Late-bound detail materials — small shared surfaces, never registry-reached. */
+let _hazardBandMat: StandardMaterial | null = null;
+function hazardBandMaterial(scene: Scene): StandardMaterial {
+  if (_hazardBandMat) return _hazardBandMat;
+  const tex = new DynamicTexture("tex.hazardBand", { width: 256, height: 32 }, scene, true);
+  const c = tex.getContext() as unknown as CanvasRenderingContext2D;
+  c.fillStyle = "#c79b27";
+  c.fillRect(0, 0, 256, 32);
+  c.fillStyle = "#1b1c1e";
+  for (let x = -32; x < 256; x += 32) {
+    c.beginPath();
+    c.moveTo(x, 32);
+    c.lineTo(x + 16, 32);
+    c.lineTo(x + 32, 0);
+    c.lineTo(x + 16, 0);
+    c.closePath();
+    c.fill();
+  }
+  tex.update();
+  _hazardBandMat = new StandardMaterial("mat.hazardBand", scene);
+  _hazardBandMat.diffuseTexture = tex;
+  _hazardBandMat.specularColor = Color3.Black();
+  return _hazardBandMat;
+}
+
+let _doorGlassMat: StandardMaterial | null = null;
+function doorGlassMaterial(scene: Scene): StandardMaterial {
+  if (_doorGlassMat) return _doorGlassMat;
+  _doorGlassMat = new StandardMaterial("mat.doorGlass", scene);
+  _doorGlassMat.diffuseColor = new Color3(0.04, 0.055, 0.065);
+  _doorGlassMat.specularColor = new Color3(0.45, 0.5, 0.55);
+  _doorGlassMat.emissiveColor = new Color3(0.008, 0.012, 0.016);
+  return _doorGlassMat;
+}
+
 function buildAirlock(
   side: "north" | "south",
   scene: Scene,
@@ -136,6 +173,29 @@ function buildAirlock(
   registry.register(`al.${side}.cap`, cap);
   colliders.push(kit.collider(`al.${side}.capCol`, w, h, 0.12, cap.position.clone(), scene, al));
 
+  // cap face dressing — the wall every player walks toward to commit.
+  // Parented to the cap mesh so airlock.breach hides it with the slab.
+  const capFace = side === "north" ? 0.065 : -0.065;
+  const capRot = side === "north" ? Math.PI : 0;
+  const band = kit.plane(`al.${side}.cap.hazard`, w - 0.24, 0.2, hazardBandMaterial(scene), scene);
+  band.parent = cap;
+  band.position = new Vector3(0, 0.95 - h / 2, capFace);
+  band.rotation.y = capRot;
+  const plaqueMat = mats.sign.get("sign.cap.plaque");
+  if (!plaqueMat) throw new Error("missing sign material: sign.cap.plaque");
+  const plaque = kit.plane(`al.${side}.cap.plaque`, 0.9, 0.28, plaqueMat, scene);
+  plaque.parent = cap;
+  plaque.position = new Vector3(0, 2.32 - h / 2, capFace);
+  plaque.rotation.y = capRot;
+  for (const [bx, btag] of [
+    [-w / 2 + 0.16, "l"],
+    [w / 2 - 0.16, "r"],
+  ] as const) {
+    const bolt = kit.box(`al.${side}.cap.bolt.${btag}`, 0.04, 0.04, 0.02, mats.rubber, scene);
+    bolt.parent = cap;
+    bolt.position = new Vector3(bx, 2.32 - h / 2, capFace);
+  }
+
   // commit stripe on the floor at the commit plane
   const stripeZ = side === "north" ? LAYOUT.commitNorthZ : LAYOUT.commitSouthZ;
   const stripe = kit.box(`al.${side}.commitStripe`, w - 0.3, 0.012, 0.18, mats.commitmentStripe, scene, al);
@@ -148,6 +208,34 @@ function buildAirlock(
   doorNode.parent = al;
   doorNode.position = new Vector3(0, 0, doorZ);
   const d = kit.slidingDoor(`door.${side}.inner`, w, h - 0.35, mats, scene, doorNode, registry);
+  // leaf hardware — parented to each leaf so it rides the slide
+  const leafH = h - 0.35;
+  const faceZ = side === "north" ? 0.062 : -0.062; // corridor-facing leaf surface
+  const glass = doorGlassMaterial(scene);
+  for (const [leaf, edgeSign, tag] of [
+    [d.left, 1, "L"],
+    [d.right, -1, "R"],
+  ] as const) {
+    for (const f of [faceZ, -faceZ]) {
+      const handle = kit.box(
+        `door.${side}.inner.${tag}.handle.${f > 0 ? "c" : "a"}`,
+        0.035,
+        0.48,
+        0.045,
+        mats.steel,
+        scene,
+      );
+      handle.parent = leaf;
+      handle.position = new Vector3(edgeSign * (w / 4 - 0.14), 1.05 - leafH / 2, f);
+    }
+    const kick = kit.box(`door.${side}.inner.${tag}.kick`, w / 2 - 0.06, 0.22, 0.012, mats.steel, scene);
+    kick.parent = leaf;
+    kick.position = new Vector3(0, 0.17 - leafH / 2, faceZ);
+    const win = kit.box(`door.${side}.inner.${tag}.win`, 0.22, 0.4, 0.12, glass, scene);
+    win.parent = leaf;
+    win.position = new Vector3(0, 1.72 - leafH / 2, 0);
+  }
+
   const lc = kit.collider(
     `door.${side}.inner.colL`,
     w / 2,
@@ -426,10 +514,40 @@ export function buildConcourse(
   registry.register("service.door.frame", sframe);
   registry.register("service.door.leaf", sleaf);
   registry.register("service.door.slit", sslit);
+  // leaf hardware — parented so it rides door.ajar's swing
+  const svcHandle = kit.box("service.door.handle", 0.045, 0.34, 0.04, mats.steel, scene);
+  svcHandle.parent = sleaf;
+  svcHandle.position = new Vector3(-0.055, 0.02, 0.32);
+  for (const [hy, htag] of [
+    [-0.55, "lo"],
+    [0.45, "hi"],
+  ] as const) {
+    const hinge = kit.box(`service.door.hinge.${htag}`, 0.02, 0.14, 0.05, mats.steel, scene);
+    hinge.parent = sleaf;
+    hinge.position = new Vector3(-0.04, hy, -0.38);
+  }
 
   // fire cabinet RIGHT z≈18
   const cabFire = kit.fireCabinet(mats, scene, root, registry);
   cabFire.position = new Vector3(C.xHalf - 0.12, 1.4, 18);
+
+  // extinguisher on the wall beside the cabinet — the anomaly target is the
+  // whole unit: bracket + cylinder + valve + hose stub
+  const ext = new TransformNode("prop.extinguisher", scene);
+  ext.parent = root;
+  ext.position = new Vector3(C.xHalf - 0.2, 0.78, 18.55);
+  const extBody = CreateCylinder("prop.ext.body", { height: 0.42, diameter: 0.13, tessellation: 14 }, scene);
+  extBody.material = mats.cabinetRed;
+  extBody.parent = ext;
+  const extTop = CreateCylinder("prop.ext.top", { height: 0.07, diameter: 0.05, tessellation: 10 }, scene);
+  extTop.material = mats.steel;
+  extTop.parent = ext;
+  extTop.position.y = 0.24;
+  const extHose = kit.box("prop.ext.hose", 0.025, 0.18, 0.03, mats.rubber, scene, ext);
+  extHose.position = new Vector3(0.045, 0.13, 0);
+  const extBracket = kit.box("prop.ext.bracket", 0.04, 0.3, 0.16, mats.rubber, scene, ext);
+  extBracket.position = new Vector3(0.05, 0.02, 0);
+  registry.register("prop.extinguisher", ext);
 
   // vent grilles at the ambience anchors (high on the walls)
   const ventSpots: [number, number][] = [

@@ -232,8 +232,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     simply not there. Subtle. (slice)
 48. ★ `vent.slats` — every louvre in one ceiling grille is gone; a
     bare dark slot. Look up. Subtle. (slice)
+49. ★ `ext.missing` — the extinguisher beside the fire point is gone;
+    the cabinet, sign, and bracket shadow all remain. Subtle. (slice)
 
-Slice count: **89 implemented — the full catalog**. New hooks:
+Slice count: **90 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

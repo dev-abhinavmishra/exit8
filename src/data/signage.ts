@@ -85,6 +85,13 @@ export const SIGNS: SignSpec[] = [
     arrow: "none",
     tone: "dark",
   },
+  {
+    id: "sign.cap.plaque",
+    title: "SECTOR CAP",
+    sub: "AUTHORIZED PERSONNEL ONLY",
+    arrow: "none",
+    tone: "dark",
+  },
 ];
 
 /** Diegetic micro-copy; used on posters, terminals, notices. */
