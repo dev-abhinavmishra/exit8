@@ -240,6 +240,18 @@ export const POSTER_DEFS: PosterDef[] = [
     bg: "#2a2024",
     fg: "#d8d5cd",
   },
+  {
+    title: "KEEP LEFT",
+    sub: ["LOOP 7 TRAVELS NORTH", "SOUTH PASSAGE IS", "INSPECTION ONLY"],
+    bg: "#252322",
+    fg: "#e8a33d",
+  },
+  {
+    title: "SHIFT CHANGES",
+    sub: ["OVERTIME IS APPROVED", "BY YOUR LAST SHIFT'S", "FILING. SIGN FIRST."],
+    bg: "#22262c",
+    fg: "#9fb8c8",
+  },
 ];
 
 /** Redraw a poster texture in place — used at build and by poster anomalies. */

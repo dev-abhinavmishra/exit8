@@ -152,18 +152,51 @@ function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, reg
     decal.parent = root;
     registry.register(`floor.arrow.${z}`, decal);
   }
-  // the same worn "7 →" stencil, painted on the wall above each floor
-  // decal — redundancy is how wayfinding actually survives wear
+  // the same routing mark, stencil-painted on the wall — dark cut-paint
+  // like a real sprayed stencil, aimed down-route (+z south)
+  const stencilTex = new DynamicTexture("tex.wallStencil", { width: 512, height: 256 }, scene, true);
+  stencilTex.hasAlpha = true;
+  {
+    const c = stencilTex.getContext() as unknown as CanvasRenderingContext2D;
+    c.scale(2, 2);
+    c.clearRect(0, 0, 256, 128);
+    c.fillStyle = "rgba(60,56,50,0.62)";
+    c.font = "bold 56px Arial, sans-serif";
+    c.textAlign = "center";
+    c.fillText("7", 30, 78);
+    c.fillRect(64, 58, 120, 20);
+    c.beginPath();
+    c.moveTo(236, 68);
+    c.lineTo(186, 34);
+    c.lineTo(186, 102);
+    c.closePath();
+    c.fill();
+    // stencil bridges: gaps across the shaft where the cut mask held
+    c.globalCompositeOperation = "destination-out";
+    c.fillRect(120, 50, 8, 36);
+    c.fillRect(148, 50, 8, 36);
+    // wear streaks
+    for (let i = 0; i < 60; i++) {
+      const y = Math.floor(Math.abs(Math.sin(i * 12.9898)) * 43758.5453) % 128;
+      c.fillRect(0, y, 256, 1.5);
+    }
+    stencilTex.update();
+  }
+  const stencilMat = new StandardMaterial("mat.wallStencil", scene);
+  stencilMat.diffuseTexture = stencilTex;
+  stencilMat.opacityTexture = stencilTex;
+  stencilMat.disableLighting = true;
+  stencilMat.backFaceCulling = false;
   for (const [sx, sz] of [
     [-1, 10.7],
-    [1, 30.7],
+    [1, 33.4],
     [-1, 48.7],
   ] as const) {
-    const st = kit.plane(`dress.stencil.${sz}`, 0.35, 0.7, arrowMat, scene, root);
-    st.position = new Vector3(sx * 1.77, 1.42, sz);
+    const st = kit.plane(`dress.stencil.${sz}`, 0.85, 0.42, stencilMat, scene, root);
+    st.position = new Vector3(sx * 1.77, 1.35, sz);
     st.rotation.y = sx > 0 ? Math.PI / 2 : -Math.PI / 2;
-    // canvas arrow points toward canvas-bottom; roll it to aim +z (south)
-    st.rotation.z = sx > 0 ? -Math.PI / 2 : Math.PI / 2;
+    // canvas +x aims −z on the left wall; flip in-plane so it aims +z (south)
+    if (sx < 0) st.rotation.z = Math.PI;
   }
 
   // ---- ceiling vent grilles: dark slatted panels between troffers ----

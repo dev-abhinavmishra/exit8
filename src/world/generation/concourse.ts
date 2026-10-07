@@ -898,11 +898,11 @@ export function buildConcourse(
   // damp staining — dark washes bleeding down from the ceiling line in
   // the oldest stretches of the route
   for (const [sx, pz, w] of [
-    [-1, 10.4, 1.1],
+    [-1, 10.4, 0.9],
     [1, 46.2, 0.9],
     [-1, 41.5, 0.7],
   ] as const) {
-    const st = kit.plane(`dress.stain.${pz}`, w, 1.5, mats.aoStrip, scene, root);
+    const st = kit.plane(`dress.stain.${pz}`, w, 1.5, mats.grime, scene, root);
     st.position = new Vector3(sx * (C.xHalf - 0.065), 1.9, pz);
     st.rotation.y = sx > 0 ? -Math.PI / 2 : Math.PI / 2;
   }
@@ -1099,6 +1099,41 @@ export function buildConcourse(
   shutter.position = new Vector3(-C.xHalf + 0.06, 1.75, 37);
   registry.register("clinic.shutter", shutter);
   colliders.push(kit.collider("clinic.shutter.col", 0.1, 1.4, 4.4, shutter.position.clone(), scene, root));
+  // counter dressing — children of the counter so clinic anomalies ride
+  const ctop = kit.box("clinic.counter.top", 0.66, 0.035, 4.3, mats.rubber, scene);
+  ctop.parent = counter;
+  ctop.position = new Vector3(0, 0.54, 0);
+  const ckick = kit.box("clinic.counter.kick", 0.02, 0.12, 4.1, mats.rubber, scene);
+  ckick.parent = counter;
+  ckick.position = new Vector3(0.295, -0.45, 0);
+  const tray = kit.box("clinic.counter.tray", 0.24, 0.05, 0.34, mats.rubber, scene);
+  tray.parent = counter;
+  tray.position = new Vector3(0.12, 0.56, -1.3);
+  for (let si = 0; si < 2; si++) {
+    const sheet = kit.plane(`clinic.counter.sheet.${si}`, 0.18, 0.24, paperMaterial(scene), scene);
+    sheet.parent = counter;
+    sheet.position = new Vector3(0.12 + si * 0.01, 0.585 + si * 0.004, -1.3);
+    sheet.rotation.x = -Math.PI / 2;
+    sheet.rotation.z = si * 0.4 - 0.2;
+  }
+  const bell = CreateCylinder(
+    "clinic.counter.bell",
+    { height: 0.05, diameterTop: 0.045, diameterBottom: 0.07, tessellation: 12 },
+    scene,
+  );
+  bell.material = mats.steel;
+  bell.parent = counter;
+  bell.position = new Vector3(0.15, 0.59, 0.9);
+  // shutter hardware — bottom lock band + center lock case + wicket slot
+  const lockband = kit.box("clinic.shutter.lockband", 0.02, 0.14, 4.2, mats.rubber, scene);
+  lockband.parent = shutter;
+  lockband.position = new Vector3(0.045, -0.58, 0);
+  const lock = kit.box("clinic.shutter.lock", 0.03, 0.1, 0.14, mats.rubber, scene);
+  lock.parent = shutter;
+  lock.position = new Vector3(0.045, -0.5, 0);
+  const wicket = kit.box("clinic.shutter.wicket", 0.02, 0.28, 0.55, mats.rubber, scene);
+  wicket.parent = shutter;
+  wicket.position = new Vector3(0.045, -0.45, -0.8);
 
   // master clock LEFT z=24, mounted above the records cabinets (top y=2.2)
   kit.clock(mats, scene, root, registry);
