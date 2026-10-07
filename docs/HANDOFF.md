@@ -82,12 +82,21 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   pixel-identical so drift != divergence. Never registered; evidence
   notes never sit on bare floor so papers can't be mistaken for them.
   ConcourseWorld gains `scatter`; rebaseline() calls refresh.
-- **Texture density pass** (this commit): uScale/vScale on wallPanel
-  (u8), terrazzo (u4/v20 brass grid), ceilingTile, steel, concrete —
-  surfaces were unstretched across 20m runs so every baked seam blurred.
-- Next up per the attached brief: rest of M3 (mobile controls, full
-  accessibility pass), M2 (baked lighting / KTX2), M4 (second ending
-  groundwork already in: 'investigative' via dossier).
+- **Texture density pass**: uScale/vScale on wallPanel (u8), terrazzo
+  (u4/v20 brass grid), ceilingTile, steel, concrete — surfaces were
+  unstretched across 20m runs so every baked seam blurred.
+- **Audio mix pass**: `startAmbience` opts gained `troffers` + `clockPos`
+  (world anchors extended to match). 120Hz hum at 3 troffer rows, 1Hz
+  clock tick via `update()`, `playEnding(kind)` tails wired in `onEnd`.
+- **Touch controls**: `.touch-ui` HUD overlay (USE + PAUSE) shown only
+  under `@media (pointer: coarse)`; USE arms via `setUsePrompt`; taps
+  stopPropagation so look/move sticks don't claim them. Verify with a
+  Playwright `hasTouch` context — desktop shows `display:none`.
+- **Endings + credits**: `COPY.results.epilogues` (standard /
+  investigative / lost / practice one-liners under the stamp), CREDITS
+  button → 'credits' screen (M4's credits box).
+- Next up per the attached brief: M2 visual benchmark (baked lighting /
+  KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
 ## Conventions this repo already follows
 
