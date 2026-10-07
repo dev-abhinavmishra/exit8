@@ -109,7 +109,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 
 1. ★ `memory.persist` — a scatter detail placed last loop returns at the
    exact same spot while everything else re-dresses. Subtle. (slice)
-2. `ui.disagree` — the airlock terminal shows last loop's judgment wrong.
+2. `ui.disagree` — superseded by `terminal.glitch` (the terminals lie
+   about your last filing) — dropped as a separate def.
+   ★ `pace.dissolves` — the corridor hasn't stretched; your pace bleeds
+   to ~55 % in the mid-span (z 16–48) and your own footstep cadence
+   drags with it. The loop takes longer than it ever has. Moderate.
+   (slice)
 3. ★ `route.reacts` — after 2.6s of stillness the corridor replays your
    last few footsteps at your own cadence, from where you took them.
    Moderate. (slice)
@@ -122,7 +127,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 7. ★ `terminal.glitch` — both airlock terminals briefly insist a
    divergence was filed and stability reads 0. Subtle. (slice)
 
-Slice count: **45 implemented** — past the 24 target. New hooks:
+Slice count: **46 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

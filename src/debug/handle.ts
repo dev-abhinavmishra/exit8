@@ -15,6 +15,8 @@ export interface DebugHandle {
   anomaly(): string | null;
   stability(): number;
   pos(): { x: number; y: number; z: number };
+  /** current walk-speed multiplier (pace.dissolves diagnostics) */
+  speedScale(): number;
   teleport(x: number, y: number, z: number, yaw?: number): void;
   forceAnomaly(id: string | null): void;
   setStability(v: number): void;
@@ -53,6 +55,7 @@ export function installDebugHandle(app: App): void {
       const p = refs().player.position;
       return { x: p.x, y: p.y, z: p.z };
     },
+    speedScale: () => refs().player.speedScale,
     teleport: (x, y, z, yaw) => {
       refs().player.teleport(new Vector3(x, y, z), yaw ?? 0);
     },

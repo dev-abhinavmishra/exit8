@@ -251,7 +251,7 @@ export class PlayerController {
     const wishLen = wish.length();
     if (wishLen > 1) wish.scaleInPlace(1 / wishLen);
 
-    const target = wish.scale(WALK_SPEED);
+    const target = wish.scale(WALK_SPEED * this.speedScale);
     const rate = wishLen > 0.05 ? ACCEL : DECEL;
     this.velocity.x += (target.x - this.velocity.x) * Math.min(1, rate * dt);
     this.velocity.z += (target.z - this.velocity.z) * Math.min(1, rate * dt);
@@ -297,6 +297,10 @@ export class PlayerController {
   speed(): number {
     return Math.hypot(this.velocity.x, this.velocity.z);
   }
+
+  /** Multiplier on target walk speed — anomalies ease it away from 1 to
+   * make the corridor take longer than it should. 1 in baseline. */
+  speedScale = 1;
 
   dispose(): void {
     this.camera.dispose();

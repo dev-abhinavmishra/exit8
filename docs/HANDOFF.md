@@ -166,6 +166,11 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   correct is south 0 facing -z approach, north π facing +z into the
   corridor). Both INSPECTION POINT and NOTICE now render; anything
   keying on them (gaze.shift, terminal.notice) is legible.
+- `pace.dissolves` (**46**): player.speedScale (new controller field,
+  multiplies WALK_SPEED) eases 1→0.55 inside z 16–48 — the loop takes
+  longer; footstep cadence follows automatically (speed-driven). Probe:
+  `__nightaudit.speedScale()` exposed. Note: e2e sim runs on real dt —
+  at ~2fps frames the ease is under-sampled but still deterministic.
 - `gaze.shift` (**45**): SignSpec gained `figure: "left"|"right"` and
   drawSign draws an original walking-person glyph (drawFigure, mirrored
   by dir) left of the title — sign.exit.south carries it. Def redraws
