@@ -222,6 +222,12 @@ function buildAirlock(
     bolt.position = new Vector3(bx, 2.32 - h / 2, capFace);
   }
 
+  // ribbed runner mat just inside the inner door — the entrance detail
+  // every service vestibule has
+  const matZ = side === "north" ? z1 - 0.9 : z0 + 0.9;
+  const rmat = kit.box(`dress.floormat.${side}`, w - 0.4, 0.02, 1.5, mats.rubber, scene, al);
+  rmat.position = new Vector3(0, 0.012, matZ);
+
   // commit stripe on the floor at the commit plane
   const stripeZ = side === "north" ? LAYOUT.commitNorthZ : LAYOUT.commitSouthZ;
   const stripe = kit.box(`al.${side}.commitStripe`, w - 0.3, 0.012, 0.18, mats.commitmentStripe, scene, al);
@@ -1175,6 +1181,15 @@ export function buildConcourse(
   const wicket = kit.box("clinic.shutter.wicket", 0.02, 0.28, 0.55, mats.rubber, scene);
   wicket.parent = shutter;
   wicket.position = new Vector3(0.045, -0.45, -0.8);
+  // a typed notice taped to the shutter glass above the wicket —
+  // "INTAKE B — CLOSED 22:00–06:00" as a plain paper sheet
+  const sNote = kit.plane("clinic.shutter.note", 0.2, 0.26, paperMaterial(scene), scene);
+  sNote.parent = shutter;
+  sNote.position = new Vector3(0.048, 0.18, -0.8);
+  sNote.rotation.y = -Math.PI / 2;
+  const sTape = kit.box("clinic.shutter.tape", 0.01, 0.03, 0.1, mats.steel, scene);
+  sTape.parent = shutter;
+  sTape.position = new Vector3(0.045, 0.32, -0.8);
 
   // master clock LEFT z=24, mounted above the records cabinets (top y=2.2)
   kit.clock(mats, scene, root, registry);
