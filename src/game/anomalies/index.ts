@@ -77,6 +77,11 @@ import { terminalBlack } from "./terminalBlack";
 import { binFlipped } from "./binFlipped";
 import { hatchOpen } from "./hatchOpen";
 import { stripGrows } from "./stripGrows";
+import { mullionExtra } from "./mullionExtra";
+import { glassWriting } from "./glassWriting";
+import { totemReversed } from "./totemReversed";
+import { doorSlow } from "./doorSlow";
+import { cabinetRows } from "./cabinetRows";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -152,4 +157,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   binFlipped,
   hatchOpen,
   stripGrows,
+  mullionExtra,
+  glassWriting,
+  totemReversed,
+  doorSlow,
+  cabinetRows,
 ];

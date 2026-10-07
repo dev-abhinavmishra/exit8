@@ -198,8 +198,19 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 34. ★ `strip.grows` — the tactile guide strip continues through the
     north airlock to the cap; the line leads somewhere it never led.
     Subtle. (slice)
+35. ★ `mullion.extra` — a sixth steel mullion stands mid-bay where
+    there were always five. Subtle. (slice)
+36. ★ `glass.writing` — a word is fingered into the condensation on
+    the observation glass, written from the corridor side.
+    Unmistakable. (slice)
+37. ★ `totem.reversed` — the hanging totem has been turned around;
+    its face reads only to the records wall. Moderate. (slice)
+38. ★ `door.slow` — the south inner doors still open, but they crawl
+    fourteen seconds where there used to be two. Subtle. (slice)
+39. ★ `cabinet.rows` — the whole records bank gapes: every drawer
+    mouth open at a different depth, all dark. Unmistakable. (slice)
 
-Slice count: **73 implemented** — past the 24 target. New hooks:
+Slice count: **78 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
