@@ -28,9 +28,13 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   SECURED@100 + LOST@0, per-anomaly forced screenshots (?anomaly=<id>),
   chapter ladder (2 correct → CH II). 13/13 e2e green (~5m — SECURED
   spec now needs 6 loops).
+- **Daily route live** (770a5ee): DAILY ROUTE button → seed
+  `daily-YYYY-MM-DD` (UTC), completion stamped in
+  `save.progression.dailies`, button flips to 'already filed'. Results
+  screen shows FILED DIVERGENCES (name + chapter per correct retreat).
 - Next up per the attached brief: M2 visual benchmark (Blender kit /
-  baked lighting / KTX2) or rest of M3 (evidence/archive UI, practice +
-  daily seed modes, catalog validator, gamepad, mobile).
+  baked lighting / KTX2) or rest of M3 (evidence/archive UI, practice
+  mode, catalog validator, gamepad, mobile).
 
 ## Conventions this repo already follows
 
