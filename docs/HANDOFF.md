@@ -10,7 +10,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller
   (collision via `camera.cameraDirection` + `collisionCoordinator` import),
   Loop 7 concourse (procedural), commit thresholds, stability index,
-  **33 anomalies** (was 3 — 24 target passed) registered via
+  **35 anomalies** (was 3 — 24 target passed) registered via
   `anomalies/index.ts` (`ALL_ANOMALIES` — register there, not in app.ts),
   procedural audio (seeded `audio.synth`/`audio.ambient` streams),
   start/pause/settings/results, v1 saves, vitest + playwright suites,
@@ -37,7 +37,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   `view()` added to the debug handle (yaw/pitch getter; `look()` is
   a setter). e2e stubs `navigator.getGamepads` via addInitScript.
 - **Route archive live** (bde5a73): ROUTE ARCHIVE on the start
-  screen — stats table + DIVERGENCE REGISTER of all 33 defs sorted by
+  screen — stats table + DIVERGENCE REGISTER of all 35 defs sorted by
   chapter; discovered ids render name/chapter/category/detectability,
   unfound ones show redacted rows. `ui.setArchiveData(stats, ids)`
   populates from save at boot. NOTE: seeded saves in e2e must carry
@@ -109,6 +109,14 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   him mid-corridor EVERY rebaseline so he's part of baseline normal.
   `setMode("backwards"|"stare")` feeds two new ch2 defs
   (walker.backwards moonwalk, walker.stare mid-hold) — catalog **33**.
+- Walker anomalies batch 2 + fixtures (**35**): `walker.absent` (new
+  WalkerMode disables the group; reset() re-enables), `fire.open` (hides
+  fire.point.glass), slat.missing now picks EITHER bench + any slat seeded.
+  TRAP: registry.mesh(name) needs an explicit registry.register() —
+  kit.plane() does NOT register (kit.box/bench/wallSign do); a missing
+  name makes requires-validation pass but the anomaly a silent no-op.
+  FIXTURES: bench.south z≈33 left, bin z≈51.5 right, fire point glass +
+  FIRE POINT sign over the existing cabinet z≈18.
   `ambient.walker` registered in WorldRegistry; update() runs in
   app.sim. Trap: e2e archive spec had "0 OF 31 FILED" hardcoded — now
   regex-matched; specs CANNOT import src/game/anomalies (Node can't

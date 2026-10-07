@@ -90,7 +90,9 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
    but faces away from travel — he moonwalks the loop. Moderate.
 4. ★ `walker.stare` — the other inspector has stopped mid-corridor,
    squared up toward your approach, dead still the whole loop. Moderate.
-5. `gaze.shift` — pictogram figures' facing changes between loops. Subtle.
+5. ★ `walker.absent` — he simply isn't there this loop. Subtle —
+   you have to have learned he's always there.
+6. `gaze.shift` — pictogram figures' facing changes between loops. Subtle.
 
 ## Group F — systemic (3)
 
@@ -103,8 +105,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
    end stops resolving. Moderate. (slice)
 5. ★ `terminal.notice` — a handbill on the south airlock terminal
    misdirects inspectors to the north point. Subtle. (slice)
+6. ★ `fire.open` — the fire cabinet's dark-glass window is gone; the
+   cabinet stands open on its bare red face. Subtle. (slice)
 
-Slice count: **33 implemented** — past the 24 target. New hooks:
+Slice count: **35 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
