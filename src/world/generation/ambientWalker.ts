@@ -12,6 +12,7 @@ import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { Scene } from "@babylonjs/core/scene";
 import type { MaterialSet } from "../materials/library";
+import type { WorldRegistry } from "../registry";
 
 const WALK_Z0 = 7;
 const WALK_Z1 = 48;
@@ -19,14 +20,25 @@ const SPEED = 1.05;
 const PAUSE_S = 5;
 const HOME_Z = 16; // loop-rebaseline spot — always mid-corridor on loop 1
 
+export type WalkerMode = "normal" | "backwards" | "stare";
+
 export interface AmbientWalker {
   update(dt: number): void;
   reset(): void;
+  /** anomaly hook — 'backwards' flips facing vs travel, 'stare' halts
+   *  mid-corridor facing the player's approach. reset() restores normal. */
+  setMode(mode: WalkerMode): void;
 }
 
-export function buildAmbientWalker(scene: Scene, root: TransformNode, _mats: MaterialSet): AmbientWalker {
+export function buildAmbientWalker(
+  scene: Scene,
+  root: TransformNode,
+  _mats: MaterialSet,
+  registry: WorldRegistry,
+): AmbientWalker {
   const g = new TransformNode("ambient.walker", scene);
   g.parent = root;
+  registry.register("ambient.walker", g);
 
   // muted slate — clearly a person, clearly staff, clearly NOT the
   // near-black anomaly silhouettes
@@ -62,17 +74,32 @@ export function buildAmbientWalker(scene: Scene, root: TransformNode, _mats: Mat
   let dir = 1; // walking south (+z) at loop start
   let pauseT = 0;
   let bobT = 0;
+  let mode: WalkerMode = "normal";
 
   return {
     reset() {
+      mode = "normal";
       z = HOME_Z;
       dir = 1;
       pauseT = 0;
       g.position.set(0.55, 0, z);
       g.rotation.y = dir > 0 ? 0 : Math.PI;
     },
+    setMode(m: WalkerMode) {
+      mode = m;
+      if (m === "stare") {
+        // stops where he is, squared up to face the player's approach
+        pauseT = 0;
+        g.rotation.y = Math.PI;
+      }
+    },
     update(dt) {
       bobT += dt;
+      if (mode === "stare") {
+        // dead still except the slightest drift of the head
+        g.position.set(0.55, 0, z);
+        return;
+      }
       if (pauseT > 0) {
         pauseT -= dt;
       } else {
@@ -81,13 +108,15 @@ export function buildAmbientWalker(scene: Scene, root: TransformNode, _mats: Mat
           z = WALK_Z1;
           dir = -1;
           pauseT = PAUSE_S;
-          g.rotation.y = Math.PI;
         } else if (z <= WALK_Z0 && dir < 0) {
           z = WALK_Z0;
           dir = 1;
           pauseT = PAUSE_S;
-          g.rotation.y = 0;
         }
+        // facing follows mode: normally the direction of travel;
+        // 'backwards' keeps him squared away from it (the moonwalk)
+        const facing = mode === "backwards" ? -dir : dir;
+        g.rotation.y = facing > 0 ? 0 : Math.PI;
       }
       // stride bob — tiny, readable at distance
       const bob = Math.abs(Math.sin(bobT * 3.4)) * 0.028;

@@ -623,7 +623,7 @@ export function buildConcourse(
   }
 
   const scatter = buildScatter(scene, root, mats, runSeed);
-  const ambientWalker = buildAmbientWalker(scene, root, mats);
+  const ambientWalker = buildAmbientWalker(scene, root, mats, registry);
   ambientWalker.reset();
 
   return {

@@ -35,6 +35,8 @@ import { cctvSleeps } from "./cctvSleeps";
 import { ventGroan } from "./ventGroan";
 import { posterChanged } from "./posterChanged";
 import { counterWorker } from "./counterWorker";
+import { walkerBackwards } from "./walkerBackwards";
+import { walkerStare } from "./walkerStare";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -68,4 +70,6 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   ventGroan,
   posterChanged,
   counterWorker,
+  walkerBackwards,
+  walkerStare,
 ];

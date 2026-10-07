@@ -79,14 +79,18 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 6. ★ `vent.groan` — gallery vent exhales a pressure groan when you pass
    within ~4 m. Moderate. (slice)
 
-## Group E — character/creature (3, all original designs)
+## Group E — character/creature (5, all original designs)
 
 1. ★ `watcher.far` — motionless dark figure at the junction end; gone
    (with a single soft step) by the time you reach z≈45. Unmistakable.
    (slice)
 2. ★ `counter.worker` — a dark hand slides a paper slip out from under
    the clinic shutter, holds, withdraws. Moderate. (slice)
-3. `gaze.shift` — pictogram figures' facing changes between loops. Subtle.
+3. ★ `walker.backwards` — the other inspector keeps his route and pace
+   but faces away from travel — he moonwalks the loop. Moderate.
+4. ★ `walker.stare` — the other inspector has stopped mid-corridor,
+   squared up toward your approach, dead still the whole loop. Moderate.
+5. `gaze.shift` — pictogram figures' facing changes between loops. Subtle.
 
 ## Group F — systemic (3)
 
@@ -100,7 +104,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 5. ★ `terminal.notice` — a handbill on the south airlock terminal
    misdirects inspectors to the north point. Subtle. (slice)
 
-Slice count: **31 implemented** — past the 24 target. New hooks:
+Slice count: **33 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

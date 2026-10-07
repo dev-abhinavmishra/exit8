@@ -13,7 +13,8 @@ test.describe("route archive", () => {
   test("opens from the start screen and lists unfiled divergences", async ({ page }) => {
     await boot(page);
     await page.getByRole("button", { name: /ROUTE ARCHIVE/ }).click();
-    await expect(page.getByText(/DIVERGENCE REGISTER — 0 OF 31 FILED/)).toBeVisible({
+    // count grows with the catalog — assert the shape, not a literal
+    await expect(page.getByText(/DIVERGENCE REGISTER — 0 OF \d+ FILED/)).toBeVisible({
       timeout: 10_000,
     });
     await expect(page.getByText("RUNS FILED")).toBeVisible();
