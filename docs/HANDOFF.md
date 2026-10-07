@@ -324,3 +324,10 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   pages; kill orphan chromes before debugging a "hang"; `fuser -k 4177/tcp`
   kills stale previews that shadow the strictPort suite; a saved
   `night-audit-e2e-testing` skill documents the debug handle + probes.
+- Cross-browser QA: `XB=1 npx playwright test` adds firefox + webkit
+  projects running only `crossbrowser.spec.ts` (boot + move + one
+  judgment). Requires `npx playwright install firefox webkit` once —
+  the blueprint installs chromium only. Found a real bug: headless
+  WebKit rejects `requestPointerLock()` — every call site now wraps it
+  in `Promise.resolve(...).catch(() => {})` since the fallback input
+  path covers the denial anyway.

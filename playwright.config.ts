@@ -20,7 +20,25 @@ export default defineConfig({
       ],
     },
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    // Opt-in cross-browser smoke (XB=1 npx playwright test): only the
+    // crossbrowser spec — the full suite is chromium-calibrated.
+    ...(process.env.XB
+      ? [
+          {
+            name: "firefox",
+            use: { ...devices["Desktop Firefox"], launchOptions: {} },
+            testMatch: /crossbrowser\.spec\.ts/,
+          },
+          {
+            name: "webkit",
+            use: { ...devices["Desktop Safari"], launchOptions: {} },
+            testMatch: /crossbrowser\.spec\.ts/,
+          },
+        ]
+      : []),
+  ],
   webServer: {
     command: "npm run build && npm run preview -- --port 4177 --strictPort",
     url: "http://localhost:4177",

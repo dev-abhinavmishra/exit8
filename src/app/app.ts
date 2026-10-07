@@ -294,7 +294,9 @@ export class App {
   private startRun(): void {
     this.ui.show("none");
     this.state = "playing";
-    this.canvas.requestPointerLock?.();
+    // headless WebKit / permission-denied contexts reject the promise —
+    // pointer-lock fallback input keeps working either way
+    void Promise.resolve(this.canvas.requestPointerLock?.()).catch(() => {});
   }
 
   private pause(): void {
@@ -308,7 +310,7 @@ export class App {
     this.ui.show("none");
     this.state = "playing";
     this.audio.resume();
-    this.canvas.requestPointerLock?.();
+    void Promise.resolve(this.canvas.requestPointerLock?.()).catch(() => {});
   }
 
   private restart(): void {

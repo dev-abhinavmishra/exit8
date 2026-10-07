@@ -74,7 +74,9 @@ export class PlayerController {
     const el = this.canvas;
     el.addEventListener("click", () => {
       if (!this.pointerLocked && this.enabled) {
-        el.requestPointerLock?.();
+        // denied-pointer-lock contexts (headless WebKit, permissions
+        // policy) reject the promise — fallback input still works
+        void Promise.resolve(el.requestPointerLock?.()).catch(() => {});
       }
     });
     document.addEventListener("pointerlockchange", () => {
