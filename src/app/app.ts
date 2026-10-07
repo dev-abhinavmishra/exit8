@@ -233,6 +233,8 @@ export class App {
       this.audio.unlock();
       this.audio.startAmbience(this.world.anchors.vents, this.world.anchors.junctionMachine, ambientRng, {
         noRumble: this.params.e2e,
+        troffers: this.world.anchors.troffers,
+        clockPos: this.world.anchors.clock,
       });
       // a first gesture arriving while paused must not un-mute the scene
       if (this.state === "paused") this.audio.suspend();
@@ -426,6 +428,7 @@ export class App {
     // a complete dossier upgrades a secured route to the investigative ending
     const dossier = prog.discoveries.length >= EVIDENCE_NOTES.length;
     const investigative = outcome === "secure" && dossier;
+    this.audio.playEnding(investigative ? "investigative" : outcome);
     if (investigative && !prog.endings.includes("investigative")) {
       this.save.update((d) => {
         d.progression.endings.push("investigative");

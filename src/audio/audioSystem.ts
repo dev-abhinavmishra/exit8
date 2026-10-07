@@ -26,6 +26,8 @@ export class AudioSystem {
   private captionListeners: ((e: CaptionEvent) => void)[] = [];
   private rumbleTimer = 0;
   private ambienceStarted = false;
+  private clockPos: Vector3 | null = null;
+  private tickT = 0;
 
   constructor(
     private readonly settings: Settings,
@@ -163,7 +165,7 @@ export class AudioSystem {
     ventPositions: Vector3[],
     machinePos: Vector3,
     rng: RngStream,
-    opts: { noRumble?: boolean } = {},
+    opts: { noRumble?: boolean; troffers?: Vector3[]; clockPos?: Vector3 } = {},
   ): void {
     if (!this.ctx || !this.noiseBuffer || this.ambienceStarted) return;
     this.ambienceStarted = true;
@@ -208,6 +210,36 @@ export class AudioSystem {
       };
       this.ventUpdaters.push(update);
     }
+
+    // fluorescent hum at the troffer rows — 120Hz + harmonic, faint
+    // mains flutter driven per-update (deterministic phase by row z)
+    for (const pos of opts.troffers ?? []) {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = 120;
+      const o2 = ctx.createOscillator();
+      o2.type = "sine";
+      o2.frequency.value = 240;
+      const g2 = ctx.createGain();
+      g2.gain.value = 0.3;
+      const g = ctx.createGain();
+      g.gain.value = 0.0;
+      const pan = ctx.createStereoPanner();
+      o.connect(g);
+      o2.connect(g2).connect(g);
+      g.connect(pan).connect(this.bus("ambience"));
+      o.start();
+      o2.start();
+      const update = () => {
+        const sp = this.spatialParams(pos);
+        const flutter = 0.85 + 0.15 * Math.sin(ctx.currentTime * 6.3 + pos.z);
+        g.gain.value = 0.03 * sp.gain * flutter;
+        pan.pan.value = sp.pan;
+      };
+      this.ventUpdaters.push(update);
+    }
+
+    this.clockPos = opts.clockPos ?? null;
 
     // junction machinery thrum
     const mach = ctx.createOscillator();
@@ -268,6 +300,35 @@ export class AudioSystem {
     for (const u of this.ventUpdaters) u();
     this.machineUpdater?.();
     this.rumbleScheduler?.(dt);
+    // faint mechanical tick near the master clock
+    if (this.clockPos && this.ctx && this.noiseBuffer) {
+      this.tickT -= dt;
+      if (this.tickT <= 0) {
+        this.tickT = 1.0;
+        const sp = this.spatialParams(this.clockPos);
+        if (sp.gain > 0.03) this.playTick(0.05 * sp.gain, sp.pan);
+      }
+    }
+  }
+
+  /** One clock tick — 12ms high-passed click, spatialized + fanned. */
+  private playTick(gain: number, pan: number): void {
+    const ctx = this.ctx;
+    if (!ctx || !this.noiseBuffer) return;
+    const t0 = ctx.currentTime;
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.playbackRate.value = 1.6;
+    const hp = ctx.createBiquadFilter();
+    hp.type = "highpass";
+    hp.frequency.value = 2600;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(gain, t0);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.05);
+    const p = ctx.createStereoPanner();
+    p.pan.value = pan;
+    src.connect(hp).connect(g).connect(p).connect(this.bus("ambience"));
+    src.start(t0, 0.3, 0.06);
   }
 
   playRumble(rng: RngStream): void {
@@ -421,6 +482,46 @@ export class AudioSystem {
       src.start(t0 + 1.5, 0.4, 0.3);
     }
     this.caption("airlock cycling", null);
+  }
+
+  /** Run-over tails: secure resolves upward, dossier-complete adds a
+   *  third sparkle, lost sinks into a low dissonant swell. */
+  playEnding(kind: "secure" | "lost" | "investigative" | "practice"): void {
+    if (!this.ctx) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    if (kind === "lost") {
+      const o = ctx.createOscillator();
+      o.type = "sawtooth";
+      o.frequency.setValueAtTime(58, t0);
+      o.frequency.linearRampToValueAtTime(41, t0 + 1.7);
+      const lp = ctx.createBiquadFilter();
+      lp.type = "lowpass";
+      lp.frequency.value = 200;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, t0);
+      g.gain.linearRampToValueAtTime(0.16, t0 + 0.5);
+      g.gain.linearRampToValueAtTime(0, t0 + 1.9);
+      o.connect(lp).connect(g).connect(this.bus("anomaly"));
+      o.start(t0);
+      o.stop(t0 + 2.0);
+      this.caption("the corridor settles", null);
+      return;
+    }
+    const freqs = kind === "practice" ? [330, 415] : kind === "investigative" ? [392, 523, 784] : [392, 523];
+    freqs.forEach((f, i) => {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = f;
+      const g = ctx.createGain();
+      const at = t0 + i * 0.16;
+      g.gain.setValueAtTime(0, at);
+      g.gain.linearRampToValueAtTime(i === freqs.length - 1 ? 0.05 : 0.075, at + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.001, at + 0.9);
+      o.connect(g).connect(this.bus("ui"));
+      o.start(at);
+      o.stop(at + 1.0);
+    });
   }
 
   /** Judgment confirm/deny chime — informational, not a jumpscare. */
