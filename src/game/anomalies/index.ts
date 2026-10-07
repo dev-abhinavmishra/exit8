@@ -68,6 +68,10 @@ import { guideCross } from "./guideCross";
 import { shutterAjar } from "./shutterAjar";
 import { recordsBreach } from "./recordsBreach";
 import { galleryFrost } from "./galleryFrost";
+import { doorStuck } from "./doorStuck";
+import { walkerCrowd } from "./walkerCrowd";
+import { lightFollows } from "./lightFollows";
+import { glassEyes } from "./glassEyes";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -134,4 +138,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   shutterAjar,
   recordsBreach,
   galleryFrost,
+  doorStuck,
+  walkerCrowd,
+  lightFollows,
+  glassEyes,
 ];

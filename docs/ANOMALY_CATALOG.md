@@ -176,8 +176,19 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     cabinet face, hollow and unlit inside. Subtle. (slice)
 25. ★ `gallery.frost` — the observation glass has gone blind: panes
     fogged solid, nothing on the other side to see. Moderate. (slice)
+26. ★ `door.stuck` — the south inner doors part for the approach, but
+    only the left leaf travels; the right is dead to the motor.
+    Unmistakable. (slice)
+27. ★ `walker.crowd` — there are two of him: a second inspector walks
+    the same route in the left lane from the far end. Unmistakable.
+    (slice)
+28. ★ `light.follows` — the corridor only keeps light where you stand;
+    every zone you leave dies behind you. Unmistakable. (slice)
+29. ★ `glass.eyes` — a dim shape paces the observation gallery behind
+    the glass; nobody has gallery access on this shift. Moderate.
+    (slice)
 
-Slice count: **64 implemented** — past the 24 target. New hooks:
+Slice count: **68 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

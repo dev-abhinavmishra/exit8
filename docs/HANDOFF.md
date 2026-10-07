@@ -236,6 +236,12 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   instead; records.cabinets face x=-1.55 (drawer proud at -1.48);
   guide segs all home at x=+0.72; `?anomaly=<id>` URL param applies the
   anomaly at LOOP 1 — much faster than forceAnomaly+commit for probes.
+- Anomalies 65–68 (door.stuck, walker.crowd, light.follows, glass.eyes):
+  door leaves are `door.<side>.inner.L/R` (NOT al.*); anomaly update()
+  runs AFTER the rig writes leaf x each frame — override there to hold
+  a leaf. `instantiateHierarchy` needs the InstancedMesh side-effect
+  import. Behind-glass silhouettes need a faint emissive (~0.05) to read
+  through alpha-0.45 darkGlass.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
