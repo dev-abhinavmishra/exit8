@@ -18,6 +18,7 @@ export interface MaterialSet {
   commitmentStripe: StandardMaterial;
   door: PBRMaterial;
   rubber: StandardMaterial;
+  grime: StandardMaterial;
   clockFace: StandardMaterial;
   clockHand: StandardMaterial;
   cabinetRed: StandardMaterial;
@@ -98,6 +99,13 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   rubber.diffuseColor = new Color3(0.03, 0.03, 0.035);
   rubber.specularColor = new Color3(0.02, 0.02, 0.02);
 
+  // damp staining / wall wear — translucent dark wash decal
+  const grime = new StandardMaterial("mat.grime", scene);
+  grime.diffuseColor = new Color3(0.05, 0.045, 0.04);
+  grime.specularColor = new Color3(0, 0, 0);
+  grime.emissiveColor = new Color3(0.05, 0.045, 0.04);
+  grime.alpha = 0.3;
+
   const clockFace = new StandardMaterial("mat.clockFace", scene);
   clockFace.diffuseTexture = tex.clockFace;
   clockFace.emissiveColor = new Color3(0.18, 0.18, 0.17);
@@ -159,6 +167,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     commitmentStripe,
     door,
     rubber,
+    grime,
     clockFace,
     clockHand,
     cabinetRed,

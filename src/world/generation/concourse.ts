@@ -386,6 +386,63 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
     base.position = new Vector3(sx * (C.xHalf - 0.03), 0.07, zc);
   }
 
+  // ─── services + wear dressing ────────────────────────────────────
+  // Cable tray + conduit along both ceiling edges, strap hangers,
+  // junction boxes, floor expansion seams, drain grates, vent grime.
+  // Baseline-fixed: these never change between loops — if they do, it's
+  // an anomaly, and none registers on them.
+  for (const sx of [-1, 1]) {
+    const tray = kit.box(`dress.tray.${sx}`, 0.12, 0.07, len, mats.steel, scene, root);
+    tray.position = new Vector3(sx * (C.xHalf - 0.28), C.height - 0.09, zc);
+    const conduit = kit.box(`dress.conduit.${sx}`, 0.05, 0.05, len, mats.steel, scene, root);
+    conduit.position = new Vector3(sx * (C.xHalf - 0.12), C.height - 0.05, zc);
+    for (let z = 4; z < C.z1; z += 6) {
+      const h = kit.box(`dress.hanger.${sx}.${z}`, 0.03, 0.09, 0.16, mats.steel, scene, root);
+      h.position = new Vector3(sx * (C.xHalf - 0.28), C.height - 0.02, z);
+    }
+  }
+  // junction boxes — left wall only inside the gallery span (right 20–32)
+  const jboxSpots: [number, number][] = [
+    [-1, 7],
+    [1, 11],
+    [-1, 16],
+    [-1, 25],
+    [1, 36],
+    [-1, 43],
+    [1, 47],
+    [-1, 52],
+  ];
+  jboxSpots.forEach(([sx, jz], i) => {
+    const jb = kit.box(`dress.jbox.${i}`, 0.09, 0.22, 0.3, mats.steel, scene, root);
+    jb.position = new Vector3(sx * (C.xHalf - 0.1), 2.15, jz);
+    const stub = kit.box(`dress.jstub.${i}`, 0.04, 0.55, 0.04, mats.steel, scene, root);
+    stub.position = new Vector3(sx * (C.xHalf - 0.12), 2.55, jz);
+  });
+  // floor expansion seams across the terrazzo
+  for (let z = 6; z < C.z1; z += 6) {
+    const seam = kit.box(`dress.seam.${z}`, C.xHalf * 2 - 0.12, 0.012, 0.05, mats.rubber, scene, root);
+    seam.position = new Vector3(0, 0.006, z);
+  }
+  // drain grates at the floor edges
+  const drainSpots: [number, number][] = [
+    [-1, 2.6],
+    [1, 2.6],
+    [-1, 27],
+    [1, 41],
+    [-1, 53],
+    [1, 53],
+  ];
+  drainSpots.forEach(([sx, dz]) => {
+    const dg = kit.box(`dress.drain.${sx}.${dz}`, 0.3, 0.016, 0.5, mats.steel, scene, root);
+    dg.position = new Vector3(sx * (C.xHalf - 0.28), 0.008, dz);
+  });
+  // damp staining bleeding down the wall under each vent grille
+  for (const [sx, vz] of ventSpots) {
+    const st = kit.plane(`dress.grime.${sx}.${vz}`, 0.7, 1.15, mats.grime, scene, root);
+    st.position = new Vector3(sx * (C.xHalf - 0.065), 2.05, vz);
+    st.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
+  }
+
   // signs
   const sGallery = kit.wallSign("sign.gallery", mats, scene, root, registry, 1.5, 0.45);
   sGallery.position = new Vector3(C.xHalf - 0.08, 2.5, 26);

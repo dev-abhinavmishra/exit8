@@ -71,9 +71,14 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   `look(yaw,pitch)` needed `player.setView()` — the sim rewrites
   `camera.rotation.x` from controller pitch every update so the debug
   setter was a no-op; positive pitch looks DOWN.
-- Next up per the attached brief: M2 visual benchmark (Blender kit /
-  baked lighting / KTX2) or rest of M3 (mobile controls, full
-  accessibility pass).
+- **Services + wear dressing** (42d21fa): ceiling cable trays +
+  conduit both sides w/ hangers, junction boxes (left wall only in
+  the gallery span), floor expansion seams every 6z, drain grates,
+  translucent `grime` decals under vents — all baseline-fixed so any
+  change reads as anomaly. Big density lift toward M2's benchmark.
+- Next up per the attached brief: rest of M3 (mobile controls, full
+  accessibility pass), M2 (baked lighting / KTX2), M4 (second ending
+  groundwork already in: 'investigative' via dossier).
 
 ## Conventions this repo already follows
 
