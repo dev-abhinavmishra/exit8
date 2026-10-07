@@ -679,6 +679,57 @@ export function buildConcourse(
   const cabFire = kit.fireCabinet(mats, scene, root, registry);
   cabFire.position = new Vector3(C.xHalf - 0.12, 1.4, 18);
 
+  // wall phone niche RIGHT z≈13.2 — the dead corridor handset between
+  // the directory and the service door
+  const phone = new TransformNode("prop.phone", scene);
+  phone.parent = root;
+  phone.position = new Vector3(C.xHalf - 0.05, 1.45, 13.2);
+  registry.register("prop.phone", phone);
+  const pBack = kit.box("prop.phone.back", 0.07, 0.52, 0.34, mats.steel, scene);
+  pBack.parent = phone;
+  const pFace = kit.box("prop.phone.face", 0.05, 0.42, 0.26, mats.rubber, scene);
+  pFace.parent = phone;
+  pFace.position = new Vector3(-0.045, -0.02, 0);
+  const handset = kit.box("prop.phone.handset", 0.045, 0.2, 0.05, mats.rubber, scene);
+  handset.parent = phone;
+  handset.position = new Vector3(-0.075, 0.06, -0.1);
+  const cord = kit.box("prop.phone.cord", 0.012, 0.3, 0.012, mats.rubber, scene);
+  cord.parent = phone;
+  cord.position = new Vector3(-0.06, -0.18, -0.06);
+  const pLamp = kit.box("prop.phone.lamp", 0.02, 0.03, 0.03, mats.trofferDim, scene);
+  pLamp.parent = phone;
+  pLamp.position = new Vector3(-0.075, 0.21, 0.1);
+
+  // drinking fountain RIGHT z≈37.5 — wall-hung stainless basin by the
+  // clinic zone
+  const fountain = new TransformNode("prop.fountain", scene);
+  fountain.parent = root;
+  fountain.position = new Vector3(C.xHalf - 0.16, 0.85, 37.5);
+  registry.register("prop.fountain", fountain);
+  const fBack = kit.box("prop.fountain.back", 0.08, 0.62, 0.42, mats.steel, scene);
+  fBack.parent = fountain;
+  fBack.position = new Vector3(0.05, 0.31, 0);
+  const fBasin = kit.box("prop.fountain.basin", 0.34, 0.14, 0.44, mats.steel, scene);
+  fBasin.parent = fountain;
+  fBasin.position = new Vector3(-0.14, 0, 0);
+  const fRim = kit.box("prop.fountain.rim", 0.36, 0.025, 0.46, mats.rubber, scene);
+  fRim.parent = fountain;
+  fRim.position = new Vector3(-0.14, 0.082, 0);
+  const bubbler = CreateCylinder(
+    "prop.fountain.bubbler",
+    { height: 0.05, diameter: 0.035, tessellation: 10 },
+    scene,
+  );
+  bubbler.material = mats.rubber;
+  bubbler.parent = fountain;
+  bubbler.position = new Vector3(-0.02, 0.12, -0.12);
+  const fButton = kit.box("prop.fountain.btn", 0.03, 0.03, 0.06, mats.rubber, scene);
+  fButton.parent = fountain;
+  fButton.position = new Vector3(-0.14, 0.02, 0.24);
+  colliders.push(
+    kit.collider("prop.fountain.col", 0.42, 0.75, 0.5, new Vector3(C.xHalf - 0.18, 0.75, 37.5), scene, root),
+  );
+
   // extinguisher on the wall beside the cabinet — the anomaly target is the
   // whole unit: bracket + cylinder + valve + hose stub
   const ext = new TransformNode("prop.extinguisher", scene);
