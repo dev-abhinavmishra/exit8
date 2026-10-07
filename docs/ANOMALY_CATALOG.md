@@ -238,8 +238,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     band, no product rows, no hum. Unmistakable. (slice)
 51. ★ `sheets.cleared` — every memo on the notice board is gone; bare
     cork, pins and all. Subtle. (slice)
+52. ★ `aid.gone` — the first-aid cabinet before the lift lobby is not
+    there; blank wall where the green cross used to be. Subtle. (slice)
 
-Slice count: **92 implemented — the full catalog**. New hooks:
+Slice count: **93 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

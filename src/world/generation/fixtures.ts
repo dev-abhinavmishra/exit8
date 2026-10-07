@@ -105,7 +105,7 @@ export function buildFixtures(
 
   // ---- first aid cabinet, east wall z≈46 — white surface-mount box,
   //      green cross; fills the bare span between vending and the
-  //      lift lobby ----
+  //      lift lobby. Registered node (not merged): aid.gone removes it ----
   const aidWhite = new StandardMaterial("mat.firstaid.white", scene);
   aidWhite.diffuseColor = new Color3(0.4, 0.41, 0.39);
   aidWhite.emissiveColor = new Color3(0.008, 0.008, 0.008);
@@ -114,14 +114,21 @@ export function buildFixtures(
   aidGreen.diffuseColor = new Color3(0.03, 0.24, 0.12);
   aidGreen.emissiveColor = new Color3(0.005, 0.02, 0.008);
   aidGreen.specularColor = new Color3(0.03, 0.03, 0.03);
-  const aidCab = kit.box("dress.aid.cab", 0.06, 0.4, 0.3, aidWhite, scene, root);
-  aidCab.position = new Vector3(WALL_X - 0.045, 1.5, 46);
-  const aidH = kit.box("dress.aid.cross.h", 0.014, 0.045, 0.15, aidGreen, scene, root);
-  aidH.position = new Vector3(WALL_X - 0.078, 1.5, 46);
-  const aidV = kit.box("dress.aid.cross.v", 0.014, 0.15, 0.045, aidGreen, scene, root);
-  aidV.position = new Vector3(WALL_X - 0.078, 1.5, 46);
-  const aidLatch = kit.box("dress.aid.latch", 0.016, 0.05, 0.02, mats.rubber, scene, root);
-  aidLatch.position = new Vector3(WALL_X - 0.08, 1.42, 46.12);
+  const aid = new TransformNode("aid.cabinet", scene);
+  aid.parent = root;
+  aid.position = new Vector3(WALL_X - 0.045, 1.5, 46);
+  registry.register("aid.cabinet", aid);
+  const aidCab = kit.box("aid.cabinet.body", 0.06, 0.4, 0.3, aidWhite, scene);
+  aidCab.parent = aid;
+  const aidH = kit.box("aid.cabinet.cross.h", 0.014, 0.045, 0.15, aidGreen, scene);
+  aidH.parent = aid;
+  aidH.position = new Vector3(-0.033, 0, 0);
+  const aidV = kit.box("aid.cabinet.cross.v", 0.014, 0.15, 0.045, aidGreen, scene);
+  aidV.parent = aid;
+  aidV.position = new Vector3(-0.033, 0, 0);
+  const aidLatch = kit.box("aid.cabinet.latch", 0.016, 0.05, 0.02, mats.rubber, scene);
+  aidLatch.parent = aid;
+  aidLatch.position = new Vector3(-0.035, -0.08, 0.12);
 
   buildImpossibleFacade(scene, root, mats, registry);
   buildLiftLobby(scene, root, mats, registry);
