@@ -48,6 +48,7 @@ import { routeReacts } from "./routeReacts";
 import { sightlineImpossible } from "./sightlineImpossible";
 import { depthMismatch } from "./depthMismatch";
 import { liftArrives } from "./liftArrives";
+import { gazeShift } from "./gazeShift";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -94,4 +95,5 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   sightlineImpossible,
   depthMismatch,
   liftArrives,
+  gazeShift,
 ];

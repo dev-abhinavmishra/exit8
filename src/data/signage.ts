@@ -21,6 +21,8 @@ export interface SignSpec {
   sub?: string;
   /** arrow glyph hint (rendered as text arrow) */
   arrow?: "left" | "right" | "none";
+  /** optional walking-figure pictogram, drawn left of the title */
+  figure?: "left" | "right";
   /** amber | cyan | dark variants */
   tone: "amber" | "cyan" | "dark";
 }
@@ -59,6 +61,7 @@ export const SIGNS: SignSpec[] = [
     title: "INSPECTION POINT",
     sub: "FILE ROUTE CLEAR →",
     arrow: "right",
+    figure: "right",
     tone: "amber",
   },
   {

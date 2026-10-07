@@ -161,6 +161,15 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   reflection they render near-black as door leaves; wallPanel on a box
   reads as pale steel doors framed by the dark rubber `lift.reveal`.
   Sign spec `sign.lift` added to SIGNS (required or wallSign throws).
+- Airlock sign bug FIXED: both `al.${side}` overhead signs were
+  back-face culled — rotations were swapped (south had π, north had 0;
+  correct is south 0 facing -z approach, north π facing +z into the
+  corridor). Both INSPECTION POINT and NOTICE now render; anything
+  keying on them (gaze.shift, terminal.notice) is legible.
+- `gaze.shift` (**45**): SignSpec gained `figure: "left"|"right"` and
+  drawSign draws an original walking-person glyph (drawFigure, mirrored
+  by dir) left of the title — sign.exit.south carries it. Def redraws
+  the shared spec texture with the figure flipped like poster.swapped.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 

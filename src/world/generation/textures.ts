@@ -350,7 +350,44 @@ function makeClockFace(scene: Scene): DynamicTexture {
   return finish(t);
 }
 
-/** Redraw a sign texture in place — used at build and by signage anomalies. */
+/** Original walking-person glyph — head disc, torso stroke, splayed
+ * stride legs, one arm stroke. `dir` ±1 mirrors it. ~52 px tall. */
+export function drawFigure(
+  c: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  dir: number,
+  color: string,
+): void {
+  c.save();
+  c.translate(cx, cy);
+  c.scale(dir, 1);
+  c.fillStyle = color;
+  c.strokeStyle = color;
+  c.lineCap = "round";
+  // head
+  c.beginPath();
+  c.arc(4, -24, 7, 0, Math.PI * 2);
+  c.fill();
+  // torso + arm (one continuous stroke leaning into the walk)
+  c.lineWidth = 6;
+  c.beginPath();
+  c.moveTo(0, -14);
+  c.lineTo(-2, 6);
+  c.lineTo(10, 16);
+  c.stroke();
+  // stride legs — lead leg forward, trail leg back
+  c.beginPath();
+  c.moveTo(-2, 6);
+  c.lineTo(12, 26);
+  c.lineTo(16, 30);
+  c.moveTo(-2, 6);
+  c.lineTo(-12, 24);
+  c.lineTo(-8, 30);
+  c.stroke();
+  c.restore();
+}
+
 export function drawSign(t: DynamicTexture, spec: SignSpec): void {
   const w = 512;
   const h = 160;
@@ -370,6 +407,7 @@ export function drawSign(t: DynamicTexture, spec: SignSpec): void {
   c.font = "bold 44px Arial, sans-serif";
   const arrow = spec.arrow === "right" ? "  →" : spec.arrow === "left" ? "←  " : "";
   c.fillText(spec.title + arrow, w / 2, spec.sub ? 78 : 92);
+  if (spec.figure) drawFigure(c, 42, 74, spec.figure === "right" ? 1 : -1, tones.fg);
   if (spec.sub) {
     c.font = "24px Arial, sans-serif";
     c.fillStyle = spec.tone === "dark" ? tones.fg : "#c9c6bc";

@@ -101,7 +101,9 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 6. ★ `poster.swapped` — two notice-board posters trade artwork. Subtle.
 7. ★ `sign.drift` — a big wall sign has slid half a metre and cants.
    Subtle.
-8. `gaze.shift` — pictogram figures' facing changes between loops. Subtle.
+8. ★ `gaze.shift` — the walking pictogram on the south inspection sign
+   turns around and walks back up the corridor, against its arrow.
+   Subtle. (slice)
 
 ## Group F — systemic (3)
 
@@ -120,7 +122,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 7. ★ `terminal.glitch` — both airlock terminals briefly insist a
    divergence was filed and stability reads 0. Subtle. (slice)
 
-Slice count: **44 implemented** — past the 24 target. New hooks:
+Slice count: **45 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

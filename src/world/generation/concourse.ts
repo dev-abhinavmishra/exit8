@@ -205,7 +205,9 @@ function buildAirlock(
     0.4,
   );
   above.position = new Vector3(0, h - 0.55, doorZ + (side === "north" ? 0.08 : -0.08));
-  above.rotation.y = side === "north" ? 0 : Math.PI;
+  // planes' front faces point -z at y=0: the south sign must face the
+  // corridor approach (north, -z => 0); the north sign faces south, +z
+  above.rotation.y = side === "north" ? Math.PI : 0;
 
   return {
     frame: doorNode,
