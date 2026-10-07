@@ -315,10 +315,21 @@ npm run build` — currently 117 unit + 24/24 e2e green.
   `materials.trofferLit ↔ trofferDim`; **Babylon CreatePlane front face
   is −z**: a wall plane on x<0 needs `rotation.y = −π/2` to face the
   room (+π/2 turns it into the wall → backface-culled, invisible —
-  posters shipped invisible for 3 commits before catching this);
-  texture-only materials in dark zones need `emissiveTexture` bound,
-  not just flat `emissiveColor`. `__nightaudit.meshInfo(name)` dumps
-  pos/rot/visibility for probes.
+  posters shipped invisible for 3 commits before catching this; the
+  same bug hid the airlock terminal screen for the whole slice — fixed
+  2026-10-07). On local-transform children (phone, fountain) the
+  corridor-facing side is local −x for RIGHT-wall mounts → `rotation.y
+= +π/2`; texture-only materials in dark zones need `emissiveTexture`
+  bound, not just flat `emissiveColor`. `__nightaudit.meshInfo(name)`
+  dumps pos/rot/visibility for probes.
+- Detail-pass material lessons (2026-10-07): `mats.steel` renders
+  near-black anywhere the junction's weak reflections dominate — use
+  `mats.wallPanel` when the look should be stainless (lift doors,
+  fountain). `mats.aoStrip` (disableLighting) renders SOLID at any
+  meaningful size — thin AO/cove strips only; soft stains use
+  `mats.grime` (alpha ~0.3). New wall/prop dressing must either parent
+  to an anomaly target or fold into STATIC_PREFIXES in `merge.ts`
+  (`dress.*` families are registered there).
 
 ## User-context notes (from prior sessions)
 
