@@ -30,7 +30,7 @@ export const cabinetRows: AnomalyDef = {
       for (const y of [1.35, 1.8]) {
         const depth = rng.range(0.06, 0.22);
         const drawer = CreateBox(`anomaly.rows.d${i}`, { width: depth, height: 0.28, depth: 0.4 }, scene);
-        drawer.material = world.materials.steel;
+        drawer.material = world.materials.wallPanel;
         drawer.position = new Vector3(CABINET_FACE_X + depth / 2, y, z + rng.range(-0.1, 0.1));
         drawer.parent = world.root;
         created.push(drawer);

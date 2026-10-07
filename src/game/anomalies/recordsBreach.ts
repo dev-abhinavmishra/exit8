@@ -30,7 +30,7 @@ export const recordsBreach: AnomalyDef = {
 
     // drawer carcass proud of the face
     const drawer = CreateBox("anomaly.records.drawer", { width: 0.16, height: 0.3, depth: 0.42 }, scene);
-    drawer.material = world.materials.steel;
+    drawer.material = world.materials.wallPanel;
     drawer.position = new Vector3(CABINET_FACE_X + 0.07, y, z);
     drawer.parent = world.root;
     created.push(drawer);

@@ -630,7 +630,9 @@ export function buildConcourse(
 
   // ─── zone dressing ───────────────────────────────────────────────
   // Records wall: cabinet fronts on left z 12–32
-  const cab = kit.box("records.cabinets", 0.18, 2.1, 18, mats.steel, scene, root);
+  // pale panel reads as enamelled steel; true steel rendered the
+  // eighteen-metre bank as a near-black void in this light
+  const cab = kit.box("records.cabinets", 0.18, 2.1, 18, mats.wallPanel, scene, root);
   cab.position = new Vector3(-C.xHalf + 0.16, 1.15, 22);
   registry.register("records.cabinets", cab);
   // drawer grid on the bank face — the close-up read was one flat slab.
