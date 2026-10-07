@@ -416,6 +416,23 @@
   font-size: 11px;
   opacity: 0.75;
 }
+.na-epilogue {
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: var(--bone);
+  opacity: 0.75;
+  font-style: italic;
+  margin: 10px 0 4px;
+  max-width: 46ch;
+}
+.na-credit-line {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--bone);
+  opacity: 0.8;
+  margin: 4px 0;
+}
 .na-hud .commit-hint {
   position: absolute;
   bottom: 26px;

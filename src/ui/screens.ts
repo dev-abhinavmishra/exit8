@@ -75,6 +75,7 @@ export class GameUi {
     this.screens.set("pause", this.buildPause());
     this.screens.set("settings", this.buildSettings());
     this.screens.set("results", this.buildResults());
+    this.screens.set("credits", this.buildCredits());
     for (const s of this.screens.values()) this.root.appendChild(s);
   }
 
@@ -134,6 +135,7 @@ export class GameUi {
     body.appendChild(
       this.btn("ROUTE ARCHIVE", "case file — filed divergences & records", () => this.show("archive")),
     );
+    body.appendChild(this.btn("CREDITS", null, () => this.show("credits")));
     body.appendChild(
       this.btn("SETTINGS", "video · controls · audio · accessibility", () => this.openSettingsFrom("start")),
     );
@@ -611,6 +613,11 @@ export class GameUi {
           ? COPY.results.secured
           : COPY.results.lost;
     body.appendChild(stamp);
+    const epilogue = document.createElement("p");
+    epilogue.className = "na-epilogue";
+    const ek = stats.ending ?? (practice ? "practice" : outcome === "secure" ? "standard" : "lost");
+    epilogue.textContent = COPY.results.epilogues[ek];
+    body.appendChild(epilogue);
     const table = document.createElement("table");
     table.className = "na-stats";
     const rows: [string, string][] = [
@@ -662,6 +669,18 @@ export class GameUi {
 
     body.appendChild(this.btn("FILE ANOTHER SHIFT", "new run", () => this.cb.onRestart(), "primary"));
     this.show("results");
+  }
+
+  private buildCredits(): HTMLDivElement {
+    const { panel, body } = this.panel("SHIFT LOG · APPENDIX", COPY.credits.title);
+    for (const line of COPY.credits.lines) {
+      const p = document.createElement("p");
+      p.className = "na-credit-line";
+      p.textContent = line;
+      body.appendChild(p);
+    }
+    body.appendChild(this.btn("BACK", null, () => this.show("start")));
+    return this.screen("credits", panel);
   }
 
   // ── HUD + veil + captions ──────────────────────────────────────
@@ -724,7 +743,7 @@ export class GameUi {
     this.stabilityEl.ch.textContent = `CH ${["I", "II", "III"][ch - 1] ?? "I"}`;
   }
 
-  show(id: "start" | "archive" | "pause" | "settings" | "results" | "none"): void {
+  show(id: "start" | "archive" | "pause" | "settings" | "results" | "credits" | "none"): void {
     for (const [k, s] of this.screens) s.classList.toggle("on", k === id);
     this.hud.classList.toggle("on", id === "none");
   }

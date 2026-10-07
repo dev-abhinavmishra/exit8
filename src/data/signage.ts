@@ -94,5 +94,24 @@ export const COPY = {
   results: {
     secured: "ROUTE SECURED",
     lost: "ROUTE LOST",
+    epilogues: {
+      standard:
+        "Shift filed clean. Upstairs, the city hums on. The loop is satisfied — for tonight.",
+      investigative:
+        "Six memos, one pattern. The Authority knew exactly what it was hiding — and now so does Inspector N-117.",
+      lost: "Stability zero. The report writes itself in a handwriting that is almost yours. The route keeps your shift.",
+      practice: "Drills logged. The real route remembers none of this.",
+    },
+  },
+  credits: {
+    title: "CREDITS",
+    lines: [
+      "NIGHT AUDIT — a looping-corridor inspection",
+      "Concept, code, world, audio: Cognition Devin",
+      "Engine: Babylon.js (MIT)",
+      "All textures and audio are generated in-browser — no external assets.",
+      "Inspired by the anomaly-spotting genre. All fiction original.",
+      "Civic Works Authority thanks you for your continued inspection.",
+    ],
   },
 } as const;
