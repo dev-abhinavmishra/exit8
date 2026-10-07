@@ -260,8 +260,11 @@ export class App {
     document.addEventListener("keydown", unlock);
 
     window.addEventListener("keydown", (e) => {
-      if (e.code === "Escape" && this.state === "playing") this.pause();
-      else if (e.code === "Escape" && this.state === "paused") this.resume();
+      const pauseKey = this.save.get().settings.controls.keyPause;
+      if (e.code === "Escape" || e.code === pauseKey) {
+        if (this.state === "playing") this.pause();
+        else if (this.state === "paused") this.resume();
+      }
     });
     document.addEventListener("pointerlockchange", () => {
       if (!document.pointerLockElement && this.state === "playing") this.pause();
@@ -517,6 +520,18 @@ export class App {
     } else if (this.tier.tier !== "medium" && this.glow) {
       this.glow.dispose();
       this.glow = null;
+    }
+    this.applyAccessibility();
+  }
+
+  /** accessibility toggles that reach into the world, not just UI */
+  private applyAccessibility(): void {
+    const hc = this.save.get().settings.accessibility.highContrastCommitZones;
+    const m = this.world?.materials.commitmentStripe;
+    if (m) {
+      // base: dim amber dash; boosted: near-white amber with hot emissive
+      m.emissiveColor = hc ? new Color3(1, 0.74, 0.3) : new Color3(0.9, 0.62, 0.24).scale(0.9);
+      m.diffuseColor = hc ? new Color3(0.9, 0.8, 0.6) : new Color3(0.36, 0.3, 0.2);
     }
   }
 
