@@ -46,6 +46,7 @@ import { memoryPersist } from "./memoryPersist";
 import { lightDelay } from "./lightDelay";
 import { routeReacts } from "./routeReacts";
 import { sightlineImpossible } from "./sightlineImpossible";
+import { depthMismatch } from "./depthMismatch";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -90,4 +91,5 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   lightDelay,
   routeReacts,
   sightlineImpossible,
+  depthMismatch,
 ];

@@ -10,7 +10,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller
   (collision via `camera.cameraDirection` + `collisionCoordinator` import),
   Loop 7 concourse (procedural), commit thresholds, stability index,
-  **42 anomalies** (was 3 — 24 target passed) registered via
+  **43 anomalies** (was 3 — 24 target passed) registered via
   `anomalies/index.ts` (`ALL_ANOMALIES` — register there, not in app.ts),
   procedural audio (seeded `audio.synth`/`audio.ambient` streams),
   start/pause/settings/results, v1 saves, vitest + playwright suites,
@@ -37,7 +37,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   `view()` added to the debug handle (yaw/pitch getter; `look()` is
   a setter). e2e stubs `navigator.getGamepads` via addInitScript.
 - **Route archive live** (bde5a73): ROUTE ARCHIVE on the start
-  screen — stats table + DIVERGENCE REGISTER of all 42 defs sorted by
+  screen — stats table + DIVERGENCE REGISTER of all 43 defs sorted by
   chapter; discovered ids render name/chapter/category/detectability,
   unfound ones show redacted rows. `ui.setArchiveData(stats, ids)`
   populates from save at boot. NOTE: seeded saves in e2e must carry
@@ -145,6 +145,11 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   auto-register — reusing a specId or kit.name twice crashes boot with
   "registry duplicate"; borrow art via mats.sign.get() + kit.plane
   instead. PlayerController.onFootstep(cb) → unsub.
+- `depth.mismatch` (**43**): world.depthRoom/depthSpill join extraRoom —
+  a 12m gallery (ribs every 3m + lit far door + glow light) prebuilt
+  disabled at z=46 east; def clones doorwayExtra's stub/header/guard
+  wall-swap pattern. ConcourseWorld gained depthRoom: TransformNode +
+  depthSpill: PointLight fields.
   `ambient.walker` registered in WorldRegistry; update() runs in
   app.sim. Trap: e2e archive spec had "0 OF 31 FILED" hardcoded — now
   regex-matched; specs CANNOT import src/game/anomalies (Node can't

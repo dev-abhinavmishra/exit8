@@ -74,6 +74,9 @@ export interface ConcourseWorld {
   /** doorway.extra prebuilt hidden room */
   extraRoom: TransformNode;
   extraRoomSpill: PointLight;
+  /** depth.mismatch prebuilt room — a gallery deeper than the wall allows */
+  depthRoom: TransformNode;
+  depthSpill: PointLight;
   condensationPatch: AbstractMesh;
   /** clock hands for the clock anomalies */
   clock: { hourPivot: TransformNode; minutePivot: TransformNode; face: AbstractMesh };
@@ -582,6 +585,49 @@ export function buildConcourse(
   spill.intensity = 0.0; // anomaly raises it
   spill.range = 9;
 
+  // ─── depth.mismatch — a service door on the east wall at z≈46 opens
+  // onto a gallery that recedes ~12 m into the wall (the building is
+  // only so thick — the depth is impossible) ───
+  const depthRoom = new TransformNode("anomaly.depth.room", scene);
+  depthRoom.parent = root;
+  const dRoomZ = 46;
+  const dDepth = 12;
+  const dW = 2.4;
+  const df = kit.box("anomaly.depth.floor", dDepth, 0.1, dW, mats.concrete, scene, depthRoom);
+  df.position = new Vector3(C.xHalf + dDepth / 2, -0.05, dRoomZ);
+  const dc = kit.box("anomaly.depth.ceil", dDepth, 0.1, dW, mats.ceiling, scene, depthRoom);
+  dc.position = new Vector3(C.xHalf + dDepth / 2, C.height + 0.05, dRoomZ);
+  for (const dz of [-dW / 2, dW / 2]) {
+    const w = kit.box(`anomaly.depth.wall.${dz}`, dDepth, C.height, 0.1, mats.wallPanel, scene, depthRoom);
+    w.position = new Vector3(C.xHalf + dDepth / 2, C.height / 2, dRoomZ + dz);
+  }
+  // receding pilaster ribs — the depth rhythm that sells the distance
+  for (let i = 1; i <= 3; i++) {
+    for (const dz of [-dW / 2 + 0.12, dW / 2 - 0.12]) {
+      const rib = kit.box(`anomaly.depth.rib.${i}.${dz}`, 0.18, C.height, 0.24, mats.steel, scene, depthRoom);
+      rib.position = new Vector3(C.xHalf + i * 3, C.height / 2, dRoomZ + dz);
+    }
+  }
+  // far end: a lit doorway silhouette — the room resolves as "somewhere else"
+  const dBack = kit.box("anomaly.depth.back", 0.1, C.height, dW, mats.wallPanel, scene, depthRoom);
+  dBack.position = new Vector3(C.xHalf + dDepth, C.height / 2, dRoomZ);
+  const dFar = kit.box("anomaly.depth.fardoor", 0.06, 2.2, 1.0, mats.trofferDim, scene, depthRoom);
+  dFar.position = new Vector3(C.xHalf + dDepth - 0.08, 1.1, dRoomZ);
+  const dGlow = new PointLight(
+    "anomaly.depth.farglow",
+    new Vector3(C.xHalf + dDepth - 0.5, 1.8, dRoomZ),
+    scene,
+  );
+  dGlow.diffuse = new Color3(1.0, 0.8, 0.55);
+  dGlow.intensity = 2.4;
+  dGlow.range = 10;
+  depthRoom.setEnabled(false);
+
+  const depthSpill = new PointLight("anomaly.depth.spill", new Vector3(C.xHalf - 0.6, 1.9, dRoomZ), scene);
+  depthSpill.diffuse = new Color3(1.0, 0.85, 0.62);
+  depthSpill.intensity = 0.0;
+  depthSpill.range = 9;
+
   // dust motes drifting through the troffer light — one additive
   // particle system filling the corridor volume; skipped entirely when
   // the player asks for reduced motion
@@ -650,6 +696,8 @@ export function buildConcourse(
     hemi,
     extraRoom,
     extraRoomSpill: spill,
+    depthRoom,
+    depthSpill,
     condensationPatch: condensation,
     scatter,
     ambientWalker,

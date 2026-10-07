@@ -35,7 +35,8 @@ Target ≥ 24 across six groups. ★ = implemented.
    wall that is solid in baseline. Unmistakable. Cue: sightline + light
    spill. (slice)
 2. `hall.stretch` — corridor segment subtly lengthens (+4 m). Moderate.
-3. `depth.mismatch` — a doorway's visible depth exceeds available space.
+3. ★ `depth.mismatch` — a service door at z≈46 opens onto a gallery
+   ~12 m deep inside a 12 cm wall. Unmistakable. (slice)
 4. ★ `sightline.impossible` — a second airlock, sealed and signed, walls
    the corridor at z≈38 where it always continued. Unmistakable. (slice)
 5. `vanish.misaligned` — perspective vanishing point offset (camera-space
@@ -116,7 +117,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 7. ★ `terminal.glitch` — both airlock terminals briefly insist a
    divergence was filed and stability reads 0. Subtle. (slice)
 
-Slice count: **42 implemented** — past the 24 target. New hooks:
+Slice count: **43 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
