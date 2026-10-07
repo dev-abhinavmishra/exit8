@@ -4,17 +4,26 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 
 ## Where we are
 
-- M0 (docs + scaffold) and M1 (vertical slice) landed on PR #1
-  (`devin/night-audit-vertical-slice`) — reviewed commit 943be24, fixes at
-  86acf2a. Devin Review: all 10 findings fixed + triaged. NOT yet merged.
+- PR #1 (`devin/night-audit-vertical-slice`) carries M0–M4 + most of M5:
+  **89 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+  daily/custom routes, practice mode, route archive, field notes +
+  dossier ending, gamepad, ambient walker + watcher, missed-divergence
+  report. NOT yet merged.
+- M5 landed this pass: `src/world/merge.ts` folds ~160 static dressing
+  meshes into per-material merged meshes (440→342 draws/frame measured —
+  BENCHMARK.md has the 8-waypoint route capture); ACCESSIBILITY.md audit
+  - `light.flicker` capped ≤3 flashes/s; `XB=1 npx playwright test` adds
+    firefox/webkit smoke (4/4 green) — it caught a real unhandled
+    `requestPointerLock()` rejection, now caught at all call sites.
 - Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller
   (collision via `camera.cameraDirection` + `collisionCoordinator` import),
   Loop 7 concourse (procedural), commit thresholds, stability index,
-  **43 anomalies** (was 3 — 24 target passed) registered via
-  `anomalies/index.ts` (`ALL_ANOMALIES` — register there, not in app.ts),
-  procedural audio (seeded `audio.synth`/`audio.ambient` streams),
-  start/pause/settings/results, v1 saves, vitest + playwright suites,
-  Vercel-ready `vercel.json`.
+  anomalies registered via `anomalies/index.ts` (`ALL_ANOMALIES` —
+  register there, not in app.ts), procedural audio, start/pause/settings/
+  results/credits, v1 saves, vitest + playwright suites, vercel.json.
+- Gates (run before every push): `npm run lint && npm run typecheck &&
+npm run test && npm run test:e2e && npm run validate:assets &&
+npm run build` — currently 117 unit + 24/24 e2e green.
 - **Chapters are live** (b3d517f): `1 + floor(correct/2)` cap 3, HUD shows
   CH I/II/III. Tiering: ch1 = quiet 17 (signs/posters/props/stills), ch2 =
   motion + watchers (sways, spins, breathes, groans, watcher.far,
