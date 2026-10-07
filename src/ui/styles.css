@@ -363,6 +363,9 @@
   color: var(--dim);
   font-style: italic;
 }
+.na-route-log .row.missed {
+  color: var(--bad, #c96a5e);
+}
 .na-archive {
   max-height: 38vh;
   overflow-y: auto;

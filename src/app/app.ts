@@ -94,6 +94,7 @@ export class App {
   private focused: Interactable | null = null;
   private stats = { correct: 0, mistakes: 0 };
   private filed: { name: string; chapter: number }[] = [];
+  private missed: { name: string; chapter: number }[] = [];
   private runSeed: string;
 
   constructor(
@@ -426,6 +427,13 @@ export class App {
         this.filed.push({ name: def.displayName, chapter: def.chapter });
       }
     }
+    // a wrong call while one was in play is a miss — the report names it
+    if (s.judgment && !s.judgment.correct && s.activeAnomaly) {
+      const def = this.anomalies.get(s.activeAnomaly);
+      if (!this.missed.some((f) => f.name === def.displayName)) {
+        this.missed.push({ name: def.displayName, chapter: def.chapter });
+      }
+    }
     // practice mode tells you what the truth was — that's the training
     if (this.params.practice && s.judgment) {
       const name = s.activeAnomaly ? this.anomalies.get(s.activeAnomaly).displayName : null;
@@ -469,6 +477,7 @@ export class App {
       mistakes: this.stats.mistakes,
       discovered,
       filed: this.filed,
+      missed: this.missed,
       practice: outcome === "practice",
       ending: investigative ? "investigative" : outcome === "secure" ? "standard" : "lost",
       notes: `${prog.discoveries.length}/${EVIDENCE_NOTES.length}`,

@@ -612,6 +612,7 @@ export class GameUi {
       mistakes: number;
       discovered: number;
       filed: { name: string; chapter: number }[];
+      missed?: { name: string; chapter: number }[];
       practice?: boolean;
       ending?: "standard" | "investigative" | "lost" | "practice";
       notes?: string;
@@ -685,6 +686,29 @@ export class GameUi {
       }
     }
     body.appendChild(log);
+
+    // name what caught the auditor — the report is how you learn the route
+    if (stats.missed && stats.missed.length > 0) {
+      const mlog = document.createElement("div");
+      mlog.className = "na-route-log";
+      const mh = document.createElement("div");
+      mh.className = "h";
+      mh.textContent = "MISSED DIVERGENCES";
+      mlog.appendChild(mh);
+      for (const f of stats.missed) {
+        const row = document.createElement("div");
+        row.className = "row missed";
+        const nm = document.createElement("span");
+        nm.textContent = f.name;
+        const ch = document.createElement("span");
+        ch.className = "ch";
+        ch.textContent = `CH ${["I", "II", "III"][f.chapter - 1] ?? "I"}`;
+        row.appendChild(nm);
+        row.appendChild(ch);
+        mlog.appendChild(row);
+      }
+      body.appendChild(mlog);
+    }
 
     body.appendChild(this.btn("FILE ANOTHER SHIFT", "new run", () => this.cb.onRestart(), "primary"));
     this.show("results");

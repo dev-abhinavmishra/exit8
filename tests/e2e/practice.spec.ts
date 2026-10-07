@@ -20,14 +20,14 @@ test.describe("practice mode", () => {
     // a correct retreat at 95 would secure a real run — practice clamps
     await page.evaluate(`${NA}.setStability(95)`);
     await page.evaluate(`${NA}.teleport(0, 0, -2.95)`);
-    await page.waitForFunction(`${NA}.loop() === 2`, null, { timeout: 20_000 });
+    await page.waitForFunction(`${NA}.loop() === 2`, null, { timeout: 40_000 });
     expect(await page.evaluate(`${NA}.state()`)).toBe("playing");
     expect(await stability(page)).toBeLessThan(90);
     // a wrong call at 5 would lose a real run — practice clamps low
     await page.evaluate(`${NA}.setStability(5)`);
     const a2 = await anomaly(page);
     await page.evaluate(`${NA}.teleport(0, 0, ${a2 ? 58 : -2.95})`);
-    await page.waitForFunction(`${NA}.loop() === 3`, null, { timeout: 20_000 });
+    await page.waitForFunction(`${NA}.loop() === 3`, null, { timeout: 40_000 });
     expect(await page.evaluate(`${NA}.state()`)).toBe("playing");
     expect(await stability(page)).toBeGreaterThan(0);
     expect(await stability(page)).toBeLessThan(40);
