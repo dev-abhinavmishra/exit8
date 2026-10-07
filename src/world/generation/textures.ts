@@ -46,6 +46,8 @@ export interface TextureSet {
   guideStrip: DynamicTexture; // tactile guide bar channels for the floor
   lightShaft: DynamicTexture; // soft volumetric cone under a troffer
   domePad: DynamicTexture; // truncated-dome warning pad at door thresholds
+  blinds: DynamicTexture; // horizontal venetian slats, alpha-gapped
+  puddle: DynamicTexture; // radial damp patch for floor drains
 }
 
 /** Speckled terrazzo with brass divider strips. Tiles every 1.2 m. */
@@ -468,6 +470,8 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     guideStrip: makeGuideStrip(scene),
     lightShaft: makeLightShaft(scene),
     domePad: makeDomePad(scene),
+    blinds: makeBlinds(scene),
+    puddle: makePuddle(scene),
   };
 }
 
@@ -517,6 +521,40 @@ function makeDomePad(scene: Scene): DynamicTexture {
       c.fill();
     }
   }
+  t.update();
+  return finish(t);
+}
+
+/** Venetian blinds drawn behind one gallery bay: thin horizontal slats
+ * with gaps that let the room's cove line bleed through. */
+function makeBlinds(scene: Scene): DynamicTexture {
+  const t = tex("tex.blinds", 64, 128, scene);
+  const c = ctx(t);
+  c.clearRect(0, 0, 64, 128);
+  for (let y = 2; y < 126; y += 11) {
+    // slat: pale body + brighter top edge (lit by the cove)
+    c.fillStyle = "rgba(200, 196, 180, 0.95)";
+    c.fillRect(0, y, 64, 8);
+    c.fillStyle = "rgba(240, 236, 216, 1)";
+    c.fillRect(0, y, 64, 2.2);
+    c.fillStyle = "rgba(60, 58, 52, 0.9)";
+    c.fillRect(0, y + 8, 64, 1.2);
+  }
+  t.update();
+  return finish(t);
+}
+
+/** Damp patch that spreads around a floor drain: radial dark wash with
+ * a faintly raised rim, alpha-fading to nothing at the edge. */
+function makePuddle(scene: Scene): DynamicTexture {
+  const t = tex("tex.puddle", 128, 128, scene);
+  const c = ctx(t);
+  const g = c.createRadialGradient(64, 64, 8, 64, 64, 62);
+  g.addColorStop(0, "rgba(8, 10, 12, 0.72)");
+  g.addColorStop(0.55, "rgba(8, 10, 12, 0.4)");
+  g.addColorStop(1, "rgba(10, 12, 14, 0)");
+  c.fillStyle = g;
+  c.fillRect(0, 0, 128, 128);
   t.update();
   return finish(t);
 }

@@ -93,6 +93,13 @@ export const SIGNS: SignSpec[] = [
     tone: "dark",
   },
   {
+    id: "sign.totem.mid",
+    title: "INSPECTION LOOP 7",
+    sub: "FILE ALL DIVERGENCES AT THE POINT",
+    arrow: "right",
+    tone: "cyan",
+  },
+  {
     id: "sign.directory",
     title: "ROUTE DIRECTORY",
     sub: "NORTH INTAKE · JUNCTION S-2 · INSPECTION POINT",

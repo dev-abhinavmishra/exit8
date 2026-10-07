@@ -434,6 +434,13 @@ export function buildConcourse(
     const mullion = kit.box(`wall.gallery.mullion.${mz}`, 0.09, 2.0, 0.18, mats.steel, scene, root);
     mullion.position = new Vector3(C.xHalf, 1.5, mz);
   }
+  // venetian blinds drawn down over one bay — the only bay you can't
+  // read the room through; child of the glass so gallery anomalies
+  // carry it
+  const blind = kit.plane("wall.gallery.blind", 2.8, 1.9, mats.blinds, scene);
+  blind.parent = glass;
+  blind.position = new Vector3(0.08, 0, -1.5);
+  blind.rotation.y = -Math.PI / 2;
   const galleryBack = kit.box("wall.gallery.back", 0.1, 3.0, 12, mats.rubber, scene, root);
   galleryBack.position = new Vector3(C.xHalf + 1.4, 1.5, 26);
   // baseline reading-room interior behind the smoked glass — dark
@@ -629,10 +636,14 @@ export function buildConcourse(
     pframe.position = new Vector3(0, 0, 0.013);
   });
 
-  // Hanging totem at z=12
+  // Hanging totems — the wayfinding rhythm: ARCHIVES over the records
+  // bank, INSPECTION LOOP 7 over the mid-route
   const totem = kit.hangingSign("sign.totem.north", mats, scene, root, registry, C.height);
   totem.position.x = 0;
   totem.position.z = 12;
+  const totemMid = kit.hangingSign("sign.totem.mid", mats, scene, root, registry, C.height);
+  totemMid.position.x = 0;
+  totemMid.position.z = 38;
 
   // bench LEFT z≈16
   const bench = kit.bench(mats, scene, root, registry);
@@ -721,6 +732,31 @@ export function buildConcourse(
   for (const sx of [-1, 1]) {
     const pil = kit.box(`dress.pilaster.${sx}`, 0.12, C.height, 0.2, mats.steel, scene, root);
     pil.position = new Vector3(sx * (C.xHalf - 0.06), C.height / 2, 45.9);
+    // impact corner guard on the traffic-facing edge
+    const guard = kit.plane(`dress.pilaster.guard.${sx}`, 0.1, 1.0, hazardBandMaterial(scene), scene, root);
+    guard.position = new Vector3(sx * (C.xHalf - 0.06), 0.82, 45.79);
+  }
+
+  // steel architrave around each airlock mouth — the frame the sliding
+  // door sits inside, seen from the corridor side
+  for (const [tag, fz] of [
+    ["n", 0.02],
+    ["s", 54.98],
+  ] as const) {
+    for (const fx of [-1.24, 1.24]) {
+      const jamb = kit.box(
+        `dress.dframe.${tag}.${fx < 0 ? "l" : "r"}`,
+        0.07,
+        2.72,
+        0.06,
+        mats.steel,
+        scene,
+        root,
+      );
+      jamb.position = new Vector3(fx, 1.34, fz);
+    }
+    const head = kit.box(`dress.dframe.${tag}.hdr`, 2.56, 0.16, 0.06, mats.steel, scene, root);
+    head.position = new Vector3(0, 2.76, fz);
   }
 
   // sprinkler drops — stem + head every ~6 m, alternating lanes
@@ -959,6 +995,10 @@ export function buildConcourse(
     const dg = kit.box(`dress.drain.${sx}.${dz}`, 0.3, 0.016, 0.5, mats.steel, scene, root);
     dg.position = new Vector3(sx * (C.xHalf - 0.28), 0.008, dz);
   });
+  // damp spread around the south drain — what the drain is there for
+  const puddle = kit.plane("dress.puddle.0", 0.95, 0.7, mats.puddle, scene, root);
+  puddle.position = new Vector3(1.35, 0.007, 52.6);
+  puddle.rotation.x = Math.PI / 2;
   // damp staining bleeding down the wall under each vent grille
   for (const [sx, vz] of ventSpots) {
     const st = kit.plane(`dress.grime.${sx}.${vz}`, 0.7, 1.15, mats.grime, scene, root);

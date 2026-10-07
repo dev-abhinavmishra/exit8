@@ -34,6 +34,8 @@ export interface MaterialSet {
   lightShaft: StandardMaterial;
   /** truncated-dome tactile warning pads at the airlock thresholds */
   domePad: StandardMaterial;
+  blinds: StandardMaterial;
+  puddle: StandardMaterial;
 }
 
 export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
@@ -133,6 +135,23 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   domePad.emissiveColor = new Color3(0.42, 0.4, 0.34);
   domePad.specularColor = new Color3(0.02, 0.02, 0.02);
 
+  // venetian blinds behind the gallery glass — alpha slats, unlit so
+  // they read pale against the dark interior
+  tex.blinds.hasAlpha = true;
+  const blinds = new StandardMaterial("mat.blinds", scene);
+  blinds.diffuseTexture = tex.blinds;
+  blinds.opacityTexture = tex.blinds;
+  blinds.emissiveColor = new Color3(0.55, 0.53, 0.46);
+  blinds.specularColor = Color3.Black();
+
+  // floor damp patch — dark radial wash with a sheen, nearly flat
+  tex.puddle.hasAlpha = true;
+  const puddle = new StandardMaterial("mat.puddle", scene);
+  puddle.diffuseTexture = tex.puddle;
+  puddle.opacityTexture = tex.puddle;
+  puddle.specularColor = new Color3(0.5, 0.5, 0.5);
+  puddle.specularPower = 48;
+
   // fake volumetric shaft under each troffer — additive, unlit
   const lightShaft = new StandardMaterial("mat.lightShaft", scene);
   lightShaft.diffuseTexture = tex.lightShaft;
@@ -231,5 +250,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     guideStrip,
     lightShaft,
     domePad,
+    blinds,
+    puddle,
   };
 }
