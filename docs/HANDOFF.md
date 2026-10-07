@@ -260,6 +260,15 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
     dual-face hanging signs need two flipped planes, not one box.
     kit.box does NOT register — mullions/vents/pipes exist only via
     `scene.getMeshByName`.
+- 87–89 use the new dressing anchors (floor.arrow.\*, bay.plate.\*,
+  ceiling.vent.\*). More traps: `mesh.rotate(Axis.Y, π, Space.WORLD)`
+  writes the quaternion — `meshInfo().rot` reads `0,0,0` for it (verify
+  flipped geometry by screenshot, not euler). `look(yaw, pitch)`: POSITIVE
+  pitch looks DOWN. `draws()`/`_drawCalls.current` is CUMULATIVE — diff two
+  samples a frame apart (~440 draws/frame actual). `requires` names must be
+  REAL registry entries or forceAnomaly silently can't activate (vent
+  grilles had to be registered for vent.slats). Shift report tracks
+  `filed` + `missed` registers in app.ts (deduped by displayName).
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
