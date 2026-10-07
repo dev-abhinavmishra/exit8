@@ -9,7 +9,10 @@ have captions + optional direction indicators (accessibility).
 ## Bus graph
 
 `master` → `ambience`, `footsteps`, `machinery`, `voices`, `anomaly`, `ui`
-(each with gain, later ducking: `anomaly` sidechains `ambience` −4 dB).
+(each with gain; implemented: `anomaly`-bus emitters — ghost footsteps,
+rumbles, groans, chimes — duck `ambience` ≈ −4 dB (×0.63) on a fast
+attack / ~1 s release via `duckAmbience`, riding under the settings
+volume so applyVolumes stays authoritative).
 
 ## Baseline bed (all procedural in M1 — no external samples)
 

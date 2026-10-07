@@ -90,6 +90,19 @@ export class AudioSystem {
     return b;
   }
 
+  /** The bed drops ~4 dB under anomaly-bus emitters so a ghost cue reads
+   * through the room tone, then recovers on a slow release. Rides under
+   * the settings volume — never fights applyVolumes. */
+  private duckAmbience(holdS: number): void {
+    if (!this.ctx) return;
+    const g = this.bus("ambience");
+    const base = this.settings.audio.ambience;
+    const t = this.ctx.currentTime;
+    g.gain.cancelScheduledValues(t);
+    g.gain.setTargetAtTime(base * 0.63, t, 0.06);
+    g.gain.setTargetAtTime(base, t + holdS, 0.9);
+  }
+
   setListener(pos: Vector3, fwd: Vector3): void {
     this.listenerPos.copyFrom(pos);
     this.listenerFwd.copyFrom(fwd);
@@ -133,6 +146,7 @@ export class AudioSystem {
 
   /** Surface-aware footstep: filtered noise burst, randomized per step. */
   playFootstep(pos: Vector3, intensity: number, anomalous = false): void {
+    if (anomalous) this.duckAmbience(0.7);
     if (!this.ctx || !this.noiseBuffer) return;
     const t0 = this.ctx.currentTime;
     const src = this.ctx.createBufferSource();
@@ -332,6 +346,7 @@ export class AudioSystem {
   }
 
   playRumble(rng: RngStream): void {
+    this.duckAmbience(1.4);
     if (!this.ctx || !this.noiseBuffer) return;
     const ctx = this.ctx;
     const t0 = ctx.currentTime;
@@ -353,6 +368,7 @@ export class AudioSystem {
 
   /** Low vent groan — a slow pressure swell, used by vent anomalies. */
   playGroan(pos: Vector3): void {
+    this.duckAmbience(1.2);
     if (!this.ctx || !this.noiseBuffer) return;
     const ctx = this.ctx;
     const t0 = ctx.currentTime;
@@ -378,6 +394,7 @@ export class AudioSystem {
 
   /** Two-tone PA chime — ding-dong, used by announce anomalies. */
   playChime(pos: Vector3): void {
+    this.duckAmbience(1.0);
     if (!this.ctx) return;
     const ctx = this.ctx;
     const t0 = ctx.currentTime;
