@@ -613,23 +613,29 @@ export function drawTerminal(
   const c = ctx(t);
   const sz = t.getSize();
   c.scale(sz.width / 512, sz.height / 256);
-  c.fillStyle = "#10141a";
+  c.fillStyle = "#151b22";
   c.fillRect(0, 0, 512, 256);
   c.strokeStyle = "#3a3d40";
   c.lineWidth = 3;
   c.strokeRect(6, 6, 500, 244);
+  // lit header band — reads as a powered screen at corridor distance
+  c.fillStyle = "#3d2c12";
+  c.fillRect(10, 10, 492, 50);
   c.fillStyle = "#e8a33d";
   c.font = "bold 26px ui-monospace, Menlo, monospace";
   c.textAlign = "left";
   c.fillText(lines.header, 26, 48);
   c.fillStyle = "#4a4d52";
   c.fillRect(26, 62, 460, 2);
-  c.font = "20px ui-monospace, Menlo, monospace";
   lines.rows.forEach((row, i) => {
     const y = 104 + i * 34;
+    // long prompt labels get a smaller font so they never clip the bezel
+    c.font =
+      row.label.length > 24 ? "16px ui-monospace, Menlo, monospace" : "20px ui-monospace, Menlo, monospace";
     c.fillStyle = "#8f8a80";
     c.fillText(row.label, 26, y);
-    c.fillStyle =
+    c.font = "20px ui-monospace, Menlo, monospace";
+    const tone =
       row.tone === "ok"
         ? "#7fd4a0"
         : row.tone === "warn"
@@ -637,10 +643,22 @@ export function drawTerminal(
           : row.tone === "bad"
             ? "#d86a5a"
             : "#c9c6bc";
+    // status pill behind the value so the state color reads at distance
+    const vw = c.measureText(row.value).width;
+    if (row.value) {
+      c.fillStyle = "#232a32";
+      c.fillRect(480 - vw - 10, y - 18, vw + 16, 26);
+      c.fillStyle = tone;
+      c.fillRect(480 - vw - 10, y - 18, 3, 26);
+    }
+    c.fillStyle = tone;
     c.textAlign = "right";
     c.fillText(row.value, 486, y);
     c.textAlign = "left";
   });
+  // scanlines — the CRT texture cue
+  c.fillStyle = "rgba(0,0,0,0.12)";
+  for (let y = 0; y < 256; y += 4) c.fillRect(0, y, 512, 1);
   t.update();
 }
 

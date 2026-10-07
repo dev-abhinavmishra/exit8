@@ -52,6 +52,7 @@ const STATIC_PREFIXES = [
   "dress.cove.",
   "dress.rota.",
   "dress.routemap.",
+  "dress.term.",
   "conduit.",
   "baseboard.",
   "junction.pipe.",

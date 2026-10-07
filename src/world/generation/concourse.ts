@@ -317,10 +317,18 @@ function buildAirlock(
     kit.collider(`al.${side}.headerCol`, w + halfGap, 0.35, 0.12, header.position.clone(), scene, al),
   );
 
-  // terminal screen on the east wall of the airlock
+  // terminal screen on the east wall of the airlock — a mounted monitor:
+  // steel housing + bezel lip behind the screen, status LED below.
+  // Housing is NOT a terminal child so terminal.black darks only the screen.
+  const housing = kit.box(`dress.term.${side}.housing`, 0.05, 0.52, 0.95, mats.steel, scene, al);
+  housing.position = new Vector3(-w / 2 + 0.04, 1.55, zc);
+  const led = kit.box(`dress.term.${side}.led`, 0.02, 0.02, 0.05, mats.trofferLit, scene, al);
+  led.position = new Vector3(-w / 2 + 0.07, 1.28, zc + 0.36);
   const term = kit.plane(`al.${side}.terminal`, 0.85, 0.42, mats.terminal, scene, al);
   term.position = new Vector3(-w / 2 + 0.07, 1.55, zc);
-  term.rotation.y = Math.PI / 2;
+  // west airlock wall faces +x into the vestibule — plane front (−z)
+  // needs −π/2 to face the room (was +π/2: the screen faced the wall)
+  term.rotation.y = -Math.PI / 2;
   registry.register(`al.${side}.terminal`, term);
 
   // sign above inner door, facing into the corridor
