@@ -10,7 +10,7 @@ const SPOT = new Vector3(1.4, 2.9, 26); // above the gallery glass — no speake
 export const announceSpatial: AnomalyDef = {
   id: "announce.spatial",
   displayName: "Phantom PA",
-  chapter: 1,
+  chapter: 3,
   category: "sound",
   detectability: "subtle",
   weight: 1,

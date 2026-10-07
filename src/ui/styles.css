@@ -301,6 +301,12 @@
   letter-spacing: 0.22em;
   color: var(--dim);
 }
+.na-hud .loop-tag .ch {
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(232, 163, 61, 0.35);
+  color: var(--amber);
+}
 .na-hud .commit-hint {
   position: absolute;
   bottom: 26px;

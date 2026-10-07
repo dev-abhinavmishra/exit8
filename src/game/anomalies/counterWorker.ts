@@ -20,7 +20,7 @@ const REST_S = 7;
 export const counterWorker: AnomalyDef = {
   id: "counter.worker",
   displayName: "Hand Under the Shutter",
-  chapter: 1,
+  chapter: 2,
   category: "character",
   detectability: "moderate",
   weight: 0.8,

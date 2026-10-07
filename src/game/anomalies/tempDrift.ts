@@ -12,7 +12,7 @@ const COOL = new Color3(0.82, 0.9, 1.0);
 export const tempDrift: AnomalyDef = {
   id: "temp.drift",
   displayName: "Cooling Light",
-  chapter: 1,
+  chapter: 3,
   category: "lighting",
   detectability: "subtle",
   weight: 1,

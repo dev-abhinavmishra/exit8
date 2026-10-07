@@ -17,7 +17,7 @@ const HOLD_S = 4;
 export const shadowSourceless: AnomalyDef = {
   id: "shadow.sourceless",
   displayName: "Caster-less Shadow",
-  chapter: 1,
+  chapter: 2,
   category: "lighting",
   detectability: "moderate",
   weight: 1,

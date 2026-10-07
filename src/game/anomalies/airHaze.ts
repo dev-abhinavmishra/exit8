@@ -8,7 +8,7 @@ import type { AnomalyDef } from "./types";
 export const airHaze: AnomalyDef = {
   id: "air.haze",
   displayName: "Pressure Front",
-  chapter: 1,
+  chapter: 3,
   category: "systemic",
   detectability: "moderate",
   weight: 0.8,

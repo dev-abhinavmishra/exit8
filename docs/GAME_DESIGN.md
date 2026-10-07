@@ -32,12 +32,17 @@ Fairness contract: every anomaly is detectable before either commit line by
 ≥1 visual or auditory cue. No random guessing. Adaptive selection picks
 difficulty _bands_ before a loop starts and never mutates mid-loop.
 
-## Chapters (M3+)
+## Chapters (live since slice)
 
-1. **Calibration** — teaches baseline + binary rule. 35–50 % anomaly rate.
-2. **Contamination** — paired minor changes, moving anomalies, env story.
-3. **Protocol Failure** — rare rule modifiers (protocol exceptions),
-   cross-loop memory, finale shaped by prior observations.
+Chapter is competence-gated: `1 + floor(correctJudgments / 2)`, cap 3 —
+1 → 2 after two correct filings, 2 → 3 after four. Rates 0.5 / 0.55 / 0.6.
+
+1. **Calibration** — the quiet 17: signs, posters, props, stills. No
+   figure work, nothing moves on its own.
+2. **Contamination** — motion and watchers: sways, spins, breathes,
+   groans, a figure that is gone when you look twice.
+3. **Protocol Failure** — the building itself lies: lights die, the
+   machine is silent behind you, the air thickens, temperature drifts.
 
 ## Systems
 

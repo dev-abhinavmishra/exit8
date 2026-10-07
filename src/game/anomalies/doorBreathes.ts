@@ -8,7 +8,7 @@ import type { AnomalyDef } from "./types";
 export const doorBreathes: AnomalyDef = {
   id: "door.breathes",
   displayName: "Breathing Service Door",
-  chapter: 1,
+  chapter: 2,
   category: "spatial",
   detectability: "subtle",
   weight: 1,

@@ -21,7 +21,12 @@ export class GameUi {
   private veil: HTMLDivElement;
   private veilLabel: HTMLDivElement;
   private captions: HTMLDivElement;
-  private stabilityEl!: { num: HTMLElement; bar: HTMLElement; tag: HTMLElement };
+  private stabilityEl!: {
+    num: HTMLElement;
+    bar: HTMLElement;
+    tag: HTMLElement;
+    ch: HTMLElement;
+  };
   private commitHint!: HTMLDivElement;
   private debugEl: HTMLDivElement;
   private captionQueue: { el: HTMLDivElement; until: number }[] = [];
@@ -470,7 +475,7 @@ export class GameUi {
     const h = document.createElement("div");
     h.className = "na-hud";
     h.innerHTML = `
-      <div class="loop-tag">LOOP <b class="n">01</b></div>
+      <div class="loop-tag">LOOP <b class="n">01</b><span class="ch">CH I</span></div>
       <div class="stability">STABILITY<b class="n">40</b><div class="bar"><i></i></div></div>
       <div class="reticle"></div>
       <div class="commit-hint">COMMIT AT AN INSPECTION POINT</div>
@@ -479,6 +484,7 @@ export class GameUi {
       num: h.querySelector(".stability .n") as HTMLElement,
       bar: h.querySelector(".stability .bar i") as HTMLElement,
       tag: h.querySelector(".loop-tag .n") as HTMLElement,
+      ch: h.querySelector(".loop-tag .ch") as HTMLElement,
     };
     this.commitHint = h.querySelector(".commit-hint") as HTMLDivElement;
     return h;
@@ -491,6 +497,10 @@ export class GameUi {
 
   setLoopIndex(i: number): void {
     this.stabilityEl.tag.textContent = String(i).padStart(2, "0");
+  }
+
+  setChapter(ch: number): void {
+    this.stabilityEl.ch.textContent = `CH ${["I", "II", "III"][ch - 1] ?? "I"}`;
   }
 
   show(id: "start" | "pause" | "settings" | "results" | "none"): void {

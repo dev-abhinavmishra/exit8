@@ -14,7 +14,7 @@ const RANGE = 12;
 export const cctvGaze: AnomalyDef = {
   id: "cctv.gaze",
   displayName: "Attentive Camera",
-  chapter: 1,
+  chapter: 2,
   category: "object",
   detectability: "subtle",
   weight: 1,

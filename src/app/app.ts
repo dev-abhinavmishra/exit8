@@ -265,6 +265,7 @@ export class App {
     if (s.judgment?.correct) this.stats.correct += 1;
     else this.stats.mistakes += 1;
     this.ui.setLoopIndex(s.loopIndex + 1);
+    this.ui.setChapter(s.chapter);
   }
 
   private onEnd(outcome: "secure" | "lost"): void {

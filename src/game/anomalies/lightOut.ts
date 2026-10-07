@@ -8,7 +8,7 @@ import type { AnomalyDef } from "./types";
 export const lightOut: AnomalyDef = {
   id: "light.out",
   displayName: "Dead Fixture Run",
-  chapter: 1,
+  chapter: 3,
   category: "lighting",
   detectability: "unmistakable",
   weight: 0.9,

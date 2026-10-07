@@ -9,7 +9,7 @@ import type { AnomalyDef } from "./types";
 export const machineSilence: AnomalyDef = {
   id: "machine.silence",
   displayName: "Shy Machinery",
-  chapter: 1,
+  chapter: 3,
   category: "sound",
   detectability: "moderate",
   weight: 1,

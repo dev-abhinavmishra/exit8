@@ -27,6 +27,7 @@ export type LoopPhase = "open" | "commit_pending" | "cycling" | "ended";
 export interface LoopState {
   loopIndex: number;
   phase: LoopPhase;
+  chapter: number;
   activeAnomaly: string | null;
   judgment: JudgmentResult | null;
   stability: number;
@@ -46,7 +47,8 @@ const JUDGE_DELAY = 0.55;
 export class LoopManager {
   private phase: LoopPhase = "open";
   private loopIndex = 0;
-  private chapter = 1;
+  /** correct judgments filed this run — chapters unlock on competence */
+  private correctCount = 0;
   private activeDef: AnomalyDef | null = null;
   private activeInstance: AnomalyInstance | null = null;
   private cycleT = 0;
@@ -99,10 +101,16 @@ export class LoopManager {
     this.anomalyCtx.visualCues = flags.visualCues;
   }
 
+  /** 1 → 2 after 2 correct judgments, 2 → 3 after 4. */
+  get chapter(): number {
+    return Math.min(3, 1 + (this.correctCount >> 1));
+  }
+
   get state(): LoopState {
     return {
       loopIndex: this.loopIndex,
       phase: this.phase,
+      chapter: this.chapter,
       activeAnomaly: this.activeDef?.id ?? null,
       judgment: null,
       stability: this.stability.current,
@@ -199,6 +207,7 @@ export class LoopManager {
       (this.pendingCommit === "continue" && !this.activeDef) ||
       (this.pendingCommit === "retreat" && !!this.activeDef);
     const result = this.stability.judge(correct, this.chapter);
+    if (correct) this.correctCount += 1;
 
     // progression bookkeeping
     const discovered = this.activeDef?.id;

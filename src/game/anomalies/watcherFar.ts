@@ -15,7 +15,7 @@ const VANISH_Z = 45;
 export const watcherFar: AnomalyDef = {
   id: "watcher.far",
   displayName: "Figure at the Junction",
-  chapter: 1,
+  chapter: 2,
   category: "character",
   detectability: "unmistakable",
   weight: 0.7, // rare — it should stay an event

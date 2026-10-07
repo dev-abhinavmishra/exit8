@@ -12,7 +12,7 @@ const COOLDOWN_S = 9;
 export const ventGroan: AnomalyDef = {
   id: "vent.groan",
   displayName: "Groaning Vent",
-  chapter: 1,
+  chapter: 2,
   category: "sound",
   detectability: "moderate",
   weight: 1,

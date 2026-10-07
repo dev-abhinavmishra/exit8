@@ -9,7 +9,7 @@ import type { AnomalyDef } from "./types";
 export const footstepsAhead: AnomalyDef = {
   id: "footsteps.ahead",
   displayName: "Corridor Answers",
-  chapter: 1,
+  chapter: 2,
   category: "sound",
   detectability: "moderate",
   weight: 0.9,

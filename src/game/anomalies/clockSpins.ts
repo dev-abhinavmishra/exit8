@@ -8,7 +8,7 @@ import type { AnomalyDef } from "./types";
 export const clockSpins: AnomalyDef = {
   id: "clock.spins",
   displayName: "Runaway Clock",
-  chapter: 1,
+  chapter: 2,
   category: "object",
   detectability: "unmistakable",
   weight: 0.8,

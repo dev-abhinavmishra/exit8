@@ -8,7 +8,7 @@ import type { AnomalyDef } from "./types";
 export const totemSways: AnomalyDef = {
   id: "totem.sways",
   displayName: "Swinging Junction Totem",
-  chapter: 1,
+  chapter: 2,
   category: "object",
   detectability: "subtle",
   weight: 1,
