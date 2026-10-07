@@ -10,7 +10,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - Playable slice: WebGPU→WebGL2 fallback, quality tiers, FPS controller
   (collision via `camera.cameraDirection` + `collisionCoordinator` import),
   Loop 7 concourse (procedural), commit thresholds, stability index,
-  **31 anomalies** (was 3 — 24 target passed) registered via
+  **33 anomalies** (was 3 — 24 target passed) registered via
   `anomalies/index.ts` (`ALL_ANOMALIES` — register there, not in app.ts),
   procedural audio (seeded `audio.synth`/`audio.ambient` streams),
   start/pause/settings/results, v1 saves, vitest + playwright suites,
@@ -37,7 +37,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   `view()` added to the debug handle (yaw/pitch getter; `look()` is
   a setter). e2e stubs `navigator.getGamepads` via addInitScript.
 - **Route archive live** (bde5a73): ROUTE ARCHIVE on the start
-  screen — stats table + DIVERGENCE REGISTER of all 31 defs sorted by
+  screen — stats table + DIVERGENCE REGISTER of all 33 defs sorted by
   chapter; discovered ids render name/chapter/category/detectability,
   unfound ones show redacted rows. `ui.setArchiveData(stats, ids)`
   populates from save at boot. NOTE: seeded saves in e2e must carry
@@ -95,6 +95,24 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - **Endings + credits**: `COPY.results.epilogues` (standard /
   investigative / lost / practice one-liners under the stamp), CREDITS
   button → 'credits' screen (M4's credits box).
+- **Wall-base AO + dust** (2eb70ea, 3b953fc): fade-strip decal strips at
+  both wall bases (`aoStrip` material, `drawFadeStrip` 256×64 alpha
+  gradient) ground the walls; 400-cap ADD-blend ParticleSystem dust
+  motes drift in troffer rows (skipped under reducedMotion). NOTE: a
+  radial-glow "light pool" decal experiment was tried and REVERTED —
+  the terrazzo's own specular already draws natural pools; a white
+  blob duplicates it.
+- **Ambient inspector + walker anomalies** (3c21ab8, c39f3f8):
+  `src/world/generation/ambientWalker.ts` — a second figure patrols
+  z 7↔48 at 1.05 m/s, 5 s end pauses, stride bob; slate coat + skin
+  head + emissive hi-vis stripe (staff, not silhouette). reset() puts
+  him mid-corridor EVERY rebaseline so he's part of baseline normal.
+  `setMode("backwards"|"stare")` feeds two new ch2 defs
+  (walker.backwards moonwalk, walker.stare mid-hold) — catalog **33**.
+  `ambient.walker` registered in WorldRegistry; update() runs in
+  app.sim. Trap: e2e archive spec had "0 OF 31 FILED" hardcoded — now
+  regex-matched; specs CANNOT import src/game/anomalies (Node can't
+  resolve Babylon deep subpaths — extensionless builders 404 in node).
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
