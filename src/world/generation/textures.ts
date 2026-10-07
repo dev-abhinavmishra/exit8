@@ -903,3 +903,61 @@ export function makeRotaBoard(scene: Scene): DynamicTexture {
   t.update();
   return finish(t);
 }
+
+/** Corridor service phone face — dark plate, keypad grid, dial card. */
+export function makePhoneFace(scene: Scene): DynamicTexture {
+  const t = tex("tex.phoneFace", 256, 384, scene);
+  const c = ctx(t);
+  c.fillStyle = "#151719";
+  c.fillRect(0, 0, 256, 384);
+  // bevel edge
+  c.strokeStyle = "#3d4045";
+  c.lineWidth = 4;
+  c.strokeRect(4, 4, 248, 376);
+  // handset cradle shadow strip left
+  c.fillStyle = "#0c0d0f";
+  c.fillRect(16, 20, 52, 344);
+  c.strokeStyle = "#2c2f33";
+  c.lineWidth = 2;
+  c.strokeRect(16, 20, 52, 344);
+  // label strip
+  c.fillStyle = "#1d3a40";
+  c.fillRect(84, 20, 156, 30);
+  c.fillStyle = "#7fc4cf";
+  c.font = "bold 13px Arial, sans-serif";
+  c.textAlign = "center";
+  c.fillText("INTERNAL", 162, 40);
+  // dial card
+  c.fillStyle = "#c9c4b2";
+  c.fillRect(104, 66, 116, 46);
+  c.strokeStyle = "#6a6558";
+  c.strokeRect(104, 66, 116, 46);
+  c.fillStyle = "#3a3d42";
+  c.font = "bold 15px 'Courier New', monospace";
+  c.fillText("DIAL 7-700", 162, 88);
+  c.font = "9px Arial, sans-serif";
+  c.fillText("MAINTENANCE", 162, 104);
+  // keypad 3x4
+  for (let r = 0; r < 4; r++) {
+    for (let col = 0; col < 3; col++) {
+      const bx = 104 + col * 42;
+      const by = 134 + r * 44;
+      c.fillStyle = "#23262a";
+      c.fillRect(bx, by, 34, 34);
+      c.strokeStyle = "#3d4045";
+      c.strokeRect(bx, by, 34, 34);
+      c.fillStyle = "#8a9099";
+      c.font = "bold 12px Arial, sans-serif";
+      const n = r * 3 + col + 1;
+      c.fillText(n === 10 ? "*" : n === 11 ? "0" : n === 12 ? "#" : String(n), bx + 17, by + 22);
+    }
+  }
+  // status LED bottom right
+  c.fillStyle = "#5a7d62";
+  c.fillRect(206, 330, 14, 14);
+  c.fillStyle = "#7d838c";
+  c.font = "9px Arial, sans-serif";
+  c.fillText("LINE", 213, 358);
+  t.update();
+  return finish(t);
+}

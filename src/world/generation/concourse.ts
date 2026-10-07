@@ -22,7 +22,14 @@ import { Color4 } from "@babylonjs/core/Maths/math.color";
 import type { Scene } from "@babylonjs/core/scene";
 import { WorldRegistry } from "../registry";
 import { buildMaterials, type MaterialSet } from "../materials/library";
-import { buildTextureSet, drawNote, makeFasciaBand, makeVendingFace, type TextureSet } from "./textures";
+import {
+  buildTextureSet,
+  drawNote,
+  makeFasciaBand,
+  makePhoneFace,
+  makeVendingFace,
+  type TextureSet,
+} from "./textures";
 import { RngStream } from "../../game/state/rng";
 import { SIGNS } from "../../data/signage";
 import * as kit from "./kit";
@@ -733,6 +740,15 @@ export function buildConcourse(
   const pFace = kit.box("prop.phone.face", 0.05, 0.42, 0.26, mats.rubber, scene);
   pFace.parent = phone;
   pFace.position = new Vector3(-0.045, -0.02, 0);
+  // drawn face plate: cradle, dial card, keypad, LINE lamp
+  const phoneMat = new StandardMaterial("mat.phoneFace", scene);
+  phoneMat.diffuseTexture = makePhoneFace(scene);
+  phoneMat.specularColor = Color3.Black();
+  phoneMat.emissiveColor = new Color3(0.07, 0.07, 0.07);
+  const pPlate = kit.plane("prop.phone.plate", 0.24, 0.4, phoneMat, scene);
+  pPlate.parent = phone;
+  pPlate.position = new Vector3(-0.071, -0.02, 0);
+  pPlate.rotation.y = Math.PI / 2; // corridor side is local −x
   const handset = kit.box("prop.phone.handset", 0.045, 0.2, 0.05, mats.rubber, scene);
   handset.parent = phone;
   handset.position = new Vector3(-0.075, 0.06, -0.1);
@@ -749,10 +765,12 @@ export function buildConcourse(
   fountain.parent = root;
   fountain.position = new Vector3(C.xHalf - 0.16, 0.85, 37.5);
   registry.register("prop.fountain", fountain);
-  const fBack = kit.box("prop.fountain.back", 0.08, 0.62, 0.42, mats.steel, scene);
+  // pale panel reads as stainless in the junction's weak reflections —
+  // true steel goes near-black here (same lesson as the lift doors)
+  const fBack = kit.box("prop.fountain.back", 0.08, 0.62, 0.42, mats.wallPanel, scene);
   fBack.parent = fountain;
   fBack.position = new Vector3(0.05, 0.31, 0);
-  const fBasin = kit.box("prop.fountain.basin", 0.34, 0.14, 0.44, mats.steel, scene);
+  const fBasin = kit.box("prop.fountain.basin", 0.34, 0.14, 0.44, mats.wallPanel, scene);
   fBasin.parent = fountain;
   fBasin.position = new Vector3(-0.14, 0, 0);
   const fRim = kit.box("prop.fountain.rim", 0.36, 0.025, 0.46, mats.rubber, scene);
@@ -766,6 +784,22 @@ export function buildConcourse(
   bubbler.material = mats.rubber;
   bubbler.parent = fountain;
   bubbler.position = new Vector3(-0.02, 0.12, -0.12);
+  // dark basin well inside the rim + a drain dot
+  const fWell = kit.box("prop.fountain.well", 0.24, 0.02, 0.32, mats.rubber, scene);
+  fWell.parent = fountain;
+  fWell.position = new Vector3(-0.14, 0.08, 0);
+  const fDrain = CreateCylinder(
+    "prop.fountain.drain",
+    { height: 0.012, diameter: 0.05, tessellation: 10 },
+    scene,
+  );
+  fDrain.material = mats.steel;
+  fDrain.parent = fountain;
+  fDrain.position = new Vector3(-0.14, 0.095, 0.08);
+  // splash lip at the back edge
+  const fLip = kit.box("prop.fountain.lip", 0.34, 0.05, 0.02, mats.steel, scene);
+  fLip.parent = fountain;
+  fLip.position = new Vector3(-0.14, 0.11, -0.21);
   const fButton = kit.box("prop.fountain.btn", 0.03, 0.03, 0.06, mats.rubber, scene);
   fButton.parent = fountain;
   fButton.position = new Vector3(-0.14, 0.02, 0.24);
