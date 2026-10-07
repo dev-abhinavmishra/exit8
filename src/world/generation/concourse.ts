@@ -403,6 +403,30 @@ export function buildConcourse(
   }
   const galleryBack = kit.box("wall.gallery.back", 0.1, 3.0, 12, mats.rubber, scene, root);
   galleryBack.position = new Vector3(C.xHalf + 1.4, 1.5, 26);
+  // baseline reading-room interior behind the smoked glass — dark
+  // furniture silhouettes + one lit cove line inside the visible band
+  const galFloor = kit.box("dress.gal.floor", 1.35, 0.08, 12, mats.concrete, scene, root);
+  galFloor.position = new Vector3(C.xHalf + 0.75, -0.02, 26);
+  const galCeil = kit.box("dress.gal.ceil", 1.35, 0.08, 12, mats.ceiling, scene, root);
+  galCeil.position = new Vector3(C.xHalf + 0.75, C.height + 0.02, 26);
+  for (const dz of [-6, 6]) {
+    const gside = kit.box(`dress.gal.side.${dz}`, 1.35, C.height, 0.1, mats.wallPanel, scene, root);
+    gside.position = new Vector3(C.xHalf + 0.75, C.height / 2, 26 + dz);
+  }
+  for (const cz of [22, 24.5, 29.5]) {
+    const gcab = kit.box(`dress.gal.cab.${cz}`, 0.32, 1.9, 1.5, mats.steel, scene, root);
+    gcab.position = new Vector3(C.xHalf + 1.15, 0.95, cz);
+  }
+  for (const dz of [22.5, 26.5, 30]) {
+    const desk = kit.box(`dress.gal.desk.${dz}`, 0.55, 0.74, 1.5, mats.steel, scene, root);
+    desk.position = new Vector3(C.xHalf + 0.72, 0.37, dz);
+    const chair = kit.box(`dress.gal.chair.${dz}`, 0.35, 0.85, 0.4, mats.rubber, scene, root);
+    chair.position = new Vector3(C.xHalf + 1.12, 0.42, dz + 0.3);
+  }
+  // lit cove at the back — inside the glass band (y 0.5–2.5), the line
+  // that makes the room read as occupied space, not void
+  const gcove = kit.box("dress.gal.cove", 0.06, 0.05, 11.4, mats.trofferLit, scene, root);
+  gcove.position = new Vector3(C.xHalf + 1.3, 2.36, 26);
   registry.register("wall.gallery.back", galleryBack);
   kit.wallRun("wall.right.2", C.xHalf, 32, 55, C.height, mats.wallPanel, scene, root, registry);
 
