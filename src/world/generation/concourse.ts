@@ -362,6 +362,13 @@ function buildAirlock(
     ao.parent = al;
     ao.position = new Vector3((sx * (w - 0.13)) / 2, 0.24, zc);
     ao.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
+    // wall panel joints — the vestibule walls read as flat slabs
+    // without them; three seams per wall
+    for (let i = 0; i < 3; i++) {
+      const wz = z0 + ((z1 - z0) / 4) * (i + 1);
+      const ws = kit.box(`dress.wseam.al.${side}.${sx}.${i}`, 0.014, 2.2, 0.03, mats.rubber, scene, al);
+      ws.position = new Vector3((sx * (w - 0.17)) / 2, 1.2, wz);
+    }
   }
   const conduit = kit.box(`dress.conduit.al.${side}`, 0.04, 0.04, z1 - z0 - 0.2, mats.steel, scene, al);
   conduit.position = new Vector3(w / 2 - 0.14, 2.62, zc);
@@ -497,6 +504,10 @@ export function buildConcourse(
   // occupied-room cue at walking distance
   const gmon = kit.box("dress.gal.monitor", 0.02, 0.26, 0.38, mats.trofferLit, scene, root);
   gmon.position = new Vector3(C.xHalf + 0.46, 0.88, 26.5);
+  // a warm desk lamp left on — a point of light deeper in the room
+  // than the monitor, reads through the dark panes as depth
+  const glamp = kit.box("dress.gal.lamp", 0.05, 0.06, 0.05, mats.trofferLit, scene, root);
+  glamp.position = new Vector3(C.xHalf + 0.52, 0.82, 24.2);
   registry.register("wall.gallery.back", galleryBack);
   kit.wallRun("wall.right.2", C.xHalf, 32, 55, C.height, mats.wallPanel, scene, root, registry);
 
