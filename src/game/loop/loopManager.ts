@@ -167,6 +167,9 @@ export class LoopManager {
     // harmless scatter drifts each loop — a changed detail is not a
     // divergence; keeps memorization honest (loop.dressing stream)
     this.world.scatter.refresh(this.loopIndex);
+    // the other inspector returns to his mid-corridor post — his
+    // constancy is what makes him part of normal
+    this.world.ambientWalker.reset();
     const rate = CHAPTER_ANOMALY_RATE[this.chapter] ?? 0.5;
     if (this.forcedAnomalyId !== null) {
       this.activeDef = this.forcedAnomalyId === "none" ? null : this.anomalies.get(this.forcedAnomalyId);

@@ -24,6 +24,7 @@ import { RngStream } from "../../game/state/rng";
 import { SIGNS } from "../../data/signage";
 import * as kit from "./kit";
 import { buildScatter, type ScatterPool } from "./scatter";
+import { buildAmbientWalker, type AmbientWalker } from "./ambientWalker";
 
 export const LAYOUT = {
   corridor: { xHalf: 1.8, z0: 0, z1: 55, height: 3.0 },
@@ -82,6 +83,8 @@ export interface ConcourseWorld {
   };
   /** per-loop harmless scatter — refreshed on every rebaseline */
   scatter: ScatterPool;
+  /** the baseline inspector figure — reset every rebaseline */
+  ambientWalker: AmbientWalker;
 }
 
 function buildAirlock(
@@ -582,9 +585,7 @@ export function buildConcourse(
     dotTex.update();
     const dust = new ParticleSystem("fx.dust", 400, scene);
     dust.particleTexture = dotTex;
-    const dustAnchor = new TransformNode("fx.dust.anchor", scene);
-    dustAnchor.parent = root;
-    dust.emitter = dustAnchor;
+    dust.emitter = new Vector3(0, 0, 0);
     dust.createBoxEmitter(
       new Vector3(-0.015, 0.012, -0.015),
       new Vector3(0.015, 0.045, 0.015),
@@ -622,6 +623,8 @@ export function buildConcourse(
   }
 
   const scatter = buildScatter(scene, root, mats, runSeed);
+  const ambientWalker = buildAmbientWalker(scene, root, mats);
+  ambientWalker.reset();
 
   return {
     root,
@@ -636,6 +639,7 @@ export function buildConcourse(
     extraRoomSpill: spill,
     condensationPatch: condensation,
     scatter,
+    ambientWalker,
     clock: {
       hourPivot: registry.get("clock.hour.pivot") as TransformNode,
       minutePivot: registry.get("clock.minute.pivot") as TransformNode,
