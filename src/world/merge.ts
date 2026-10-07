@@ -56,6 +56,7 @@ const STATIC_PREFIXES = [
   "dress.floormat.",
   "dress.fborder.",
   "dress.floorseam.",
+  "dress.aid.",
   "dress.floorwear",
   "conduit.",
   "baseboard.",

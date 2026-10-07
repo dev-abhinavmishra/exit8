@@ -103,6 +103,26 @@ export function buildFixtures(
   const hoseNoz = kit.box("dress.hose.nozzle", 0.04, 0.16, 0.04, mats.steel, scene, root);
   hoseNoz.position = new Vector3(-WALL_X + 0.14, 1.14, 44.75);
 
+  // ---- first aid cabinet, east wall z≈46 — white surface-mount box,
+  //      green cross; fills the bare span between vending and the
+  //      lift lobby ----
+  const aidWhite = new StandardMaterial("mat.firstaid.white", scene);
+  aidWhite.diffuseColor = new Color3(0.4, 0.41, 0.39);
+  aidWhite.emissiveColor = new Color3(0.008, 0.008, 0.008);
+  aidWhite.specularColor = new Color3(0.04, 0.04, 0.04);
+  const aidGreen = new StandardMaterial("mat.firstaid.cross", scene);
+  aidGreen.diffuseColor = new Color3(0.03, 0.24, 0.12);
+  aidGreen.emissiveColor = new Color3(0.005, 0.02, 0.008);
+  aidGreen.specularColor = new Color3(0.03, 0.03, 0.03);
+  const aidCab = kit.box("dress.aid.cab", 0.06, 0.4, 0.3, aidWhite, scene, root);
+  aidCab.position = new Vector3(WALL_X - 0.045, 1.5, 46);
+  const aidH = kit.box("dress.aid.cross.h", 0.014, 0.045, 0.15, aidGreen, scene, root);
+  aidH.position = new Vector3(WALL_X - 0.078, 1.5, 46);
+  const aidV = kit.box("dress.aid.cross.v", 0.014, 0.15, 0.045, aidGreen, scene, root);
+  aidV.position = new Vector3(WALL_X - 0.078, 1.5, 46);
+  const aidLatch = kit.box("dress.aid.latch", 0.016, 0.05, 0.02, mats.rubber, scene, root);
+  aidLatch.position = new Vector3(WALL_X - 0.08, 1.42, 46.12);
+
   buildImpossibleFacade(scene, root, mats, registry);
   buildLiftLobby(scene, root, mats, registry);
   buildGuideStrip(scene, root, mats, registry);
