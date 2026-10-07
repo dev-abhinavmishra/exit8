@@ -1050,6 +1050,27 @@ export function buildConcourse(
   const puddle = kit.plane("dress.puddle.0", 0.95, 0.7, mats.puddle, scene, root);
   puddle.position = new Vector3(1.35, 0.007, 52.6);
   puddle.rotation.x = Math.PI / 2;
+
+  // pilot lamps beside each airlock mouth — the amber "route open"
+  // indicator you learn to glance at before committing
+  for (const [tag, fz, dir] of [
+    ["n", 0.03, 1],
+    ["s", 54.97, -1],
+  ] as const) {
+    const housing = kit.box(`dress.doorlight.${tag}`, 0.08, 0.2, 0.1, mats.steel, scene, root);
+    housing.position = new Vector3(1.5, 1.95, fz);
+    const lamp = kit.box(`dress.doorlight.${tag}.lamp`, 0.04, 0.12, 0.05, mats.commitmentStripe, scene, root);
+    lamp.position = new Vector3(1.5, 1.95, fz + dir * 0.07);
+  }
+
+  // ceiling void panel — one missing tile exposes the dark plenum with
+  // a dangling service cable
+  const void_ = kit.box("dress.ceilvoid", 0.85, 0.05, 1.15, mats.rubber, scene, root);
+  void_.position = new Vector3(-0.9, C.height - 0.06, 22.5);
+  const cable = kit.box("dress.ceilvoid.cable", 0.018, 0.42, 0.018, mats.rubber, scene, root);
+  cable.position = new Vector3(-0.82, C.height - 0.28, 22.3);
+  const jbox = kit.box("dress.ceilvoid.jbox", 0.16, 0.1, 0.14, mats.steel, scene, root);
+  jbox.position = new Vector3(-0.72, C.height - 0.12, 22.66);
   // damp staining bleeding down the wall under each vent grille
   for (const [sx, vz] of ventSpots) {
     const st = kit.plane(`dress.grime.${sx}.${vz}`, 0.7, 1.15, mats.grime, scene, root);

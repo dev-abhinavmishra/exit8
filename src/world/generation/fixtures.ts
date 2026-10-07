@@ -152,6 +152,19 @@ function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, reg
     decal.parent = root;
     registry.register(`floor.arrow.${z}`, decal);
   }
+  // the same worn "7 →" stencil, painted on the wall above each floor
+  // decal — redundancy is how wayfinding actually survives wear
+  for (const [sx, sz] of [
+    [-1, 10.7],
+    [1, 30.7],
+    [-1, 48.7],
+  ] as const) {
+    const st = kit.plane(`dress.stencil.${sz}`, 0.35, 0.7, arrowMat, scene, root);
+    st.position = new Vector3(sx * 1.77, 1.42, sz);
+    st.rotation.y = sx > 0 ? Math.PI / 2 : -Math.PI / 2;
+    // canvas arrow points toward canvas-bottom; roll it to aim +z (south)
+    st.rotation.z = sx > 0 ? -Math.PI / 2 : Math.PI / 2;
+  }
 
   // ---- ceiling vent grilles: dark slatted panels between troffers ----
   for (const z of [8, 24, 44]) {
