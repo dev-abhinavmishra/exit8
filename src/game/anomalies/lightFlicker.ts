@@ -20,9 +20,11 @@ export const lightFlicker: AnomalyDef = {
     const zone = ctx.world.zones.find((z) => z.name === "gallery");
     if (!zone) return { update() {}, cleanup() {} };
     const base = zone.point.intensity;
-    // deterministic stutter pattern: alternating on/off interval lengths
+    // deterministic stutter pattern: alternating on/off interval lengths.
+    // Min 0.17s keeps a full off+on cycle ≥ 0.34s — under the WCAG
+    // ~3 flashes/s photosensitivity threshold even in the fastest burst.
     const spans: number[] = [];
-    for (let i = 0; i < 48; i++) spans.push(ctx.rng.range(0.04, 0.42));
+    for (let i = 0; i < 48; i++) spans.push(ctx.rng.range(0.17, 0.5));
     let spanIdx = 0;
     let spanT = 0;
     let lit = true;
