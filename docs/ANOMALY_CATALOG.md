@@ -140,8 +140,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     you retreat past it inside the corridor. Unmistakable. (slice)
 12. ★ `posters.mirror` — every poster on the board flips horizontally:
     same paper, same order, every word backwards. Subtle. (slice)
+13. ★ `clock.missing` — the master clock is simply gone: face, rim,
+    hands, all of it. Moderate. (slice)
 
-Slice count: **51 implemented** — past the 24 target. New hooks:
+Slice count: **52 implemented** — past the 24 target. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

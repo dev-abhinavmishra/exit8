@@ -200,6 +200,9 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - `posters.mirror` (**51**): drawPoster gained a `mirror` param
   (translate+scale(-1) inside the border) — def redraws every
   poster.N texture mirrored, restores on cleanup.
+- `clock.missing` (**52**): hides the whole `clock` root via
+  `registry.get("clock.face").parent` (root itself is unregistered —
+  face+rim+pin+hands all die together).
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 

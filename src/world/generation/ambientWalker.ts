@@ -70,6 +70,36 @@ export function buildAmbientWalker(
   stripe.position = new Vector3(0, 1.28, 0);
   stripe.parent = g;
 
+  // stepping legs + counter-swinging arms on hip/shoulder pivots —
+  // the stride reads at 40 m where a static box reads as a pillar
+  const legPivots: TransformNode[] = [];
+  for (const sx of [-1, 1]) {
+    const hip = new TransformNode(`ambient.walker.hip.${sx}`, scene);
+    hip.parent = g;
+    hip.position = new Vector3(sx * 0.12, 0.78, 0);
+    const leg = CreateBox(`ambient.walker.leg.${sx}`, { width: 0.14, height: 0.72, depth: 0.16 }, scene);
+    leg.material = coat;
+    leg.position = new Vector3(0, -0.36, 0);
+    leg.parent = hip;
+    legPivots.push(hip);
+  }
+  const armPivots: TransformNode[] = [];
+  for (const sx of [-1, 1]) {
+    const sh = new TransformNode(`ambient.walker.arm.${sx}`, scene);
+    sh.parent = g;
+    sh.position = new Vector3(sx * 0.3, 1.58, 0);
+    const arm = CreateBox(`ambient.walker.armMesh.${sx}`, { width: 0.09, height: 0.58, depth: 0.12 }, scene);
+    arm.material = coat;
+    arm.position = new Vector3(0, -0.29, 0);
+    arm.parent = sh;
+    armPivots.push(sh);
+  }
+  // the case file he carries — a pale clipboard at the end of the left arm
+  const clip = CreateBox("ambient.walker.clip", { width: 0.2, height: 0.28, depth: 0.02 }, scene);
+  clip.material = skin;
+  clip.position = new Vector3(0.02, -0.62, 0.08);
+  clip.parent = armPivots[0]!;
+
   let z = HOME_Z;
   let dir = 1; // walking south (+z) at loop start
   let pauseT = 0;
@@ -106,6 +136,7 @@ export function buildAmbientWalker(
       if (mode === "stare") {
         // dead still except the slightest drift of the head
         g.position.set(0.55, 0, z);
+        for (const p of [...legPivots, ...armPivots]) p.rotation.x = 0;
         return;
       }
       if (pauseT > 0) {
@@ -129,6 +160,13 @@ export function buildAmbientWalker(
       // stride bob — tiny, readable at distance
       const bob = Math.abs(Math.sin(bobT * 3.4)) * 0.028;
       g.position.set(0.55, bob, z);
+      // limbs swing only while he's actually in stride
+      const stepping = pauseT <= 0; // stare/absent returned above
+      const swing = stepping ? Math.sin(bobT * 3.4) : 0;
+      legPivots[0]!.rotation.x = swing * 0.5;
+      legPivots[1]!.rotation.x = -swing * 0.5;
+      armPivots[0]!.rotation.x = -swing * 0.32;
+      armPivots[1]!.rotation.x = swing * 0.32;
     },
   };
 }
