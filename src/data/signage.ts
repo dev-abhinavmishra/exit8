@@ -95,8 +95,7 @@ export const COPY = {
     secured: "ROUTE SECURED",
     lost: "ROUTE LOST",
     epilogues: {
-      standard:
-        "Shift filed clean. Upstairs, the city hums on. The loop is satisfied — for tonight.",
+      standard: "Shift filed clean. Upstairs, the city hums on. The loop is satisfied — for tonight.",
       investigative:
         "Six memos, one pattern. The Authority knew exactly what it was hiding — and now so does Inspector N-117.",
       lost: "Stability zero. The report writes itself in a handwriting that is almost yours. The route keeps your shift.",

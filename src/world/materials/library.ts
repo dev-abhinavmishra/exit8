@@ -19,6 +19,8 @@ export interface MaterialSet {
   door: PBRMaterial;
   rubber: StandardMaterial;
   grime: StandardMaterial;
+  /** black fade strip for fake ambient occlusion */
+  aoStrip: StandardMaterial;
   clockFace: StandardMaterial;
   clockHand: StandardMaterial;
   cabinetRed: StandardMaterial;
@@ -118,6 +120,14 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   grime.emissiveColor = new Color3(0.05, 0.045, 0.04);
   grime.alpha = 0.3;
 
+  const aoStrip = new StandardMaterial("mat.aoStrip", scene);
+  aoStrip.diffuseTexture = tex.fadeStrip;
+  aoStrip.useAlphaFromDiffuseTexture = true;
+  aoStrip.disableLighting = true;
+  aoStrip.diffuseColor = new Color3(0, 0, 0);
+  aoStrip.alphaMode = 2;
+  aoStrip.backFaceCulling = false;
+
   const clockFace = new StandardMaterial("mat.clockFace", scene);
   clockFace.diffuseTexture = tex.clockFace;
   clockFace.emissiveColor = new Color3(0.18, 0.18, 0.17);
@@ -180,6 +190,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     door,
     rubber,
     grime,
+    aoStrip,
     clockFace,
     clockHand,
     cabinetRed,

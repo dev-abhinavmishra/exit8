@@ -322,6 +322,17 @@ export function buildConcourse(scene: Scene, runSeed: string): ConcourseWorld {
     registry.register(`light.airlock.${side}`, p as unknown as AbstractMesh);
   }
 
+  // ─── fake baked AO: base-of-wall occlusion strips ────────────────
+  // (the terrazzo's own specular already pools under the fixtures —
+  // explicit glow decals only double it)
+  // the corridor grounds itself instead of walls meeting floor at a
+  // razor edge
+  for (const sx of [-1, 1]) {
+    const strip = kit.plane(`dress.ao.${sx}`, 55, 0.55, mats.aoStrip, scene, root);
+    strip.position = new Vector3(sx * (C.xHalf - 0.065), 0.28, 27.5);
+    strip.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
+  }
+
   // ─── zone dressing ───────────────────────────────────────────────
   // Records wall: cabinet fronts on left z 12–32
   const cab = kit.box("records.cabinets", 0.18, 2.1, 18, mats.steel, scene, root);

@@ -42,6 +42,7 @@ export interface TextureSet {
   clockFace: DynamicTexture;
   signs: Map<string, DynamicTexture>;
   terminal: DynamicTexture; // airlock terminal screen (live-updated)
+  fadeStrip: DynamicTexture; // linear fade — fake ambient occlusion
 }
 
 /** Speckled terrazzo with brass divider strips. Tiles every 1.2 m. */
@@ -408,6 +409,7 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     clockFace: makeClockFace(scene),
     signs: signMap,
     terminal: makeTerminal(scene),
+    fadeStrip: drawFadeStrip(tex("tex.fadeStrip", 256, 64, scene), "up"),
   };
 }
 
@@ -446,4 +448,17 @@ export function drawTerminal(
     c.textAlign = "left";
   });
   t.update();
+}
+
+/** Linear fade strip for fake-AO — opaque at `head`, transparent at the
+ *  tail. Direction "up" puts the solid edge at v=0 (bottom of a wall). */
+export function drawFadeStrip(t: DynamicTexture, dir: "up" | "down"): DynamicTexture {
+  const c = ctx(t);
+  c.clearRect(0, 0, 256, 64);
+  const g = c.createLinearGradient(0, dir === "up" ? 64 : 0, 0, dir === "up" ? 0 : 64);
+  g.addColorStop(0, "rgba(255,255,255,0.55)");
+  g.addColorStop(1, "rgba(255,255,255,0)");
+  c.fillStyle = g;
+  c.fillRect(0, 0, 256, 64);
+  return finish(t);
 }
