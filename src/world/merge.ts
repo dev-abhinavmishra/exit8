@@ -47,6 +47,7 @@ const STATIC_PREFIXES = [
   "dress.doorlight.",
   "dress.ceilvoid",
   "dress.stencil.",
+  "dress.cabfascia",
   "conduit.",
   "baseboard.",
   "junction.pipe.",

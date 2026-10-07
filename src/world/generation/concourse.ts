@@ -22,7 +22,7 @@ import { Color4 } from "@babylonjs/core/Maths/math.color";
 import type { Scene } from "@babylonjs/core/scene";
 import { WorldRegistry } from "../registry";
 import { buildMaterials, type MaterialSet } from "../materials/library";
-import { buildTextureSet, drawNote, makeVendingFace, type TextureSet } from "./textures";
+import { buildTextureSet, drawNote, makeFasciaBand, makeVendingFace, type TextureSet } from "./textures";
 import { RngStream } from "../../game/state/rng";
 import { SIGNS } from "../../data/signage";
 import * as kit from "./kit";
@@ -261,6 +261,11 @@ function buildAirlock(
     win.parent = leaf;
     win.position = new Vector3(0, 1.72 - leafH / 2, 0);
   }
+  // overhead guide track the leaves ride — the rail line above the
+  // doorway is what sells these as sliding doors
+  const track = kit.box(`door.${side}.track`, w, 0.06, 0.1, mats.steel, scene);
+  track.parent = doorNode;
+  track.position = new Vector3(0, leafH + 0.04, 0);
 
   const lc = kit.collider(
     `door.${side}.inner.colL`,
@@ -601,6 +606,16 @@ export function buildConcourse(
     const lbl = kit.box(`dress.cablabel.${z}`, 0.022, 0.07, 0.16, mats.rubber, scene, root);
     lbl.position = new Vector3(-C.xHalf + 0.26, 1.68, z);
   }
+  // ARCHIVES fascia — the institutional label band across the bank's
+  // upper face, like the printed stock headers on real archive walls
+  const fasciaTex = makeFasciaBand(scene);
+  const fasciaMat = new StandardMaterial("mat.fascia", scene);
+  fasciaMat.diffuseTexture = fasciaTex;
+  fasciaMat.emissiveColor = new Color3(0.12, 0.11, 0.08);
+  fasciaMat.specularColor = new Color3(0.15, 0.15, 0.15);
+  const fascia = kit.plane("dress.cabfascia", 17.6, 0.17, fasciaMat, scene, root);
+  fascia.position = new Vector3(-C.xHalf + 0.262, 2.0, 22);
+  fascia.rotation.y = -Math.PI / 2;
   colliders.push(
     kit.collider("records.col", 0.3, 2.2, 18, new Vector3(-C.xHalf + 0.18, 1.1, 22), scene, root),
   );
@@ -674,6 +689,16 @@ export function buildConcourse(
     hinge.parent = sleaf;
     hinge.position = new Vector3(-0.04, hy, -0.38);
   }
+  const svcPush = kit.box("service.door.push", 0.02, 0.3, 0.18, mats.steel, scene);
+  svcPush.parent = sleaf;
+  svcPush.position = new Vector3(-0.04, 0, 0.1);
+  const svcKick = kit.box("service.door.kick", 0.02, 0.24, 0.78, mats.steel, scene);
+  svcKick.parent = sleaf;
+  svcKick.position = new Vector3(-0.04, -0.78, 0);
+  const svcPlaque = kit.plane("service.door.plaque", 0.3, 0.1, paperMaterial(scene), scene);
+  svcPlaque.parent = sleaf;
+  svcPlaque.position = new Vector3(-0.033, 0.35, 0);
+  svcPlaque.rotation.y = Math.PI / 2;
 
   // fire cabinet RIGHT z≈18
   const cabFire = kit.fireCabinet(mats, scene, root, registry);

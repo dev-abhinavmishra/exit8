@@ -714,3 +714,34 @@ export function drawFadeStrip(t: DynamicTexture, dir: "up" | "down"): DynamicTex
   c.fillRect(0, 0, 256, 64);
   return finish(t);
 }
+
+/** ARCHIVES fascia — dark institutional band with the word repeated per
+ *  bay. Painted onto a 17.6 m strip on the records bank face. */
+export function makeFasciaBand(scene: Scene): DynamicTexture {
+  const t = tex("tex.fascia", 2048, 96, scene);
+  const c = ctx(t);
+  c.scale(2, 2); // logical 1024x48
+  c.fillStyle = "#26282b";
+  c.fillRect(0, 0, 1024, 48);
+  // top + bottom rules
+  c.fillStyle = "#3a3d42";
+  c.fillRect(0, 0, 1024, 2);
+  c.fillRect(0, 46, 1024, 2);
+  // one "ARCHIVES" per ~3 m bay: 6 labels across the strip
+  c.fillStyle = "#d8a045";
+  c.font = "bold 20px Arial, sans-serif";
+  c.textAlign = "center";
+  c.textBaseline = "middle";
+  for (let i = 0; i < 6; i++) {
+    const cx = (i + 0.5) * (1024 / 6);
+    c.fillText("A R C H I V E S", cx, 24);
+    // bay separator tick
+    if (i > 0) {
+      c.fillStyle = "#3a3d42";
+      c.fillRect(i * (1024 / 6) - 1, 8, 2, 32);
+      c.fillStyle = "#d8a045";
+    }
+  }
+  t.update();
+  return finish(t);
+}
