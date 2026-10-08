@@ -44,6 +44,7 @@ export const doorsSlam: AnomalyDef = {
             t = 0;
             done = true;
             ctx.audio.playSlam(slamAt);
+            ctx.player.jolt(0.55); // the crash lands in your chest
           }
           return;
         }
