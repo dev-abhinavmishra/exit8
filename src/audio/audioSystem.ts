@@ -533,6 +533,34 @@ export class AudioSystem {
     this.caption("PA chime", pos);
   }
 
+  /** Condensation plink — a drop off a vent grille: a high sine ping
+   *  that falls in pitch, plus one softer echo as it splashes the pan.
+   *  Scheduled rarely; the corridor sweats. */
+  playWaterPlink(pos: Vector3): void {
+    if (!this.ctx) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const drop = (at: number, f0: number, peak: number, dur: number) => {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.setValueAtTime(f0, at);
+      o.frequency.exponentialRampToValueAtTime(f0 * 0.82, at + dur * 0.9);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, at);
+      g.gain.linearRampToValueAtTime(peak * sp.gain, at + 0.006);
+      g.gain.exponentialRampToValueAtTime(0.001, at + dur);
+      const pan = ctx.createStereoPanner();
+      pan.pan.value = sp.pan;
+      o.connect(g).connect(pan).connect(this.bus("ambience"));
+      o.start(at);
+      o.stop(at + dur + 0.02);
+    };
+    drop(t0, 2350, 0.028, 0.16);
+    drop(t0 + 0.26, 1900, 0.014, 0.13);
+    this.caption("water drip", pos);
+  }
+
   /** Muffled station PA — the corridor's recurring voice. A two-tone
    *  chime, then garbled horn-speaker speech: syllable-rhythm formant
    *  clusters through a narrow band. Unintelligible by design — the

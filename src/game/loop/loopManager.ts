@@ -97,6 +97,9 @@ export class LoopManager {
    *  every ~90-150s so the loop reads as one passage in a live system */
   private trainRng: RngStream;
   private trainT = 0;
+  /** Condensation plinks off the vent grilles — rare, the corridor sweats */
+  private dripRng: RngStream;
+  private dripT = 0;
   readonly stability = new StabilityIndex();
   /** last announced door targets — fires playDoorSlide on flips */
   private prevDoorTargets = new Map<DoorRig, number>();
@@ -125,6 +128,8 @@ export class LoopManager {
     this.paT = 10 + this.paRng.range(0, 12);
     this.trainRng = new RngStream("audio.train", runSeed);
     this.trainT = 26 + this.trainRng.range(0, 30);
+    this.dripRng = new RngStream("audio.drip", runSeed);
+    this.dripT = 18 + this.dripRng.range(0, 40);
     // spawn inside the north airlock, door to corridor opens on first loop
     this.player.teleport(LAYOUT.spawn.clone(), LAYOUT.spawnYaw);
     this.world.doors.northInner.target01 = 1;
@@ -557,6 +562,12 @@ export class LoopManager {
       if (this.trainT <= 0) {
         this.trainT = 90 + this.trainRng.range(0, 60);
         this.audio.playTrainPass();
+      }
+      this.dripT -= dt;
+      if (this.dripT <= 0) {
+        this.dripT = 55 + this.dripRng.range(0, 70);
+        const vents = this.world.anchors.vents;
+        if (vents.length > 0) this.audio.playWaterPlink(this.dripRng.pick(vents));
       }
     } else if (this.phase === "commit_pending") {
       this.judgeT -= dt;
