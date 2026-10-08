@@ -124,6 +124,8 @@ import { zoneSick } from "./zoneSick";
 import { facePane } from "./facePane";
 import { walkerLook } from "./walkerLook";
 import { noticeFace } from "./noticeFace";
+import { facePaneNorth } from "./facePaneNorth";
+import { figureFountain } from "./figureFountain";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -311,6 +313,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   facePane,
   walkerLook,
   noticeFace,
+  facePaneNorth,
+  figureFountain,
   lightRed,
   benchFlipped,
   stripGrows,

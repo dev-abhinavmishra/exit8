@@ -36,7 +36,7 @@ export const figureRecords: AnomalyDef = {
     const node = fig.root;
     // records bank spans the west wall z≈12–32; stand it close, back to the corridor
     node.position.set(-1.28, 0, rng.range(16, 27));
-    node.rotation.y = Math.PI / 2; // facing the west wall, back to the route
+    node.rotation.y = -Math.PI / 2; // facing the west wall, back to the route
     fig.headPivot.rotation.x = -0.1; // head tipped up at the drawer labels
     const vanishZ = rng.range(2.2, 3.2);
     let gone = false;
