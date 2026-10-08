@@ -31,8 +31,11 @@ test("every catalog anomaly activates when forced", async ({ page }) => {
     };
     page.on("console", onConsole);
     try {
+      // about:blank tears down the previous boot's engine — ~160 navigations
+      // on one page otherwise pile up GL contexts and late boots crawl.
+      await page.goto("about:blank");
       await page.goto(`/?e2e=1&seed=sweep&anomaly=${id}`, { waitUntil: "domcontentloaded" });
-      await page.waitForFunction(`${NA} && ${NA}.ready === true`, null, { timeout: 60_000 });
+      await page.waitForFunction(`${NA} && ${NA}.ready === true`, null, { timeout: 120_000 });
       await page.getByRole("button", { name: /BEGIN SHIFT/ }).click();
       await page.waitForFunction(`${NA}.loop() === 1`, null, { timeout: 30_000 });
       const active = await page.evaluate(`${NA}.anomaly()`);
