@@ -332,6 +332,12 @@ export class App {
   private pause(): void {
     this.state = "paused";
     this.audio.suspend();
+    const s = this.loop?.state;
+    this.ui.setPauseContext(
+      s
+        ? `LOOP ${String(s.loopIndex + 1).padStart(2, "0")} · CH ${["I", "II", "III"][s.chapter - 1] ?? "I"} · STABILITY ${s.stability}`
+        : "",
+    );
     this.ui.show("pause");
     document.exitPointerLock?.();
   }

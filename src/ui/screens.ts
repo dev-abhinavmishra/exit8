@@ -308,14 +308,23 @@ export class GameUi {
     }
   }
 
+  private pauseKicker?: HTMLElement;
+
   private buildPause(): HTMLDivElement {
     const { panel, body } = this.panel("INSPECTION PAUSED", "HOLD ON LOOP 7");
+    this.pauseKicker = panel.querySelector(".kicker") as HTMLElement;
     body.appendChild(this.btn("RESUME", "back to the concourse", () => this.cb.onResume(), "primary"));
     body.appendChild(this.btn("SETTINGS", null, () => this.openSettingsFrom("pause")));
     body.appendChild(
       this.btn("ABANDON SHIFT", "end this run — progress is kept", () => this.cb.onRestart(), "danger"),
     );
     return this.screen("pause", panel);
+  }
+
+  /** live run context on the pause kicker — set each time pause opens */
+  setPauseContext(text: string): void {
+    if (this.pauseKicker)
+      this.pauseKicker.textContent = text ? `INSPECTION PAUSED · ${text}` : "INSPECTION PAUSED";
   }
 
   private settingsBack: () => void = () => this.show("start");
