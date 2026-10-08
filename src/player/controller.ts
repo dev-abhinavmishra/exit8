@@ -35,6 +35,8 @@ export class PlayerController {
   private pitch = 0;
   private bobPhase = 0;
   private bobAmplitude = 0;
+  private leanRoll = 0;
+  private prevYaw = 0;
   private keys = new Set<string>();
   private footListeners: FootstepListener[] = [];
   private stepSide = 1;
@@ -69,6 +71,7 @@ export class PlayerController {
     this.camera.ellipsoidOffset = new Vector3(0, 0.8, 0);
     this.camera.inputs.clear(); // we own input
     this.yaw = LAYOUT.spawnYaw;
+    this.prevYaw = this.yaw;
     this.attach();
   }
 
@@ -275,7 +278,7 @@ export class PlayerController {
     this.glanceYaw += (glanceTarget - this.glanceYaw) * Math.min(1, dt * 14);
     this.camera.rotation.y = this.yaw + this.glanceYaw;
     this.camera.rotation.x = this.pitch + bob.pitch;
-    this.camera.rotation.z = bob.roll;
+    this.camera.rotation.z = bob.roll + this.motionLean(dt);
   }
 
   /** Procedural head motion; returns offsets. Honors reducedMotion+bobAmount. */
@@ -301,6 +304,20 @@ export class PlayerController {
       pitch: Math.sin(this.bobPhase * 0.5) * a * 0.12,
       roll: Math.sin(this.bobPhase) * a * 0.2 * this.stepSide * -1,
     };
+  }
+
+  /** Strafe/turn lean — the head banks a degree into lateral motion and
+   *  lags a yaw swing. Same motion-gate as the bob so reduced-motion
+   *  and a zeroed bob slider kill it flat. */
+  private motionLean(dt: number): number {
+    const amount = this.settings.accessibility.reducedMotion ? 0 : this.settings.controls.bobAmount;
+    // right vector on the ground plane for this yaw convention
+    const latVel = -this.velocity.x * Math.cos(this.yaw) + this.velocity.z * Math.sin(this.yaw);
+    const yawRate = (this.yaw - this.prevYaw) / Math.max(dt, 1e-4);
+    this.prevYaw = this.yaw;
+    const target = Math.max(-0.024, Math.min(0.024, latVel * 0.0045 + yawRate * 0.0022));
+    this.leanRoll += (target * amount - this.leanRoll) * Math.min(1, 9 * dt);
+    return this.leanRoll;
   }
 
   speed(): number {
