@@ -523,8 +523,8 @@ export class AudioSystem {
     this.caption("distant train", null);
   }
 
-  /** Low vent groan — a slow pressure swell, used by vent anomalies. */
-  playGroan(pos: Vector3): void {
+  /** Low groan — a slow pressure swell, used by vent anomalies and worse. */
+  playGroan(pos: Vector3, caption = "vent groan"): void {
     this.duckAmbience(1.2);
     if (!this.ctx || !this.noiseBuffer) return;
     const ctx = this.ctx;
@@ -546,7 +546,7 @@ export class AudioSystem {
     pan.pan.value = sp.pan;
     src.connect(lp).connect(g).connect(pan).connect(this.bus("ambience"));
     src.start(t0, 0.4, 1.6);
-    this.caption("vent groan", pos);
+    this.caption(caption, pos);
   }
 
   /** Two-tone PA chime — ding-dong, used by announce anomalies. */

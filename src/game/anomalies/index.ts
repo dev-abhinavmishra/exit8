@@ -98,6 +98,7 @@ import { phoneGone } from "./phoneGone";
 import { hatchScratched } from "./hatchScratched";
 import { shadowFigure } from "./shadowFigure";
 import { figureCorridor } from "./figureCorridor";
+import { figureRush } from "./figureRush";
 import { figureWall } from "./figureWall";
 import { ratsScurry } from "./ratsScurry";
 import { draftSheet } from "./draftSheet";
@@ -303,6 +304,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   hatchScratched,
   shadowFigure,
   figureCorridor,
+  figureRush,
   figureWall,
   ratsScurry,
   draftSheet,

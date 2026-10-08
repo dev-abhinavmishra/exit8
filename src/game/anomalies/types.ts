@@ -23,6 +23,8 @@ export interface AnomalyContext {
   reducedEffects: boolean;
   /** visual accessibility cues allowed (footsteps.extra condensation etc.) */
   visualCues: boolean;
+  /** dock the run's stability — floored so a scare can't silently end it */
+  penalize?(amount: number): void;
 }
 
 export interface AnomalyInstance {

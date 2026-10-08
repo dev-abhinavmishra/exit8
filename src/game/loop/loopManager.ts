@@ -257,6 +257,11 @@ export class LoopManager {
         audio: this.audio,
         reducedEffects: this.anomalyCtx.reducedEffects,
         visualCues: this.anomalyCtx.visualCues,
+        penalize: (amount) => {
+          // a contact scare costs real judgment room but never ends the
+          // run on its own — endings stay verdicts of the commit planes
+          this.stability.set(Math.max(1, this.stability.current - amount));
+        },
       });
     }
   }
