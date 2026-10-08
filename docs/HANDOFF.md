@@ -5,7 +5,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 ## Where we are
 
 - PR #1 (`devin/night-audit-vertical-slice`) carries M0–M4 + most of M5:
-  **133 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+  **149 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
   daily/custom routes, practice mode, route archive, field notes +
   dossier ending, gamepad, ambient walker + watcher, missed-divergence
   report. NOT yet merged.
@@ -34,6 +34,24 @@ npm run build` — currently 117 unit + 24/24 e2e green.
   counter.worker, cctv.gaze), ch3 = building-lying (light.out,
   machine.silence, temp.drift, air.haze, announce.spatial). Rates
   0.5/0.55/0.6, stability gain 12/10/9 → a clean win is 6 loops.
+- 2026-10-07 quality batch (per "quality over quantity" directive):
+  **loop 1 is now always clean** (`loopManager` rate forced to 0 on
+  loopIndex 1 — Exit 8's clean-baseline contract); chapter advance is
+  announced (`audio.playAdvance` + "clearance raised" caption — was a
+  silent HUD tick). Figure close-ups fixed: face plate uses oval-alpha
+  (`t.hasAlpha` + `clearRect` + `ctx.clip()` before painting — the
+  plate edges are transparent so the face reads painted ON the skull),
+  lapels angled into a V meeting at the sternum, walker clipboard is a
+  drawn audit sheet. New anomalies: vend.empty, pitch.sags
+  (`audio.setMachinePitch(fn)` — multiplies the machine thrum's 55 Hz),
+  ceiling.weeps (`audio.playDrip`), poster.watches (`drawPoster` 5th
+  `gaze` arg — bright `#efe9d8` whites or they're invisible vs the
+  pale face), sign.mirror (`drawSign` 2nd `mirror` arg), doors.slam
+  (`audio.playSlam` — triggers on `rig.open01` so the leaves part then
+  crash, `done` flag or it retriggers every update), gallery.occupied
+  (seated body copied from benchSit, mirrored toward −x), walker.midstep
+  (new WalkerMode — limbs held mid-stride), hatch.knocks
+  (`audio.playKnock` + plate.position.x shudder).
 - Baseline props anomalies hang on: `light.zone.<name>` point lights,
   service door recess (right z≈15.5), vent grilles, CCTV `cctv.N.lens`,
   baseboards, `floor`, posters `poster.0-2`. See ANOMALY_CATALOG.md.
@@ -399,6 +417,15 @@ npm run build` — currently 117 unit + 24/24 e2e green.
 - Fastest probe recipe: `?e2e=1&seed=<s>&anomaly=<id>` arms that
   anomaly for loop 1 — no forceAnomaly call needed; then teleport +
   look + 600 ms + screenshot.
+- 2026-10-07 additions: `AnomalyDef` requires ALL of `progressionRange`,
+  `testSeed`, `dangerous` (TS2739 missing them). `update(dt)` gets
+  `ctx` closure — `ctx.player.position`, `ctx.audio.play*`,
+  `world.registry.mesh(id)` are all reachable. LAYOUT.corridor.xHalf =
+  1.8 (gallery chair x = xHalf+1.12 = 2.92, desks x+0.72, monitor desk
+  z=26.5). `meshInfo(name)` pos floats work for audio-adjacent probes
+  (knock = plate.position.x deviating). **yaw convention**: `look(yaw)`
+  — yaw 0 = +z SOUTH (commit doors), π = −z north (spawn), −1.57 west
+  wall, +1.57 east; aim at target = atan2(dx, dz); +pitch looks DOWN.
 
 ## User-context notes (from prior sessions)
 
