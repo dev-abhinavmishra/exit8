@@ -544,7 +544,12 @@ export function drawSign(t: DynamicTexture, spec: SignSpec, mirror = false): voi
   c.textAlign = "center";
   c.font = "bold 44px Arial, sans-serif";
   const arrow = spec.arrow === "right" ? "  →" : spec.arrow === "left" ? "←  " : "";
-  c.fillText(spec.title + arrow, spec.figure ? w / 2 + 18 : w / 2, spec.sub ? 78 : 92);
+  // fit-to-width: long titles shrink before they can reach the pictogram
+  const title = spec.title + arrow;
+  const maxW = spec.figure ? w - 150 : w - 70;
+  const tw = c.measureText(title).width;
+  if (tw > maxW) c.font = `bold ${Math.floor((44 * maxW) / tw)}px Arial, sans-serif`;
+  c.fillText(title, spec.figure ? w / 2 + 26 : w / 2, spec.sub ? 78 : 92);
   if (spec.figure) drawFigure(c, 32, 74, spec.figure === "right" ? 1 : -1, tones.fg);
   if (spec.sub) {
     c.font = "24px Arial, sans-serif";
