@@ -107,6 +107,7 @@ import { cabGone } from "./cabGone";
 import { radLeaks } from "./radLeaks";
 import { lockerAjar } from "./lockerAjar";
 import { exitWrongway } from "./exitWrongway";
+import { walkerFaceless } from "./walkerFaceless";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -210,6 +211,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   radLeaks,
   lockerAjar,
   exitWrongway,
+  walkerFaceless,
   vendDead,
   sheetsCleared,
 ];

@@ -268,8 +268,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 62. ★ `exit.wrongway` — the green EXIT ROUTE sign's running figure and
     arrow now point back up the corridor, away from the inspection
     point. Subtle. (slice)
+63. ★ `walker.faceless` — the other inspector walks his usual route,
+    but his face is smooth skin. No eyes, no mouth — only the cap's
+    shadow where a face should be. Moderate. (slice)
 
-Slice count: **103 implemented — the full catalog**. New hooks:
+Slice count: **104 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

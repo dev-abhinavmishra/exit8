@@ -46,11 +46,12 @@ export interface FigureOpts {
   heightScale?: number;
 }
 
-// The face: drawn once per figure as a DynamicTexture on a thin plate
-// against the front of the skull. Kept low-contrast — institutional
-// neutral, unsettling by restraint rather than by expression.
-function faceTexture(name: string, scene: Scene): DynamicTexture {
-  const t = new DynamicTexture(name, { width: 256, height: 320 }, scene, true);
+/**
+ * Paint the inspector face onto a DynamicTexture. `blank` draws only
+ * the skin gradient and cap-shadow band — the faceless-erasure anomaly
+ * needs exactly the smooth leftover.
+ */
+export function drawFace(t: DynamicTexture, blank = false): void {
   const c = t.getContext();
   (c as unknown as CanvasRenderingContext2D).scale(2, 2);
   // skin base — matches the head material, shading toward jaw
@@ -60,42 +61,44 @@ function faceTexture(name: string, scene: Scene): DynamicTexture {
   skin.addColorStop(1, "#6f564b");
   c.fillStyle = skin;
   c.fillRect(0, 0, 128, 160);
-  const stroke = "#2c211d";
-  c.strokeStyle = stroke;
-  c.fillStyle = stroke;
-  c.lineWidth = 3;
-  // hairline
-  c.fillStyle = "#221a17";
-  c.beginPath();
-  c.moveTo(0, 30);
-  c.quadraticCurveTo(64, 12, 128, 30);
-  c.lineTo(128, 0);
-  c.lineTo(0, 0);
-  c.closePath();
-  c.fill();
-  // brows — level, close to the eyes: a neutral watcher's expression
-  c.fillStyle = "#241b18";
-  c.fillRect(26, 56, 30, 4);
-  c.fillRect(72, 56, 30, 4);
-  // eyes — dark almond lids, deeper pupil, the faintest lid line above
-  const c2d = c as unknown as CanvasRenderingContext2D;
-  c.fillStyle = "#171110";
-  for (const cx of [41, 87]) {
-    c2d.beginPath();
-    c2d.ellipse(cx, 66, 12, 6, 0, 0, Math.PI * 2);
-    c2d.fill();
-    c.fillStyle = "#050404";
+  if (!blank) {
+    const stroke = "#2c211d";
+    c.strokeStyle = stroke;
+    c.fillStyle = stroke;
+    c.lineWidth = 3;
+    // hairline
+    c.fillStyle = "#221a17";
     c.beginPath();
-    c.arc(cx, 66, 4, 0, Math.PI * 2);
+    c.moveTo(0, 30);
+    c.quadraticCurveTo(64, 12, 128, 30);
+    c.lineTo(128, 0);
+    c.lineTo(0, 0);
+    c.closePath();
     c.fill();
+    // brows — level, close to the eyes: a neutral watcher's expression
+    c.fillStyle = "#241b18";
+    c.fillRect(26, 56, 30, 4);
+    c.fillRect(72, 56, 30, 4);
+    // eyes — dark almond lids, deeper pupil, the faintest lid line above
+    const c2d = c as unknown as CanvasRenderingContext2D;
     c.fillStyle = "#171110";
-    // upper lid crease
-    c.strokeStyle = "#3d2e28";
-    c.lineWidth = 2;
-    c.beginPath();
-    c.moveTo(cx - 12, 61);
-    c.quadraticCurveTo(cx, 57, cx + 12, 61);
-    c.stroke();
+    for (const cx of [41, 87]) {
+      c2d.beginPath();
+      c2d.ellipse(cx, 66, 12, 6, 0, 0, Math.PI * 2);
+      c2d.fill();
+      c.fillStyle = "#050404";
+      c.beginPath();
+      c.arc(cx, 66, 4, 0, Math.PI * 2);
+      c.fill();
+      c.fillStyle = "#171110";
+      // upper lid crease
+      c.strokeStyle = "#3d2e28";
+      c.lineWidth = 2;
+      c.beginPath();
+      c.moveTo(cx - 12, 61);
+      c.quadraticCurveTo(cx, 57, cx + 12, 61);
+      c.stroke();
+    }
   }
   // brim shadow — the service cap throws a soft band over the brow
   const shade = c.createLinearGradient(0, 26, 0, 66);
@@ -103,34 +106,44 @@ function faceTexture(name: string, scene: Scene): DynamicTexture {
   shade.addColorStop(1, "rgba(20,14,12,0)");
   c.fillStyle = shade;
   c.fillRect(0, 26, 128, 40);
-  // nose — ridge shadow + nostril hint
-  c.strokeStyle = "#4d3a32";
-  c.lineWidth = 3;
-  c.beginPath();
-  c.moveTo(64, 70);
-  c.lineTo(62, 96);
-  c.stroke();
-  c.beginPath();
-  c.moveTo(56, 98);
-  c.quadraticCurveTo(64, 103, 72, 98);
-  c.stroke();
-  // mouth — a thin closed line, no expression
-  c.strokeStyle = "#38291f";
-  c.lineWidth = 3;
-  c.beginPath();
-  c.moveTo(44, 118);
-  c.quadraticCurveTo(64, 121, 84, 118);
-  c.stroke();
-  // faint nasolabial + jaw shading
-  c.strokeStyle = "#544139";
-  c.lineWidth = 2;
-  c.beginPath();
-  c.moveTo(40, 100);
-  c.quadraticCurveTo(42, 114, 46, 122);
-  c.moveTo(88, 100);
-  c.quadraticCurveTo(86, 114, 82, 122);
-  c.stroke();
+  if (!blank) {
+    // nose — ridge shadow + nostril hint
+    c.strokeStyle = "#4d3a32";
+    c.lineWidth = 3;
+    c.beginPath();
+    c.moveTo(64, 70);
+    c.lineTo(62, 96);
+    c.stroke();
+    c.beginPath();
+    c.moveTo(56, 98);
+    c.quadraticCurveTo(64, 103, 72, 98);
+    c.stroke();
+    // mouth — a thin closed line, no expression
+    c.strokeStyle = "#38291f";
+    c.lineWidth = 3;
+    c.beginPath();
+    c.moveTo(44, 118);
+    c.quadraticCurveTo(64, 121, 84, 118);
+    c.stroke();
+    // faint nasolabial + jaw shading
+    c.strokeStyle = "#544139";
+    c.lineWidth = 2;
+    c.beginPath();
+    c.moveTo(40, 100);
+    c.quadraticCurveTo(42, 114, 46, 122);
+    c.moveTo(88, 100);
+    c.quadraticCurveTo(86, 114, 82, 122);
+    c.stroke();
+  }
   t.update();
+}
+
+// The face: drawn once per figure as a DynamicTexture on a thin plate
+// against the front of the skull. Kept low-contrast — institutional
+// neutral, unsettling by restraint rather than by expression.
+function faceTexture(name: string, scene: Scene): DynamicTexture {
+  const t = new DynamicTexture(name, { width: 256, height: 320 }, scene, true);
+  drawFace(t);
   return t;
 }
 
