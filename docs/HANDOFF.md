@@ -729,3 +729,15 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
   dumped `cat -n` span from the overflow dir
   (`~/.devin-files/devin-remote-overflows-*`). When a file dies
   uncommitted, grep those dumps before retyping.
+
+### follow-on dressing (same PR)
+
+- Soffit beam bands `dress.soffit.{clinic,gallery}` at z32/z14 —
+  `C.xHalf*2 × 0.3 × 0.6` wallPanel + rubber lip; marks zone thresholds.
+- Vestibule staff doors `dress.sdoor.{north|south}.*` — frame/panel/
+  handle/plaque on alternating side walls (north = west, south = east).
+- Conduit branch `junction.bay.cond.{drop,jbox,run}` — feeds the bay so
+  the gapped tray reads plumbed-in.
+- `mat.baylamp` — dimmer dedicated emissive for `junction.baylamp`
+  (trofferLit blows white at arm's length).
+- Pause kicker shows live context: `ui.setPauseContext()` in app.pause().
