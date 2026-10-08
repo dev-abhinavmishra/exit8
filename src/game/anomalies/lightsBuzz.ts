@@ -15,12 +15,12 @@ export const lightsBuzz: AnomalyDef = {
   detectability: "moderate",
   weight: 0.75,
   progressionRange: [0, 100],
-  requires: ["light.zone.records", "light.zone.gallery"],
+  requires: ["light.zone.entry", "light.zone.gallery"],
   excludes: ["light.out", "light.flicker", "pitch.sags", "machine.silence"],
   testSeed: "test.lights.buzz",
   dangerous: false,
   activate(ctx) {
-    const zones = ctx.world.zones.filter((z) => z.name === "records" || z.name === "gallery");
+    const zones = ctx.world.zones.filter((z) => z.name === "entry" || z.name === "gallery");
     const zone = ctx.rng.pick(zones);
     const mesh = zone && ctx.rng.pick(zone.troffers);
     if (!mesh) return { update() {}, cleanup() {} };

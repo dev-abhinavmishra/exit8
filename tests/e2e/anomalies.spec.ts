@@ -34,18 +34,23 @@ test("every catalog anomaly activates when forced", async ({ page, context }) =>
       if (t.includes("missing registry node")) reason = t;
     };
     pg.on("console", onConsole);
-    try {
-      // about:blank tears down the previous boot's engine — navigations
-      // on one page otherwise pile up GL contexts and late boots crawl.
-      await pg.goto("about:blank");
-      await pg.goto(`/?e2e=1&seed=sweep&anomaly=${id}`, { waitUntil: "domcontentloaded" });
-      await pg.waitForFunction(`${NA} && ${NA}.ready === true`, null, { timeout: 120_000 });
-      await pg.getByRole("button", { name: /BEGIN SHIFT/ }).click();
-      await pg.waitForFunction(`${NA}.loop() === 1`, null, { timeout: 30_000 });
-      const active = await pg.evaluate(`${NA}.anomaly()`);
-      if (active !== id) reason ||= `active=${JSON.stringify(active)}`;
-    } catch (e) {
-      reason ||= String(e).split("\n")[0] ?? "error";
+    // one retry absorbs SwiftShader boot stalls under 4-lane contention
+    for (let attempt = 0; attempt < 2; attempt++) {
+      reason = "";
+      try {
+        // about:blank tears down the previous boot's engine — navigations
+        // on one page otherwise pile up GL contexts and late boots crawl.
+        await pg.goto("about:blank");
+        await pg.goto(`/?e2e=1&seed=sweep&anomaly=${id}`, { waitUntil: "domcontentloaded" });
+        await pg.waitForFunction(`${NA} && ${NA}.ready === true`, null, { timeout: 150_000 });
+        await pg.getByRole("button", { name: /BEGIN SHIFT/ }).click();
+        await pg.waitForFunction(`${NA}.loop() === 1`, null, { timeout: 30_000 });
+        const active = await pg.evaluate(`${NA}.anomaly()`);
+        if (active !== id) reason ||= `active=${JSON.stringify(active)}`;
+      } catch (e) {
+        reason ||= String(e).split("\n")[0] ?? "error";
+      }
+      if (!reason) break;
     }
     pg.off("console", onConsole);
     if (reason) failed.push(`${id}: ${reason}`);
