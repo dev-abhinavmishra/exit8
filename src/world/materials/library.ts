@@ -58,9 +58,11 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   // a bay rhythm that keeps the 55m floor from reading as one slab
   tex.terrazzo.uScale = 4;
   tex.terrazzo.vScale = 20;
-  terrazzo.roughness = 0.38;
+  // polished-wax sheen: roughness just low enough for point lights to smear
+  // into visible streaks down the corridor (the genre's wet-tile read)
+  terrazzo.roughness = 0.27;
   terrazzo.metallic = 0.05;
-  terrazzo.environmentIntensity = 0.7;
+  terrazzo.environmentIntensity = 0.85;
 
   const ceiling = new PBRMaterial("mat.ceiling", scene);
   ceiling.albedoTexture = tex.ceilingTile;
