@@ -68,6 +68,7 @@ export const floorFlood: AnomalyDef = {
           waded = true;
           ctx.penalize?.(4);
           ctx.player.jolt(0.35);
+          ctx.audio.playGroan(p.clone(), "a groan rolls under the water");
           ctx.audio.caption("the water is freezing — the route felt it", p.clone());
         }
         plinkT -= dt;
