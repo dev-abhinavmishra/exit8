@@ -373,6 +373,7 @@ export class App {
         falseClears: p.falseClears,
         falseAlarms: p.falseAlarms,
         dailies: p.dailies.length,
+        bestPass: p.bestPass,
       },
       p.discovered,
       EVIDENCE_NOTES.map((n) => ({

@@ -349,6 +349,7 @@ export class LoopManager {
       this.phase = "ended";
       this.save.update((d) => {
         d.progression.runsCompleted += 1;
+        d.progression.bestPass = Math.max(d.progression.bestPass, this.bestPass);
         if (result.outcome === "secure") {
           d.progression.routesSecured += 1;
           d.flags.completedOnce = true;

@@ -202,6 +202,7 @@ export class GameUi {
       falseClears: number;
       falseAlarms: number;
       dailies: number;
+      bestPass: number;
     },
     discoveredIds: string[],
     notes: { title: string; lines: string[]; found: boolean }[] = [],
@@ -221,6 +222,7 @@ export class GameUi {
       ["DIVERGENCES LOGGED", String(stats.logged)],
       ["FALSE CLEARS", String(stats.falseClears)],
       ["FALSE ALARMS", String(stats.falseAlarms)],
+      ["BEST PASS", String(stats.bestPass).padStart(2, "0")],
       ["DAILY ROUTES", String(stats.dailies)],
     ] as [string, string][]) {
       const tr = document.createElement("tr");

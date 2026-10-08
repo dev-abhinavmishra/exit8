@@ -19,6 +19,8 @@ export interface Progression {
   discoveries: string[]; // evidence ids found
   endings: string[]; // "standard" | "investigative"
   dailies: string[]; // ISO dates of completed daily routes
+  /** deepest consecutive-filings streak ever reached (the cap plate's peak) */
+  bestPass: number;
 }
 
 export interface SaveData {
@@ -43,6 +45,7 @@ export function defaultProgression(): Progression {
     discoveries: [],
     endings: [],
     dailies: [],
+    bestPass: 0,
   };
 }
 
