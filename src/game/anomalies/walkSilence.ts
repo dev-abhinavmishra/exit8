@@ -15,7 +15,7 @@ export const walkSilence: AnomalyDef = {
   detectability: "subtle",
   weight: 0.7,
   progressionRange: [20, 100],
-  requires: [],
+  requires: ["light.zone.gallery"],
   excludes: ["echo.steps", "footsteps.extra", "machine.silence", "voice.near"],
   testSeed: "test.walk.silence",
   dangerous: false,

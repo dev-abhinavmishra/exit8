@@ -15,7 +15,7 @@ export const voiceNear: AnomalyDef = {
   detectability: "moderate",
   weight: 0.7,
   progressionRange: [15, 100],
-  requires: [],
+  requires: ["light.zone.gallery"],
   excludes: ["echo.steps", "horn.crackle", "announce.spatial"],
   testSeed: "test.voice.near",
   dangerous: false,

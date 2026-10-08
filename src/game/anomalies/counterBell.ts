@@ -13,7 +13,7 @@ export const counterBell: AnomalyDef = {
   detectability: "moderate",
   weight: 0.75,
   progressionRange: [8, 100],
-  requires: [],
+  requires: ["clinic.counter"],
   excludes: ["bell.gone", "phone.rings", "pa.deadair"],
   testSeed: "test.counter.bell",
   dangerous: false,

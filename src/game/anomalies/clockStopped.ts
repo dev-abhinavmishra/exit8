@@ -14,7 +14,7 @@ export const clockStopped: AnomalyDef = {
   detectability: "subtle",
   weight: 0.75,
   progressionRange: [0, 100],
-  requires: [],
+  requires: ["clock.face", "clock.hour.pivot", "clock.minute.pivot"],
   excludes: ["clock.reverse", "clock.spins", "clock.missing"],
   testSeed: "test.clock.stopped",
   dangerous: false,

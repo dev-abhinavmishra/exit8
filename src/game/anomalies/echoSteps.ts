@@ -16,7 +16,7 @@ export const echoSteps: AnomalyDef = {
   detectability: "moderate",
   weight: 0.65,
   progressionRange: [35, 100],
-  requires: [],
+  requires: ["light.zone.gallery"],
   excludes: ["footsteps.extra", "machine.silence"],
   testSeed: "test.echo.steps",
   dangerous: false,

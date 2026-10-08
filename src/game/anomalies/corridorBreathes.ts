@@ -5,7 +5,7 @@
  * is measurably narrower while it's breathing — you can walk inside
  * the inhale. Unmistakable systemic anomaly.
  */
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import type { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { AnomalyDef, AnomalyInstance } from "./types";
 
 // breathing applies to the plain wall runs; the records facade and the

@@ -14,7 +14,7 @@ export const hornCrackle: AnomalyDef = {
   detectability: "subtle",
   weight: 0.65,
   progressionRange: [20, 100],
-  requires: [],
+  requires: ["light.zone.entry"],
   excludes: ["announce.spatial", "machine.silence"],
   testSeed: "test.horn.crackle",
   dangerous: false,

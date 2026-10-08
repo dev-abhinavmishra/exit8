@@ -26,7 +26,7 @@ export const drainGurgles: AnomalyDef = {
   detectability: "subtle",
   weight: 0.7,
   progressionRange: [15, 100],
-  requires: [],
+  requires: ["light.zone.junction"],
   excludes: ["floor.flood", "ceiling.weeps", "machine.silence", "horn.crackle"],
   testSeed: "test.drain.gurgles",
   dangerous: false,
