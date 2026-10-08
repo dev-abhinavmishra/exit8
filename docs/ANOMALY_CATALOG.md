@@ -449,8 +449,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 127. `jacket.drapes` — a work jacket lies folded over the mid-corridor
      bench, collar roll up, one sleeve hanging off the edge. Nobody
      sits here on this route. Moderate. (slice)
+128. `shaft.gone` — one troffer keeps burning but its light shaft
+     never falls; the air under it is empty. The inverse of
+     shaft.glow. Subtle. (slice)
 
-Slice count: **168 implemented — the full catalog**. New hooks:
+Slice count: **169 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`, `audio.playScrape(pos)`,
