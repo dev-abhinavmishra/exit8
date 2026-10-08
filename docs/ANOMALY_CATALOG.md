@@ -282,8 +282,17 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 67. ★ `rad.gone` — the panel radiator on the east wall, the one you
     pass in the first quarter of the route, is simply not there.
     Subtle. (slice)
+68. ★ `lockers.all` — not one locker but all four stand open on their
+    hinges, dark interiors showing down the whole run. Moderate.
+    (slice)
+69. ★ `phone.gone` — the corridor phone on the east wall, handset and
+    all, is simply not there. Subtle. (slice)
+70. ★ `mop.gone` — the mop bucket that always leans by the west wall
+    in the last stretch is simply not there. Subtle. (slice)
+71. ★ `poster.dup` — two spots on the notice row carry the same
+    poster. Not swapped, not missing — duplicated. Subtle. (slice)
 
-Slice count: **108 implemented — the full catalog**. New hooks:
+Slice count: **112 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

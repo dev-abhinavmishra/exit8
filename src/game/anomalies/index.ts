@@ -112,6 +112,10 @@ import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
 import { guideShort } from "./guideShort";
 import { radGone } from "./radGone";
+import { lockersAll } from "./lockersAll";
+import { phoneGone } from "./phoneGone";
+import { mopGone } from "./mopGone";
+import { posterDup } from "./posterDup";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -220,6 +224,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   signLoop8,
   guideShort,
   radGone,
+  lockersAll,
+  phoneGone,
+  mopGone,
+  posterDup,
   vendDead,
   sheetsCleared,
 ];
