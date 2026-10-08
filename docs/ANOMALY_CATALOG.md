@@ -479,6 +479,216 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      juddering. Something pushed from the other side. Moderate.
      (slice)
 
+### Generated index (all 207)
+
+1. `clock.reverse` — Counterclockwise Clock · CH I · moderate
+2. `doorway.extra` — Unmapped Doorway · CH I · unmistakable
+3. `footsteps.extra` — Trailing Footsteps · CH I · moderate
+4. `light.out` — Dead Fixture Run · CH III · unmistakable
+5. `light.flicker` — Stuttering Troffers · CH I · moderate
+6. `sign.flip` — Mispointed Junction Sign · CH I · subtle
+7. `poster.missing` — Missing Poster · CH I · subtle
+8. `slat.missing` — Missing Bench Slat · CH I · subtle
+9. `door.ajar` — Service Door Ajar · CH I · moderate
+10. `watcher.far` — Figure at the Junction · CH II · unmistakable
+11. `cctv.gaze` — Attentive Camera · CH II · subtle
+12. `air.haze` — Pressure Front · CH III · moderate
+13. `terminal.notice` — Misfiled Notice · CH I · subtle
+14. `machine.rattle` — Over-revved Junction Machine · CH I · moderate
+15. `clock.wrong-face` — Reordered Dial · CH I · subtle
+16. `material.swap` — Black Mirror Poster · CH I · subtle
+17. `prop.displaced` — Displaced Fire Cabinet · CH I · moderate
+18. `temp.drift` — Cooling Light · CH III · subtle
+19. `machine.silence` — Shy Machinery · CH III · moderate
+20. `announce.spatial` — Phantom PA · CH III · subtle
+21. `shadow.sourceless` — Caster-less Shadow · CH II · moderate
+22. `light.avoids` — One Dead Troffer · CH I · subtle
+23. `clock.spins` — Runaway Clock · CH II · unmistakable
+24. `footsteps.ahead` — Corridor Answers · CH II · moderate
+25. `door.breathes` — Breathing Service Door · CH II · subtle
+26. `totem.sways` — Swinging Junction Totem · CH II · subtle
+27. `stripe.wrong` — Wrong-Color Stripe · CH I · subtle
+28. `cctv.sleeps` — Sleeping Camera · CH I · subtle
+29. `vent.groan` — Groaning Vent · CH II · moderate
+30. `poster.changed` — Rewritten Poster · CH I · subtle
+31. `counter.worker` — Hand Under the Shutter · CH II · moderate
+32. `walker.backwards` — He Walks Backward · CH II · moderate
+33. `walker.stare` — He Is Waiting · CH II · moderate
+34. `walker.midstep` — Paused Mid-Step · CH III · subtle
+35. `walker.offlane` — The Wrong Lane · CH II · subtle
+36. `walker.hum` — He's Whistling · CH II · unmistakable
+37. `walker.absent` — No One Else On Shift · CH I · subtle
+38. `fire.open` — Fire Point Open · CH I · subtle
+39. `poster.swapped` — Posters Out Of Order · CH I · subtle
+40. `poster.hollow` — Portrait's Eyes Hollow · CH II · subtle
+41. `poster.grin` — Portrait's Smile Widened · CH II · subtle
+42. `poster.watches` — Portrait's Eyes Follow · CH III · moderate
+43. `troffer.falls` — Ceiling Panel Hanging Loose · CH II · subtle
+44. `sign.drift` — Sign Has Slipped · CH I · subtle
+45. `terminal.glitch` — Terminal Disagrees · CH II · subtle
+46. `memory.persist` — Detail That Stayed · CH II · subtle
+47. `light.delay` — Lights A Step Behind · CH II · moderate
+48. `route.reacts` — The Route Repeats You · CH II · moderate
+49. `sightline.impossible` — The Corridor Ends Early · CH III · unmistakable
+50. `depth.mismatch` — The Wall Is Too Deep · CH III · unmistakable
+51. `lift.arrives` — The Lift Answered · CH II · moderate
+52. `gaze.shift` — The Figure Walks Away · CH II · subtle
+53. `pace.dissolves` — The Walk Takes Longer · CH II · moderate
+54. `guide.missing` — The Line Breaks · CH I · moderate
+55. `guide.misaligned` — The Line Bends · CH II · unmistakable
+56. `shaft.glow` — Light Without A Source · CH II · subtle
+57. `watcher.follows` — It Gains When You Look Away · CH III · unmistakable
+58. `posters.mirror` — The Print Reads Backwards · CH II · subtle
+59. `clock.missing` — No Clock At All · CH I · moderate
+60. `bin.wanders` — Bin Out of Place · CH I · moderate
+61. `notice.amends` — Amended Bulletin · CH II · subtle
+62. `bench.moved` — Dragged Bench · CH I · moderate
+63. `airlock.breach` — Open Bulkhead · CH III · unmistakable
+64. `tracks.wet` — Wet Footprints · CH II · unmistakable
+65. `chalk.marks` — Tally Marks · CH I · subtle
+66. `figure.south` — Figure Past the Doors · CH III · unmistakable
+67. `cctv.all` — All Eyes · CH II · unmistakable
+68. `guide.cross` — Crossed Guide · CH II · moderate
+69. `shutter.ajar` — Open Shutter · CH II · moderate
+70. `records.breach` — Open Drawer · CH I · subtle
+71. `gallery.frost` — Blind Glass · CH II · moderate
+72. `door.stuck` — Dead Leaf · CH II · unmistakable
+73. `doors.open` — The Doors Already Open · CH II · unmistakable
+74. `doors.slam` — The Doors Slammed · CH II · unmistakable
+75. `walker.crowd` — Second Inspector · CH III · unmistakable
+76. `light.follows` — One Zone Of Light · CH III · unmistakable
+77. `glass.eyes` — Someone In The Gallery · CH II · moderate
+78. `sign.wrongway` — Wrong Arrow · CH I · subtle
+79. `terminal.black` — Dead Terminals · CH II · moderate
+80. `bin.flipped` — Tipped Bin · CH I · subtle
+81. `hatch.open` — Open Hatch · CH II · moderate
+82. `hatch.knocks` — Knocking Behind the Panel · CH III · moderate
+83. `map.wrong` — You Are Not Here · CH II · moderate
+84. `blinds.open` — The Blind Is Open · CH I · subtle
+85. `rota.stamped` — Staffing Under Review · CH I · moderate
+86. `sheets.added` — A Sixth Memo · CH I · subtle
+87. `terminal.advisory` — Advisory Row · CH II · unmistakable
+88. `phone.gone` — Phone Missing · CH II · subtle
+89. `hatch.scratched` — Scored From Inside · CH II · moderate
+90. `shadow.figure` — A Shadow Stands There · CH II · unmistakable
+91. `figure.corridor` — Someone On The Route · CH II · unmistakable
+92. `figure.rush` — It Comes At You · CH III · unmistakable · **dangerous**
+93. `figure.wall` — Facing The Wall · CH II · unmistakable
+94. `rats.scurry` — Something Crossed · CH II · subtle
+95. `draft.sheet` — The Sheet Moved · CH II · subtle
+96. `pa.deadair` — Dead Air · CH II · moderate
+97. `vent.sigh` — The Vent Breathes · CH II · subtle
+98. `duct.clang` — Clang In The Ducts · CH I · moderate
+99. `cable.hangs` — Cable Down · CH II · moderate
+100. `jacket.drapes` — Jacket On The Bench · CH I · moderate
+101. `shaft.gone` — Light Without Air · CH II · subtle
+102. `shadow.moves` — The Shadow Drifts · CH III · moderate
+103. `lights.buzz` — Chattering Ballast · CH I · moderate
+104. `mop.bucket` — Cleaning Kit · CH I · moderate
+105. `counter.bell` — The Bell Rings Itself · CH II · moderate
+106. `records.voice` — Someone In The Archive · CH II · subtle
+107. `door.rattle` — The Door Is Tested · CH II · moderate
+108. `echo.steps` — Steps Behind Yours · CH III · moderate
+109. `figure.north` — Figure in the North Airlock · CH III · unmistakable
+110. `totem.fallen` — Totem Sign on the Floor · CH II · unmistakable
+111. `sign.fallen` — Directory Sign Off the Wall · CH II · unmistakable
+112. `vend.dispensed` — Cans Dispensed for Nobody · CH I · moderate
+113. `figure.corner` — Figure Around the Corner · CH III · unmistakable
+114. `locker.taps` — Knocking From a Locker · CH II · moderate
+115. `figure.records` — Figure at the Records Bank · CH III · unmistakable
+116. `zone.sick` — Tube Color Gone Sick · CH II · moderate
+117. `face.pane` — Face in the Vision Pane · CH III · unmistakable
+118. `walker.look` — His Head Follows You · CH III · moderate
+119. `notice.face` — Photograph on the Board · CH II · subtle
+120. `face.pane.north` — Face in the North Pane · CH III · unmistakable
+121. `figure.fountain` — Drinker at the Fountain · CH III · unmistakable
+122. `horn.crackle` — Horn Spits Static · CH II · subtle
+123. `voice.near` — Breath at Your Shoulder · CH II · moderate
+124. `zone.pulse` — The Zone Breathes · CH II · unmistakable
+125. `troffer.sparks` — The Dying Tube · CH II · unmistakable
+126. `clock.stopped` — Stopped at 04:12 · CH I · subtle
+127. `panel.wires` — Guts Pulled Out · CH I · moderate
+128. `walk.silence` — Steps Swallowed · CH II · subtle
+129. `drain.gurgles` — The Drain Swallows · CH II · subtle
+130. `corridor.breathes` — The Corridor Inhales · CH III · unmistakable
+131. `figure.doubles` — Two of Them · CH III · unmistakable
+132. `vend.rebrand` — Rebranded Dispenser · CH I · subtle
+133. `face.glass` — Face at the Glass · CH III · unmistakable
+134. `airlock.dark` — Dead Airlock Pool · CH I · moderate
+135. `arrow.extra` — A Fourth Route Mark · CH I · subtle
+136. `cap.leaks` — The Cap Bleeds Light · CH II · moderate
+137. `light.red` — Zone Lights Blood-Red · CH III · unmistakable
+138. `bench.flipped` — Bench Overturned · CH I · moderate
+139. `strip.grows` — Extended Guide · CH I · subtle
+140. `mullion.extra` — Sixth Mullion · CH I · subtle
+141. `glass.writing` — Writing On The Glass · CH III · unmistakable
+142. `glass.hands` — Hands On The Glass · CH II · moderate
+143. `totem.reversed` — Reversed Totem · CH II · moderate
+144. `door.slow` — Slow Doors · CH I · subtle
+145. `cabinet.rows` — All Drawers Open · CH III · unmistakable
+146. `mullion.missing` — Missing Mullion · CH I · subtle
+147. `gallery.lit` — Gallery Lights On · CH II · moderate
+148. `gallery.occupied` — Someone in the Reading Room · CH II · moderate
+149. `lift.calls` — Lift Being Called · CH II · moderate
+150. `bench.sit` — Someone Waiting · CH III · unmistakable
+151. `stain.spread` — The Spill · CH I · subtle
+152. `sign.ghost` — The New Sign · CH III · unmistakable
+153. `hall.stretch` — The Long Loop · CH III · unmistakable
+154. `vanish.misaligned` — Off-Centre · CH II · subtle
+155. `arrow.points` — Arrow Points North · CH II · subtle
+156. `bayplate.gone` — Missing Bay Plate · CH II · subtle
+157. `vent.slats` — Bare Vent Grille · CH II · subtle
+158. `ext.missing` — Missing Extinguisher · CH I · subtle
+159. `aid.gone` — Missing First Aid Cabinet · CH I · subtle
+160. `phone.offhook` — Off the Hook · CH II · subtle
+161. `phone.rings` — The Dead Phone Rings · CH II · unmistakable
+162. `pitch.sags` — The Hum Sags · CH II · subtle
+163. `fountain.runs` — Running Fountain · CH II · moderate
+164. `fountain.blood` — The Fountain Runs Red · CH III · unmistakable
+165. `panel.open` — Breaker Panel Open · CH I · subtle
+166. `pilot.dead` — Dead Pilot Lamp · CH I · subtle
+167. `door.lit` — Light in the Service Room · CH II · moderate
+168. `bucket.tipped` — Tipped Bucket · CH II · moderate
+169. `cab.gone` — Missing Fire Cabinet · CH I · subtle
+170. `rad.leaks` — Leaking Convector · CH II · subtle
+171. `locker.ajar` — Open Locker · CH I · moderate
+172. `exit.wrongway` — Exit Sign Wrong Way · CH II · subtle
+173. `walker.faceless` — Faceless Inspector · CH III · moderate
+174. `walker.eyeless` — Hollow Eyes · CH III · subtle
+175. `walker.crawl` — He Walks Too Slowly · CH III · moderate
+176. `sign.loop8` — Wrong Loop Number · CH III · subtle
+177. `sign.mirror` — Totem Reads Backwards · CH II · moderate
+178. `guide.short` — Guide Strip Ends Early · CH II · moderate
+179. `rad.gone` — Missing Radiator · CH II · subtle
+180. `lockers.all` — Every Locker Open · CH III · moderate
+181. `mop.gone` — Mop Bucket Missing · CH II · subtle
+182. `poster.dup` — Poster Printed Twice · CH II · subtle
+183. `exit.dark` — Exit Sign Unlit · CH III · subtle
+184. `fountain.gone` — Fountain Missing · CH II · subtle
+185. `poster.tilted` — Poster Hangs Crooked · CH I · subtle
+186. `hatch.gone` — Hatch Sealed Over · CH II · subtle
+187. `guide.red` — Guide Strip Runs Red · CH III · subtle
+188. `dir.gone` — Directory Sign Missing · CH II · subtle
+189. `machine.dead` — Machine Lamp Out · CH II · subtle
+190. `bench.gone` — Bench Missing · CH II · moderate
+191. `totem.gone` — Totem Sign Missing · CH II · moderate
+192. `arrows.gone` — Route Decals Missing · CH II · subtle
+193. `cctv.drooped` — Camera Dead Drop · CH II · subtle
+194. `phone.lit` — Phone Line Lamp Lit · CH II · subtle
+195. `exit.sign.gone` — Airlock Overhead Sign Missing · CH II · moderate
+196. `intake.gone` — Intake Sign Missing · CH II · subtle
+197. `bell.gone` — Counter Bell Missing · CH II · subtle
+198. `notice.gone` — North Vestibule Sign Missing · CH II · subtle
+199. `walker.fast` — Inspector Moving Fast · CH III · subtle
+200. `walker.charge` — The Inspector Runs At You · CH III · unmistakable · **dangerous**
+201. `walker.wait` — The Inspector Waits At The Door · CH III · unmistakable
+202. `ceiling.crack` — Ceiling Fracture · CH III · subtle
+203. `ceiling.weeps` — The Ceiling Weeps · CH II · moderate
+204. `floor.flood` — Flooded Floor · CH III · unmistakable · **dangerous**
+205. `vend.dead` — Dead Vending Unit · CH I · unmistakable
+206. `vend.empty` — Vending Shelves Bare · CH II · moderate
+207. `sheets.cleared` — Stripped Notice Board · CH II · subtle
+
 Slice count: **207 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`.
