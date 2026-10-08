@@ -241,12 +241,13 @@ export function buildFixtures(
   //      between the second bench and the hose reel. Registered nodes
   //      (not merged): panel.open swings the door ----
   const elecPaint = new StandardMaterial("mat.elec.paint", scene);
-  elecPaint.diffuseColor = new Color3(0.2, 0.21, 0.2);
+  elecPaint.diffuseColor = new Color3(0.16, 0.17, 0.16);
   elecPaint.emissiveColor = new Color3(0.004, 0.004, 0.004);
-  elecPaint.specularColor = new Color3(0.05, 0.05, 0.05);
+  elecPaint.disableLighting = true; // matte powder-coat — specular wash read as blown pale
   const elecDark = new StandardMaterial("mat.elec.dark", scene);
-  elecDark.diffuseColor = new Color3(0.04, 0.04, 0.045);
+  elecDark.diffuseColor = new Color3(0.03, 0.03, 0.035);
   elecDark.specularColor = new Color3(0, 0, 0);
+  elecDark.disableLighting = true; // the interior reads "dark bus" only if it stays black
   const elec = new TransformNode("elec.panel", scene);
   elec.parent = root;
   elec.position = new Vector3(-WALL_X + 0.04, 1.5, 38);
@@ -279,6 +280,43 @@ export function buildFixtures(
   const elecConduit = kit.box("elec.panel.conduit", 0.03, 1.1, 0.03, mats.rubber, scene);
   elecConduit.parent = elec;
   elecConduit.position = new Vector3(-0.02, -0.85, 0);
+
+  // ---- low service pipe run, west wall z 32.6–44 — twin lines hugging
+  //      the wall at hand height, broken around the breaker panel like a
+  //      real retrofit. The bare field between the records bank and the
+  //      hose reel reads as corridor infrastructure. Merged dressing ----
+  const pipeMat = new StandardMaterial("mat.pipe.gray", scene);
+  pipeMat.diffuseColor = new Color3(0.3, 0.3, 0.29);
+  pipeMat.disableLighting = true; // painted conduit — flat gray reads in every zone
+  for (const [i, [z0, z1]] of [
+    [0, [32.6, 37.7]],
+    [1, [38.35, 44]],
+  ] as const) {
+    for (const [j, py] of [
+      [0, 1.02],
+      [1, 1.16],
+    ] as const) {
+      const pipe = kit.box(`dress.wpipes.${i}.${j}`, 0.05, 0.045, z1 - z0, pipeMat, scene, root);
+      pipe.position = new Vector3(-WALL_X + 0.085, py, (z0 + z1) / 2);
+    }
+  }
+  for (let z = 33.4; z <= 43.9; z += 2.6) {
+    if (z > 37.4 && z < 38.6) continue;
+    const strap = kit.box(`dress.wpipes.h.${z.toFixed(1)}`, 0.1, 0.34, 0.045, pipeMat, scene, root);
+    strap.position = new Vector3(-WALL_X + 0.05, 1.09, z);
+  }
+  // one isolation valve tapping the upper run
+  const vstem = kit.box("dress.wpipes.valve.stem", 0.05, 0.1, 0.05, pipeMat, scene, root);
+  vstem.position = new Vector3(-WALL_X + 0.085, 1.21, 36.8);
+  const vwheel = CreateCylinder(
+    "dress.wpipes.valve.wheel",
+    { height: 0.016, diameter: 0.12, tessellation: 16 },
+    scene,
+  );
+  vwheel.material = mats.cabinetRed;
+  vwheel.parent = root;
+  vwheel.position = new Vector3(-WALL_X + 0.12, 1.28, 36.8);
+  vwheel.rotation.z = Math.PI / 2;
 
   buildImpossibleFacade(scene, root, mats, registry);
   buildLiftLobby(scene, root, mats, registry);
