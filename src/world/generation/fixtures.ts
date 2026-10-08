@@ -327,9 +327,12 @@ function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, reg
   mapMat.emissiveColor = new Color3(0.09, 0.09, 0.08);
   const mapFrame = kit.box("dress.routemap.frame", 0.04, 0.56, 0.76, mats.steel, scene, root);
   mapFrame.position = new Vector3(WALL_X - 0.03, 1.62, 35.8);
-  const mapFace = kit.plane("dress.routemap", 0.7, 0.5, mapMat, scene, root);
+  const mapFace = kit.plane("map.routemap", 0.7, 0.5, mapMat, scene, root);
   mapFace.position = new Vector3(WALL_X - 0.052, 1.62, 35.8);
   mapFace.rotation.y = Math.PI / 2;
+  // NOT dress.* — anomalies repaint this face (map.wrong); a dress.*
+  // name would fold it into the static merge and lose its texture
+  registry.register("map.routemap", mapFace);
 
   // ---- night staffing rota — framed duty board on the west wall at
   //      the intake end, opposite the NORTH INTAKE sign ----

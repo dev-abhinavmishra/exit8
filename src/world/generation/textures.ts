@@ -897,6 +897,15 @@ export function makeFasciaBand(scene: Scene): DynamicTexture {
  *  intake end. The corridor's memorization anchor. */
 export function makeRouteMap(scene: Scene): DynamicTexture {
   const t = tex("tex.routemap", 512, 384, scene);
+  drawRouteMap(t);
+  return finish(t);
+}
+
+/** Paint the LOOP 7 schematic onto an existing DynamicTexture.
+ *  `hereStop` is which stop the YOU ARE HERE marker points at — 0 is
+ *  baseline (NORTH INTAKE, the loop's start); map.wrong repaints with
+ *  a different index so the map claims you are somewhere else. */
+export function drawRouteMap(t: DynamicTexture, hereStop = 0): void {
   const c = ctx(t);
   // board
   c.fillStyle = "#1e2124";
@@ -942,16 +951,18 @@ export function makeRouteMap(scene: Scene): DynamicTexture {
   c.lineTo(256, 354);
   c.closePath();
   c.fill();
-  // YOU ARE HERE just below the intake stop
+  // YOU ARE HERE just below the claimed stop — baseline points at the
+  // intake (stop 0, y 110 → marker row at 132)
+  const hereY = stops[hereStop]![0] + 22;
   c.fillStyle = "#c8cdd4";
   c.textAlign = "right";
   c.font = "bold 14px Arial, sans-serif";
-  c.fillText("YOU ARE HERE", 236, 132);
+  c.fillText("YOU ARE HERE", 236, hereY);
   c.strokeStyle = "#c8cdd4";
   c.lineWidth = 2;
   c.beginPath();
-  c.moveTo(238, 128);
-  c.lineTo(250, 122);
+  c.moveTo(238, hereY - 4);
+  c.lineTo(250, hereY - 10);
   c.stroke();
   // filing footnote
   c.fillStyle = "#8a9099";
@@ -959,7 +970,6 @@ export function makeRouteMap(scene: Scene): DynamicTexture {
   c.font = "13px Arial, sans-serif";
   c.fillText("FILE ALL DIVERGENCES AT THE INSPECTION POINT", 256, 372);
   t.update();
-  return finish(t);
 }
 
 /** Night staffing rota — the framed duty board near the intake: a typed

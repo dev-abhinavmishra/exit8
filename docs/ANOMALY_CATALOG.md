@@ -389,9 +389,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 108. ★ `hatch.knocks` — a soft knock-knock comes through the always-shut
      service hatch while you stand near it, the plate shuddering.
      Moderate. (slice)
+109. ★ `map.wrong` — the route map's YOU ARE HERE marker points at a
+     different stop; the LOOP 7 schematic is otherwise identical.
+     Moderate. (slice)
 
-Slice count: **149 implemented — the full catalog**. New hooks:
-`audio.playKnock(pos)`;
+Slice count: **150 implemented — the full catalog**. New hooks:
+`audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
