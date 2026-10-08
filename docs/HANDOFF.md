@@ -418,6 +418,18 @@ npm run build` — currently 117 unit + 24/24 e2e green.
   (`@media max-height:860px` density). **teleport(x,y,z) RESETS YAW
   to 0** — pass the 4th arg or look() afterwards; an invisible-figure
   saga was just the camera facing the wrong way.
+- 2026-10-08 payoff/menu pass: secure ending is now WALKABLE — after
+  the cap drops (`endingT>2.9`) player re-enables, `al.<side>.capCol`
+  collider disables, and crossing ~0.55m past the cap plane fires a
+  WHITE veil (`onFade(1,null,"light")`, `.na-veil.light`) → report;
+  `onEnd` now always `veilOff()`s. Corridor brown-out: `dipLights`
+  snapshots zone intensities + `trofferLit.emissiveColor` +
+  `lightShaft.alpha` and eases `brown01` 0↔1 each frame (down ~0.7s
+  on commit, back ~1.1s after the veil; endings leave it dipped).
+  Start screen parks the camera at the corridor mouth
+  (`Vector3(-0.45,0,6.5),0.1`) so the menu + attract drift sit over
+  the lit passage; `startRun` teleports back to `LAYOUT.spawn` first —
+  the loop's cold open is untouched.
 - `?e2e=1` pins `TIERS.low` + no rumble — REQUIRED under SwiftShader (~1 fps
   at high tier starves the 60 Hz stepper and timeouts look like hangs).
 - Babylon traps learned: `camera.cameraDirection` is WORLD-space (don't
