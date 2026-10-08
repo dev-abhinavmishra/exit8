@@ -14,6 +14,9 @@ import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { PointLight } from "@babylonjs/core/Lights/pointLight";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 import { ParticleSystem } from "@babylonjs/core/Particles/particleSystem";
+import { PointsCloudSystem } from "@babylonjs/core/Particles/pointsCloudSystem";
+import { Constants } from "@babylonjs/core/Engines/constants";
+import type { CloudPoint } from "@babylonjs/core/Particles/cloudPoint";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { CreateCylinder } from "@babylonjs/core/Meshes/Builders/cylinderBuilder";
@@ -615,6 +618,7 @@ export function buildConcourse(
     { name: "clinic", z0: 32, z1: 46, tint: [0.96, 0.97, 0.9] as const },
     { name: "junction", z0: 46, z1: 55, tint: [1.0, 0.93, 0.8] as const },
   ];
+  const moteAnchors: { x: number; z: number; zi: number }[] = [];
   for (let zi = 0; zi < zoneDefs.length; zi++) {
     const zd = zoneDefs[zi];
     if (!zd) continue;
@@ -622,6 +626,7 @@ export function buildConcourse(
     const shafts: TransformNode[] = [];
     for (let z = zd.z0 + 2.5; z < zd.z1; z += 4) {
       for (const x of [-0.9, 0.9]) {
+        moteAnchors.push({ x, z, zi });
         const t = kit.troffer(
           `troffer.${zi}.${x > 0 ? "r" : "l"}.${z.toFixed(0)}`,
           mats.trofferLit,
@@ -673,6 +678,57 @@ export function buildConcourse(
     // lighting anomalies address zones by name through the registry
     registry.register(point.name, point as unknown as AbstractMesh);
   }
+
+  // ─── dust motes hanging in the light shafts ───────────────────────
+  // one PointsCloudSystem for the whole corridor — a single draw call.
+  // groupID carries the zone index so a killed or browned-out zone's
+  // motes dim with its lamps; reduced motion stills the drift.
+  const motePcs = new PointsCloudSystem("motes", 2.8, scene);
+  for (const a of moteAnchors) {
+    for (let i = 0; i < 9; i++) {
+      motePcs.addPoints(1, (p: CloudPoint) => {
+        const rr = 0.06 + dressRng.draw() * 0.4;
+        const th = dressRng.draw() * Math.PI * 2;
+        p.position.set(
+          a.x + Math.cos(th) * rr,
+          0.45 + dressRng.draw() * 2.15,
+          a.z + Math.sin(th) * rr * 0.55,
+        );
+        p.groupId = a.zi;
+        const w = 0.62 + dressRng.draw() * 0.38;
+        p.color = new Color4(w, w * 0.93, w * 0.74, 1);
+      });
+    }
+  }
+  const moteBases: number[] = [];
+  void motePcs.buildMeshAsync().then(() => {
+    const mm = motePcs.mesh?.material;
+    if (mm instanceof StandardMaterial) {
+      mm.emissiveColor = Color3.White();
+      mm.alphaMode = Constants.ALPHA_ADD;
+      mm.disableLighting = true;
+    }
+    for (const p of motePcs.particles) {
+      moteBases.push(p.position.x, p.position.y, p.position.z);
+    }
+  });
+  const moteAmp = opts.reducedMotion === true ? 0 : 1;
+  let motesT = 0;
+  scene.onBeforeRenderObservable.add(() => {
+    motesT += scene.getEngine().getDeltaTime() / 1000;
+  });
+  motePcs.updateParticle = (p) => {
+    const zone = zones[p.groupId];
+    const lit = zone ? Math.min(1, zone.point.intensity / 7.6) : 0;
+    const w = (0.66 + (p.idx % 5) * 0.08) * lit;
+    p.color?.set(w, w * 0.93, w * 0.74, 1);
+    const bi = p.idx * 3;
+    if (moteAmp === 0 || moteBases[bi] === undefined) return p;
+    p.position.x = moteBases[bi]! + Math.sin(motesT * 0.31 + p.idx * 1.93) * 0.055;
+    p.position.y = moteBases[bi + 1]! + Math.sin(motesT * 0.16 + p.idx * 0.71) * 0.1;
+    p.position.z = moteBases[bi + 2]! + Math.cos(motesT * 0.24 + p.idx * 2.31) * 0.055;
+    return p;
+  };
 
   const hemi = new HemisphericLight("light.hemi", new Vector3(0, 1, 0), scene);
   hemi.diffuse = new Color3(0.66, 0.66, 0.7);
