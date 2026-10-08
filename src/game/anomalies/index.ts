@@ -138,6 +138,8 @@ import { corridorBreathes } from "./corridorBreathes";
 import { figureDoubles } from "./figureDoubles";
 import { vendRebrand } from "./vendRebrand";
 import { faceGlass } from "./faceGlass";
+import { airlockDark } from "./airlockDark";
+import { arrowExtra } from "./arrowExtra";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -339,6 +341,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   figureDoubles,
   vendRebrand,
   faceGlass,
+  airlockDark,
+  arrowExtra,
   lightRed,
   benchFlipped,
   stripGrows,
