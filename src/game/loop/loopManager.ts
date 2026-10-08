@@ -10,6 +10,13 @@
  * north airlock = "divergence logged" (correct iff anomaly active).
  */
 import type { Scene } from "@babylonjs/core/scene";
+import { PointLight } from "@babylonjs/core/Lights/pointLight";
+import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
+import { Color3 } from "@babylonjs/core/Maths/math.color";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
+import type { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import type { ConcourseWorld } from "../../world/generation/concourse";
 import { LAYOUT, type DoorRig } from "../../world/generation/concourse";
 import type { PlayerController } from "../../player/controller";
@@ -55,6 +62,12 @@ export class LoopManager {
   private judgeT = 0;
   private pendingCommit: "continue" | "retreat" | null = null;
   private forcedAnomalyId: string | null = null;
+  /** secure-ending payoff: the sealed south cap drops to daylight.
+   * -1 = inactive; else seconds since the reveal began. */
+  private endingT = -1;
+  private endingCap: AbstractMesh | null = null;
+  private endingCapY0 = 0;
+  private endingLight: PointLight | null = null;
   private anomalyRolls: RngStream;
   private anomalyRuntime: RngStream;
   readonly stability = new StabilityIndex();
@@ -270,7 +283,9 @@ export class LoopManager {
           if (!d.progression.endings.includes("standard")) d.progression.endings.push("standard");
         }
       });
-      this.events.onEnd?.(result.outcome);
+      if (result.outcome === "secure") {
+        this.beginSecureEnding(this.pendingCommit === "retreat" ? "north" : "south");
+      } else this.events.onEnd?.(result.outcome);
       this.emit();
       return;
     }
@@ -300,6 +315,70 @@ export class LoopManager {
     this.emit();
   }
 
+  /**
+   * The secured-route payoff: the far cap — sealed steel the whole
+   * shift — lowers into the floor and the vestibule fills with white.
+   * The one time the loop leads somewhere. Plays ~3s in-world, then
+   * the shift report takes over.
+   */
+  private beginSecureEnding(side: "north" | "south"): void {
+    const cap = this.world.registry.mesh(`al.${side}.cap`);
+    this.endingCap = cap;
+    this.endingCapY0 = cap.position.y;
+    // the reveal plays at the cap the player just filed at
+    const endZ = side === "south" ? LAYOUT.southAirlock.z1 : LAYOUT.northAirlock.z0;
+    const dir = side === "south" ? -1 : 1; // cap → player direction
+    const into = -dir; // cap → void beyond
+    const w = LAYOUT.airlockWidth;
+    const h = LAYOUT.corridor.height;
+    // the exit throat: a dark floor and a flight of step silhouettes
+    // rising into a white glow — stairs up to the surface
+    const dark = new StandardMaterial("ending.dark.mat", this.scene);
+    dark.disableLighting = true;
+    dark.diffuseColor = new Color3(0.02, 0.02, 0.02);
+    const glowZ = endZ + into * 1.7;
+    const floor = CreateBox("ending.floor", { width: w - 0.1, height: 0.05, depth: 1.75 }, this.scene);
+    floor.material = dark;
+    floor.position = new Vector3(0, -0.025, endZ + into * 0.9);
+    for (let i = 0; i < 4; i++) {
+      const sh = 0.19 * (i + 1); // each tread's top height
+      const step = CreateBox(`ending.step.${i}`, { width: w - 0.4, height: sh, depth: 0.42 }, this.scene);
+      step.material = dark;
+      step.position = new Vector3(0, sh / 2, endZ + into * (0.34 + i * 0.42));
+    }
+    const glow = CreatePlane("ending.glow", { width: w + 0.6, height: h + 0.4 }, this.scene);
+    const mat = new StandardMaterial("ending.glow.mat", this.scene);
+    mat.disableLighting = true;
+    mat.emissiveColor = new Color3(1.06, 1.0, 0.9);
+    mat.backFaceCulling = false;
+    glow.material = mat;
+    glow.position = new Vector3(0, h / 2 + 0.35, glowZ);
+    glow.rotation.y = side === "south" ? Math.PI : 0;
+    this.endingLight = new PointLight("ending.light", new Vector3(0, 1.9, endZ + dir * 0.9), this.scene);
+    this.endingLight.diffuse = new Color3(1.0, 0.95, 0.84);
+    this.endingLight.intensity = 0;
+    this.endingT = 0;
+    const at = new Vector3(0, 1.6, endZ + dir);
+    this.audio.playChime(at);
+    this.audio.caption("the far end opens onto daylight", at);
+  }
+
+  private updateEnding(dt: number): void {
+    this.endingT += dt;
+    const h = LAYOUT.corridor.height;
+    // blast-door drop: slow ease-out over ~2.4s — the player watches
+    // the seal sink and the light widen; slight early hold
+    const t = Math.max(0, this.endingT - 0.4);
+    const p = Math.min(1, t / 2.4);
+    const e = 1 - (1 - p) * (1 - p);
+    if (this.endingCap) this.endingCap.position.y = this.endingCapY0 - e * (h + 0.5);
+    if (this.endingLight) this.endingLight.intensity = e * 2.6;
+    if (this.endingT > 4.2) {
+      this.endingT = -1;
+      this.events.onEnd?.("secure");
+    }
+  }
+
   /** Sim step. */
   update(dt: number): void {
     // door slide animation
@@ -311,6 +390,8 @@ export class LoopManager {
       d.leftCollider.position.x = d.left.position.x;
       d.rightCollider.position.x = d.right.position.x;
     }
+
+    if (this.phase === "ended" && this.endingT >= 0) this.updateEnding(dt);
 
     if (this.phase === "open") {
       const p = this.player.position;
