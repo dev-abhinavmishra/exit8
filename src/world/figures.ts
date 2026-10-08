@@ -281,6 +281,13 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
   headMesh.position = new Vector3(0, 0.19, 0);
   headMesh.parent = headPivot;
   if (!sil) {
+    // hair shell — a second squashed sphere tucked behind the face
+    // line; covers crown + back of head under the cap
+    const hair = CreateSphere(`${name}.hair`, { diameter: 0.225, segments: 10 }, scene);
+    hair.material = use(shoeMat);
+    hair.scaling = new Vector3(1.0, 1.22, 0.92);
+    hair.position = new Vector3(0, 0.215, -0.028);
+    hair.parent = headPivot;
     // peaked service cap — crown, band, and brim over the skull
     const crown = CreateCylinder(
       `${name}.cap.crown`,
@@ -305,11 +312,14 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
     // near-zero specular — the plate was catching a white glint blob
     faceMat.specularColor = new Color3(0.004, 0.004, 0.004);
     faceMat.specularPower = 128;
-    const face = CreateBox(`${name}.faceplate`, { width: 0.17, height: 0.22, depth: 0.008 }, scene);
+    const face = CreatePlane(`${name}.faceplate`, { width: 0.17, height: 0.22 }, scene);
     face.material = faceMat;
     // proud of the skull's front tip (z≈0.1056) — it poked through as a
-    // pale diamond artifact before
+    // pale diamond artifact before. A single-sided plane, not a box: a
+    // box's rear face mapped the same texture and read as a face on the
+    // back of the head from behind.
     face.position = new Vector3(0, 0.17, 0.112);
+    face.rotation.y = Math.PI;
     face.parent = headPivot;
   }
 

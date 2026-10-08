@@ -91,13 +91,20 @@ function makeWallPanel(scene: Scene, rng: RngStream): DynamicTexture {
   const s = 512;
   const t = tex("tex.wallPanel", s, s, scene);
   const c = ctx(t);
-  c.fillStyle = "#e7e4dc";
+  c.fillStyle = "#edeae2";
   c.fillRect(0, 0, s, s);
   for (let i = 0; i < 900; i++) {
-    const g = 225 + rng.int(0, 25);
+    const g = 228 + rng.int(0, 24);
     c.fillStyle = `rgba(${g},${g - 2},${g - 8},${0.16 + rng.draw() * 0.2})`;
     c.fillRect(rng.draw() * s, rng.draw() * s, 1 + rng.draw() * 2, 1 + rng.draw() * 6);
   }
+  // subway-tile grout: horizontal courses + a vertical half-course so
+  // the panels read as glazed tile up close, not painted drywall
+  c.fillStyle = "rgba(140,137,128,0.4)";
+  for (let row = 1; row < 5; row++) {
+    c.fillRect(0, (s / 5) * row - 1, s, 2);
+  }
+  c.fillRect(s / 2 - 1, 0, 2, s);
   // panel seam lines (1200mm module rendered on 1 panel = center seam)
   c.fillStyle = "rgba(120,118,110,0.55)";
   c.fillRect(0, 0, 4, s);

@@ -596,8 +596,8 @@ export function buildConcourse(
       new Vector3(0, C.height - 0.25, (zd.z0 + zd.z1) / 2),
       scene,
     );
-    point.diffuse = new Color3(1.0, 0.93, 0.8);
-    point.intensity = 6.5;
+    point.diffuse = new Color3(1.0, 0.94, 0.83);
+    point.intensity = 7.6;
     point.range = (zd.z1 - zd.z0) * 0.9 + 8;
     zones.push({
       name: zd.name,
@@ -613,9 +613,9 @@ export function buildConcourse(
   }
 
   const hemi = new HemisphericLight("light.hemi", new Vector3(0, 1, 0), scene);
-  hemi.diffuse = new Color3(0.6, 0.6, 0.64);
-  hemi.groundColor = new Color3(0.34, 0.32, 0.3);
-  hemi.intensity = 1.05;
+  hemi.diffuse = new Color3(0.66, 0.66, 0.7);
+  hemi.groundColor = new Color3(0.36, 0.34, 0.32);
+  hemi.intensity = 1.32;
 
   // warm airlock pool lights
   for (const side of ["north", "south"] as const) {
