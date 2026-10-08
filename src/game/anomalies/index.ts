@@ -42,6 +42,7 @@ import { fireOpen } from "./fireOpen";
 import { posterSwapped } from "./posterSwapped";
 import { posterHollow } from "./posterHollow";
 import { posterGrin } from "./posterGrin";
+import { posterWatches } from "./posterWatches";
 import { trofferFalls } from "./trofferFalls";
 import { signDrift } from "./signDrift";
 import { terminalGlitch } from "./terminalGlitch";
@@ -187,6 +188,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   posterSwapped,
   posterHollow,
   posterGrin,
+  posterWatches,
   trofferFalls,
   signDrift,
   terminalGlitch,

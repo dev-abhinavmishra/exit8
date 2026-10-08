@@ -371,8 +371,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 102. ★ `ceiling.weeps` — a ceiling seam drips onto the walk line,
      plink by plink, a wet circle spreading on the terrazzo. Moderate.
      (slice)
+103. ★ `poster.watches` — Inspector Vance's engraved face gains real
+     eyes whose pupils slide to follow you down the corridor.
+     Moderate. (slice)
 
-Slice count: **143 implemented — the full catalog**. New hooks:
+Slice count: **144 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

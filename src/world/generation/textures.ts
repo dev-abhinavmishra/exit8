@@ -277,6 +277,7 @@ export function drawPoster(
   mirror = false,
   hollow = false,
   grin = false,
+  gaze = 0,
 ): void {
   const w = 256;
   const h = 384;
@@ -309,14 +310,41 @@ export function drawPoster(
     c.beginPath();
     c.ellipse(w / 2, 208, 37, 47, 0, 0, Math.PI * 2);
     c.fill();
-    c.fillStyle = hollow ? "#08080a" : "#2a2622";
     const eyeY = grin ? 3.4 : 5;
-    c.beginPath();
-    c.ellipse(w / 2 - 13, 199, hollow ? 8 : 5, hollow ? 11 : eyeY, 0, 0, Math.PI * 2);
-    c.fill();
-    c.beginPath();
-    c.ellipse(w / 2 + 13, 199, hollow ? 8 : 5, hollow ? 11 : eyeY, 0, 0, Math.PI * 2);
-    c.fill();
+    if (gaze !== 0 && !hollow) {
+      // readable eyes with a pupil that slides to track the viewer —
+      // whites bright enough to lift off the pale face oval
+      c.fillStyle = "#efe9d8";
+      c.strokeStyle = "#3a352c";
+      c.lineWidth = 1.4;
+      for (const sx of [-13, 13]) {
+        c.beginPath();
+        c.ellipse(w / 2 + sx, 199, 9, 6, 0, 0, Math.PI * 2);
+        c.fill();
+        c.stroke();
+      }
+      c.fillStyle = "#100e0a";
+      for (const sx of [-13, 13]) {
+        c.beginPath();
+        c.ellipse(w / 2 + sx + gaze * 4, 199.5, 3.8, 5, 0, 0, Math.PI * 2);
+        c.fill();
+      }
+      // pinprick catchlights so the pupils read as wet eyes up close
+      c.fillStyle = "#efe9d8";
+      for (const sx of [-13, 13]) {
+        c.beginPath();
+        c.arc(w / 2 + sx + gaze * 4 - 1, 197.5, 0.8, 0, Math.PI * 2);
+        c.fill();
+      }
+    } else {
+      c.fillStyle = hollow ? "#08080a" : "#2a2622";
+      c.beginPath();
+      c.ellipse(w / 2 - 13, 199, hollow ? 8 : 5, hollow ? 11 : eyeY, 0, 0, Math.PI * 2);
+      c.fill();
+      c.beginPath();
+      c.ellipse(w / 2 + 13, 199, hollow ? 8 : 5, hollow ? 11 : eyeY, 0, 0, Math.PI * 2);
+      c.fill();
+    }
     c.strokeStyle = hollow ? "#1c1a18" : "#4a443c";
     c.lineWidth = 3;
     c.beginPath();
