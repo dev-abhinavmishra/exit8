@@ -109,6 +109,9 @@ import { shaftGone } from "./shaftGone";
 import { shadowMoves } from "./shadowMoves";
 import { lightsBuzz } from "./lightsBuzz";
 import { mopBucket } from "./mopBucket";
+import { counterBell } from "./counterBell";
+import { recordsVoice } from "./recordsVoice";
+import { doorRattle } from "./doorRattle";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -281,6 +284,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   shadowMoves,
   lightsBuzz,
   mopBucket,
+  counterBell,
+  recordsVoice,
+  doorRattle,
   lightRed,
   benchFlipped,
   stripGrows,

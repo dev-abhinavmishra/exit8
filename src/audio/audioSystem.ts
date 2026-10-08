@@ -1056,6 +1056,104 @@ export class AudioSystem {
     };
   }
 
+  /** A counter service bell ringing itself — three bell partials, no
+   *  hammer noise. A single ding, not a press. */
+  playDing(pos: Vector3): void {
+    if (!this.ctx) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    for (const [f, g0, dec] of [
+      [2600, 0.05, 0.5],
+      [3700, 0.028, 0.32],
+      [5400, 0.015, 0.2],
+    ] as const) {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = f;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, t0);
+      g.gain.linearRampToValueAtTime(g0 * sp.gain, t0 + 0.004);
+      g.gain.exponentialRampToValueAtTime(0.0008, t0 + dec);
+      const pan = ctx.createStereoPanner();
+      pan.pan.value = sp.pan;
+      o.connect(g).connect(pan).connect(this.bus("machinery"));
+      o.start(t0);
+      o.stop(t0 + dec + 0.05);
+    }
+    this.caption("a service bell rings once", pos);
+  }
+
+  /** Pages turning behind the records bank — four irregular soft
+   *  rustles, lowpassed like paper in a dead room. Ambience bus:
+   *  it's almost room tone. */
+  playRustle(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    for (const [at, rate] of [
+      [0, 0.85],
+      [0.45, 0.95],
+      [0.95, 0.8],
+      [1.55, 1.0],
+    ] as const) {
+      const src = ctx.createBufferSource();
+      src.buffer = this.noiseBuffer;
+      src.playbackRate.value = rate;
+      const lp = ctx.createBiquadFilter();
+      lp.type = "lowpass";
+      lp.frequency.value = 780;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, t0 + at);
+      g.gain.linearRampToValueAtTime(0.028 * sp.gain, t0 + at + 0.1);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + at + 0.34);
+      const pan = ctx.createStereoPanner();
+      pan.pan.value = sp.pan;
+      src.connect(lp).connect(g).connect(pan).connect(this.bus("ambience"));
+      src.start(t0 + at);
+      src.stop(t0 + at + 0.38);
+    }
+    this.caption("pages turn behind the cabinets", pos);
+  }
+
+  /** A door shaken from inside — three quick low thuds in fast
+   *  succession, like a shoulder testing the frame. Duller than the
+   *  slam; spatialized to the leaf. */
+  playRattle(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    for (const at of [0, 0.14, 0.3]) {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.setValueAtTime(130, t0 + at);
+      o.frequency.exponentialRampToValueAtTime(55, t0 + at + 0.09);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.075 * sp.gain, t0 + at);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + at + 0.1);
+      const pan = ctx.createStereoPanner();
+      pan.pan.value = sp.pan;
+      o.connect(g).connect(pan).connect(this.bus("machinery"));
+      o.start(t0 + at);
+      o.stop(t0 + at + 0.11);
+      // latch chatter — a short mid-band noise tick after each thud
+      const src = ctx.createBufferSource();
+      src.buffer = this.noiseBuffer;
+      const bp = ctx.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.frequency.value = 1600;
+      bp.Q.value = 1.4;
+      const g2 = ctx.createGain();
+      g2.gain.setValueAtTime(0.035 * sp.gain, t0 + at + 0.02);
+      g2.gain.exponentialRampToValueAtTime(0.001, t0 + at + 0.07);
+      src.connect(bp).connect(g2).connect(pan);
+      src.start(t0 + at + 0.02, 0, 0.06);
+    }
+    this.caption("something shakes the service door", pos);
+  }
+
   /** Inner door slide — a soft pneumatic hiss + servo whirr on open,
    *  and a lower whirr settling into a seal thump on close. Fires on
    *  every target change: auto-open on approach, seal on commit,

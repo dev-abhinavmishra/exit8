@@ -466,8 +466,18 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 132. `mop.bucket` — a mop leaning against the west wall and a bucket
      at its base, abandoned mid-shift. Nobody cleans this loop.
      Moderate. (slice)
+133. `counter.bell` — the service bell on the clinic counter rings
+     once, on its own, and sways for a second after. Nobody is at the
+     counter to press it. Moderate. (slice)
+134. `records.voice` — pages turn behind the records bank: four soft,
+     irregular rustles as if someone works the archive on the far
+     side of the cabinets. There is no far side. Subtle. (slice)
+135. `door.rattle` — the sealed service door shakes once in its
+     frame: three quick thuds, the latch chattering, the leaf
+     juddering. Something pushed from the other side. Moderate.
+     (slice)
 
-Slice count: **173 implemented — the full catalog**. New hooks:
+Slice count: **176 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`, `audio.playScrape(pos)`,
