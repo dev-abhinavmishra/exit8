@@ -51,7 +51,8 @@ export interface FigureOpts {
  * the skin gradient and cap-shadow band — the faceless-erasure anomaly
  * needs exactly the smooth leftover.
  */
-export function drawFace(t: DynamicTexture, blank = false): void {
+export function drawFace(t: DynamicTexture, variant: "normal" | "blank" | "eyeless" = "normal"): void {
+  const blank = variant === "blank";
   const c = t.getContext();
   (c as unknown as CanvasRenderingContext2D).setTransform(1, 0, 0, 1, 0, 0);
   (c as unknown as CanvasRenderingContext2D).scale(2, 2);
@@ -104,9 +105,38 @@ export function drawFace(t: DynamicTexture, blank = false): void {
     c.moveTo(72, 57);
     c.quadraticCurveTo(84, 55, 96, 58);
     c.stroke();
-    // eyes — pale whites with a small dark iris read more human than
-    // a solid almond, and the gaze carries across the corridor
+    if (variant === "eyeless") {
+      // sockets read deeper when the brow casts into them
+      const soc = c.createLinearGradient(0, 56, 0, 74);
+      soc.addColorStop(0, "rgba(28,19,14,0.5)");
+      soc.addColorStop(1, "rgba(28,19,14,0)");
+      c.fillStyle = soc;
+      c.fillRect(22, 56, 84, 18);
+    }
     for (const cx of [40, 88]) {
+      if (variant === "eyeless") {
+        // hollow sockets — the face keeps its shape, but where the
+        // eyes should sit there is only dark set slightly too deep:
+        // a wider shadow ring, then a near-black core
+        c.fillStyle = "rgba(58,42,34,0.85)";
+        c.beginPath();
+        c2d.ellipse(cx, 66, 12.5, 7.5, 0, 0, Math.PI * 2);
+        c.fill();
+        c.fillStyle = "#0d0a08";
+        c.beginPath();
+        c2d.ellipse(cx, 66, 9, 5, 0, 0, Math.PI * 2);
+        c.fill();
+        // a wet-lower-lid hint keeps the sockets wet, not painted
+        c.strokeStyle = "#5b4636";
+        c.lineWidth = 1.4;
+        c.beginPath();
+        c.moveTo(cx - 8, 71);
+        c.quadraticCurveTo(cx, 74.5, cx + 8, 71);
+        c.stroke();
+        continue;
+      }
+      // eyes — pale whites with a small dark iris read more human than
+      // a solid almond, and the gaze carries across the corridor
       c.fillStyle = "#c9bfb0";
       c.beginPath();
       c2d.ellipse(cx, 66, 10, 4.5, 0, 0, Math.PI * 2);

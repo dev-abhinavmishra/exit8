@@ -452,8 +452,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 128. `shaft.gone` — one troffer keeps burning but its light shaft
      never falls; the air under it is empty. The inverse of
      shaft.glow. Subtle. (slice)
+129. `walker.eyeless` — the inspector patrols on schedule, face intact,
+     but where his eyes should sit there are only hollow sockets.
+     Worse than faceless: the face is all there, the eyes are the only
+     thing missing. Subtle. (slice)
 
-Slice count: **169 implemented — the full catalog**. New hooks:
+Slice count: **170 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`, `audio.playScrape(pos)`,
