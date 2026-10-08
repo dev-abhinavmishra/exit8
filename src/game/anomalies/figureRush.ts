@@ -54,7 +54,8 @@ export const figureRush: AnomalyDef = {
         if (!woken) {
           if (dist < TRIGGER) {
             woken = true;
-            ctx.audio.caption("it's coming", null);
+            // a sharp inhale at its post — the sting of being noticed
+            ctx.audio.playBreath(node.position.clone(), "it saw you");
           } else {
             return; // patient — squared on you, unmoving
           }
