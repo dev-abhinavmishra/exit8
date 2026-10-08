@@ -36,6 +36,7 @@ function finish(t: DynamicTexture): DynamicTexture {
 export interface TextureSet {
   terrazzo: DynamicTexture;
   wallPanel: DynamicTexture;
+  wallPanelBump: DynamicTexture; // normal map for the grout relief
   ceilingTile: DynamicTexture;
   steel: DynamicTexture;
   shutter: DynamicTexture;
@@ -117,6 +118,47 @@ function makeWallPanel(scene: Scene, rng: RngStream): DynamicTexture {
   grad.addColorStop(1, "rgba(80,78,70,0.28)");
   c.fillStyle = grad;
   c.fillRect(0, s * 0.82, s, s * 0.18);
+  return finish(t);
+}
+
+/** Tangent-space normal map matching makeWallPanel's groove layout so
+ * the grout courses and panel seams catch light as real relief rather
+ * than printed lines. Height field → Sobel gradients → RGB normals. */
+function makeWallPanelBump(scene: Scene): DynamicTexture {
+  const s = 512;
+  const t = tex("tex.wallPanel.bump", s, s, scene);
+  const c = ctx(t);
+  const height = new Float32Array(s * s).fill(1);
+  const groove = (x0: number, y0: number, w: number, h: number) => {
+    for (let y = Math.max(0, y0); y < Math.min(s, y0 + h); y++) {
+      for (let x = Math.max(0, x0); x < Math.min(s, x0 + w); x++) {
+        height[y * s + x] = 0.35;
+      }
+    }
+  };
+  for (let row = 1; row < 5; row++) groove(0, Math.round((s / 5) * row) - 2, s, 4);
+  groove(Math.round(s / 2) - 2, 0, 4, s);
+  groove(0, 0, 5, s);
+  groove(s - 5, 0, 5, s);
+  const img = c.createImageData(s, s);
+  const strength = 4.5;
+  for (let y = 0; y < s; y++) {
+    for (let x = 0; x < s; x++) {
+      const xm = (x - 1 + s) % s;
+      const xp = (x + 1) % s;
+      const ym = (y - 1 + s) % s;
+      const yp = (y + 1) % s;
+      const dx = (height[y * s + xp]! - height[y * s + xm]!) * strength;
+      const dy = (height[yp * s + x]! - height[ym * s + x]!) * strength;
+      const len = Math.hypot(dx, dy, 1);
+      const i = (y * s + x) * 4;
+      img.data[i] = Math.round(((-dx / len) * 0.5 + 0.5) * 255);
+      img.data[i + 1] = Math.round(((dy / len) * 0.5 + 0.5) * 255);
+      img.data[i + 2] = Math.round(((1 / len) * 0.5 + 0.5) * 255);
+      img.data[i + 3] = 255;
+    }
+  }
+  c.putImageData(img, 0, 0);
   return finish(t);
 }
 
@@ -581,6 +623,7 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
   return {
     terrazzo: makeTerrazzo(scene, rng),
     wallPanel: makeWallPanel(scene, rng),
+    wallPanelBump: makeWallPanelBump(scene),
     ceilingTile: makeCeilingTile(scene, rng),
     steel: makeSteel(scene, rng),
     shutter: makeShutter(scene, rng),

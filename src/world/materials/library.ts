@@ -51,6 +51,11 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   wallPanel.roughness = 0.4;
   wallPanel.metallic = 0.02;
   wallPanel.environmentIntensity = 0.65;
+  // grout relief: the bump map shares the albedo's groove layout and
+  // tiling, so seams catch the zone lights as real recesses up close
+  wallPanel.bumpTexture = tex.wallPanelBump;
+  tex.wallPanelBump.uScale = 8;
+  tex.wallPanelBump.vScale = 1;
 
   const terrazzo = new PBRMaterial("mat.terrazzo", scene);
   terrazzo.albedoTexture = tex.terrazzo;
