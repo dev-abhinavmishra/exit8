@@ -812,6 +812,24 @@ export function buildConcourse(
       root,
     );
     bayCeil.position = new Vector3(-C.xHalf - BAY_DEPTH / 2, C.height + 0.05, BAY_ZC);
+    // services actually branch in — a conduit drop on the north cheek +
+    // a run along the bay's back wall feeding a junction box (the corridor
+    // tray/conduit gapped at the mouth for exactly this)
+    const bayCond = kit.box("junction.bay.cond.drop", 0.04, 0.55, 0.04, mats.steel, scene, root);
+    bayCond.position = new Vector3(-C.xHalf - 0.07, C.height - 0.28, BAY_Z0 + 0.3);
+    const bayJbox = kit.box("junction.bay.cond.jbox", 0.09, 0.13, 0.08, mats.steel, scene, root);
+    bayJbox.position = new Vector3(-C.xHalf - 0.07, C.height - 0.58, BAY_Z0 + 0.3);
+    const bayRun = kit.box(
+      "junction.bay.cond.run",
+      0.04,
+      0.04,
+      BAY_Z1 - BAY_Z0 - 0.5,
+      mats.steel,
+      scene,
+      root,
+    );
+    bayRun.position = new Vector3(-C.xHalf - BAY_DEPTH + 0.07, C.height - 0.42, BAY_ZC);
+
     const bayFloor = kit.box(
       "junction.bay.floor",
       BAY_DEPTH + 0.3,
