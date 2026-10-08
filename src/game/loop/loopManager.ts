@@ -598,7 +598,10 @@ export class LoopManager {
       if (this.cycleT <= 0) this.finishCycle();
     }
 
-    this.activeInstance?.update(dt);
+    // anomalies act only while the corridor is open — committing freezes
+    // the loop's wrongness mid-beat so a chase can't dock a player who
+    // already crossed to file
+    if (this.phase === "open") this.activeInstance?.update(dt);
 
     // baseline clock: slow real-time sweep so the corridor feels alive
     this.baseClockMinute -= dt * 0.0016;
