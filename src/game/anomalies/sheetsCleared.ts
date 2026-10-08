@@ -14,7 +14,7 @@ export const sheetsCleared: AnomalyDef = {
   weight: 0.8,
   progressionRange: [0, 100],
   requires: ["notice.board"],
-  excludes: [],
+  excludes: ["notice.amends"],
   testSeed: "test.sheets.cleared",
   dangerous: false,
   activate(ctx): AnomalyInstance {
