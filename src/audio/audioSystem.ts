@@ -782,6 +782,44 @@ export class AudioSystem {
     this.caption("a vent sighs", pos);
   }
 
+  /** A distant metallic clang travels the ducts — a sharp strike and
+   *  a long ringing decay, muffled by sheet metal. Sounds like it
+   *  happened far down the system, not in the corridor. */
+  playClang(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    pan.connect(this.bus("machinery"));
+    // strike — a hard noise snap, lowpassed like through ducts
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.playbackRate.value = 0.7;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 900;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.16 * sp.gain, t0);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.28);
+    src.connect(lp).connect(g).connect(pan);
+    src.start(t0, 0.2, 0.3);
+    // ring — a pair of dull metal partials decaying slowly
+    [212, 331].forEach((f, i) => {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = f * (1 + i * 0.012); // slight inharmonic spread
+      const og = ctx.createGain();
+      og.gain.setValueAtTime(0.05 * sp.gain * (i ? 0.6 : 1), t0 + 0.01);
+      og.gain.exponentialRampToValueAtTime(0.0008, t0 + 2.4);
+      o.connect(og).connect(pan);
+      o.start(t0);
+      o.stop(t0 + 2.45);
+    });
+    this.caption("a clang in the ducts", pos);
+  }
+
   /** Two-burst internal phone ring — a warbling trill pair, used by
    *  phone.rings. Spatialized to the handset niche. */
   playRing(pos: Vector3): void {

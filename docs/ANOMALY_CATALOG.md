@@ -440,8 +440,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 124. `vent.sigh` — a high wall grille exhales once, a low airy swell
      rising and dying over seconds, pitch sagging as the breath runs
      out. The ductwork breathes. Subtle. (slice)
+125. `duct.clang` — somewhere far down the system metal strikes metal:
+     one hard snap and a long dull ring down the ducts. Sound-only.
+     Moderate. (slice)
 
-Slice count: **165 implemented — the full catalog**. New hooks:
+Slice count: **166 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`, `audio.playScrape(pos)`,

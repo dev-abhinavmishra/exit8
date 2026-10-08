@@ -102,6 +102,7 @@ import { ratsScurry } from "./ratsScurry";
 import { draftSheet } from "./draftSheet";
 import { paDeadAir } from "./paDeadAir";
 import { ventSigh } from "./ventSigh";
+import { ductClang } from "./ductClang";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -266,6 +267,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   draftSheet,
   paDeadAir,
   ventSigh,
+  ductClang,
   lightRed,
   benchFlipped,
   stripGrows,
