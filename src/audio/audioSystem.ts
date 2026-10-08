@@ -1006,6 +1006,56 @@ export class AudioSystem {
     };
   }
 
+  /** A failing troffer's mains buzz — a sawtooth fundamental with a
+   *  slow amplitude flutter (the ballast chattering), looped until the
+   *  caller stops it. Spatialized to the lamp position; the bus is
+   *  machinery, where the corridor's hum already lives. */
+  createBuzz(pos: Vector3): { start(): void; stop(): void } {
+    let osc: OscillatorNode | null = null;
+    let lfo: OscillatorNode | null = null;
+    let g: GainNode | null = null;
+    return {
+      start: () => {
+        if (!this.ctx || !this.noiseBuffer || osc) return;
+        const ctx = this.ctx;
+        const t0 = ctx.currentTime;
+        const sp = this.spatialParams(pos);
+        osc = ctx.createOscillator();
+        osc.type = "sawtooth";
+        osc.frequency.value = 118;
+        const bp = ctx.createBiquadFilter();
+        bp.type = "bandpass";
+        bp.frequency.value = 260;
+        bp.Q.value = 2.2;
+        g = ctx.createGain();
+        g.gain.setValueAtTime(0, t0);
+        g.gain.linearRampToValueAtTime(0.075 * sp.gain, t0 + 0.35);
+        lfo = ctx.createOscillator();
+        lfo.frequency.value = 7.4;
+        const lfoG = ctx.createGain();
+        lfoG.gain.value = 0.02;
+        lfo.connect(lfoG).connect(g.gain);
+        const pan = ctx.createStereoPanner();
+        pan.pan.value = sp.pan;
+        osc.connect(bp).connect(g).connect(pan).connect(this.bus("machinery"));
+        osc.start(t0);
+        lfo.start(t0);
+        this.caption("a troffer buzzes overhead", pos);
+      },
+      stop: () => {
+        if (!this.ctx || !osc || !g) return;
+        const t0 = this.ctx.currentTime;
+        g.gain.cancelScheduledValues(t0);
+        g.gain.setValueAtTime(Math.max(g.gain.value, 0.001), t0);
+        g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.28);
+        osc.stop(t0 + 0.32);
+        lfo?.stop(t0 + 0.32);
+        osc = null;
+        lfo = null;
+      },
+    };
+  }
+
   /** Inner door slide — a soft pneumatic hiss + servo whirr on open,
    *  and a lower whirr settling into a seal thump on close. Fires on
    *  every target change: auto-open on approach, seal on commit,

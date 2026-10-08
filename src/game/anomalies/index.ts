@@ -106,6 +106,9 @@ import { ductClang } from "./ductClang";
 import { cableHangs } from "./cableHangs";
 import { jacketDrapes } from "./jacketDrapes";
 import { shaftGone } from "./shaftGone";
+import { shadowMoves } from "./shadowMoves";
+import { lightsBuzz } from "./lightsBuzz";
+import { mopBucket } from "./mopBucket";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -275,6 +278,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   cableHangs,
   jacketDrapes,
   shaftGone,
+  shadowMoves,
+  lightsBuzz,
+  mopBucket,
   lightRed,
   benchFlipped,
   stripGrows,

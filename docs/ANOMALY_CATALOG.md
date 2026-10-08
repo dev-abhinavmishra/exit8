@@ -456,8 +456,18 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      but where his eyes should sit there are only hollow sockets.
      Worse than faceless: the face is all there, the eyes are the only
      thing missing. Subtle. (slice)
+130. `shadow.moves` — the figure-shadow on the east wall, cast by
+     nobody, and this one drifts: a slow half-metre slide and faint
+     lean over half a minute. You catch it on the second glance.
+     Moderate. (slice)
+131. `lights.buzz` — one troffer's ballast starts chattering: a mains
+     hum with a slow flutter, looped until judgment. The light is
+     fine; the sound is wrong. Moderate. (slice)
+132. `mop.bucket` — a mop leaning against the west wall and a bucket
+     at its base, abandoned mid-shift. Nobody cleans this loop.
+     Moderate. (slice)
 
-Slice count: **170 implemented — the full catalog**. New hooks:
+Slice count: **173 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`, `audio.playScrape(pos)`,
