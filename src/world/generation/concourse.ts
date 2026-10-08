@@ -1447,6 +1447,19 @@ export function buildConcourse(
   const caution = new TransformNode("dress.caution", scene);
   caution.parent = root;
   caution.position = new Vector3(0.95, 0, 30.8);
+
+  // service-corner vignette at the junction end of the east wall — a
+  // low pallet of spare panels + a leaning pole; floor dressing only
+  for (let i = 0; i < 4; i++) {
+    const slab = kit.box(`dress.pallet.slab.${i}`, 0.52, 0.035, 0.44, mats.wallPanel, scene, root);
+    slab.position = new Vector3(C.xHalf - 0.5, 0.035 + i * 0.037, 53.4);
+    slab.rotation.y = i % 2 ? 0.05 : -0.04;
+  }
+  const pole = kit.box("dress.pole", 0.025, 1.7, 0.025, mats.steel, scene, root);
+  pole.position = new Vector3(C.xHalf - 0.2, 0.85, 53.95);
+  pole.rotation.z = -0.3; // top rests against the wall face
+  const mopHead = kit.box("dress.mophead", 0.09, 0.12, 0.05, mats.rubber, scene, root);
+  mopHead.position = new Vector3(C.xHalf - 0.44, 0.06, 53.95);
   caution.rotation.y = 0.22;
   for (const lean of [-1, 1]) {
     const panel = kit.box(`dress.caution.panel${lean < 0 ? "a" : "b"}`, 0.36, 0.54, 0.018, cautionMat, scene);
