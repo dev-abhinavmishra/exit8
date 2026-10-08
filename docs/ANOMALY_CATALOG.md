@@ -318,8 +318,18 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     dead. The other three still sweep. Subtle. (slice)
 83. ★ `phone.lit` — the corridor phone's LINE lamp, dead since your
     first shift, glows a dull red. Subtle. (slice)
+84. ★ `exit.sign.gone` — the overhead sign over the south airlock
+    doors is simply not there; the door that decides your run goes
+    unmarked. Moderate. (slice)
+85. ★ `intake.gone` — the NORTH INTAKE sign over the spawn stretch is
+    simply not there; bare wall where the branding panel hung.
+    Subtle. (slice)
+86. ★ `bell.gone` — the service bell on the clinic counter is simply
+    not there. Subtle. (slice)
+87. ★ `notice.gone` — the NOTICE sign overhead inside the north
+    airlock is simply not there. Subtle. (slice)
 
-Slice count: **124 implemented — the full catalog**. New hooks:
+Slice count: **128 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

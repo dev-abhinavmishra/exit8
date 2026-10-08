@@ -128,6 +128,10 @@ import { totemGone } from "./totemGone";
 import { arrowsGone } from "./arrowsGone";
 import { cctvDrooped } from "./cctvDrooped";
 import { phoneLit } from "./phoneLit";
+import { exitSignGone } from "./exitSignGone";
+import { intakeGone } from "./intakeGone";
+import { bellGone } from "./bellGone";
+import { noticeGone } from "./noticeGone";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -252,6 +256,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   arrowsGone,
   cctvDrooped,
   phoneLit,
+  exitSignGone,
+  intakeGone,
+  bellGone,
+  noticeGone,
   vendDead,
   sheetsCleared,
 ];
