@@ -19,7 +19,11 @@ function tex(name: string, w: number, h: number, scene: Scene): DynamicTexture {
  *  2D context handed back at runtime. */
 type Ctx = CanvasRenderingContext2D;
 function ctx(t: DynamicTexture): Ctx {
-  return t.getContext() as unknown as Ctx;
+  const c = t.getContext() as unknown as Ctx;
+  // texture contexts persist across repaints — without a reset every
+  // painter's scale() compounds and redrawn signs/posters blow up
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  return c;
 }
 
 function finish(t: DynamicTexture): DynamicTexture {

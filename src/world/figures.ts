@@ -53,6 +53,7 @@ export interface FigureOpts {
  */
 export function drawFace(t: DynamicTexture, blank = false): void {
   const c = t.getContext();
+  (c as unknown as CanvasRenderingContext2D).setTransform(1, 0, 0, 1, 0, 0);
   (c as unknown as CanvasRenderingContext2D).scale(2, 2);
   // skin base — matches the head material, shading toward jaw
   const skin = c.createLinearGradient(0, 0, 0, 160);

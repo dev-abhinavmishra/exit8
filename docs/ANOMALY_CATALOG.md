@@ -271,8 +271,19 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 63. ★ `walker.faceless` — the other inspector walks his usual route,
     but his face is smooth skin. No eyes, no mouth — only the cap's
     shadow where a face should be. Moderate. (slice)
+64. ★ `walker.crawl` — he still walks his route, but at a fifth of his
+    pace with a slowed, heavy stride. He will not reach the end of the
+    corridor this shift. Moderate. (slice)
+65. ★ `sign.loop8` — the mid-route totem still hangs where it always
+    does, but it reads INSPECTION LOOP 8. Subtle. (slice)
+66. ★ `guide.short` — the tactile guide strip still runs south, but it
+    stops metres short of the inspection-point doors. Moderate.
+    (slice)
+67. ★ `rad.gone` — the panel radiator on the east wall, the one you
+    pass in the first quarter of the route, is simply not there.
+    Subtle. (slice)
 
-Slice count: **104 implemented — the full catalog**. New hooks:
+Slice count: **108 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
