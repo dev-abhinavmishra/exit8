@@ -673,6 +673,28 @@ export class AudioSystem {
   }
 
   /** Menu blip. */
+  /** Chapter-advance stamp — a short rising two-note mark when the
+   *  route raises your clearance. Softer than a judgment sting. */
+  playAdvance(): void {
+    if (!this.ctx) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    [311, 466].forEach((f, i) => {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = f;
+      const g = ctx.createGain();
+      const at = t0 + i * 0.14;
+      g.gain.setValueAtTime(0, at);
+      g.gain.linearRampToValueAtTime(0.05, at + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.001, at + 0.6);
+      o.connect(g).connect(this.bus("ui"));
+      o.start(at);
+      o.stop(at + 0.65);
+    });
+    this.caption("clearance raised", null);
+  }
+
   playUiTick(): void {
     if (!this.ctx || !this.noiseBuffer) return;
     const t0 = this.ctx.currentTime;

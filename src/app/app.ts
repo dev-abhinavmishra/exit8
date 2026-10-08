@@ -95,6 +95,7 @@ export class App {
   private stats = { correct: 0, mistakes: 0 };
   private filed: { name: string; chapter: number }[] = [];
   private missed: { name: string; chapter: number }[] = [];
+  private lastChapter = 1;
   private runSeed: string;
 
   constructor(
@@ -294,6 +295,7 @@ export class App {
   private startRun(): void {
     this.ui.show("none");
     this.state = "playing";
+    this.lastChapter = 1;
     // headless WebKit / permission-denied contexts reject the promise —
     // pointer-lock fallback input keeps working either way
     void Promise.resolve(this.canvas.requestPointerLock?.()).catch(() => {});
@@ -449,6 +451,11 @@ export class App {
       this.ui.caption(msg, null);
     }
     this.ui.setLoopIndex(s.loopIndex + 1);
+    // competence unlocks the next chapter — mark the promotion, softly
+    if (s.chapter > this.lastChapter) {
+      this.lastChapter = s.chapter;
+      this.audio.playAdvance();
+    }
     this.ui.setChapter(s.chapter);
   }
 
