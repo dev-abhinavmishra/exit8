@@ -733,7 +733,7 @@ export function buildConcourse(
   const hemi = new HemisphericLight("light.hemi", new Vector3(0, 1, 0), scene);
   hemi.diffuse = new Color3(0.66, 0.66, 0.7);
   hemi.groundColor = new Color3(0.36, 0.34, 0.32);
-  hemi.intensity = 1.32;
+  hemi.intensity = 1.14;
 
   // warm airlock pool lights
   for (const side of ["north", "south"] as const) {
