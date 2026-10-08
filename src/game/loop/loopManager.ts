@@ -510,6 +510,9 @@ export class LoopManager {
       this.player.enabled = true;
       const col = this.world.colliders.find((c) => c.name === `al.${this.endingSide}.capCol`);
       col?.setEnabled(false);
+      // the dropped seal lands — felt, not just seen
+      this.player.jolt(0.45);
+      this.audio.playClang(this.player.position.clone().add(new Vector3(0, 0.4, 0)));
       this.audio.caption("the way out is open", this.player.position.clone());
     }
     if (!this.endingWalked) {
