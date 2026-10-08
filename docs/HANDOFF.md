@@ -104,6 +104,10 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   CHECK envTexture exists FIRST when a PBR surface reads wrong; the
   pale-material workarounds for steel-in-dim predated this and still
   look right, so they stay.
+- SSAO2 dead-end (fidelity pass 4): `SSAO2RenderingPipeline` renders a
+  fully BLACK frame under SwiftShader-webgl (with or without an explicit
+  `enableGeometryBufferRenderer()`) — no page errors, just dead output.
+  Reverted unverified; retest on real GPU before retrying.
 - Procedural normal maps: `normalsFromHeight(scene,name,height,s,
 strength)` (textures.ts) — rebuild the albedo's grooves in a
   Float32Array height field, get a tangent-space RGB map. Currently:

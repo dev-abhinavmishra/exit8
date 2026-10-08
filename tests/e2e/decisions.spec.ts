@@ -11,7 +11,7 @@ const anomaly = (page: Page) => page.evaluate(`${NA}.anomaly()`) as Promise<stri
 async function boot(page: Page, params: string) {
   await page.goto(`/?e2e=1&engine=webgl&seed=e2e-decide${params}`);
   await page.waitForFunction(`${NA} && ${NA}.ready === true`, null, {
-    timeout: 60_000,
+    timeout: 90_000,
   });
   await page.getByRole("button", { name: /BEGIN SHIFT/ }).click();
   await page.waitForFunction(`${NA}.state() === "playing"`);

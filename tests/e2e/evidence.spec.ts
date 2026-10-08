@@ -6,7 +6,8 @@ const NOTE_IDS = ["note.clock", "note.vent", "note.counter", "note.shadow", "not
 async function boot(page: Page, params: string) {
   await page.goto(`/?e2e=1&engine=webgl&seed=e2e-evidence${params}`);
   await page.waitForFunction(`${NA} && ${NA}.ready === true`, null, {
-    timeout: 60_000,
+    // engine boot under full-suite CPU contention can approach a minute
+    timeout: 90_000,
   });
   await page.getByRole("button", { name: /BEGIN SHIFT/ }).click();
   await page.waitForFunction(`${NA}.state() === "playing"`);
@@ -74,7 +75,9 @@ test.describe("field notes", () => {
     // one correct retreat at 95 secures the route — and the dossier renames the ending
     await page.evaluate(`${NA}.setStability(95)`);
     await page.evaluate(`${NA}.teleport(0, 0, -2.95)`);
-    await page.waitForFunction(`${NA}.state() === "results"`, null, { timeout: 20_000 });
+    // the secured ending walks-out path takes ~17s of sim before the
+    // 14s no-walk fallback fires — needs headroom under suite load
+    await page.waitForFunction(`${NA}.state() === "results"`, null, { timeout: 35_000 });
     await expect(page.locator(".na-stamp")).toContainText("DOSSIER COMPLETE");
     const endings = (await page.evaluate(
       `JSON.parse(localStorage.getItem('nightaudit.save')).progression.endings`,
