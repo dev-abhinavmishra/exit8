@@ -4,6 +4,7 @@
  */
 import { Scene } from "@babylonjs/core/scene";
 import { Color4, Color3 } from "@babylonjs/core/Maths/math.color";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
@@ -202,6 +203,10 @@ export class App {
     );
     if (this.params.anomaly) this.loop.forceAnomaly(this.params.anomaly);
     this.loop.start();
+    // menu backdrop: park at the corridor mouth so the start screen (and
+    // its attract drift) sits over the lit passage, not the dark spawn
+    // vestibule — startRun teleports back before the player takes over
+    this.player.teleport(new Vector3(-0.45, 0, 6.5), 0.1);
     // the player's own cadence — footsteps.extra layers a second one on top
     this.player.onFootstep((pos, intensity) => this.audio.playFootstep(pos, intensity));
     // the other inspector's stride — his footsteps are part of normal,
@@ -297,6 +302,8 @@ export class App {
   }
 
   private startRun(): void {
+    // back to the cold open — the menu camera sat at the corridor mouth
+    this.player.teleport(LAYOUT.spawn.clone(), LAYOUT.spawnYaw);
     this.ui.show("none");
     this.state = "playing";
     this.lastChapter = 1;
