@@ -68,7 +68,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   tex.ceilingTile.vScale = 60;
   ceiling.roughness = 0.9;
   ceiling.metallic = 0;
-  ceiling.environmentIntensity = 0.3;
+  ceiling.environmentIntensity = 0.45;
 
   const steel = new PBRMaterial("mat.steel", scene);
   steel.albedoTexture = tex.steel;

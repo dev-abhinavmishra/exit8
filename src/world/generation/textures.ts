@@ -59,7 +59,9 @@ function makeTerrazzo(scene: Scene, rng: RngStream): DynamicTexture {
   const s = 1024;
   const t = tex("tex.terrazzo", s, s, scene);
   const c = ctx(t);
-  c.fillStyle = "#8f8a80";
+  // lighter warm-grey field — the reference floor is pale polished
+  // tile, not asphalt; speckles keep the same speckle language lifted
+  c.fillStyle = "#a39c8f";
   c.fillRect(0, 0, s, s);
   for (let i = 0; i < 5200; i++) {
     const x = rng.draw() * s;
@@ -68,10 +70,10 @@ function makeTerrazzo(scene: Scene, rng: RngStream): DynamicTexture {
     const v = rng.draw();
     c.fillStyle =
       v < 0.55
-        ? `rgba(${120 + rng.int(0, 60)},${115 + rng.int(0, 55)},${105 + rng.int(0, 50)},0.55)`
+        ? `rgba(${140 + rng.int(0, 60)},${135 + rng.int(0, 55)},${124 + rng.int(0, 50)},0.55)`
         : v < 0.85
-          ? `rgba(${70 + rng.int(0, 40)},${68 + rng.int(0, 38)},${62 + rng.int(0, 34)},0.5)`
-          : `rgba(${170 + rng.int(0, 40)},${160 + rng.int(0, 40)},${145 + rng.int(0, 35)},0.5)`;
+          ? `rgba(${88 + rng.int(0, 40)},${85 + rng.int(0, 38)},${78 + rng.int(0, 34)},0.5)`
+          : `rgba(${185 + rng.int(0, 40)},${176 + rng.int(0, 40)},${160 + rng.int(0, 35)},0.5)`;
     c.beginPath();
     c.arc(x, y, r, 0, Math.PI * 2);
     c.fill();
@@ -122,7 +124,7 @@ function makeCeilingTile(scene: Scene, rng: RngStream): DynamicTexture {
   const s = 512;
   const t = tex("tex.ceilingTile", s, s, scene);
   const c = ctx(t);
-  c.fillStyle = "#d8d5cd";
+  c.fillStyle = "#e0ddd4";
   c.fillRect(0, 0, s, s);
   for (let i = 0; i < 1600; i++) {
     const g = 200 + rng.int(0, 40);
