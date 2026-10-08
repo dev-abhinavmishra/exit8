@@ -5,7 +5,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 ## Where we are
 
 - PR #1 (`devin/night-audit-vertical-slice`) carries M0–M5:
-  **192 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+  **194 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
   daily/custom routes, practice mode, route archive, field notes +
   dossier ending, gamepad, ambient walker + watcher, missed-divergence
   report. NOT yet merged. Current gates: 186 unit, 26/26 e2e (~13m;

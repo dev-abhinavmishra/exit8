@@ -1156,8 +1156,8 @@ export class AudioSystem {
 
   /** A PA horn spitting a static pop — one short snappy noise burst
    *  through a mid-high band, like a relay clicking the line live.
-   *  Spatialized to the horn. */
-  playPop(pos: Vector3): void {
+   *  Spatialized; caption names the source so any fixture can borrow it. */
+  playPop(pos: Vector3, caption = "the PA horn spits static"): void {
     if (!this.ctx || !this.noiseBuffer) return;
     const ctx = this.ctx;
     const t0 = ctx.currentTime;
@@ -1176,7 +1176,7 @@ export class AudioSystem {
     src.connect(bp).connect(g).connect(pan).connect(this.bus("voices"));
     src.start(t0, 0, 0.09);
     src.stop(t0 + 0.1);
-    this.caption("the PA horn spits static", pos);
+    this.caption(caption, pos);
   }
 
   /** A breathy exhale — one long lowpassed noise swell with a soft
