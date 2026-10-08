@@ -821,6 +821,8 @@ export class GameUi {
     this.prevStability = v;
     this.stabilityEl.num.textContent = String(v);
     this.stabilityEl.bar.style.width = `${Math.max(0, Math.min(100, v))}%`;
+    // sustained-low state: the bar breathes red while the route fails
+    this.stabilityEl.root.classList.toggle("low", v <= 15);
   }
 
   setLoopIndex(i: number): void {

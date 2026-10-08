@@ -375,6 +375,24 @@
   color: var(--bad);
   animation: na-stab-delta 0.85s ease forwards;
 }
+/* sustained low stability — a slow breathing pulse, not a strobe:
+   the route is failing while it holds */
+@keyframes na-stab-low {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.na-hud .stability.low b,
+.na-hud .stability.low .bar i {
+  animation: na-stab-low 2.4s ease-in-out infinite;
+}
+.na-hud .stability.low .bar i {
+  background: var(--bad);
+}
 @media (prefers-reduced-motion: reduce) {
   .na-hud .stability.hit {
     animation: none;
@@ -382,6 +400,10 @@
   .na-hud .stability .stab-delta {
     animation: none;
     opacity: 1;
+  }
+  .na-hud .stability.low b,
+  .na-hud .stability.low .bar i {
+    animation: none;
   }
 }
 .na-hud .loop-tag {
