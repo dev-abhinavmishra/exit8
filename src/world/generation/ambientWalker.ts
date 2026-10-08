@@ -6,8 +6,10 @@
  * normal so any future behavior change reads as a divergence.
  */
 import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
+import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
 import type { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
+import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { Scene } from "@babylonjs/core/scene";
@@ -52,14 +54,48 @@ export function buildAmbientWalker(
   const legPivots = fig.hips;
   const armPivots = fig.arms;
 
-  // the case file he carries — a pale clipboard at the end of the left arm
+  // the case file he carries — a real clipboard: dark board, clip band,
+  // a typed audit sheet with a red finding mark
   const clipMat = new StandardMaterial("ambient.walker.clip", scene);
-  clipMat.diffuseColor = new Color3(0.82, 0.79, 0.72);
-  clipMat.specularColor = new Color3(0.02, 0.02, 0.02);
-  const clip = CreateBox("ambient.walker.clip", { width: 0.2, height: 0.28, depth: 0.02 }, scene);
+  clipMat.diffuseColor = new Color3(0.16, 0.13, 0.1);
+  clipMat.specularColor = new Color3(0.03, 0.03, 0.03);
+  const clip = CreateBox("ambient.walker.clip", { width: 0.2, height: 0.28, depth: 0.018 }, scene);
   clip.material = clipMat;
   clip.position = new Vector3(0.02, -0.68, 0.1);
   clip.parent = armPivots[0]!;
+  const clipTex = new DynamicTexture("ambient.walker.clip.tex", { width: 128, height: 180 }, scene, true);
+  const cc = clipTex.getContext() as unknown as CanvasRenderingContext2D;
+  cc.fillStyle = "#e8e3d4";
+  cc.fillRect(8, 10, 112, 166); // sheet
+  cc.fillStyle = "#8f8c82"; // metal clip band
+  cc.fillRect(8, 10, 112, 16);
+  cc.fillStyle = "#3c382f";
+  cc.fillRect(52, 6, 24, 10); // clip tab
+  cc.strokeStyle = "#4c463b";
+  cc.lineWidth = 2;
+  for (let i = 0; i < 9; i++) {
+    const y = 40 + i * 14;
+    cc.beginPath();
+    cc.moveTo(16, y);
+    cc.lineTo(16 + 84 - (i % 3) * 16, y);
+    cc.stroke();
+  }
+  cc.strokeStyle = "#8c2f24";
+  cc.lineWidth = 4;
+  cc.strokeRect(78, 132, 34, 30); // red finding box
+  cc.beginPath();
+  cc.moveTo(84, 148);
+  cc.lineTo(92, 156);
+  cc.lineTo(106, 136);
+  cc.stroke(); // check mark
+  clipTex.update();
+  const clipFaceMat = new StandardMaterial("ambient.walker.clip.face", scene);
+  clipFaceMat.diffuseTexture = clipTex;
+  clipFaceMat.specularColor = new Color3(0.03, 0.03, 0.03);
+  const clipFace = CreatePlane("ambient.walker.clip.page", { width: 0.19, height: 0.27 }, scene);
+  clipFace.material = clipFaceMat;
+  clipFace.position = new Vector3(0.02, -0.68, 0.111);
+  clipFace.parent = armPivots[0]!;
 
   let z = HOME_Z;
   let dir = 1; // walking south (+z) at loop start
