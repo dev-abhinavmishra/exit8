@@ -222,8 +222,11 @@ export class LoopManager {
     // constancy is what makes him part of normal
     this.world.ambientWalker.reset();
     // loop 1 is always clean — the first corridor teaches the baseline
-    // the way Exit 8's does; anomalies start rolling on loop 2
-    const rate = this.loopIndex === 1 ? 0 : (CHAPTER_ANOMALY_RATE[this.chapter] ?? 0.5);
+    // the way Exit 8's does; anomalies start rolling on loop 2.
+    // the odds lean wrong as the route deepens — late loops are rarely
+    // free passes (the original's quiet escalation), capped at 0.8
+    const base = CHAPTER_ANOMALY_RATE[this.chapter] ?? 0.5;
+    const rate = this.loopIndex === 1 ? 0 : Math.min(0.8, base + (this.loopIndex - 2) * 0.025);
     if (this.forcedAnomalyId !== null) {
       this.activeDef = this.forcedAnomalyId === "none" ? null : this.anomalies.get(this.forcedAnomalyId);
       this.forcedAnomalyId = null;
