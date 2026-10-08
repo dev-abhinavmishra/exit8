@@ -81,6 +81,8 @@ export class LoopManager {
   private trainRng: RngStream;
   private trainT = 0;
   readonly stability = new StabilityIndex();
+  /** last announced door targets — fires playDoorSlide on flips */
+  private prevDoorTargets = new Map<DoorRig, number>();
   private baseClockMinute = 0;
   private baseClockHour = 0;
 
@@ -434,8 +436,13 @@ export class LoopManager {
 
   /** Sim step. */
   update(dt: number): void {
-    // door slide animation
+    // door slide animation (+ pneumatic audio on every target flip —
+    // approach open, commit seal, cycle re-open)
     for (const d of [this.world.doors.northInner, this.world.doors.southInner] as DoorRig[]) {
+      if (d.target01 !== this.prevDoorTargets.get(d)) {
+        this.prevDoorTargets.set(d, d.target01);
+        this.audio.playDoorSlide(d.frame.getAbsolutePosition(), d.target01 === 1);
+      }
       d.open01 += (d.target01 - d.open01) * Math.min(1, 6 * dt);
       const half = 1.2;
       d.left.position.x = -half / 2 - d.open01 * half * 0.92;

@@ -768,6 +768,71 @@ export class AudioSystem {
     };
   }
 
+  /** Inner door slide — a soft pneumatic hiss + servo whirr on open,
+   *  and a lower whirr settling into a seal thump on close. Fires on
+   *  every target change: auto-open on approach, seal on commit,
+   *  re-open into the next loop. Spatialized to the door mouth. */
+  playDoorSlide(pos: Vector3, opening: boolean): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    pan.connect(this.bus("machinery"));
+
+    // servo tone — a light electric whirr, pitch rises while opening
+    const o = ctx.createOscillator();
+    o.type = "triangle";
+    if (opening) {
+      o.frequency.setValueAtTime(320, t0);
+      o.frequency.linearRampToValueAtTime(390, t0 + 0.5);
+    } else {
+      o.frequency.setValueAtTime(240, t0);
+      o.frequency.linearRampToValueAtTime(190, t0 + 0.5);
+    }
+    const og = ctx.createGain();
+    og.gain.setValueAtTime(0, t0);
+    og.gain.linearRampToValueAtTime(0.035 * sp.gain, t0 + 0.08);
+    og.gain.linearRampToValueAtTime(0, t0 + 0.55);
+    o.connect(og).connect(pan);
+    o.start(t0);
+    o.stop(t0 + 0.6);
+
+    // pneumatic hiss — a short breath of high-passed noise
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.playbackRate.value = 1.1;
+    const hp = ctx.createBiquadFilter();
+    hp.type = "highpass";
+    hp.frequency.value = opening ? 1500 : 900;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(0.045 * sp.gain, t0 + 0.1);
+    g.gain.linearRampToValueAtTime(0, t0 + 0.55);
+    src.connect(hp).connect(g).connect(pan);
+    src.start(t0, 0.2, 0.7);
+
+    // seal thump on close — the leaves meeting
+    if (!opening) {
+      const th = ctx.createBufferSource();
+      th.buffer = this.noiseBuffer;
+      th.playbackRate.value = 0.5;
+      const lp = ctx.createBiquadFilter();
+      lp.type = "lowpass";
+      lp.frequency.value = 170;
+      const tg = ctx.createGain();
+      tg.gain.setValueAtTime(0, t0 + 0.42);
+      tg.gain.linearRampToValueAtTime(0.14 * sp.gain, t0 + 0.45);
+      tg.gain.exponentialRampToValueAtTime(0.001, t0 + 0.62);
+      th.connect(lp).connect(tg).connect(pan);
+      th.start(t0 + 0.42, 0.3, 0.3);
+      this.caption("door seals", pos);
+    } else {
+      this.caption("door opens", pos);
+    }
+  }
+
   /** Airlock cycle: servo whine + seal clunk. */
   playAirlockCycle(): void {
     if (!this.ctx) return;
