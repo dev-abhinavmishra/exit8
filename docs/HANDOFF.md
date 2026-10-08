@@ -319,10 +319,10 @@ npm run build` — currently 117 unit + 24/24 e2e green.
 - **Loop 1 is now always clean** (rate forced 0 when loopIndex===1) —
   the first corridor teaches the baseline like Exit 8's; anomalies
   roll from loop 2. Chapter rates ~50/55/60% keep clean loops mixed in.
-- Yaw note (corrected): `look(yaw)` — yaw ≈ -1.57 faces the west wall
-  square-on, +1.57 east; yaw 0 = -z (north, toward spawn), π = +z
-  (south). Gaze sign: poster texture-x maps to world -z…; verify pupil
-  direction visually when touching drawPoster gaze.
+- Yaw note (verified): `look(yaw)` — yaw ≈ -1.57 faces the west wall
+  square-on, +1.57 east; yaw 0 = +z (south, toward the commit doors),
+  π = -z (north, toward spawn). To aim at a target: yaw = atan2(dx,dz).
+  Verify pupil direction visually when touching drawPoster gaze.
 - **REQUIRES TRAP (critical, caught this pass):** `requires` entries
   must name `registry.register()` ids — a typo silently SKIPS the
   anomaly (console warn only, loop runs clean). `ambient.walker.faceplate`
