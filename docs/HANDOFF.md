@@ -5,10 +5,14 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 ## Where we are
 
 - PR #1 (`devin/night-audit-vertical-slice`) carries M0–M4 + most of M5:
-  **92 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+  **133 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
   daily/custom routes, practice mode, route archive, field notes +
   dossier ending, gamepad, ambient walker + watcher, missed-divergence
   report. NOT yet merged.
+- Working mode (user, latest): QUALITY over quantity — replica parity
+  with the Exit 8 corridor, not catalog count. Same subway loop, many
+  anomaly versions of it. Test only after MAJOR additions: quick probe
+  - unit/build per change, e2e suite deferred for small anomalies.
 - M5 landed this pass: `src/world/merge.ts` folds ~160 static dressing
   meshes into per-material merged meshes (440→342 draws/frame measured —
   BENCHMARK.md has the 8-waypoint route capture); ACCESSIBILITY.md audit
@@ -278,6 +282,22 @@ npm run build` — currently 117 unit + 24/24 e2e green.
   REAL registry entries or forceAnomaly silently can't activate (vent
   grilles had to be registered for vent.slats). Shift report tracks
   `filed` + `missed` registers in app.ts (deduped by displayName).
+- Signature batch 88–92 (this pass): `ceiling.crack` (live-drawn
+  DynamicTexture vein), `floor.flood` (black water zone), `walker.fast`
+  - `walker.charge` (pace 1.9 / sprint-to-player). Traps:
+    alpha decals MUST use `mat.useAlphaFromDiffuseTexture = true` +
+    `alphaMode=2` + `backFaceCulling=false` (the aoStrip pattern) —
+    opacityTexture alone renders invisible; `ctx()`/drawFace RESET the
+    canvas transform or repaints compound scale; RngStream has
+    `rng.range(min,max)` + `rng.pick(arr)`; `clinic.counter.bell` is NOT
+    registered (scene.getMeshByName); zone PointLights live at
+    `world.lightZones.<name>.point` + `.troffers` — light.red swaps
+    troffer materials to a fresh StandardMaterial and DISPOSES it on
+    cleanup (never mutate shared mats.trofferLit); faceplate must be a
+    single-sided CreatePlane (a box maps the face texture to all 6
+    faces); WalkerMode "charge" + `chargeAt(playerZ)` drives the sprint.
+    e2e sim runs ~0.6× real-time under SwiftShader frame clamp —
+    verify motion by meshInfo position deltas, not wall-clock waits.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
