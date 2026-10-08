@@ -113,6 +113,8 @@ import { counterBell } from "./counterBell";
 import { recordsVoice } from "./recordsVoice";
 import { doorRattle } from "./doorRattle";
 import { echoSteps } from "./echoSteps";
+import { figureNorth } from "./figureNorth";
+import { totemFallen } from "./totemFallen";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -289,6 +291,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   recordsVoice,
   doorRattle,
   echoSteps,
+  figureNorth,
+  totemFallen,
   lightRed,
   benchFlipped,
   stripGrows,
