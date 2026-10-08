@@ -88,6 +88,7 @@ import { binFlipped } from "./binFlipped";
 import { hatchOpen } from "./hatchOpen";
 import { hatchKnocks } from "./hatchKnocks";
 import { mapWrong } from "./mapWrong";
+import { blindsOpen } from "./blindsOpen";
 import { stripGrows } from "./stripGrows";
 import { mullionExtra } from "./mullionExtra";
 import { glassWriting } from "./glassWriting";
@@ -237,6 +238,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   hatchOpen,
   hatchKnocks,
   mapWrong,
+  blindsOpen,
   stripGrows,
   mullionExtra,
   glassWriting,

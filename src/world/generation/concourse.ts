@@ -493,6 +493,7 @@ export function buildConcourse(
   blind.parent = glass;
   blind.position = new Vector3(0.08, 0, -1.5);
   blind.rotation.y = -Math.PI / 2;
+  registry.register("wall.gallery.blind", blind);
   const galleryBack = kit.box("wall.gallery.back", 0.1, 3.0, 12, mats.rubber, scene, root);
   galleryBack.position = new Vector3(C.xHalf + 1.4, 1.5, 26);
   // baseline reading-room interior behind the smoked glass — dark

@@ -392,8 +392,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 109. ★ `map.wrong` — the route map's YOU ARE HERE marker points at a
      different stop; the LOOP 7 schematic is otherwise identical.
      Moderate. (slice)
+110. ★ `blinds.open` — the venetian blind always drawn over one gallery
+     bay is open; that stretch reads the room like every other bay.
+     Subtle. (slice)
 
-Slice count: **150 implemented — the full catalog**. New hooks:
+Slice count: **151 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
