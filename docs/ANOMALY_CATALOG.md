@@ -424,7 +424,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      you have walked well past it the next glance back finds it turned
      to face up-corridor. Unmistakable. (slice)
 
-Slice count: **160 implemented — the full catalog**. New hooks:
+120. ★ `rats.scurry` — once, as you come up on it, a rat sprints wall to
+     wall ahead of you; no sound, gone in under a second, easy to doubt
+     you saw anything at all. Subtle. (slice)
+
+Slice count: **161 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,

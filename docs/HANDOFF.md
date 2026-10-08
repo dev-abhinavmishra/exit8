@@ -5,11 +5,22 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 ## Where we are
 
 - PR #1 (`devin/night-audit-vertical-slice`) carries M0–M5:
-  **158 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+  **160 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
   daily/custom routes, practice mode, route archive, field notes +
   dossier ending, gamepad, ambient walker + watcher, missed-divergence
   report. NOT yet merged. Current gates: 186 unit, 26/26 e2e (~12m;
-  anomalies.spec forces all 158 ids, ~7.3m alone).
+  anomalies.spec forces all 160 ids, ~7.3m alone).
+- 2026-10-08 payoff batch: secure ending walks INTO the light
+  (capCol disabled, white veil, `endingSide/endingCrossZ` in
+  loopManager); corridor brown-out on commit (`dipLights`/`applyBrown`
+  snapshot zone intensities + trofferLit emissive + lightShaft alpha);
+  lost ending `audio.hushAmbience()` before the groan; menu parks the
+  camera at the corridor mouth; `audio.drip` RngStream schedules vent
+  plinks; new anomalies walker.hum (`audio.playWhistle` sine+vibrato,
+  phrase scheduler) + figure.wall (nose-to-panel, turns once passed);
+  footsteps got a slap-echo send (0.115s delay × 0.3 fb, LP 1500, wet
+  0.22 — constructor `unlock()` block); pause/titlecard bleed fixed in
+  `show()` (live `.na-titlecard`s removed when any screen opens).
 - Working mode (user, latest): QUALITY over quantity — replica parity
   with the Exit 8 corridor, not catalog count. Same subway loop, many
   anomaly versions of it. Test only after MAJOR additions: quick probe
