@@ -64,6 +64,7 @@ export const figureRush: AnomalyDef = {
         if (dist < CONTACT) {
           gone = true;
           ctx.penalize?.(PENALTY);
+          ctx.player.jolt(1); // the camera dips like it went through you
           ctx.audio.playGroan(p.clone(), "a body through the air");
           ctx.audio.caption("it reached you — the route felt it", null);
           node.setEnabled(false);

@@ -36,6 +36,7 @@ export class PlayerController {
   private bobPhase = 0;
   private bobAmplitude = 0;
   private leanRoll = 0;
+  private joltAmt = 0;
   private prevYaw = 0;
   private keys = new Set<string>();
   private footListeners: FootstepListener[] = [];
@@ -277,8 +278,27 @@ export class PlayerController {
     const glanceTarget = this.enabled && this.keys.has(this.settings.controls.keyGlance) ? Math.PI : 0;
     this.glanceYaw += (glanceTarget - this.glanceYaw) * Math.min(1, dt * 14);
     this.camera.rotation.y = this.yaw + this.glanceYaw;
-    this.camera.rotation.x = this.pitch + bob.pitch;
-    this.camera.rotation.z = bob.roll + this.motionLean(dt);
+    this.camera.rotation.x = this.pitch + bob.pitch + this.joltPitch(dt);
+    this.camera.rotation.z = bob.roll + this.motionLean(dt) + this.joltRoll();
+  }
+
+  /** Impact kick — a sharp downward pitch dip + roll shudder that
+   * decays in ~1s. Scaled by bobAmount so reduced-motion stays calm. */
+  jolt(strength = 1): void {
+    this.joltAmt = Math.min(1.4, this.joltAmt + strength);
+  }
+
+  private joltPitch(dt: number): number {
+    if (this.joltAmt <= 0) return 0;
+    const amount = this.settings.accessibility.reducedMotion ? 0 : this.settings.controls.bobAmount;
+    this.joltAmt = Math.max(0, this.joltAmt - dt * 2.4);
+    return this.joltAmt * 0.06 * amount;
+  }
+
+  private joltRoll(): number {
+    if (this.joltAmt <= 0) return 0;
+    const amount = this.settings.accessibility.reducedMotion ? 0 : this.settings.controls.bobAmount;
+    return Math.sin(this.joltAmt * 30) * this.joltAmt * 0.025 * amount;
   }
 
   /** Procedural head motion; returns offsets. Honors reducedMotion+bobAmount. */
