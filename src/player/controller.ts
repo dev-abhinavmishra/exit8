@@ -35,6 +35,8 @@ export class PlayerController {
   private pitch = 0;
   private bobPhase = 0;
   private bobAmplitude = 0;
+  private idlePhase = 0;
+  private idleAmt = 0;
   private leanRoll = 0;
   private joltAmt = 0;
   private prevYaw = 0;
@@ -272,14 +274,31 @@ export class PlayerController {
 
     // collision ellipsoid rides camera height; keep eye level fixed here
     const bob = this.headBob(dt);
-    this.camera.position.y = LAYOUT.eyeHeight + bob.y;
+    const sway = this.idleSway(dt);
+    this.camera.position.y = LAYOUT.eyeHeight + bob.y + sway.y;
     // glance-behind: hold to look over your shoulder — the genre's core
     // "check behind you" verb. View-only: movement heading is untouched.
     const glanceTarget = this.enabled && this.keys.has(this.settings.controls.keyGlance) ? Math.PI : 0;
     this.glanceYaw += (glanceTarget - this.glanceYaw) * Math.min(1, dt * 14);
     this.camera.rotation.y = this.yaw + this.glanceYaw;
-    this.camera.rotation.x = this.pitch + bob.pitch + this.joltPitch(dt);
-    this.camera.rotation.z = bob.roll + this.motionLean(dt) + this.joltRoll();
+    this.camera.rotation.x = this.pitch + bob.pitch + sway.pitch + this.joltPitch(dt);
+    this.camera.rotation.z = bob.roll + sway.roll + this.motionLean(dt) + this.joltRoll();
+  }
+
+  /** Idle breath — a slow ~0.22 Hz respiratory sway that eases in only
+   *  when nearly still, so a stopped player keeps a living viewpoint.
+   *  Same motion gate as the bob: reduced-motion / zeroed slider kill it. */
+  private idleSway(dt: number): { y: number; pitch: number; roll: number } {
+    const speed01 = Math.min(1, Math.hypot(this.velocity.x, this.velocity.z) / WALK_SPEED);
+    const amount = this.settings.accessibility.reducedMotion ? 0 : this.settings.controls.bobAmount;
+    this.idleAmt += (1 - Math.min(1, speed01 * 2.5) - this.idleAmt) * Math.min(1, 3 * dt);
+    this.idlePhase += dt * 0.22 * Math.PI * 2;
+    const a = 0.006 * this.idleAmt * amount;
+    return {
+      y: Math.sin(this.idlePhase) * a,
+      pitch: Math.sin(this.idlePhase * 0.7 + 1.3) * a * 0.4,
+      roll: Math.sin(this.idlePhase * 0.53 + 0.7) * a * 0.35,
+    };
   }
 
   /** Impact kick — a sharp downward pitch dip + roll shudder that
