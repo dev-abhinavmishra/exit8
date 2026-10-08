@@ -244,10 +244,11 @@ export function buildAmbientWalker(
           dir = 1;
           pauseT = PAUSE_S;
           // the north-end pause is where he does the job: turns to the
-          // records bank, clipboard up, head down. Deterministic — every
-          // loop, same end, same read — so it stays baseline.
+          // records bank (west wall, -x), clipboard up, head down.
+          // Deterministic — every loop, same end, same read — so it
+          // stays baseline.
           inspectT = PAUSE_S * 0.78;
-          g.rotation.y = Math.PI / 2;
+          g.rotation.y = -Math.PI / 2;
         }
         // facing follows mode: normally the direction of travel;
         // 'backwards' keeps him squared away from it (the moonwalk)
