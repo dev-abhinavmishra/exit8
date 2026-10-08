@@ -47,11 +47,7 @@ export const floorFlood: AnomalyDef = {
     water.specularColor = new Color3(0.85, 0.85, 0.85);
     water.specularPower = 24;
     water.alpha = 0.94;
-    const plane = CreatePlane(
-      "anomaly.floorFlood",
-      { width: 3.56, height: z1 - z0 },
-      scene,
-    );
+    const plane = CreatePlane("anomaly.floorFlood", { width: 3.56, height: z1 - z0 }, scene);
     plane.material = water;
     plane.rotation.x = -Math.PI / 2;
     plane.position = new Vector3(0, 0.035, (z0 + z1) / 2);
