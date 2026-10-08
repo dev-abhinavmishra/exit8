@@ -337,8 +337,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 90. ★ `ceiling.crack` — a hairline fracture has crawled across the
     ceiling tiles overhead, a jagged dark vein between the troffers.
     Subtle. (slice)
+91. ★ `floor.flood` — one zone's floor is under still black water, a
+    dark mirrored sheet where the terrazzo and guide strip should
+    be. Unmistakable. (slice)
 
-Slice count: **131 implemented — the full catalog**. New hooks:
+Slice count: **132 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
