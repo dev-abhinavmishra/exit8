@@ -41,6 +41,7 @@ import { walkerAbsent } from "./walkerAbsent";
 import { fireOpen } from "./fireOpen";
 import { posterSwapped } from "./posterSwapped";
 import { posterHollow } from "./posterHollow";
+import { trofferFalls } from "./trofferFalls";
 import { signDrift } from "./signDrift";
 import { terminalGlitch } from "./terminalGlitch";
 import { memoryPersist } from "./memoryPersist";
@@ -177,6 +178,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   fireOpen,
   posterSwapped,
   posterHollow,
+  trofferFalls,
   signDrift,
   terminalGlitch,
   memoryPersist,

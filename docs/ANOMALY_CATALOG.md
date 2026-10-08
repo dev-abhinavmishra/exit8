@@ -345,8 +345,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     Unmistakable. (slice)
 93. ★ `poster.hollow` — Inspector Vance's staff portrait stares back
     with two void sockets where his eyes were. Subtle. (slice)
+94. ★ `troffer.falls` — one ceiling light panel has broken loose and
+    hangs tilted into the corridor, still burning, swaying on its
+    dead edge. Subtle. (slice)
 
-Slice count: **134 implemented — the full catalog**. New hooks:
+Slice count: **135 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
