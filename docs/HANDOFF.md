@@ -509,10 +509,14 @@ npm run build` — currently 186 unit + 26/26 e2e green; per the quality
   wrong loop; stay ≥ −2.8 to inspect the north cap.
 - 2026-10-08: `ctx.penalize(amount)` — docks stability, floored at 1 so
   a contact scare can never skip the verdict flow (endings stay
-  commit-plane verdicts). First user: `figure.rush` (dangerous: true —
-  wakes <6.5 m, sprints 4.6 m/s, contact −6 then vanishes). South cap
-  carries `sign.attempt`, the repainted PASS 0N plate (diegetic loop
-  counter); loopManager repaints it via drawSign at every roll.
+  commit-plane verdicts). Dangerous trio: `figure.rush` (wakes <6.5 m,
+  sprints 4.6 m/s leaning in, contact −6 then vanishes), `walker.charge`
+  (arrival <1.35 m −6), `floor.flood` (wading plinks; soaking >2 s −4 —
+  the flood spans the corridor so entry is often forced, only lingering
+  costs). South cap carries `sign.attempt`, the repainted PASS 0N plate
+  (diegetic loop counter); loopManager repaints it via drawSign at every
+  roll. **Anomalies only `update()` while phase === "open"** — a chase
+  could otherwise dock a player already frozen mid-judgment.
 - 2026-10-07 additions: `AnomalyDef` requires ALL of `progressionRange`,
   `testSeed`, `dangerous` (TS2739 missing them). `update(dt)` gets
   `ctx` closure — `ctx.player.position`, `ctx.audio.play*`,
