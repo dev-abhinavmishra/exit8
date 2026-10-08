@@ -428,6 +428,92 @@ export class AudioSystem {
     this.caption("PA chime", pos);
   }
 
+  /** Muffled station PA — the corridor's recurring voice. A two-tone
+   *  chime, then garbled horn-speaker speech: syllable-rhythm formant
+   *  clusters through a narrow band. Unintelligible by design — the
+   *  important thing is that it SOUNDS like an announcement. */
+  playAnnouncement(pos: Vector3): void {
+    this.duckAmbience(5);
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    pan.connect(this.bus("voices"));
+
+    // chime — the up-down pair every transit PA opens with
+    [880, 659].forEach((f, i) => {
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = f;
+      const g = ctx.createGain();
+      const at = t0 + i * 0.42;
+      g.gain.setValueAtTime(0, at);
+      g.gain.linearRampToValueAtTime(0.06 * sp.gain, at + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.001, at + 0.55);
+      o.connect(g).connect(pan);
+      o.start(at);
+      o.stop(at + 0.6);
+    });
+
+    // horn-speaker band — tinny, band-limited, over-driven a touch
+    const horn = ctx.createBiquadFilter();
+    horn.type = "bandpass";
+    horn.frequency.value = 1350;
+    horn.Q.value = 0.8;
+    const hp = ctx.createBiquadFilter();
+    hp.type = "highpass";
+    hp.frequency.value = 420;
+    const master = ctx.createGain();
+    master.gain.value = 0.9;
+    horn.connect(hp).connect(master).connect(pan);
+
+    // syllable chain — two vowel formants per syllable, envelope
+    // shaped like speech; clause gaps every so often; a consonant
+    // hiss leads some syllables
+    let t = t0 + 1.05;
+    const syllables = 9 + Math.floor(this.rng.draw() * 7);
+    for (let i = 0; i < syllables; i++) {
+      const dur = 0.08 + this.rng.draw() * 0.13;
+      const clause = this.rng.draw() < 0.16;
+      const f1 = 300 + this.rng.draw() * 420;
+      const f2 = 900 + this.rng.draw() * 1100;
+      const at = t;
+      for (const f of [f1, f2]) {
+        const o = ctx.createOscillator();
+        o.type = "triangle";
+        o.frequency.value = f;
+        const g = ctx.createGain();
+        const peak = (f === f1 ? 0.055 : 0.03) * sp.gain;
+        g.gain.setValueAtTime(0, at);
+        g.gain.linearRampToValueAtTime(peak, at + 0.018);
+        g.gain.setValueAtTime(peak * 0.8, at + dur * 0.7);
+        g.gain.linearRampToValueAtTime(0, at + dur);
+        o.connect(g).connect(horn);
+        o.start(at);
+        o.stop(at + dur + 0.02);
+      }
+      // leading consonant hiss on ~1/3 of syllables
+      if (this.rng.draw() < 0.35) {
+        const src = ctx.createBufferSource();
+        src.buffer = this.noiseBuffer;
+        src.playbackRate.value = 1.4;
+        const nf = ctx.createBiquadFilter();
+        nf.type = "highpass";
+        nf.frequency.value = 2600;
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0.022 * sp.gain, at - 0.035);
+        g.gain.exponentialRampToValueAtTime(0.001, at);
+        src.connect(nf).connect(g).connect(horn);
+        src.start(at - 0.04);
+        src.stop(at);
+      }
+      t += dur + (clause ? 0.28 + this.rng.draw() * 0.2 : 0.02 + this.rng.draw() * 0.1);
+    }
+    this.caption("PA announcement", pos);
+  }
+
   /** Two-burst internal phone ring — a warbling trill pair, used by
    *  phone.rings. Spatialized to the handset niche. */
   playRing(pos: Vector3): void {

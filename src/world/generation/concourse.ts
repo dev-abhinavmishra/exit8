@@ -100,6 +100,8 @@ export interface ConcourseWorld {
     vents: Vector3[];
     /** troffer-row emitter points for the fluorescent hum */
     troffers: Vector3[];
+    /** wall-mounted PA horn positions for the muffled announcements */
+    paHorns: Vector3[];
   };
   /** per-loop harmless scatter — refreshed on every rebaseline */
   scatter: ScatterPool;
@@ -1557,6 +1559,7 @@ export function buildConcourse(
       junctionMachine: new Vector3(-C.xHalf + 0.45, 1.4, 47.5),
       vents: [new Vector3(-1.7, 2.9, 8), new Vector3(1.7, 2.9, 30), new Vector3(-1.7, 2.9, 50)],
       troffers: [new Vector3(0, 2.95, 12), new Vector3(0, 2.95, 28), new Vector3(0, 2.95, 45)],
+      paHorns: [new Vector3(C.xHalf - 0.05, 2.5, 12.2), new Vector3(-C.xHalf + 0.05, 2.5, 40.5)],
     },
   };
 }

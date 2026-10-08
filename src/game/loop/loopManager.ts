@@ -72,6 +72,10 @@ export class LoopManager {
   private endingOutcome: "secure" | "lost" | null = null;
   private anomalyRolls: RngStream;
   private anomalyRuntime: RngStream;
+  /** PA announcements — the corridor's recurring voice; first one
+   *  lands early so the run opens under it, then every ~45-85s */
+  private paRng: RngStream;
+  private paT = 0;
   readonly stability = new StabilityIndex();
   private baseClockMinute = 0;
   private baseClockHour = 0;
@@ -94,6 +98,8 @@ export class LoopManager {
   ) {
     this.anomalyRolls = new RngStream("loop.roll", runSeed);
     this.anomalyRuntime = new RngStream("anomaly.runtime", runSeed);
+    this.paRng = new RngStream("audio.pa", runSeed);
+    this.paT = 10 + this.paRng.range(0, 12);
     // spawn inside the north airlock, door to corridor opens on first loop
     this.player.teleport(LAYOUT.spawn.clone(), LAYOUT.spawnYaw);
     this.world.doors.northInner.target01 = 1;
@@ -441,6 +447,13 @@ export class LoopManager {
       // auto-open the south door when the player is near it (they still must
       // cross the commit plane to file)
       if (p.z > LAYOUT.southAirlock.z0 - 1.2) this.world.doors.southInner.target01 = 1;
+      // muffled PA — fires only while the corridor is open: endings
+      // and judgments keep their own quiet
+      this.paT -= dt;
+      if (this.paT <= 0) {
+        this.paT = 40 + this.paRng.range(0, 45);
+        this.audio.playAnnouncement(this.paRng.pick(this.world.anchors.paHorns));
+      }
     } else if (this.phase === "commit_pending") {
       this.judgeT -= dt;
       if (this.judgeT <= 0) this.resolveJudgment();

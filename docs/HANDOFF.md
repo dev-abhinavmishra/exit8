@@ -361,6 +361,18 @@ npm run build` — currently 117 unit + 24/24 e2e green.
   fires. After scripted inserts, grep the index for the new name.
 - `meshInfo()` returns undefined for TransformNodes (figure roots);
   query a child mesh (`<name>.head`) for enabled/pos instead.
+- **`teleport(x,y,z)` resets the camera to yaw 0** unless you pass the
+  4th arg — `look()` called BEFORE a teleport is silently discarded and
+  every screenshot faces +z (the sealed door). Either pass
+  `teleport(x,y,z,yaw)` or `look()` after. Cost me ~6 iterations chasing
+  an "invisible" figure that was behind the camera the whole time.
+- Endings now have payoff beats in `loopManager` (`beginSecureEnding` /
+  `beginLostEnding` + `updateEnding`): secure drops the filed-at cap
+  onto a stair silhouette + warm glow; lost drowns all zones to 5% and
+  stands a cold-emissive silhouette at the cap. In a drowned corridor
+  lit materials read black and new PointLights get crowded out of
+  StandardMaterial's 4-light cap — use `disableLighting` + faint
+  `emissiveColor` for things that must read in the dark.
 
   `__nightaudit.anomaly()` equals it — run it after touching requires.
 
