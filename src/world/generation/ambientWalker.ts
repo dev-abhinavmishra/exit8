@@ -130,7 +130,7 @@ export function buildAmbientWalker(
       fig.headPivot.rotation.x = 0;
       g.setEnabled(true);
       g.position.set(LANE_X, 0, z);
-      g.rotation.y = dir > 0 ? 0 : Math.PI;
+      g.rotation.set(0, dir > 0 ? 0 : Math.PI, 0);
     },
     chargeAt(playerZ: number) {
       chargeZ = playerZ;
@@ -145,6 +145,7 @@ export function buildAmbientWalker(
     },
     setMode(m: WalkerMode) {
       mode = m;
+      g.rotation.x = 0; // charge's sprint lean never leaks into other modes
       if (m === "absent") {
         // he is simply not there this loop — the routine has a hole in it
         g.setEnabled(false);
@@ -201,6 +202,7 @@ export function buildAmbientWalker(
           bobT += dt * 2.6;
           g.rotation.y = dz > 0 ? 0 : Math.PI;
         }
+        g.rotation.x = closing ? 0.09 : 0; // a sprint leans, a hold squares up
         const bob = closing ? Math.abs(Math.sin(bobT * 3.4)) * 0.04 : 0;
         g.position.set(lane, bob, z);
         const swing = closing ? Math.sin(bobT * 3.4) : 0;
