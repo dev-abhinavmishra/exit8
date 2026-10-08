@@ -145,6 +145,7 @@ import { walkerFast } from "./walkerFast";
 import { walkerCharge } from "./walkerCharge";
 import { walkerWait } from "./walkerWait";
 import { ceilingCrack } from "./ceilingCrack";
+import { ceilingWeeps } from "./ceilingWeeps";
 import { floorFlood } from "./floorFlood";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
@@ -286,6 +287,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   walkerCharge,
   walkerWait,
   ceilingCrack,
+  ceilingWeeps,
   floorFlood,
   vendDead,
   vendEmpty,

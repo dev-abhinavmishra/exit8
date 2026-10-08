@@ -459,6 +459,40 @@ export class AudioSystem {
     this.caption("phone ringing", pos);
   }
 
+  /** Single water drop landing — a short falling chirp with a tiny
+   *  noise tick on impact, used by ceiling.weeps. Spatialized. */
+  playDrip(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const o = ctx.createOscillator();
+    o.type = "sine";
+    o.frequency.setValueAtTime(1650, t0);
+    o.frequency.exponentialRampToValueAtTime(720, t0 + 0.055);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.05 * sp.gain, t0);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.07);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    o.connect(g).connect(pan).connect(this.bus("ambience"));
+    o.start(t0);
+    o.stop(t0 + 0.08);
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.playbackRate.value = 4;
+    const hp = ctx.createBiquadFilter();
+    hp.type = "highpass";
+    hp.frequency.value = 3800;
+    const g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0.02 * sp.gain, t0);
+    g2.gain.exponentialRampToValueAtTime(0.001, t0 + 0.03);
+    src.connect(hp).connect(g2).connect(pan);
+    src.start(t0);
+    src.stop(t0 + 0.04);
+    this.caption("water dripping", pos);
+  }
+
   /** Clock tick generator — used by baseline and clock anomalies. */
   createTicker(name: string): {
     start(): void;

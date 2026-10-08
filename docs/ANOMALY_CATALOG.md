@@ -368,10 +368,13 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 101. ★ `pitch.sags` — the junction machinery thrum drifts flat over
      the loop, a slow quarter-tone sag that never resolves. Subtle.
      (slice)
+102. ★ `ceiling.weeps` — a ceiling seam drips onto the walk line,
+     plink by plink, a wet circle spreading on the terrazzo. Moderate.
+     (slice)
 
-Slice count: **142 implemented — the full catalog**. New hooks:
+Slice count: **143 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
-`audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
+`audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
 
 Balance: per-loop exposure aims for roughly thirds across subtle /
