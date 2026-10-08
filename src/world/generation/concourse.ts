@@ -252,6 +252,7 @@ function buildAirlock(
     const face = kit.plane(`al.${side}.cap.attempt.face`, 0.46, 0.15, attemptMat, scene);
     face.parent = root;
     face.position = new Vector3(-1.54, 1.72, 54.93);
+    registry.register("sign.attempt.face", face);
   }
   for (const [bx, btag] of [
     [-w / 2 + 0.16, "l"],

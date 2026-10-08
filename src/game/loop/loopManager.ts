@@ -283,6 +283,7 @@ export class LoopManager {
           this.stability.set(Math.max(1, this.stability.current - amount));
           if (this.activeDef) this.events.onContact?.(this.activeDef);
         },
+        streak: this.streak,
       });
     }
   }

@@ -158,6 +158,7 @@ import { galleryLit } from "./galleryLit";
 import { galleryDark } from "./galleryDark";
 import { fanDead } from "./fanDead";
 import { fanRacing } from "./fanRacing";
+import { passStuck } from "./passStuck";
 import { paneFace } from "./paneFace";
 import { galleryOccupied } from "./galleryOccupied";
 import { galleryMirror } from "./galleryMirror";
@@ -371,6 +372,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   galleryDark,
   fanDead,
   fanRacing,
+  passStuck,
   paneFace,
   galleryOccupied,
   galleryMirror,

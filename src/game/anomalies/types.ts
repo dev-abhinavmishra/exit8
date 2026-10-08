@@ -25,6 +25,8 @@ export interface AnomalyContext {
   visualCues: boolean;
   /** dock the run's stability — floored so a scare can't silently end it */
   penalize?(amount: number): void;
+  /** consecutive correct filings — what the pass plate should read + 1 */
+  streak?: number;
 }
 
 export interface AnomalyInstance {
