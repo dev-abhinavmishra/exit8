@@ -105,6 +105,7 @@ export function buildAmbientWalker(
   let z = HOME_Z;
   let dir = 1; // walking south (+z) at loop start
   let pauseT = 0;
+  let inspectT = 0; // clipboard-read beat during the north-end pause
   let bobT = 0;
   let lastStepPh = 0;
   let mode: WalkerMode = "normal";
@@ -124,6 +125,8 @@ export function buildAmbientWalker(
       z = HOME_Z;
       dir = 1;
       pauseT = 0;
+      inspectT = 0;
+      fig.headPivot.rotation.x = 0;
       g.setEnabled(true);
       g.position.set(0.55, 0, z);
       g.rotation.y = dir > 0 ? 0 : Math.PI;
@@ -165,6 +168,7 @@ export function buildAmbientWalker(
         // dead still except the slightest drift of the head
         g.position.set(0.55, 0, z);
         for (const p of [...legPivots, ...armPivots]) p.rotation.x = 0;
+        fig.headPivot.rotation.x = 0;
         return;
       }
       if (mode === "midstep") {
@@ -177,6 +181,7 @@ export function buildAmbientWalker(
         legPivots[1]!.rotation.x = -0.46;
         armPivots[0]!.rotation.x = -0.3;
         armPivots[1]!.rotation.x = 0.3;
+        fig.headPivot.rotation.x = 0;
         return;
       }
       if (mode === "charge") {
@@ -206,6 +211,7 @@ export function buildAmbientWalker(
       }
       if (pauseT > 0) {
         pauseT -= dt;
+        if (inspectT > 0) inspectT -= dt;
       } else {
         z += dir * SPEED * dt * pace;
         if (z >= WALK_Z1 && dir > 0) {
@@ -216,6 +222,11 @@ export function buildAmbientWalker(
           z = WALK_Z0;
           dir = 1;
           pauseT = PAUSE_S;
+          // the north-end pause is where he does the job: turns to the
+          // records bank, clipboard up, head down. Deterministic — every
+          // loop, same end, same read — so it stays baseline.
+          inspectT = PAUSE_S * 0.78;
+          g.rotation.y = Math.PI / 2;
         }
         // facing follows mode: normally the direction of travel;
         // 'backwards' keeps him squared away from it (the moonwalk)
@@ -232,6 +243,18 @@ export function buildAmbientWalker(
       legPivots[1]!.rotation.x = -swing * 0.5;
       armPivots[0]!.rotation.x = -swing * 0.32;
       armPivots[1]!.rotation.x = swing * 0.32;
+      // the read: clipboard arm rises toward the face, head bows over
+      // it — eases in over the pause's first beat, settles out at the
+      // end. Overrides the swing-zeroed arm while inspectT lasts.
+      if (inspectT > 0) {
+        const rise = Math.min(1, Math.max(0, PAUSE_S - pauseT - 0.15) * 3.2);
+        const settle = Math.min(1, inspectT * 2.4);
+        const lift = Math.min(rise, settle);
+        armPivots[0]!.rotation.x = -1.05 * lift;
+        fig.headPivot.rotation.x = 0.34 * lift;
+      } else {
+        fig.headPivot.rotation.x = 0;
+      }
       stepIfLanded(stepping);
     },
   };
