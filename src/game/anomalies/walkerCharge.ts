@@ -1,7 +1,8 @@
 /**
  * walker.charge — the inspector runs at you. The man you have learned
- * to ignore breaks off his route and sprints down his lane to a step
- * behind you, then holds at your shoulder while you keep walking.
+ * to ignore halts mid-stride — a beat where his cadence simply stops —
+ * then sprints down his lane to a step behind you, and holds at your
+ * shoulder while you keep walking.
  * The reference's signature scare — and now it costs: letting him
  * reach you docks the run's stability. The play is to file before he
  * arrives, not to walk on with him at your back. Dangerous
@@ -37,9 +38,17 @@ export const walkerCharge: AnomalyDef = {
     // avoidable in-fiction: cross a commit plane and file before he
     // closes — letting him reach your shoulder is what costs you
     let reached = false;
+    // he breaks the routine first: a beat of dead halt — the cadence
+    // you know stopping — before the sprint. chargeAt stays null until
+    // then and the walker's charge mode holds him still.
+    let tellT = 0;
     return {
-      update() {
-        ctx.world.ambientWalker.chargeAt(ctx.player.position.z);
+      update(dt) {
+        tellT += dt;
+        if (tellT - dt <= 0.9 && tellT > 0.9) {
+          ctx.audio.caption("his step stops", null);
+        }
+        if (tellT > 0.9) ctx.world.ambientWalker.chargeAt(ctx.player.position.z);
         if (!reached) {
           const w = ctx.world.registry.get("ambient.walker");
           const d = w
