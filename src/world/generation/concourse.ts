@@ -1223,7 +1223,7 @@ export function buildConcourse(
     [-0.4, 0.6, -0.3],
   ];
   scuffSpots.forEach(([sx, sz, sr], i) => {
-    const sc = kit.plane(`dress.scuff.${i}`, 0.9, 0.35, mats.aoStrip, scene, root);
+    const sc = kit.plane(`dress.scuff.${i}`, 0.9, 0.35, mats.grime, scene, root);
     sc.position = new Vector3(sx, 0.014, sz);
     sc.rotation.x = Math.PI / 2; // face up
     sc.rotation.z = sr;
