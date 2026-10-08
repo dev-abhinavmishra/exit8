@@ -976,6 +976,13 @@ export function drawRouteMap(t: DynamicTexture, hereStop = 0): void {
  *  table of inspector codes, shift times and clearance marks. */
 export function makeRotaBoard(scene: Scene): DynamicTexture {
   const t = tex("tex.rota", 512, 384, scene);
+  drawRotaBoard(t);
+  return finish(t);
+}
+
+/** Paint the duty board. `stamped` adds a big red UNDER REVIEW mark
+ *  across the table — rota.stamped's rewrite of a settled document. */
+export function drawRotaBoard(t: DynamicTexture, stamped = false): void {
   const c = ctx(t);
   c.fillStyle = "#232629";
   c.fillRect(0, 0, 512, 384);
@@ -1038,8 +1045,21 @@ export function makeRotaBoard(scene: Scene): DynamicTexture {
   c.textAlign = "center";
   c.fillText("AUDITED", 0, 4);
   c.restore();
+  if (stamped) {
+    // the big red review mark, stamped across the middle of the table
+    c.save();
+    c.translate(256, 196);
+    c.rotate(-0.11);
+    c.strokeStyle = "rgba(190,62,48,0.85)";
+    c.lineWidth = 5;
+    c.strokeRect(-172, -34, 344, 66);
+    c.fillStyle = "rgba(190,62,48,0.85)";
+    c.font = "bold 44px Arial, sans-serif";
+    c.textAlign = "center";
+    c.fillText("UNDER REVIEW", 0, 15);
+    c.restore();
+  }
   t.update();
-  return finish(t);
 }
 
 /** Corridor service phone face — dark plate, keypad grid, dial card. */

@@ -395,9 +395,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 110. ★ `blinds.open` — the venetian blind always drawn over one gallery
      bay is open; that stretch reads the room like every other bay.
      Subtle. (slice)
+111. ★ `rota.stamped` — the duty board carries a big red UNDER REVIEW
+     stamp across the staffing table where only the amber AUDITED mark
+     belongs. Moderate. (slice)
 
-Slice count: **151 implemented — the full catalog**. New hooks:
-`audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`;
+Slice count: **152 implemented — the full catalog**. New hooks:
+`audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

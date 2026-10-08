@@ -343,9 +343,12 @@ function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, reg
   rotaMat.emissiveColor = new Color3(0.09, 0.09, 0.08);
   const rotaFrame = kit.box("dress.rota.frame", 0.04, 0.62, 0.82, mats.steel, scene, root);
   rotaFrame.position = new Vector3(-WALL_X + 0.03, 1.6, 2.4);
-  const rotaFace = kit.plane("dress.rota", 0.76, 0.56, rotaMat, scene, root);
+  const rotaFace = kit.plane("rota.face", 0.76, 0.56, rotaMat, scene, root);
   rotaFace.position = new Vector3(-WALL_X + 0.052, 1.6, 2.4);
   rotaFace.rotation.y = -Math.PI / 2;
+  // NOT dress.* — anomalies repaint this face (rota.stamped); a dress.*
+  // name would fold it into the static merge and lose its texture
+  registry.register("rota.face", rotaFace);
 
   // ---- worn floor wayfinding: a painted route arrow, faded into the
   //      terrazzo at approach points ----
