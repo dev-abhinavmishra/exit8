@@ -558,12 +558,17 @@ export function buildConcourse(
     rail.position = new Vector3(x, C.height - 0.004, zc);
   }
 
-  // soffit drop at the clinic threshold — service zones in real stations
-  // carry a lower beam band; breaks the ceiling line at the z32 boundary
-  const soffit = kit.box("dress.soffit.clinic", C.xHalf * 2, 0.3, 0.6, mats.wallPanel, scene, root);
-  soffit.position = new Vector3(0, C.height - 0.15, 32);
-  const soffitLip = kit.box("dress.soffit.clinic.lip", C.xHalf * 2, 0.05, 0.66, mats.rubber, scene, root);
-  soffitLip.position = new Vector3(0, C.height - 0.325, 32);
+  // soffit drops at zone thresholds — service stations carry lower beam
+  // bands; breaks the ceiling line at the gallery + clinic boundaries
+  for (const [nm, z] of [
+    ["clinic", 32],
+    ["gallery", 14],
+  ] as const) {
+    const sof = kit.box(`dress.soffit.${nm}`, C.xHalf * 2, 0.3, 0.6, mats.wallPanel, scene, root);
+    sof.position = new Vector3(0, C.height - 0.15, z);
+    const lip = kit.box(`dress.soffit.${nm}.lip`, C.xHalf * 2, 0.05, 0.66, mats.rubber, scene, root);
+    lip.position = new Vector3(0, C.height - 0.325, z);
+  }
 
   // Skirting + wall caps — left wall has feature bands, right wall carries
   // the gallery glass z 20–32.
