@@ -518,7 +518,7 @@ export function drawFigure(
   c.restore();
 }
 
-export function drawSign(t: DynamicTexture, spec: SignSpec): void {
+export function drawSign(t: DynamicTexture, spec: SignSpec, mirror = false): void {
   const w = 512;
   const h = 160;
   const c = ctx(t);
@@ -530,6 +530,11 @@ export function drawSign(t: DynamicTexture, spec: SignSpec): void {
     dark: { bg: "#17191d", fg: "#c9c6bc", edge: "#4a4d52" },
     green: { bg: "#0d2416", fg: "#5fe08a", edge: "#3da867" },
   }[spec.tone];
+  if (mirror) {
+    c.save();
+    c.translate(w, 0);
+    c.scale(-1, 1);
+  }
   c.fillStyle = tones.bg;
   c.fillRect(0, 0, w, h);
   c.strokeStyle = tones.edge;
@@ -546,6 +551,7 @@ export function drawSign(t: DynamicTexture, spec: SignSpec): void {
     c.fillStyle = spec.tone === "dark" ? tones.fg : "#c9c6bc";
     c.fillText(spec.sub, w / 2, 122);
   }
+  if (mirror) c.restore();
   t.update();
 }
 

@@ -374,8 +374,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 103. ★ `poster.watches` — Inspector Vance's engraved face gains real
      eyes whose pupils slide to follow you down the corridor.
      Moderate. (slice)
+104. ★ `sign.mirror` — the mid-route INSPECTION LOOP 7 totem reads
+     backwards, every glyph mirrored, arrow reversed. Moderate.
+     (slice)
 
-Slice count: **144 implemented — the full catalog**. New hooks:
+Slice count: **145 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

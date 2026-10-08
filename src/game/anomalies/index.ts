@@ -119,6 +119,7 @@ import { exitWrongway } from "./exitWrongway";
 import { walkerFaceless } from "./walkerFaceless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
+import { signMirror } from "./signMirror";
 import { guideShort } from "./guideShort";
 import { radGone } from "./radGone";
 import { lockersAll } from "./lockersAll";
@@ -262,6 +263,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   walkerFaceless,
   walkerCrawl,
   signLoop8,
+  signMirror,
   guideShort,
   radGone,
   lockersAll,
