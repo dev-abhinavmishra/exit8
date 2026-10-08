@@ -478,8 +478,15 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      frame: three quick thuds, the latch chattering, the leaf
      juddering. Something pushed from the other side. Moderate.
      (slice)
+136. ★ `lights.blackout` — the corridor feed dies one breaker at a
+     time, rolling north to south, until only the far airlock pool
+     burns — and someone is standing in it, backlit, facing you.
+     Get within six metres and its head finds you. Unmistakable.
+     **Dangerous** — pushing to arm's reach (<2.2 m) docks stability
+     −5; the right play is turning back, not inspecting the dark.
+     (slice)
 
-### Generated index (all 207)
+### Generated index (all 208)
 
 1. `clock.reverse` — Counterclockwise Clock · CH I · moderate
 2. `doorway.extra` — Unmapped Doorway · CH I · unmistakable
@@ -688,10 +695,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 205. `vend.dead` — Dead Vending Unit · CH I · unmistakable
 206. `vend.empty` — Vending Shelves Bare · CH II · moderate
 207. `sheets.cleared` — Stripped Notice Board · CH II · subtle
+208. `lights.blackout` — Someone Is In The Dark · CH III · unmistakable · **dangerous**
 
-Slice count: **207 implemented — the full catalog**. Dangerous class
+Slice count: **208 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
-scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`.
+scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
+`lights.blackout` (a standoff, not a chase — close inspection costs).
 Contacts land on the report under ROUTE INCIDENTS. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,

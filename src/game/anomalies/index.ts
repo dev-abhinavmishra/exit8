@@ -211,6 +211,7 @@ import { walkerWait } from "./walkerWait";
 import { ceilingCrack } from "./ceilingCrack";
 import { ceilingWeeps } from "./ceilingWeeps";
 import { floorFlood } from "./floorFlood";
+import { lightsBlackout } from "./lightsBlackout";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -417,6 +418,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   ceilingCrack,
   ceilingWeeps,
   floorFlood,
+  lightsBlackout,
   vendDead,
   vendEmpty,
   sheetsCleared,

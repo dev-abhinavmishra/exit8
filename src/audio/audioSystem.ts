@@ -1189,7 +1189,7 @@ export class AudioSystem {
     src.connect(bp).connect(g).connect(pan).connect(this.bus("voices"));
     src.start(t0, 0, 0.09);
     src.stop(t0 + 0.1);
-    this.caption(caption, pos);
+    if (caption) this.caption(caption, pos);
   }
 
   /** A breathy exhale — one long lowpassed noise swell with a soft

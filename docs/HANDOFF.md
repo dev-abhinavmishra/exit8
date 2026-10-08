@@ -515,7 +515,11 @@ npm run build` — currently 186 unit + 26/26 e2e green; per the quality
   breaking before the sprint; charge leans like the rusher and resets
   on setMode/reset), `floor.flood` (wading plinks; soaking >2 s −4 —
   the flood spans the corridor so entry is often forced, only
-  lingering costs). South cap carries `sign.attempt`, the repainted PASS 0N plate
+  lingering costs); `lights.blackout` makes it a quartet — the feed
+  dies zone-by-zone, a backlit figure waits under the far airlock
+  pool, its head tracks inside 6.5 m, arm's reach (<2.2 m) costs −5.
+  Standoff, not a chase: the right play is turning back. South cap
+  carries `sign.attempt`, the repainted PASS 0N plate
   (diegetic loop counter); loopManager repaints it via drawSign at every
   roll. **Anomalies only `update()` while phase === "open"** — a chase
   could otherwise dock a player already frozen mid-judgment.
