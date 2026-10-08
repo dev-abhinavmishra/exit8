@@ -400,8 +400,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      belongs. Moderate. (slice)
 112. ★ `sheets.added` — the notice board's five typed memos have become
      six, the fresh sheet slightly crooked among them. Subtle. (slice)
+113. ★ `terminal.advisory` — a beat into the loop the airlock terminals
+     print a row the paperwork never issues: ADVISORY — LOOK BEHIND
+     YOU / COUNT AGAIN / NOT YOUR LOOP. Unmistakable. (slice)
 
-Slice count: **153 implemented — the full catalog**. New hooks:
+Slice count: **154 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,

@@ -91,6 +91,7 @@ import { mapWrong } from "./mapWrong";
 import { blindsOpen } from "./blindsOpen";
 import { rotaStamped } from "./rotaStamped";
 import { sheetsAdded } from "./sheetsAdded";
+import { terminalAdvisory } from "./terminalAdvisory";
 import { stripGrows } from "./stripGrows";
 import { mullionExtra } from "./mullionExtra";
 import { glassWriting } from "./glassWriting";
@@ -243,6 +244,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   blindsOpen,
   rotaStamped,
   sheetsAdded,
+  terminalAdvisory,
   stripGrows,
   mullionExtra,
   glassWriting,
