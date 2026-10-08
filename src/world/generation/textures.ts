@@ -437,8 +437,8 @@ export function drawSign(t: DynamicTexture, spec: SignSpec): void {
   c.textAlign = "center";
   c.font = "bold 44px Arial, sans-serif";
   const arrow = spec.arrow === "right" ? "  →" : spec.arrow === "left" ? "←  " : "";
-  c.fillText(spec.title + arrow, w / 2, spec.sub ? 78 : 92);
-  if (spec.figure) drawFigure(c, 42, 74, spec.figure === "right" ? 1 : -1, tones.fg);
+  c.fillText(spec.title + arrow, spec.figure ? w / 2 + 18 : w / 2, spec.sub ? 78 : 92);
+  if (spec.figure) drawFigure(c, 32, 74, spec.figure === "right" ? 1 : -1, tones.fg);
   if (spec.sub) {
     c.font = "24px Arial, sans-serif";
     c.fillStyle = spec.tone === "dark" ? tones.fg : "#c9c6bc";

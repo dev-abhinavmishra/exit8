@@ -248,8 +248,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 55. ★ `panel.open` — the breaker panel on the west wall hangs open on
     its hinge, dark bus and breaker rows inside. It was shut. Subtle.
     (slice)
+56. ★ `pilot.dead` — the amber pilot lamp beside the south airlock
+    mouth is out; an empty socket where the route-open light was.
+    Subtle. (slice)
 
-Slice count: **96 implemented — the full catalog**. New hooks:
+Slice count: **97 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

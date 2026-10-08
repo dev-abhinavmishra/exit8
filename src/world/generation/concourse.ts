@@ -1188,8 +1188,11 @@ export function buildConcourse(
   ] as const) {
     const housing = kit.box(`dress.doorlight.${tag}`, 0.08, 0.2, 0.1, mats.steel, scene, root);
     housing.position = new Vector3(1.5, 1.95, fz);
-    const lamp = kit.box(`dress.doorlight.${tag}.lamp`, 0.04, 0.12, 0.05, mats.commitmentStripe, scene, root);
+    // south lamp registered (not merged): pilot.dead kills it
+    const lampName = tag === "s" ? "pilot.south" : `dress.doorlight.${tag}.lamp`;
+    const lamp = kit.box(lampName, 0.04, 0.12, 0.05, mats.commitmentStripe, scene, root);
     lamp.position = new Vector3(1.5, 1.95, fz + dir * 0.07);
+    if (tag === "s") registry.register("pilot.south", lamp);
   }
 
   // ceiling void panel — one missing tile exposes the dark plenum with
