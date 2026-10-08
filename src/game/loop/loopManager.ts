@@ -76,6 +76,10 @@ export class LoopManager {
    *  lands early so the run opens under it, then every ~45-85s */
   private paRng: RngStream;
   private paT = 0;
+  /** Distant train — the working line beyond the walls; rumbles past
+   *  every ~90-150s so the loop reads as one passage in a live system */
+  private trainRng: RngStream;
+  private trainT = 0;
   readonly stability = new StabilityIndex();
   private baseClockMinute = 0;
   private baseClockHour = 0;
@@ -100,6 +104,8 @@ export class LoopManager {
     this.anomalyRuntime = new RngStream("anomaly.runtime", runSeed);
     this.paRng = new RngStream("audio.pa", runSeed);
     this.paT = 10 + this.paRng.range(0, 12);
+    this.trainRng = new RngStream("audio.train", runSeed);
+    this.trainT = 26 + this.trainRng.range(0, 30);
     // spawn inside the north airlock, door to corridor opens on first loop
     this.player.teleport(LAYOUT.spawn.clone(), LAYOUT.spawnYaw);
     this.world.doors.northInner.target01 = 1;
@@ -453,6 +459,11 @@ export class LoopManager {
       if (this.paT <= 0) {
         this.paT = 40 + this.paRng.range(0, 45);
         this.audio.playAnnouncement(this.paRng.pick(this.world.anchors.paHorns));
+      }
+      this.trainT -= dt;
+      if (this.trainT <= 0) {
+        this.trainT = 90 + this.trainRng.range(0, 60);
+        this.audio.playTrainPass();
       }
     } else if (this.phase === "commit_pending") {
       this.judgeT -= dt;

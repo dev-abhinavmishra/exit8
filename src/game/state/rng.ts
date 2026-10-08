@@ -35,6 +35,7 @@ export type StreamName =
   | "anomaly.runtime" // intra-anomaly variance (flicker patterns, cadence)
   | "audio.ambient" // rumble scheduling, ambience texture
   | "audio.pa" // station-PA scheduling, horn pick, speech texture
+  | "audio.train" // distant-train scheduling + texture
   | "audio.synth" // synthesized-source jitter (footsteps, noise buffer)
   | "evidence" // per-run field-note placement
   | "ui.feedback"
@@ -46,6 +47,7 @@ const STREAM_SALTS: Record<StreamName, number> = {
   "anomaly.runtime": 0xc2b2ae35,
   "audio.ambient": 0x27d4eb2f,
   "audio.pa": 0x7f3a91c5,
+  "audio.train": 0x3e8f2b71,
   "audio.synth": 0x5bf03635,
   evidence: 0x4f1bbcdd,
   "ui.feedback": 0x165667b1,

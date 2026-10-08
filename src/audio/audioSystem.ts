@@ -376,6 +376,74 @@ export class AudioSystem {
     this.caption("distant rumble", null);
   }
 
+  /** A train passes somewhere beyond the walls — the signature transit
+   *  ambience: a long low rumble swell with the wheel-clatter pulse
+   *  riding on top and a faint brake whistle trailing off. Not
+   *  spatialized: it's always distant, everywhere in the loop. */
+  playTrainPass(): void {
+    this.duckAmbience(6);
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const dur = 7 + this.rng.draw() * 3;
+    const bus = this.bus("ambience");
+
+    // low body — the rolling mass
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.playbackRate.value = 0.45;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 110;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(0.14, t0 + dur * 0.35);
+    g.gain.setValueAtTime(0.14, t0 + dur * 0.6);
+    g.gain.linearRampToValueAtTime(0, t0 + dur);
+    src.connect(lp).connect(g).connect(bus);
+    src.start(t0, 0, dur + 0.1);
+
+    // wheel clatter — pairs of filtered noise ticks at ~3.6Hz, slightly
+    // quickening; quiet enough to feel embedded in the rumble
+    let t = t0 + dur * 0.3;
+    const end = t0 + dur * 0.78;
+    let interval = 0.28;
+    while (t < end) {
+      for (const off of [0, 0.07]) {
+        const tick = ctx.createBufferSource();
+        tick.buffer = this.noiseBuffer;
+        tick.playbackRate.value = 2.4;
+        const bp = ctx.createBiquadFilter();
+        bp.type = "bandpass";
+        bp.frequency.value = 900;
+        bp.Q.value = 1.6;
+        const tg = ctx.createGain();
+        const at = t + off;
+        const swell = Math.sin(((at - t0) / dur) * Math.PI); // ride the rumble
+        tg.gain.setValueAtTime(0.035 * swell, at);
+        tg.gain.exponentialRampToValueAtTime(0.001, at + 0.05);
+        tick.connect(bp).connect(tg).connect(bus);
+        tick.start(at, 0.2, 0.07);
+      }
+      interval *= 0.995; // nearly imperceptible acceleration
+      t += interval;
+    }
+
+    // brake whistle — a long faint descending sine, the only tonal part
+    const w = ctx.createOscillator();
+    w.type = "sine";
+    w.frequency.setValueAtTime(1900, t0 + dur * 0.55);
+    w.frequency.linearRampToValueAtTime(1300, t0 + dur * 0.95);
+    const wg = ctx.createGain();
+    wg.gain.setValueAtTime(0, t0 + dur * 0.55);
+    wg.gain.linearRampToValueAtTime(0.012, t0 + dur * 0.68);
+    wg.gain.linearRampToValueAtTime(0, t0 + dur * 0.97);
+    w.connect(wg).connect(bus);
+    w.start(t0 + dur * 0.55);
+    w.stop(t0 + dur);
+    this.caption("distant train", null);
+  }
+
   /** Low vent groan — a slow pressure swell, used by vent anomalies. */
   playGroan(pos: Vector3): void {
     this.duckAmbience(1.2);
