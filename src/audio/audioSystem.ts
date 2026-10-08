@@ -1154,6 +1154,31 @@ export class AudioSystem {
     this.caption("something shakes the service door", pos);
   }
 
+  /** A PA horn spitting a static pop — one short snappy noise burst
+   *  through a mid-high band, like a relay clicking the line live.
+   *  Spatialized to the horn. */
+  playPop(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = 2200;
+    bp.Q.value = 1.1;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.11 * sp.gain, t0);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.08);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    src.connect(bp).connect(g).connect(pan).connect(this.bus("voices"));
+    src.start(t0, 0, 0.09);
+    src.stop(t0 + 0.1);
+    this.caption("the PA horn spits static", pos);
+  }
+
   /** Inner door slide — a soft pneumatic hiss + servo whirr on open,
    *  and a lower whirr settling into a seal thump on close. Fires on
    *  every target change: auto-open on approach, seal on commit,

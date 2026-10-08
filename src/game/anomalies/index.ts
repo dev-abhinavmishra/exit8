@@ -126,6 +126,7 @@ import { walkerLook } from "./walkerLook";
 import { noticeFace } from "./noticeFace";
 import { facePaneNorth } from "./facePaneNorth";
 import { figureFountain } from "./figureFountain";
+import { hornCrackle } from "./hornCrackle";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -315,6 +316,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   noticeFace,
   facePaneNorth,
   figureFountain,
+  hornCrackle,
   lightRed,
   benchFlipped,
   stripGrows,
