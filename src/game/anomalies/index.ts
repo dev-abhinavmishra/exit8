@@ -130,6 +130,8 @@ import { hornCrackle } from "./hornCrackle";
 import { voiceNear } from "./voiceNear";
 import { zonePulse } from "./zonePulse";
 import { trofferSparks } from "./trofferSparks";
+import { clockStopped } from "./clockStopped";
+import { panelWires } from "./panelWires";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -323,6 +325,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   voiceNear,
   zonePulse,
   trofferSparks,
+  clockStopped,
+  panelWires,
   lightRed,
   benchFlipped,
   stripGrows,
