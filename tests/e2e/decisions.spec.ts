@@ -71,9 +71,20 @@ test.describe("judgment", () => {
         .then(() => true)
         .catch(() => false);
       if (done) break;
-      await page.waitForFunction(`${NA}.state() === "playing" && ${NA}.pos().z < 0`, null, {
-        timeout: 12_000,
-      });
+      const cycled = await page
+        .waitForFunction(`${NA}.state() === "playing" && ${NA}.pos().z < 0`, null, {
+          timeout: 12_000,
+        })
+        .then(() => true)
+        .catch(() => false);
+      if (cycled) continue;
+      // neither results nor respawn — the secure reveal is holding at the
+      // open cap, waiting for the player to step into the light
+      await page.evaluate(`${NA}.teleport(0, 0, 61)`);
+      await page
+        .waitForFunction(`${NA}.state() === "results"`, null, { timeout: 20_000 })
+        .then(() => true)
+        .catch(() => false);
     }
     await expect(page.locator("text=ROUTE SECURED")).toBeVisible({ timeout: 15_000 });
   });
