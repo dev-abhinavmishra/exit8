@@ -40,6 +40,8 @@ export interface LoopState {
   activeAnomaly: string | null;
   judgment: JudgmentResult | null;
   stability: number;
+  /** deepest pass-streak the shift reached (the cap plate's peak number) */
+  bestPass: number;
 }
 
 export interface LoopEvents {
@@ -63,6 +65,8 @@ export class LoopManager {
   /** consecutive correct filings — the diegetic PASS counter's number;
    *  a wrong call resets it to 0 like the original's exit counter */
   private streak = 0;
+  /** deepest the streak reached — the report's BEST PASS row */
+  private bestPass = 0;
   private activeDef: AnomalyDef | null = null;
   private activeInstance: AnomalyInstance | null = null;
   private cycleT = 0;
@@ -173,6 +177,7 @@ export class LoopManager {
       activeAnomaly: this.activeDef?.id ?? null,
       judgment: null,
       stability: this.stability.current,
+      bestPass: this.bestPass,
     };
   }
 
@@ -304,6 +309,7 @@ export class LoopManager {
     const result = this.stability.judge(correct, this.chapter);
     if (correct) this.correctCount += 1;
     this.streak = correct ? this.streak + 1 : 0;
+    if (this.streak > this.bestPass) this.bestPass = this.streak;
     // training keeps the stakes visible but clamps instead of terminating
     if (this.training && result.outcome !== "continue") {
       this.stability.set(result.outcome === "secure" ? 85 : 15);

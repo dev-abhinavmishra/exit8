@@ -647,6 +647,7 @@ export class GameUi {
       ["CORRECT FILINGS", String(stats.correct)],
       ["ERRORS", String(stats.mistakes)],
       ["ANOMALIES DISCOVERED", String(stats.discovered)],
+      ["BEST PASS", String(state.bestPass).padStart(2, "0")],
       ["FIELD NOTES", stats.notes ?? "0/6"],
       ["FINAL STABILITY", `${state.stability}`],
     ];
