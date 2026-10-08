@@ -96,6 +96,7 @@ import { phoneGone } from "./phoneGone";
 import { hatchScratched } from "./hatchScratched";
 import { shadowFigure } from "./shadowFigure";
 import { figureCorridor } from "./figureCorridor";
+import { lightRed } from "./lightRed";
 import { stripGrows } from "./stripGrows";
 import { mullionExtra } from "./mullionExtra";
 import { glassWriting } from "./glassWriting";
@@ -154,7 +155,6 @@ import { exitSignGone } from "./exitSignGone";
 import { intakeGone } from "./intakeGone";
 import { bellGone } from "./bellGone";
 import { noticeGone } from "./noticeGone";
-import { lightRed } from "./lightRed";
 import { walkerFast } from "./walkerFast";
 import { walkerCharge } from "./walkerCharge";
 import { walkerWait } from "./walkerWait";
@@ -252,6 +252,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   hatchScratched,
   shadowFigure,
   figureCorridor,
+  lightRed,
   stripGrows,
   mullionExtra,
   glassWriting,
