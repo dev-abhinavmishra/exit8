@@ -134,6 +134,46 @@ export function buildFixtures(
   mopHead.parent = mopSet;
   mopHead.position = new Vector3(-0.11, 0.07, 0.12);
 
+  // ---- heating convector, east wall z≈10.5 — long finned radiator
+  //      panel between the wayfinding posters and the fire point.
+  //      Registered node (not merged): rad.leaks pools water under it ----
+  const radSet = new TransformNode("rad.unit", scene);
+  radSet.parent = root;
+  radSet.position = new Vector3(WALL_X - 0.12, 0, 10.5);
+  registry.register("rad.unit", radSet);
+  const radBody = kit.box("rad.body", 0.1, 0.5, 1.8, mats.wallPanel, scene);
+  radBody.parent = radSet;
+  radBody.position = new Vector3(0, 0.42, 0);
+  for (let i = 0; i < 11; i++) {
+    const fin = kit.box(`rad.fin.${i}`, 0.014, 0.4, 0.06, mats.wallPanel, scene);
+    fin.parent = radSet;
+    fin.position = new Vector3(-0.062, 0.42, -0.75 + i * 0.15);
+  }
+  const radTop = kit.box("rad.top", 0.12, 0.03, 1.82, mats.wallPanel, scene);
+  radTop.parent = radSet;
+  radTop.position = new Vector3(0, 0.68, 0);
+  for (const fz of [-0.7, 0.7]) {
+    const foot = kit.box(`rad.foot.${fz}`, 0.16, 0.1, 0.08, mats.wallPanel, scene);
+    foot.parent = radSet;
+    foot.position = new Vector3(0.01, 0.05, fz);
+  }
+  const radValve = CreateCylinder("rad.valve", { height: 0.08, diameter: 0.05, tessellation: 10 }, scene);
+  radValve.material = mats.steel;
+  radValve.parent = radSet;
+  radValve.position = new Vector3(0, 0.28, 0.94);
+  const radKnob = CreateCylinder(
+    "rad.knob",
+    { height: 0.05, diameterTop: 0.07, diameterBottom: 0.04, tessellation: 10 },
+    scene,
+  );
+  radKnob.material = mats.rubber;
+  radKnob.parent = radSet;
+  radKnob.position = new Vector3(0, 0.36, 0.94);
+  const radPipe = CreateCylinder("rad.pipe", { height: 0.24, diameter: 0.03, tessellation: 8 }, scene);
+  radPipe.material = mats.steel;
+  radPipe.parent = radSet;
+  radPipe.position = new Vector3(0, 0.12, 0.94);
+
   // ---- first aid cabinet, east wall z≈46 — white surface-mount box,
   //      green cross; fills the bare span between vending and the
   //      lift lobby. Registered node (not merged): aid.gone removes it ----

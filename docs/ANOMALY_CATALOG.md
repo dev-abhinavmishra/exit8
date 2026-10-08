@@ -260,8 +260,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 59. ★ `cab.gone` — the fire point's red wall cabinet is not there. The
     sign, the extinguisher, the bracket shadow all remain. Subtle.
     (slice)
+60. ★ `rad.leaks` — the heating convector is leaking: a puddle spreads
+    under the valve end, a dark drip trail feeds it. Subtle. (slice)
 
-Slice count: **100 implemented — the full catalog**. New hooks:
+Slice count: **101 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
