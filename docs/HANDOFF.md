@@ -5,11 +5,22 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 ## Where we are
 
 - PR #1 (`devin/night-audit-vertical-slice`) carries M0–M5:
-  **160 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+  **163 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
   daily/custom routes, practice mode, route archive, field notes +
   dossier ending, gamepad, ambient walker + watcher, missed-divergence
-  report. NOT yet merged. Current gates: 186 unit, 26/26 e2e (~12m;
-  anomalies.spec forces all 160 ids, ~7.3m alone).
+  report. NOT yet merged. Current gates: 186 unit, 26/26 e2e (~13m;
+  anomalies.spec forces all 163 ids, ~7m alone — it now navigates to
+  about:blank between ids to drop dead GL contexts, which was the
+  cause of a previous 8m "timeout" misdiagnosis).
+- 2026-10-08 second pass: rats.scurry (sub-second wall-crossing, once),
+  draft.sheet (`audio.playScrape` — a lone sheet slides in an unseen
+  draft), pa.deadair (`audio.playPaDeadAir` — relay click + carrier
+  hiss, no voice); anomaly odds now RAMP with depth — base 0.5/0.55/0.6
+  + 2.5% per loop past 2, capped 0.8 (`loopManager`); sign titles
+  fit-to-width (`drawSign` measures the string, shrinks font before it
+  can reach the pictogram — INSPECTION POINT was colliding since M1);
+  perf re-measured: spawn 461 / mid 270 draws (merge holding, _drawCalls
+  is cumulative — divide delta by fps).
 - 2026-10-08 payoff batch: secure ending walks INTO the light
   (capCol disabled, white veil, `endingSide/endingCrossZ` in
   loopManager); corridor brown-out on commit (`dipLights`/`applyBrown`
@@ -39,7 +50,8 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   results/credits, v1 saves, vitest + playwright suites, vercel.json.
 - Gates (run before every push): `npm run lint && npm run typecheck &&
 npm run test && npm run test:e2e && npm run validate:assets &&
-npm run build` — currently 117 unit + 24/24 e2e green.
+npm run build` — currently 186 unit + 26/26 e2e green; per the quality
+directive, run e2e only after major additions, unit/lint/tsc each push.
 - **Chapters are live** (b3d517f): `1 + floor(correct/2)` cap 3, HUD shows
   CH I/II/III. Tiering: ch1 = quiet 17 (signs/posters/props/stills), ch2 =
   motion + watchers (sways, spins, breathes, groans, watcher.far,
