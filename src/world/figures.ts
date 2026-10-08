@@ -55,6 +55,13 @@ export function drawFace(t: DynamicTexture, blank = false): void {
   const c = t.getContext();
   (c as unknown as CanvasRenderingContext2D).setTransform(1, 0, 0, 1, 0, 0);
   (c as unknown as CanvasRenderingContext2D).scale(2, 2);
+  // the plate's edges are transparent — an oval face region paints ON
+  // the skull instead of reading as a slab floating proud of it
+  c.clearRect(0, 0, 128, 160);
+  const c2d = c as unknown as CanvasRenderingContext2D;
+  c2d.beginPath();
+  c2d.ellipse(64, 78, 60, 76, 0, 0, Math.PI * 2);
+  c2d.clip();
   // skin base — matches the head material, shading toward jaw
   const skin = c.createLinearGradient(0, 0, 0, 160);
   skin.addColorStop(0, "#8a6f5e");
@@ -81,7 +88,6 @@ export function drawFace(t: DynamicTexture, blank = false): void {
     c.fillRect(26, 56, 30, 4);
     c.fillRect(72, 56, 30, 4);
     // eyes — dark almond lids, deeper pupil, the faintest lid line above
-    const c2d = c as unknown as CanvasRenderingContext2D;
     c.fillStyle = "#171110";
     for (const cx of [41, 87]) {
       c2d.beginPath();
@@ -144,6 +150,7 @@ export function drawFace(t: DynamicTexture, blank = false): void {
 // neutral, unsettling by restraint rather than by expression.
 function faceTexture(name: string, scene: Scene): DynamicTexture {
   const t = new DynamicTexture(name, { width: 256, height: 320 }, scene, true);
+  t.hasAlpha = true;
   drawFace(t);
   return t;
 }
@@ -247,10 +254,12 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
     // thin angled panels catch a white specular streak under the
     // troffers — keep them near-matte so they read as dark lapels
     lapel.specularColor = new Color3(0.01, 0.01, 0.01);
+    // lapels — narrow panels meeting at the sternum in a V below the
+    // collar, not strap bars across the chest
     for (const sx of [-1, 1]) {
-      const l = box(`${name}.lapel.${sx}`, 0.09, 0.34, 0.012, lapel, scene, g, sx * 0.1, 1.33, 0.13);
-      l.rotation.z = sx * 0.22;
-      l.rotation.x = -0.06;
+      const l = box(`${name}.lapel.${sx}`, 0.07, 0.3, 0.01, lapel, scene, g, sx * 0.065, 1.42, 0.132);
+      l.rotation.z = -sx * 0.38;
+      l.rotation.x = -0.05;
     }
     // neck
     const neck = CreateCylinder(`${name}.neck`, { height: 0.1, diameter: 0.11, tessellation: 10 }, scene);
@@ -312,6 +321,7 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
     // near-zero specular — the plate was catching a white glint blob
     faceMat.specularColor = new Color3(0.004, 0.004, 0.004);
     faceMat.specularPower = 128;
+    faceMat.useAlphaFromDiffuseTexture = true;
     const face = CreatePlane(`${name}.faceplate`, { width: 0.17, height: 0.22 }, scene);
     face.material = faceMat;
     // proud of the skull's front tip (z≈0.1056) — it poked through as a
