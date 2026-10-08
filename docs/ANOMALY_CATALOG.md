@@ -434,8 +434,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 122. `pa.deadair` — a PA horn keys up on dead air: relay click, the
      carrier hiss held a beat, click off. No announcement follows.
      Moderate. (slice)
+123. `glass.hands` — handprints pressed into the observation glass's
+     condensation sheen from inside; one sharp at shoulder height, one
+     dragged and streaked. Moderate. (slice)
 
-Slice count: **163 implemented — the full catalog**. New hooks:
+Slice count: **164 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`, `audio.playScrape(pos)`,

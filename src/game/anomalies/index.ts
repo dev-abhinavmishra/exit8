@@ -106,6 +106,7 @@ import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
 import { mullionExtra } from "./mullionExtra";
 import { glassWriting } from "./glassWriting";
+import { glassHands } from "./glassHands";
 import { totemReversed } from "./totemReversed";
 import { doorSlow } from "./doorSlow";
 import { cabinetRows } from "./cabinetRows";
@@ -268,6 +269,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   stripGrows,
   mullionExtra,
   glassWriting,
+  glassHands,
   totemReversed,
   doorSlow,
   cabinetRows,
