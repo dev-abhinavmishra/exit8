@@ -415,10 +415,14 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 117. `bench.flipped` — the west-wall bench lies overturned: seat face
      to the floor, legs in the air. Moderate. (slice)
 
-Slice count: **158 implemented — the full catalog**. New hooks:
+118. ★ `walker.hum` — the other inspector is whistling: a loose, slightly
+     off-key tune wanders his route with him, phrases resting between.
+     You hear it before you see him. Unmistakable. (slice)
+
+Slice count: **159 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
-`audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
+`audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
 
 Balance: per-loop exposure aims for roughly thirds across subtle /

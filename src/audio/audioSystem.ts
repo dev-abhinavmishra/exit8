@@ -572,6 +572,39 @@ export class AudioSystem {
     this.caption("water drip", pos);
   }
 
+  /** A whistled note — sine with a slow human vibrato and a soft attack,
+   *  riding the anomaly bus. walker.hum feeds it a melody; a quiet tune
+   *  in a dead-quiet corridor is unmistakably wrong. */
+  playWhistle(pos: Vector3, freq: number, dur = 0.42): void {
+    if (!this.ctx) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const o = ctx.createOscillator();
+    o.type = "sine";
+    o.frequency.setValueAtTime(freq * 0.985, t0);
+    o.frequency.exponentialRampToValueAtTime(freq, t0 + 0.06);
+    // ~5 Hz wobble at ±0.7% — a loose, unpractised whistle
+    const vib = ctx.createOscillator();
+    vib.type = "sine";
+    vib.frequency.value = 5.2;
+    const vibGain = ctx.createGain();
+    vibGain.gain.value = freq * 0.007;
+    vib.connect(vibGain).connect(o.frequency);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(0.02 * sp.gain, t0 + 0.06);
+    g.gain.setValueAtTime(0.02 * sp.gain, t0 + dur * 0.68);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    o.connect(g).connect(pan).connect(this.bus("anomaly"));
+    o.start(t0);
+    vib.start(t0);
+    o.stop(t0 + dur + 0.03);
+    vib.stop(t0 + dur + 0.03);
+  }
+
   /** Muffled station PA — the corridor's recurring voice. A two-tone
    *  chime, then garbled horn-speaker speech: syllable-rhythm formant
    *  clusters through a narrow band. Unintelligible by design — the
