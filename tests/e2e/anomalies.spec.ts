@@ -19,9 +19,9 @@ const IDS = readdirSync(ANOMALY_DIR)
 // Catches the silent-skip class: a `requires` entry that names a node the
 // registry never registered makes loopManager drop the anomaly (console
 // warning only) — the route runs clean and the divergence never fires.
-// ~8-10 min: a fresh navigation per def, as the seed query is read at boot.
+// ~8-20 min: a fresh navigation per def, as the seed query is read at boot.
 test("every catalog anomaly activates when forced", async ({ page }) => {
-  test.setTimeout(20 * 60_000);
+  test.setTimeout(35 * 60_000);
   const failed: string[] = [];
   for (const id of IDS) {
     let reason = "";

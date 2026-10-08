@@ -5,7 +5,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 ## Where we are
 
 - PR #1 (`devin/night-audit-vertical-slice`) carries M0–M4 + most of M5:
-  **149 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+  **157 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
   daily/custom routes, practice mode, route archive, field notes +
   dossier ending, gamepad, ambient walker + watcher, missed-divergence
   report. NOT yet merged.
@@ -347,8 +347,23 @@ npm run build` — currently 117 unit + 24/24 e2e green.
   is NOT registered (only `ambient.walker` is) — walker.fast/charge
   never fired before the fix. Same class: `sign.junction` vs the real
   `sign.sign.junction` (kit.hangingSign prepends "sign."). Guard:
-  `tests/e2e/anomalies.spec.ts` forces every catalog id and asserts
+  `tests/e2e/anomalies.spec.ts` forces every catalog id and asserts activation.
+- **East-wall decal faces**: planes on the east wall (+x) use
+  `rotation.y = +Math.PI / 2` to face −x into the corridor (−π/2 points
+  into the wall and is backface-culled — the glassWriting convention).
+  Transparent decal materials use diffuse+emissive+opacity textures
+  (all three bound to the same DynamicTexture), `disableLighting`,
+  `backFaceCulling=false`, `parent = world.root`. Runtime-drawn marks
+  go on `anomaly.*` named planes disposed in cleanup.
+- **index.ts insert dedupe**: python `.replace()` inserts duplicate
+  `import`/`ALL_ANOMALIES` entries when the anchor appears twice —
+  the boot check throws `duplicate anomaly: <id>` and `ready` never
+  fires. After scripted inserts, grep the index for the new name.
+- `meshInfo()` returns undefined for TransformNodes (figure roots);
+  query a child mesh (`<name>.head`) for enabled/pos instead.
+
   `__nightaudit.anomaly()` equals it — run it after touching requires.
+
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
