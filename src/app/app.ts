@@ -268,6 +268,10 @@ export class App {
         clockPos: this.world.anchors.clock,
         vendPos: this.world.anchors.vend,
         fanScale: () => this.world.fanSpeed,
+        zoneLight: (pos) => {
+          const z = this.world.zones.find((zn) => pos.z >= zn.z0 && pos.z < zn.z1);
+          return z ? Math.min(1, z.point.intensity / 7.6) : 1;
+        },
       });
       // a first gesture arriving while paused must not un-mute the scene
       if (this.state === "paused") this.audio.suspend();

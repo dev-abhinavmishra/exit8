@@ -246,6 +246,8 @@ export class AudioSystem {
       vendPos?: Vector3;
       /** live getter for world.fanSpeed — the extraction fan's whoosh */
       fanScale?: () => number;
+      /** normalized light level at a position — dead zones stop humming */
+      zoneLight?: (pos: Vector3) => number;
     } = {},
   ): void {
     if (!this.ctx || !this.noiseBuffer || this.ambienceStarted) return;
@@ -314,7 +316,8 @@ export class AudioSystem {
       const update = () => {
         const sp = this.spatialParams(pos);
         const flutter = 0.85 + 0.15 * Math.sin(ctx.currentTime * 6.3 + pos.z);
-        g.gain.value = 0.03 * sp.gain * flutter;
+        const zone = this.zoneLightFn?.(pos) ?? 1;
+        g.gain.value = 0.03 * sp.gain * flutter * zone;
         pan.pan.value = sp.pan;
       };
       this.ventUpdaters.push(update);
@@ -366,6 +369,7 @@ export class AudioSystem {
     // so fan.dead / fan.racing / machine.silence / blackout are audible
     // on the blades, not just on the rotor.
     this.fanScaleFn = opts.fanScale ?? null;
+    this.zoneLightFn = opts.zoneLight ?? null;
     const fanSrc = ctx.createBufferSource();
     fanSrc.buffer = this.noiseBuffer;
     fanSrc.loop = true;
@@ -431,6 +435,7 @@ export class AudioSystem {
   private machineGainScale: (() => number) | null = null;
   private machinePitchFn: (() => number) | null = null;
   private fanScaleFn: (() => number) | null = null;
+  private zoneLightFn: ((pos: Vector3) => number) | null = null;
 
   /** Anomaly hook: scale the vend-unit compressor gain (vend.dead
    *  silences it — the machine is off, not just dark). */
