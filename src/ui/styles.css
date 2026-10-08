@@ -619,3 +619,21 @@
     width: 92vw;
   }
 }
+
+/* short viewports — tighten the menu so every action fits without a
+   scroll; the .na-panel max-height still guards the extreme cases */
+@media (max-height: 860px) {
+  .na-panel .body {
+    padding: 12px 24px 16px;
+  }
+  .na-panel header {
+    padding: 14px 24px 9px;
+  }
+  .na-btn {
+    padding: 9px 16px;
+    margin: 6px 0;
+  }
+  .na-brief {
+    line-height: 1.5;
+  }
+}

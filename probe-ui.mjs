@@ -1,0 +1,15 @@
+import { chromium } from "playwright";
+const b = await chromium.launch({ args: ["--use-gl=angle", "--use-angle=swiftshader-webgl", "--no-sandbox"] });
+const p = await (await b.newContext({ viewport: { width: 1280, height: 800 } })).newPage();
+p.on("pageerror", (e) => console.log("ERR:", String(e)));
+await p.goto("http://localhost:5199/?e2e=1&seed=uishot&anomaly=none", { waitUntil: "domcontentloaded" });
+await p.waitForFunction("window.__nightaudit?.ready === true", null, { timeout: 60000 });
+await p.screenshot({ path: "/tmp/ui-start.png" });
+await p.getByRole("button", { name: /BEGIN SHIFT/ }).click();
+await p.waitForFunction("window.__nightaudit.loop() === 1", null, { timeout: 30000 });
+await p.evaluate("window.__nightaudit.setStability(4)");
+await p.evaluate("window.__nightaudit.teleport(0, 0, 58.4, 0)");
+await p.waitForFunction("window.__nightaudit.state() === 'results'", null, { timeout: 30000 });
+await p.waitForTimeout(1200);
+await p.screenshot({ path: "/tmp/ui-results.png" });
+await b.close();
