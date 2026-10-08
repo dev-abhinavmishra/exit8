@@ -257,8 +257,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 58. ★ `bucket.tipped` — the janitorial bucket is on its side, mop
     fallen across the floor, water pooled. Nobody heard it go over.
     Moderate. (slice)
+59. ★ `cab.gone` — the fire point's red wall cabinet is not there. The
+    sign, the extinguisher, the bracket shadow all remain. Subtle.
+    (slice)
 
-Slice count: **99 implemented — the full catalog**. New hooks:
+Slice count: **100 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
