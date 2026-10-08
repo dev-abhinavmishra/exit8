@@ -262,6 +262,15 @@ function buildAirlock(
     registry.register("sign.attempt.face", face);
     const faceBez = kit.box(`dress.passbez.${side}`, 0.5, 0.19, 0.015, mats.steel, scene, root);
     faceBez.position = new Vector3(-1.54, 1.72, 54.945);
+    // the same count at the north mouth — one shared texture, so the
+    // plates can never disagree (the north cap plate only shows open)
+    const faceN = kit.plane("al.north.cap.attempt.face", 0.46, 0.15, attemptMat, scene);
+    faceN.parent = root;
+    faceN.position = new Vector3(-1.54, 1.72, 1.0);
+    faceN.rotation.y = Math.PI;
+    registry.register("sign.attempt.face.n", faceN);
+    const bezN = kit.box("dress.passbez.n", 0.5, 0.19, 0.015, mats.steel, scene, root);
+    bezN.position = new Vector3(-1.54, 1.72, 1.015);
   }
   for (const [bx, btag] of [
     [-w / 2 + 0.16, "l"],
