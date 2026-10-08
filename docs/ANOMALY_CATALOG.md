@@ -328,8 +328,17 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     not there. Subtle. (slice)
 87. ★ `notice.gone` — the NOTICE sign overhead inside the north
     airlock is simply not there. Subtle. (slice)
+88. ★ `light.red` — one zone's point light turns a deep red and its
+    troffers burn blood-lit. The corridor stretch you know is the
+    color of a warning lamp. Unmistakable. (slice)
+89. ★ `walker.fast` — the inspector walks his route at nearly twice
+    his usual pace; same path, same stride shape, wrong speed.
+    Subtle. (slice)
+90. ★ `ceiling.crack` — a hairline fracture has crawled across the
+    ceiling tiles overhead, a jagged dark vein between the troffers.
+    Subtle. (slice)
 
-Slice count: **128 implemented — the full catalog**. New hooks:
+Slice count: **131 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

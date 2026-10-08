@@ -21,7 +21,7 @@ const SPEED = 1.05;
 const PAUSE_S = 5;
 const HOME_Z = 16; // loop-rebaseline spot — always mid-corridor on loop 1
 
-export type WalkerMode = "normal" | "backwards" | "stare" | "absent" | "crawl";
+export type WalkerMode = "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast";
 
 export interface AmbientWalker {
   update(dt: number): void;
@@ -88,7 +88,10 @@ export function buildAmbientWalker(
     update(dt) {
       // crawl: route and cadence intact but nearly stationary — he
       // covers a fifth of the route with a slowed, heavy stride
-      bobT += dt * (mode === "crawl" ? 0.35 : 1);
+      // fast: same route at nearly double pace — he breezes the loop
+      // you know he takes a minute on, and the cadence reads urgent
+      const pace = mode === "crawl" ? 0.18 : mode === "fast" ? 1.9 : 1;
+      bobT += dt * (mode === "crawl" ? 0.35 : mode === "fast" ? 1.7 : 1);
       if (mode === "absent") return;
       if (mode === "stare") {
         // dead still except the slightest drift of the head
@@ -99,7 +102,7 @@ export function buildAmbientWalker(
       if (pauseT > 0) {
         pauseT -= dt;
       } else {
-        z += dir * SPEED * dt * (mode === "crawl" ? 0.18 : 1);
+        z += dir * SPEED * dt * pace;
         if (z >= WALK_Z1 && dir > 0) {
           z = WALK_Z1;
           dir = -1;

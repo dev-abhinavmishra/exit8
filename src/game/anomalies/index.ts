@@ -132,6 +132,9 @@ import { exitSignGone } from "./exitSignGone";
 import { intakeGone } from "./intakeGone";
 import { bellGone } from "./bellGone";
 import { noticeGone } from "./noticeGone";
+import { lightRed } from "./lightRed";
+import { walkerFast } from "./walkerFast";
+import { ceilingCrack } from "./ceilingCrack";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -260,6 +263,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   intakeGone,
   bellGone,
   noticeGone,
+  lightRed,
+  walkerFast,
+  ceilingCrack,
   vendDead,
   sheetsCleared,
 ];
