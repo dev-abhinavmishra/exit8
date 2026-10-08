@@ -31,33 +31,60 @@ export function buildFixtures(
   //      gains its dark-glass window + FIRE POINT label so it reads
   //      as the institutional fitting it's meant to be ----
   const cab = registry.mesh("fireCabinet");
-  // glass pane is a child of the cabinet — prop.displaced mirrors the
-  // whole unit (cabinet, window, and contents) to the opposite wall
-  const glass = kit.plane("fire.point.glass", 0.36, 0.5, mats.darkGlass, scene);
+  // glass door is a child of the cabinet — prop.displaced mirrors the
+  // whole unit (cabinet, window, and contents) to the opposite wall.
+  // TRAP: contents inside the solid cab box are occluded by its own
+  // front face forever — the window showed solid red. So the glass
+  // stands PROUD of the face with a steel bezel, and the contents
+  // live in the gap between face and glass.
+  const fireGlass = new StandardMaterial("mat.fireGlass", scene);
+  fireGlass.diffuseColor = new Color3(0.1, 0.11, 0.13);
+  fireGlass.specularColor = new Color3(0.4, 0.4, 0.4);
+  fireGlass.alpha = 0.22;
+  fireGlass.backFaceCulling = false;
+  const glass = kit.plane("fire.point.glass", 0.36, 0.5, fireGlass, scene);
   glass.parent = cab;
-  glass.position = new Vector3(-0.095, 0, 0); // just proud of the front face
+  glass.position = new Vector3(-0.135, 0, 0);
   glass.rotation.y = Math.PI / 2;
   registry.register("fire.point.glass", glass);
-  // hose reel + valve wheel + nozzle behind the dark glass — readable as
-  // dim shapes at 45% alpha, fully visible under fire.open
-  const reel = CreateCylinder("fire.cab.reel", { height: 0.05, diameter: 0.3, tessellation: 16 }, scene);
-  reel.material = mats.rubber;
+  // bezel frame around the glass door — top/bottom/left/right strips
+  for (const [bx, by, bz, bw, bh] of [
+    [-0.138, 0.26, 0, 0.4, 0.025],
+    [-0.138, -0.26, 0, 0.4, 0.025],
+    [-0.138, 0, 0.19, 0.025, 0.52],
+    [-0.138, 0, -0.19, 0.025, 0.52],
+  ] as const) {
+    const strip = kit.box(`fire.cab.bezel.${by}.${bz}`, bw, bh, 0.03, mats.steel, scene);
+    strip.parent = cab;
+    strip.position = new Vector3(bx, by, bz);
+  }
+  // pull handle on the door's hinge edge
+  const pull = kit.box("fire.cab.pull", 0.02, 0.14, 0.02, mats.steel, scene);
+  pull.parent = cab;
+  pull.position = new Vector3(-0.148, 0, -0.16);
+  // hose reel + valve wheel + nozzle behind the glass — self-illuminated
+  // so the silhouettes read through the smoke without a lit interior
+  const drumMat = new StandardMaterial("mat.fireCabDrum", scene);
+  drumMat.disableLighting = true;
+  drumMat.emissiveColor = new Color3(0.58, 0.13, 0.09);
+  const reel = CreateCylinder("fire.cab.reel", { height: 0.03, diameter: 0.28, tessellation: 16 }, scene);
+  reel.material = drumMat;
   reel.parent = cab;
   reel.rotation.z = Math.PI / 2;
-  reel.position = new Vector3(0, 0.06, -0.02);
-  const reelHub = CreateCylinder("fire.cab.hub", { height: 0.07, diameter: 0.09, tessellation: 12 }, scene);
+  reel.position = new Vector3(-0.107, 0.06, -0.02);
+  const reelHub = CreateCylinder("fire.cab.hub", { height: 0.02, diameter: 0.09, tessellation: 12 }, scene);
   reelHub.material = mats.steel;
   reelHub.parent = cab;
   reelHub.rotation.z = Math.PI / 2;
-  reelHub.position = new Vector3(-0.01, 0.06, -0.02);
-  const valve = CreateCylinder("fire.cab.valve", { height: 0.03, diameter: 0.1, tessellation: 12 }, scene);
+  reelHub.position = new Vector3(-0.118, 0.06, -0.02);
+  const valve = CreateCylinder("fire.cab.valve", { height: 0.02, diameter: 0.09, tessellation: 12 }, scene);
   valve.material = mats.steel;
   valve.parent = cab;
   valve.rotation.z = Math.PI / 2;
-  valve.position = new Vector3(-0.06, -0.2, 0.08);
-  const nozzle = kit.box("fire.cab.nozzle", 0.05, 0.16, 0.05, mats.rubber, scene);
+  valve.position = new Vector3(-0.107, -0.19, 0.09);
+  const nozzle = kit.box("fire.cab.nozzle", 0.05, 0.14, 0.05, mats.rubber, scene);
   nozzle.parent = cab;
-  nozzle.position = new Vector3(-0.02, -0.18, -0.12);
+  nozzle.position = new Vector3(-0.105, -0.17, -0.11);
   const label = kit.wallSign("sign.fire.point", mats, scene, root, registry, 0.5, 0.16);
   label.position = new Vector3(WALL_X - 0.06, 1.95, 18);
   label.rotation.y = Math.PI / 2;
