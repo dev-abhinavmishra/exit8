@@ -298,6 +298,23 @@ npm run build` — currently 117 unit + 24/24 e2e green.
     faces); WalkerMode "charge" + `chargeAt(playerZ)` drives the sprint.
     e2e sim runs ~0.6× real-time under SwiftShader frame clamp —
     verify motion by meshInfo position deltas, not wall-clock waits.
+- Signature batch 93–99 (this pass): `walker.wait` (stations him at
+  the south mouth via new `ambientWalker.holdAt(z)` — stare mode
+  drives position from the INTERNAL z, external position.set gets
+  stomped), `doors.open` (preset `rig.open01`/`target01` = 1 and the
+  rig's own easing holds it), `fountain.blood` (swap basin material —
+  spawned decals alone don't read in shadow), `phone.rings` (new
+  `audio.playRing(pos)` double-burst trill + LINE lamp swap),
+  `poster.grin` (drawPoster gained a 4th `grin` flag — wide dark
+  crescent + teeth strip + narrowed eyes).
+- **REQUIRES TRAP (critical, caught this pass):** `requires` entries
+  must name `registry.register()` ids — a typo silently SKIPS the
+  anomaly (console warn only, loop runs clean). `ambient.walker.faceplate`
+  is NOT registered (only `ambient.walker` is) — walker.fast/charge
+  never fired before the fix. Same class: `sign.junction` vs the real
+  `sign.sign.junction` (kit.hangingSign prepends "sign."). Guard:
+  `tests/e2e/anomalies.spec.ts` forces every catalog id and asserts
+  `__nightaudit.anomaly()` equals it — run it after touching requires.
 - Next up per the attached brief: M2 visual benchmark (baked lighting /
   KTX2 / richer kit), full accessibility audit, ambient dressing depth.
 
