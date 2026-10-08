@@ -791,8 +791,9 @@ export class GameUi {
     this.hud.classList.toggle("on", id === "none");
   }
 
-  veilOn(label: string | null): void {
+  veilOn(label: string | null, tone: "dark" | "light" = "dark"): void {
     this.veil.classList.add("on");
+    this.veil.classList.toggle("light", tone === "light");
     this.veilLabel.textContent = label ?? "";
   }
 

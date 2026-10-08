@@ -44,7 +44,7 @@ export interface LoopState {
 export interface LoopEvents {
   onPhaseChange?: (s: LoopState) => void;
   onJudgment?: (s: LoopState) => void;
-  onFade?: (opacity: number, label: string | null) => void;
+  onFade?: (opacity: number, label: string | null, tone?: "dark" | "light") => void;
   onEnd?: (outcome: "secure" | "lost" | "practice") => void;
 }
 
@@ -70,6 +70,12 @@ export class LoopManager {
   private endingCapY0 = 0;
   private endingLight: PointLight | null = null;
   private endingOutcome: "secure" | "lost" | null = null;
+  /** secure-ending walk-out: which cap opened, and the z threshold
+   *  past it that counts as stepping into the light */
+  private endingSide: "north" | "south" = "south";
+  private endingCrossZ = 0;
+  private endingOpenFired = false;
+  private endingWalked = false;
   private anomalyRolls: RngStream;
   private anomalyRuntime: RngStream;
   /** PA announcements — the corridor's recurring voice; first one
@@ -349,6 +355,10 @@ export class LoopManager {
     const into = -dir; // cap → void beyond
     const w = LAYOUT.airlockWidth;
     const h = LAYOUT.corridor.height;
+    this.endingSide = side;
+    this.endingCrossZ = endZ + into * 0.55;
+    this.endingOpenFired = false;
+    this.endingWalked = false;
     // the exit throat: a dark floor and a flight of step silhouettes
     // rising into a white glow — stairs up to the surface
     const dark = new StandardMaterial("ending.dark.mat", this.scene);
@@ -428,7 +438,33 @@ export class LoopManager {
     const e = 1 - (1 - p) * (1 - p);
     if (this.endingCap) this.endingCap.position.y = this.endingCapY0 - e * (h + 0.5);
     if (this.endingLight) this.endingLight.intensity = e * 2.6;
-    if (this.endingT > 4.2) {
+
+    // the cap is down — hand control back and let the player step into
+    // the light. The cap collider dies with it so the doorway is real.
+    if (!this.endingOpenFired && this.endingT > 2.9) {
+      this.endingOpenFired = true;
+      this.player.enabled = true;
+      const col = this.world.colliders.find((c) => c.name === `al.${this.endingSide}.capCol`);
+      col?.setEnabled(false);
+      this.audio.caption("the way out is open", this.player.position.clone());
+    }
+    if (!this.endingWalked) {
+      const z = this.player.position.z;
+      const crossed = this.endingSide === "south" ? z > this.endingCrossZ : z < this.endingCrossZ;
+      if (crossed) {
+        // stepped past the seal — white fade takes the report
+        this.endingWalked = true;
+        this.endingT = 0;
+        this.player.enabled = false;
+        this.events.onFade?.(1, null, "light");
+      } else if (this.endingT > 14) {
+        // didn't walk — end on the doorway itself
+        this.endingT = -1;
+        this.events.onEnd?.("secure");
+      }
+      return;
+    }
+    if (this.endingT > 0.9) {
       this.endingT = -1;
       this.events.onEnd?.("secure");
     }

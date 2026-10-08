@@ -42,6 +42,12 @@
 .na-veil.on {
   opacity: 1;
 }
+.na-veil.light {
+  background: #efe9d8;
+}
+.na-veil.light .label {
+  color: #5c5647;
+}
 .na-veil .label {
   color: var(--dim);
   font-size: 13px;

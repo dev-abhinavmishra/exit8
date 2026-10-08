@@ -189,8 +189,8 @@ export class App {
       {
         onJudgment: (s) => this.onJudgment(s),
         onEnd: (outcome) => this.onEnd(outcome),
-        onFade: (opacity, label) => {
-          if (opacity > 0) this.ui.veilOn(label);
+        onFade: (opacity, label, tone) => {
+          if (opacity > 0) this.ui.veilOn(label, tone);
           else this.ui.veilOff();
         },
       },
@@ -471,6 +471,8 @@ export class App {
   private onEnd(outcome: "secure" | "lost" | "practice"): void {
     this.state = "results";
     document.exitPointerLock?.();
+    // lift any fade the ending left up (secure's white walk-out)
+    this.ui.veilOff();
     // stamp the daily route if this run was one
     if (this.runSeed.startsWith("daily-")) {
       const day = this.runSeed.slice(6);
