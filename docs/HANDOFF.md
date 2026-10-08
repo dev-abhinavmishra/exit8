@@ -55,6 +55,21 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   fan.dead, fan.racing, gallery.dark (lamp mats trofferLit→trofferDim
   on the 3 registered gallery lamp nodes), pane.face (face + fingers
   pressed into south door's wired pane — see traps below).
+- 2026-10-08 fidelity pass 2: terrazzo roughness 0.38→0.27 +
+  envIntensity 0.85 (wet-tile light smear under troffer rows — verified
+  pool, not blob); ceiling envIntensity 0.45→0.6 (tile read between
+  zones). Audio coherence: `startAmbience` opts now take live getters —
+  `fanScale` (world.fanSpeed whoosh) and `zoneLight(pos)` (zone
+  point.intensity/7.6) so troffer hums die with their zone (zone kills /
+  light.delay / blackout / commit brown-out). Vents stay on their own
+  feed by design. New: poster.backs (material-swap to card backs,
+  dynamic `registry.has('poster.N')` count — there are 4 posters not 3),
+  pass.stuck (corridor-side counter `sign.attempt.face` at
+  (−1.54,1.72,54.93) shares the repainted sign.attempt texture;
+  `ctx.streak` added to AnomalyContext — plate paints PASS{streak}
+  instead of {streak+1}), sign.safety placard west wall z41.5.
+  TRAP: teleport yaw +π/2 = EAST wall, −π/2 = WEST (posters/records).
+  Catalog **215**.
 - 2026-10-08 fix batch: `notice.amends` was dead code — requires pointed
   at `sign.sign.notice.board` (double prefix, never registered → silent
   skip; the forced sweep caught it) AND it repainted a sign material
