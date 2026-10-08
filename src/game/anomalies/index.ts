@@ -38,6 +38,7 @@ import { counterWorker } from "./counterWorker";
 import { walkerBackwards } from "./walkerBackwards";
 import { walkerStare } from "./walkerStare";
 import { walkerMidstep } from "./walkerMidstep";
+import { walkerOfflane } from "./walkerOfflane";
 import { walkerHum } from "./walkerHum";
 import { walkerAbsent } from "./walkerAbsent";
 import { fireOpen } from "./fireOpen";
@@ -245,6 +246,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   walkerBackwards,
   walkerStare,
   walkerMidstep,
+  walkerOfflane,
   walkerHum,
   walkerAbsent,
   fireOpen,

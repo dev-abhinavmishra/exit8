@@ -19,12 +19,13 @@ import type { WorldRegistry } from "../registry";
 
 const WALK_Z0 = 7;
 const WALK_Z1 = 48;
+const LANE_X = 0.55; // his lane — right-of-centre, drilled into you every loop
 const SPEED = 1.05;
 const PAUSE_S = 5;
 const HOME_Z = 16; // loop-rebaseline spot — always mid-corridor on loop 1
 
 export type WalkerMode =
-  "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast" | "charge" | "midstep";
+  "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast" | "charge" | "midstep" | "offlane";
 
 export interface AmbientWalker {
   update(dt: number): void;
@@ -128,7 +129,7 @@ export function buildAmbientWalker(
       inspectT = 0;
       fig.headPivot.rotation.x = 0;
       g.setEnabled(true);
-      g.position.set(0.55, 0, z);
+      g.position.set(LANE_X, 0, z);
       g.rotation.y = dir > 0 ? 0 : Math.PI;
     },
     chargeAt(playerZ: number) {
@@ -140,7 +141,7 @@ export function buildAmbientWalker(
       pauseT = 0;
       g.setEnabled(true);
       g.rotation.y = Math.PI;
-      g.position.set(0.55, 0, z);
+      g.position.set(LANE_X, 0, z);
     },
     setMode(m: WalkerMode) {
       mode = m;
@@ -164,9 +165,10 @@ export function buildAmbientWalker(
       const pace = mode === "crawl" ? 0.18 : mode === "fast" ? 1.9 : 1;
       bobT += dt * (mode === "crawl" ? 0.35 : mode === "fast" ? 1.7 : 1);
       if (mode === "absent") return;
+      const lane = mode === "offlane" ? -LANE_X : LANE_X;
       if (mode === "stare") {
         // dead still except the slightest drift of the head
-        g.position.set(0.55, 0, z);
+        g.position.set(lane, 0, z);
         for (const p of [...legPivots, ...armPivots]) p.rotation.x = 0;
         fig.headPivot.rotation.x = 0;
         return;
@@ -176,7 +178,7 @@ export function buildAmbientWalker(
         // direction of travel; reads normal at a glance and wrong the
         // moment you watch for the next step that never lands
         g.rotation.y = dir > 0 ? 0 : Math.PI;
-        g.position.set(0.55, 0, z);
+        g.position.set(lane, 0, z);
         legPivots[0]!.rotation.x = 0.46;
         legPivots[1]!.rotation.x = -0.46;
         armPivots[0]!.rotation.x = -0.3;
@@ -189,7 +191,7 @@ export function buildAmbientWalker(
         // step behind the player, then hold there at your shoulder.
         // Driven per-frame by the anomaly through chargeAt().
         if (chargeZ === null) {
-          g.position.set(0.55, 0, z);
+          g.position.set(lane, 0, z);
           return;
         }
         const dz = chargeZ - z;
@@ -200,7 +202,7 @@ export function buildAmbientWalker(
           g.rotation.y = dz > 0 ? 0 : Math.PI;
         }
         const bob = closing ? Math.abs(Math.sin(bobT * 3.4)) * 0.04 : 0;
-        g.position.set(0.55, bob, z);
+        g.position.set(lane, bob, z);
         const swing = closing ? Math.sin(bobT * 3.4) : 0;
         legPivots[0]!.rotation.x = swing * 0.62;
         legPivots[1]!.rotation.x = -swing * 0.62;
@@ -235,7 +237,7 @@ export function buildAmbientWalker(
       }
       // stride bob — tiny, readable at distance
       const bob = Math.abs(Math.sin(bobT * 3.4)) * 0.028;
-      g.position.set(0.55, bob, z);
+      g.position.set(lane, bob, z);
       // limbs swing only while he's actually in stride
       const stepping = pauseT <= 0; // stare/absent returned above
       const swing = stepping ? Math.sin(bobT * 3.4) : 0;
