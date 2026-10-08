@@ -14,7 +14,7 @@ export const machineSilence: AnomalyDef = {
   detectability: "moderate",
   weight: 1,
   progressionRange: [0, 100],
-  requires: ["junction.machine"],
+  requires: ["junction.machine", "junction.machine.fan"],
   excludes: ["sound.machinery"],
   testSeed: "test.machine.silence",
   dangerous: false,
@@ -31,9 +31,13 @@ export const machineSilence: AnomalyDef = {
         const seen = Vector3.Dot(fwd, to) > 0.75;
         const want = seen ? 1 : 0;
         scale += (want - scale) * Math.min(1, 5 * dt);
+        // and the fan blade follows it — the machine is only running
+        // while observed, visibly
+        ctx.world.fanSpeed = scale;
       },
       cleanup() {
         ctx.audio.setMachineGainScale(null);
+        ctx.world.fanSpeed = 1;
       },
     };
   },

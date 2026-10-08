@@ -109,6 +109,11 @@ export interface ConcourseWorld {
   scatter: ScatterPool;
   /** the baseline inspector figure — reset every rebaseline */
   ambientWalker: AmbientWalker;
+  /** junction-machine extraction-fan speed (0..1+); anomalies throttle
+   *  it — machine.silence ties it to observation, blackout kills it */
+  fanSpeed: number;
+  /** per-frame world tics that aren't anomaly-owned: the fan rotor */
+  update(dt: number): void;
 }
 
 /** Late-bound detail materials — small shared surfaces, never registry-reached. */
@@ -1391,6 +1396,54 @@ export function buildConcourse(
   const plate = kit.box("junction.machine.plate", 0.015, 0.14, 0.4, mats.wallPanel, scene);
   plate.parent = machine;
   plate.position = new Vector3(0.41, 0.2, 0.1);
+  // extraction fan — the machine's one moving part: a dark circular
+  // opening, a 4-blade rotor turning behind grille bars. Anomalies
+  // throttle it through world.fanSpeed (machine.silence spins it only
+  // while observed, blackout kills it with the feed)
+  const fanOpen = CreateCylinder(
+    "junction.machine.fanopen",
+    { height: 0.02, diameter: 0.3, tessellation: 20 },
+    scene,
+  );
+  fanOpen.material = mats.rubber;
+  fanOpen.parent = machine;
+  fanOpen.rotation.z = Math.PI / 2;
+  fanOpen.position = new Vector3(0.405, -0.12, 0);
+  const fanRotor = new TransformNode("junction.machine.fan", scene);
+  fanRotor.parent = machine;
+  fanRotor.position = new Vector3(0.415, -0.12, 0);
+  registry.register("junction.machine.fan", fanRotor);
+  // two crossed blades through the hub — four tips spinning in the
+  // grille's plane (rotation.x is the spin axis)
+  for (const [a, stag] of [
+    [0, "a"],
+    [Math.PI / 2, "b"],
+  ] as const) {
+    const blade = kit.box(`junction.machine.fanblade.${stag}`, 0.008, 0.24, 0.045, mats.wallPanel, scene);
+    blade.parent = fanRotor;
+    blade.rotation.x = a;
+  }
+  const fanHub = CreateCylinder(
+    "junction.machine.fanhub",
+    { height: 0.03, diameter: 0.07, tessellation: 12 },
+    scene,
+  );
+  fanHub.material = mats.rubber;
+  fanHub.parent = fanRotor;
+  fanHub.rotation.z = Math.PI / 2;
+  for (let i = 0; i < 3; i++) {
+    const bar = kit.box(`junction.machine.fanbar.${i}`, 0.008, 0.012, 0.28, mats.wallPanel, scene);
+    bar.parent = machine;
+    bar.position = new Vector3(0.435, -0.12 + (i - 1) * 0.09, 0);
+  }
+  for (const [fy, stag] of [
+    [0.06, "t"],
+    [-0.3, "b"],
+  ] as const) {
+    const rim = kit.box(`junction.machine.fanrim.${stag}`, 0.008, 0.03, 0.34, mats.wallPanel, scene);
+    rim.parent = machine;
+    rim.position = new Vector3(0.43, -0.12 + fy, 0);
+  }
   // top conduit stubs — it feeds upward into the tray run
   for (const [sz, stag] of [
     [-0.3, "a"],
@@ -1565,6 +1618,11 @@ export function buildConcourse(
     condensationPatch: condensation,
     scatter,
     ambientWalker,
+    fanSpeed: 1,
+    update(dt: number): void {
+      const rotor = registry.get("junction.machine.fan");
+      rotor.rotation.x += dt * 7.5 * this.fanSpeed;
+    },
     clock: {
       hourPivot: registry.get("clock.hour.pivot") as TransformNode,
       minutePivot: registry.get("clock.minute.pivot") as TransformNode,

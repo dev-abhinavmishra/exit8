@@ -297,6 +297,7 @@ export class App {
     this.loop.update(dt);
     this.rig?.update();
     this.world.ambientWalker.update(dt);
+    this.world.update(dt);
     this.audio.setListener(this.player.position, this.player.forward());
     const fwd = this.player.camera.getForwardRay().direction;
     this.focused = this.focus.resolve(this.scene, this.player.position, fwd);
