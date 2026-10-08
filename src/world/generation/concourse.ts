@@ -23,6 +23,7 @@ import type { Scene } from "@babylonjs/core/scene";
 import { WorldRegistry } from "../registry";
 import { buildMaterials, type MaterialSet } from "../materials/library";
 import {
+  buildEnvironmentTexture,
   buildTextureSet,
   drawNote,
   makeFasciaBand,
@@ -468,6 +469,9 @@ export function buildConcourse(
   const dressRng = new RngStream("loop.dressing", runSeed);
   const tex = buildTextureSet(scene, dressRng, SIGNS);
   const mats = buildMaterials(scene, tex);
+  // procedural IBL — without it every environmentIntensity is a no-op
+  // and metals go black anywhere the point lights don't reach
+  scene.environmentTexture = buildEnvironmentTexture(scene);
   kit.setFrameMaterial(mats.steel);
 
   const root = new TransformNode("world", scene);

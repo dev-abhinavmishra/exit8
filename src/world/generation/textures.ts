@@ -5,6 +5,7 @@
  */
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture";
+import { CubeTexture } from "@babylonjs/core/Materials/Textures/cubeTexture";
 import type { Scene } from "@babylonjs/core/scene";
 import type { RngStream } from "../../game/state/rng";
 import type { SignSpec } from "../../data/signage";
@@ -31,6 +32,54 @@ function finish(t: DynamicTexture): DynamicTexture {
   t.wrapU = Texture.WRAP_ADDRESSMODE;
   t.wrapV = Texture.WRAP_ADDRESSMODE;
   return t;
+}
+
+/** Procedural 6-face IBL for the corridor. PBR metals go black under
+ * point lights alone — the scene needs an environment texture for
+ * ambient reflection. The up-face carries bright troffer bars so the
+ * polished floor smears the lamps into streaks; side faces are dim
+ * warm wall tones; the south face is a little brighter (lit mouth).
+ * 128px faces — the reflection is deliberately soft/blobby. */
+export function buildEnvironmentTexture(scene: Scene): CubeTexture {
+  const S = 128;
+  const face = (draw: (c: Ctx) => void): string => {
+    const cv = document.createElement("canvas");
+    cv.width = cv.height = S;
+    const c = cv.getContext("2d")!;
+    draw(c);
+    return cv.toDataURL("image/png");
+  };
+  const wall = (bright: number, warm = 1): string =>
+    face((c) => {
+      const g = c.createLinearGradient(0, 0, 0, S);
+      const tone = (v: number) => Math.round(v * bright);
+      g.addColorStop(0, `rgb(${tone(70)},${tone(66 * warm)},${tone(58)})`);
+      g.addColorStop(0.6, `rgb(${tone(34)},${tone(33 * warm)},${tone(30)})`);
+      g.addColorStop(1, `rgb(${tone(15)},${tone(15 * warm)},${tone(14)})`);
+      c.fillStyle = g;
+      c.fillRect(0, 0, S, S);
+    });
+  const urls = [
+    wall(1.0), // px
+    wall(0.82), // nx — west wall sits dimmer between the cabinets
+    face((c) => {
+      // up: near-black deck + fluorescent bars running the corridor's
+      // length — this face is what floor speculars smear
+      c.fillStyle = "#17161a";
+      c.fillRect(0, 0, S, S);
+      c.fillStyle = "#e9dfc6";
+      for (const x of [0.2, 0.5, 0.8]) {
+        c.fillRect(S * x - S * 0.045, S * 0.06, S * 0.09, S * 0.88);
+      }
+    }),
+    face((c) => {
+      c.fillStyle = "#0d0c0b";
+      c.fillRect(0, 0, S, S);
+    }),
+    wall(1.3), // pz — the lit south mouth
+    wall(0.7), // nz — the dimmer north end
+  ];
+  return CubeTexture.CreateFromImages(urls, scene, true);
 }
 
 export interface TextureSet {
