@@ -4,11 +4,12 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 
 ## Where we are
 
-- PR #1 (`devin/night-audit-vertical-slice`) carries M0–M4 + most of M5:
-  **157 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+- PR #1 (`devin/night-audit-vertical-slice`) carries M0–M5:
+  **158 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
   daily/custom routes, practice mode, route archive, field notes +
   dossier ending, gamepad, ambient walker + watcher, missed-divergence
-  report. NOT yet merged.
+  report. NOT yet merged. Current gates: 186 unit, 26/26 e2e (~12m;
+  anomalies.spec forces all 158 ids, ~7.3m alone).
 - Working mode (user, latest): QUALITY over quantity — replica parity
   with the Exit 8 corridor, not catalog count. Same subway loop, many
   anomaly versions of it. Test only after MAJOR additions: quick probe
@@ -397,6 +398,26 @@ npm run build` — currently 117 unit + 24/24 e2e green.
 - E2E runs the WebGL2 path (headless has no WebGPU). Debug surface:
   `window.__nightaudit` (see `src/debug/handle.ts`), `?debug`, `?engine=`,
   `?seed=`, `?anomaly=`, `?e2e=1`.
+- 2026-10-08 audio/polish pass (this branch, after the 158 catalog):
+  endings have payoff beats (secure = cap drops onto daylight stairwell,
+  lost = zones drown to 5% + silhouette at the cap, `disableLighting` +
+  faint `emissiveColor` — PointLights get crowded out of
+  StandardMaterial's 4-simultaneous-lights cap in the dark corridor);
+  station PA (`playAnnouncement` — chime + formant-syllable horn speech
+  from `world.anchors.paHorns`, scheduled 40-85s on the `audio.pa`
+  stream); distant train (`playTrainPass` — rumble + wheel-clatter +
+  brake whistle, 90-150s, `audio.train` stream); doors finally sound
+  (`playDoorSlide` fires on every `target01` flip via a
+  `prevDoorTargets` map in update()); guide-strip footsteps thud
+  (x≈0.72 z 3-54.2 → lower bandpass); vend compressor hum
+  (`anchors.vend` + `setVendGainScale` — vend.dead silences it);
+  walker reads his clipboard at the north-end pause (deterministic —
+  `inspectT` in ambientWalker, faces +x east, armPivot -1.05, head 0.34);
+  cold-open title card (`ui.titleCard`, .na-titlecard keyframes,
+  `.fast` under reducedMotion); start menu fits 800px
+  (`@media max-height:860px` density). **teleport(x,y,z) RESETS YAW
+  to 0** — pass the 4th arg or look() afterwards; an invisible-figure
+  saga was just the camera facing the wrong way.
 - `?e2e=1` pins `TIERS.low` + no rumble — REQUIRED under SwiftShader (~1 fps
   at high tier starves the 60 Hz stepper and timeouts look like hangs).
 - Babylon traps learned: `camera.cameraDirection` is WORLD-space (don't
