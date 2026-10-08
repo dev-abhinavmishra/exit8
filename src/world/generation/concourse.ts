@@ -459,6 +459,19 @@ function buildAirlock(
   }
   const conduit = kit.box(`dress.conduit.al.${side}`, 0.04, 0.04, z1 - z0 - 0.2, mats.steel, scene, al);
   conduit.position = new Vector3(w / 2 - 0.14, 2.62, zc);
+  // sealed staff door on a side wall — the vestibule reads as a junction,
+  // not a box; alternating sides so the two airlocks don't mirror
+  const dsx = side === "north" ? -1 : 1;
+  const dframe = kit.box(`dress.sdoor.${side}.frame`, 0.05, 2.14, 0.94, mats.steel, scene, al);
+  dframe.position = new Vector3((dsx * (w - 0.1)) / 2, 1.07, zc + 0.7);
+  const dpanel = kit.plane(`dress.sdoor.${side}.panel`, 0.84, 2.04, mats.wallPanel, scene);
+  dpanel.parent = al;
+  dpanel.position = new Vector3((dsx * (w - 0.18)) / 2, 1.05, zc + 0.7);
+  dpanel.rotation.y = dsx < 0 ? -Math.PI / 2 : Math.PI / 2;
+  const dhandle = kit.box(`dress.sdoor.${side}.handle`, 0.03, 0.03, 0.14, mats.steel, scene, al);
+  dhandle.position = new Vector3((dsx * (w - 0.24)) / 2, 1.02, zc + 1.02);
+  const dplaque = kit.box(`dress.sdoor.${side}.plaque`, 0.02, 0.12, 0.34, mats.steel, scene, al);
+  dplaque.position = new Vector3((dsx * (w - 0.2)) / 2, 1.72, zc + 0.7);
   for (let i = 0; i < 3; i++) {
     const sz = z0 + ((z1 - z0) / 4) * (i + 1);
     const seam = kit.box(`dress.seam.al.${side}.${i}`, w - 0.15, 0.012, 0.05, mats.rubber, scene, al);
