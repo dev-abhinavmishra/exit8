@@ -398,8 +398,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 111. ★ `rota.stamped` — the duty board carries a big red UNDER REVIEW
      stamp across the staffing table where only the amber AUDITED mark
      belongs. Moderate. (slice)
+112. ★ `sheets.added` — the notice board's five typed memos have become
+     six, the fresh sheet slightly crooked among them. Subtle. (slice)
 
-Slice count: **152 implemented — the full catalog**. New hooks:
+Slice count: **153 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
