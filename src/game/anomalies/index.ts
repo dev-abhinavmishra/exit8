@@ -73,6 +73,7 @@ import { galleryFrost } from "./galleryFrost";
 import { vendDead } from "./vendDead";
 import { sheetsCleared } from "./sheetsCleared";
 import { doorStuck } from "./doorStuck";
+import { doorsOpen } from "./doorsOpen";
 import { walkerCrowd } from "./walkerCrowd";
 import { lightFollows } from "./lightFollows";
 import { glassEyes } from "./glassEyes";
@@ -101,6 +102,7 @@ import { extGone } from "./extGone";
 import { aidGone } from "./aidGone";
 import { phoneOffhook } from "./phoneOffhook";
 import { fountainRuns } from "./fountainRuns";
+import { fountainBlood } from "./fountainBlood";
 import { panelOpen } from "./panelOpen";
 import { pilotDead } from "./pilotDead";
 import { doorLit } from "./doorLit";
@@ -209,6 +211,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   recordsBreach,
   galleryFrost,
   doorStuck,
+  doorsOpen,
   walkerCrowd,
   lightFollows,
   glassEyes,
@@ -237,6 +240,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   aidGone,
   phoneOffhook,
   fountainRuns,
+  fountainBlood,
   panelOpen,
   pilotDead,
   doorLit,

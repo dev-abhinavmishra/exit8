@@ -351,8 +351,13 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 95. ★ `walker.wait` — the inspector is not on his route; he stands at
     the south airlock mouth, squared up the corridor, waiting on the
     threshold you have to pass. Unmistakable. (slice)
+96. ★ `doors.open` — the south airlock doors stand already parted when
+    you arrive; the cycle ran without you. Unmistakable. (slice)
+97. ★ `fountain.blood` — the drinking fountain runs dark and rust-red;
+    the basin face and a floor spill are wet gloss, not water.
+    Unmistakable. (slice)
 
-Slice count: **136 implemented — the full catalog**. New hooks:
+Slice count: **138 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
