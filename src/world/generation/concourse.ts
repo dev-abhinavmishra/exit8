@@ -246,6 +246,12 @@ function buildAirlock(
     attempt.parent = cap;
     attempt.position = new Vector3(0, 1.55 - h / 2, capFace);
     attempt.rotation.y = capRot;
+    // corridor-side counter — beside the south mouth where you read it
+    // walking up to file; shares the repainted material so the two
+    // plates can never disagree (cap-side one is only seen open)
+    const face = kit.plane(`al.${side}.cap.attempt.face`, 0.46, 0.15, attemptMat, scene);
+    face.parent = root;
+    face.position = new Vector3(-1.54, 1.72, 54.93);
   }
   for (const [bx, btag] of [
     [-w / 2 + 0.16, "l"],
