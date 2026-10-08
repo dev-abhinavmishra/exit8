@@ -271,7 +271,13 @@ export const POSTER_DEFS: PosterDef[] = [
 ];
 
 /** Redraw a poster texture in place — used at build and by poster anomalies. */
-export function drawPoster(t: DynamicTexture, d: PosterDef, mirror = false, hollow = false): void {
+export function drawPoster(
+  t: DynamicTexture,
+  d: PosterDef,
+  mirror = false,
+  hollow = false,
+  grin = false,
+): void {
   const w = 256;
   const h = 384;
   const c = ctx(t);
@@ -304,11 +310,12 @@ export function drawPoster(t: DynamicTexture, d: PosterDef, mirror = false, holl
     c.ellipse(w / 2, 208, 37, 47, 0, 0, Math.PI * 2);
     c.fill();
     c.fillStyle = hollow ? "#08080a" : "#2a2622";
+    const eyeY = grin ? 3.4 : 5;
     c.beginPath();
-    c.ellipse(w / 2 - 13, 199, hollow ? 8 : 5, hollow ? 11 : 5, 0, 0, Math.PI * 2);
+    c.ellipse(w / 2 - 13, 199, hollow ? 8 : 5, hollow ? 11 : eyeY, 0, 0, Math.PI * 2);
     c.fill();
     c.beginPath();
-    c.ellipse(w / 2 + 13, 199, hollow ? 8 : 5, hollow ? 11 : 5, 0, 0, Math.PI * 2);
+    c.ellipse(w / 2 + 13, 199, hollow ? 8 : 5, hollow ? 11 : eyeY, 0, 0, Math.PI * 2);
     c.fill();
     c.strokeStyle = hollow ? "#1c1a18" : "#4a443c";
     c.lineWidth = 3;
@@ -316,10 +323,26 @@ export function drawPoster(t: DynamicTexture, d: PosterDef, mirror = false, holl
     c.moveTo(w / 2, 206);
     c.lineTo(w / 2 - 3, 224);
     c.stroke();
-    c.beginPath();
-    c.moveTo(w / 2 - 11, 238);
-    c.lineTo(w / 2 + 11, 238);
-    c.stroke();
+    if (grin) {
+      // the smile is drawn too wide — an open dark crescent under the
+      // cheekbones, corners pulled past where a mouth should reach
+      c.fillStyle = "#141210";
+      c.beginPath();
+      c.ellipse(w / 2, 232, 19, 13, 0, 0, Math.PI * 2);
+      c.fill();
+      c.fillStyle = "#c9c2b4";
+      c.fillRect(w / 2 - 16, 224, 32, 7); // teeth strip catching the light
+      c.strokeStyle = "#4a443c";
+      c.lineWidth = 2.5;
+      c.beginPath();
+      c.ellipse(w / 2, 232, 19, 13, 0, 0, Math.PI * 2);
+      c.stroke();
+    } else {
+      c.beginPath();
+      c.moveTo(w / 2 - 11, 238);
+      c.lineTo(w / 2 + 11, 238);
+      c.stroke();
+    }
     c.font = "15px Arial, sans-serif";
     c.fillStyle = d.fg;
     d.sub.forEach((line, j) => c.fillText(line, w / 2, 300 + j * 24));

@@ -359,8 +359,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 98. ★ `phone.rings` — the dead internal handset rings by itself, a
     warbling double-burst trill, LINE lamp blinking red in time.
     Unmistakable. (slice)
+99. ★ `poster.grin` — Inspector Vance's engraved smile widens past
+    where a mouth should reach, teeth catching the light. Subtle.
+    (slice)
 
-Slice count: **139 implemented — the full catalog**. New hooks:
+Slice count: **140 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
