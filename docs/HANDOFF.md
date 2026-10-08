@@ -16,11 +16,11 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   draft.sheet (`audio.playScrape` — a lone sheet slides in an unseen
   draft), pa.deadair (`audio.playPaDeadAir` — relay click + carrier
   hiss, no voice); anomaly odds now RAMP with depth — base 0.5/0.55/0.6
-  + 2.5% per loop past 2, capped 0.8 (`loopManager`); sign titles
-  fit-to-width (`drawSign` measures the string, shrinks font before it
-  can reach the pictogram — INSPECTION POINT was colliding since M1);
-  perf re-measured: spawn 461 / mid 270 draws (merge holding, _drawCalls
-  is cumulative — divide delta by fps).
+  - 2.5% per loop past 2, capped 0.8 (`loopManager`); sign titles
+    fit-to-width (`drawSign` measures the string, shrinks font before it
+    can reach the pictogram — INSPECTION POINT was colliding since M1);
+    perf re-measured: spawn 461 / mid 270 draws (merge holding, _drawCalls
+    is cumulative — divide delta by fps).
 - 2026-10-08 payoff batch: secure ending walks INTO the light
   (capCol disabled, white veil, `endingSide/endingCrossZ` in
   loopManager); corridor brown-out on commit (`dipLights`/`applyBrown`
@@ -51,7 +51,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 - Gates (run before every push): `npm run lint && npm run typecheck &&
 npm run test && npm run test:e2e && npm run validate:assets &&
 npm run build` — currently 186 unit + 26/26 e2e green; per the quality
-directive, run e2e only after major additions, unit/lint/tsc each push.
+  directive, run e2e only after major additions, unit/lint/tsc each push.
 - **Chapters are live** (b3d517f): `1 + floor(correct/2)` cap 3, HUD shows
   CH I/II/III. Tiering: ch1 = quiet 17 (signs/posters/props/stills), ch2 =
   motion + watchers (sways, spins, breathes, groans, watcher.far,

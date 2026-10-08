@@ -20,6 +20,7 @@ export interface Settings {
     keyRight: string;
     keyInteract: string;
     keyPause: string;
+    keyGlance: string;
   };
   audio: {
     master: number; // 0–1
@@ -55,6 +56,7 @@ export const DEFAULT_SETTINGS: Settings = {
     keyRight: "KeyD",
     keyInteract: "KeyE",
     keyPause: "Escape",
+    keyGlance: "KeyQ",
   },
   audio: {
     master: 0.9,
