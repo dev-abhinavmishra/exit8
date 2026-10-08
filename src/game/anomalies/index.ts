@@ -136,6 +136,8 @@ import { walkSilence } from "./walkSilence";
 import { drainGurgles } from "./drainGurgles";
 import { corridorBreathes } from "./corridorBreathes";
 import { figureDoubles } from "./figureDoubles";
+import { vendRebrand } from "./vendRebrand";
+import { faceGlass } from "./faceGlass";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -335,6 +337,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   drainGurgles,
   corridorBreathes,
   figureDoubles,
+  vendRebrand,
+  faceGlass,
   lightRed,
   benchFlipped,
   stripGrows,

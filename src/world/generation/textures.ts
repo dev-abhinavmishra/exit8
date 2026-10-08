@@ -785,7 +785,7 @@ export function makeVendingFace(scene: Scene): DynamicTexture {
 
 /** Repaint the vending face — `empty` leaves the shelves bare with a
  *  printed OUT OF STOCK strip where the brand band's pride used to be. */
-export function drawVendingFace(t: DynamicTexture, empty = false): void {
+export function drawVendingFace(t: DynamicTexture, empty = false, brand = "CWA CANTEEN SERVICES"): void {
   const c = ctx(t);
   c.scale(2, 2); // drawn against a 128×256 reference frame
   // dark glass field
@@ -804,7 +804,7 @@ export function drawVendingFace(t: DynamicTexture, empty = false): void {
   c.fillText("COLD DISPENSE", 64, 13);
   c.font = "8px Arial, sans-serif";
   c.fillStyle = "#4d7d86";
-  c.fillText("CWA CANTEEN SERVICES", 64, 24);
+  c.fillText(brand, 64, 24);
   // product columns: 4 cols × 4 rows of dim bottles/cartons behind glass
   const rng = (i: number) => Math.abs(Math.sin(i * 91.345)) % 1;
   const tones = ["#28465a", "#4a3a28", "#3d4a2d", "#4a2d33", "#2d3d4a"];
