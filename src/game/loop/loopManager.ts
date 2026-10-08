@@ -474,6 +474,17 @@ export class LoopManager {
     const post = CreateBox("ending.railpost", { width: 0.05, height: 0.78, depth: 0.05 }, this.scene);
     post.material = dark;
     post.position = new Vector3(-(w / 2 - 0.32), 0.42, endZ + into * 0.36);
+    // the stairwell is a real throat, not a flat: concrete cheeks
+    // flank the flight so stepping through reads as a space — and no
+    // void shows past the stair edges or above the glow
+    for (const sx of [-1, 1]) {
+      const cheek = CreateBox(`ending.cheek.${sx}`, { width: 0.12, height: 3.6, depth: 2.5 }, this.scene);
+      cheek.material = dark;
+      cheek.position = new Vector3((sx * (w - 0.06)) / 2, 1.8, endZ + into * 1.25);
+    }
+    const soffit = CreateBox("ending.soffit", { width: w + 0.2, height: 0.12, depth: 2.5 }, this.scene);
+    soffit.material = dark;
+    soffit.position = new Vector3(0, 3.14, endZ + into * 1.25);
     // the daylight beyond: not a card — a hot core low in the opening
     // (the sky past the stair head) falling off to warm brown edges,
     // with a brighter lane up the middle where the shaft of light is
