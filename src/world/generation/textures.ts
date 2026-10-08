@@ -38,6 +38,7 @@ export interface TextureSet {
   wallPanel: DynamicTexture;
   wallPanelBump: DynamicTexture; // normal map for the grout relief
   terrazzoBump: DynamicTexture; // normal map for the brass-joint relief
+  shutterBump: DynamicTexture; // normal map for the slat corrugation
   ceilingTile: DynamicTexture;
   steel: DynamicTexture;
   shutter: DynamicTexture;
@@ -90,25 +91,20 @@ function makeTerrazzo(scene: Scene, rng: RngStream): DynamicTexture {
   return finish(t);
 }
 
-/** Normal map matching makeTerrazzo's brass-strip edges so the divider
- * channels read as recessed joints under the zone lights — subtler
- * than the wall bump since it's a walked surface. */
-function makeTerrazzoBump(scene: Scene): DynamicTexture {
-  const s = 1024;
-  const t = tex("tex.terrazzo.bump", s, s, scene);
+/** Height field (0..1, wrapping) -> tangent-space normal map texture.
+ * Shared by all procedural bump maps: albedo makers bake groove lines,
+ * bump makers rebuild the same grooves in a height field, and this
+ * converts them to RGB normals. */
+function normalsFromHeight(
+  scene: Scene,
+  name: string,
+  height: Float32Array,
+  s: number,
+  strength: number,
+): DynamicTexture {
+  const t = tex(name, s, s, scene);
   const c = ctx(t);
-  const height = new Float32Array(s * s).fill(1);
-  const groove = (x0: number, y0: number, w: number, h: number) => {
-    for (let y = Math.max(0, y0); y < Math.min(s, y0 + h); y++) {
-      for (let x = Math.max(0, x0); x < Math.min(s, x0 + w); x++) {
-        height[y * s + x] = 0.45;
-      }
-    }
-  };
-  groove(0, 0, s, 14);
-  groove(0, 0, 14, s);
   const img = c.createImageData(s, s);
-  const strength = 3.0;
   for (let y = 0; y < s; y++) {
     for (let x = 0; x < s; x++) {
       const xm = (x - 1 + s) % s;
@@ -127,6 +123,38 @@ function makeTerrazzoBump(scene: Scene): DynamicTexture {
   }
   c.putImageData(img, 0, 0);
   return finish(t);
+}
+
+function makeShutterBump(scene: Scene): DynamicTexture {
+  const s = 512;
+  const height = new Float32Array(s * s).fill(1);
+  // slat grooves every 32 rows, matching makeShutter's dark 6px seams
+  for (let y = 0; y < s; y += 32) {
+    for (let gy = y; gy < y + 7; gy++) {
+      for (let x = 0; x < s; x++) {
+        height[gy * s + x] = 0.4;
+      }
+    }
+  }
+  return normalsFromHeight(scene, "tex.shutter.bump", height, s, 5.0);
+}
+
+/** Normal map matching makeTerrazzo's brass-strip edges so the divider
+ * channels read as recessed joints under the zone lights — subtler
+ * than the wall bump since it's a walked surface. */
+function makeTerrazzoBump(scene: Scene): DynamicTexture {
+  const s = 1024;
+  const height = new Float32Array(s * s).fill(1);
+  const groove = (x0: number, y0: number, w: number, h: number) => {
+    for (let y = Math.max(0, y0); y < Math.min(s, y0 + h); y++) {
+      for (let x = Math.max(0, x0); x < Math.min(s, x0 + w); x++) {
+        height[y * s + x] = 0.45;
+      }
+    }
+  };
+  groove(0, 0, s, 14);
+  groove(0, 0, 14, s);
+  return normalsFromHeight(scene, "tex.terrazzo.bump", height, s, 3.0);
 }
 
 /** Off-white wall panel: micro grain + vertical seams + baseboard scuff. */
@@ -166,8 +194,6 @@ function makeWallPanel(scene: Scene, rng: RngStream): DynamicTexture {
  * than printed lines. Height field → Sobel gradients → RGB normals. */
 function makeWallPanelBump(scene: Scene): DynamicTexture {
   const s = 512;
-  const t = tex("tex.wallPanel.bump", s, s, scene);
-  const c = ctx(t);
   const height = new Float32Array(s * s).fill(1);
   const groove = (x0: number, y0: number, w: number, h: number) => {
     for (let y = Math.max(0, y0); y < Math.min(s, y0 + h); y++) {
@@ -180,26 +206,7 @@ function makeWallPanelBump(scene: Scene): DynamicTexture {
   groove(Math.round(s / 2) - 2, 0, 4, s);
   groove(0, 0, 5, s);
   groove(s - 5, 0, 5, s);
-  const img = c.createImageData(s, s);
-  const strength = 4.5;
-  for (let y = 0; y < s; y++) {
-    for (let x = 0; x < s; x++) {
-      const xm = (x - 1 + s) % s;
-      const xp = (x + 1) % s;
-      const ym = (y - 1 + s) % s;
-      const yp = (y + 1) % s;
-      const dx = (height[y * s + xp]! - height[y * s + xm]!) * strength;
-      const dy = (height[yp * s + x]! - height[ym * s + x]!) * strength;
-      const len = Math.hypot(dx, dy, 1);
-      const i = (y * s + x) * 4;
-      img.data[i] = Math.round(((-dx / len) * 0.5 + 0.5) * 255);
-      img.data[i + 1] = Math.round(((dy / len) * 0.5 + 0.5) * 255);
-      img.data[i + 2] = Math.round(((1 / len) * 0.5 + 0.5) * 255);
-      img.data[i + 3] = 255;
-    }
-  }
-  c.putImageData(img, 0, 0);
-  return finish(t);
+  return normalsFromHeight(scene, "tex.wallPanel.bump", height, s, 4.5);
 }
 
 function makeCeilingTile(scene: Scene, rng: RngStream): DynamicTexture {
@@ -665,6 +672,7 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     wallPanel: makeWallPanel(scene, rng),
     wallPanelBump: makeWallPanelBump(scene),
     terrazzoBump: makeTerrazzoBump(scene),
+    shutterBump: makeShutterBump(scene),
     ceilingTile: makeCeilingTile(scene, rng),
     steel: makeSteel(scene, rng),
     shutter: makeShutter(scene, rng),

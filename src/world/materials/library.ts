@@ -91,6 +91,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
 
   const shutter = new PBRMaterial("mat.shutter", scene);
   shutter.albedoTexture = tex.shutter;
+  shutter.bumpTexture = tex.shutterBump;
   shutter.roughness = 0.5;
   shutter.metallic = 0.7;
   shutter.environmentIntensity = 0.6;
