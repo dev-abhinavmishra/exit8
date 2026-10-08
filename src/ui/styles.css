@@ -509,6 +509,57 @@
   margin-right: 8px;
 }
 
+/* ── cold-open title card ────────────────────────────────────── */
+.na-titlecard {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  pointer-events: none;
+  z-index: 8;
+  background: radial-gradient(ellipse at center, rgba(4, 6, 9, 0.55), rgba(4, 6, 9, 0.82));
+  animation: na-titlecard 4s ease forwards;
+}
+.na-titlecard.fast {
+  animation-duration: 1.7s;
+}
+.na-titlecard .tc-main {
+  font-size: 36px;
+  letter-spacing: 0.44em;
+  padding-left: 0.44em;
+  color: var(--fg);
+}
+.na-titlecard .tc-sub {
+  font-size: 13px;
+  letter-spacing: 0.34em;
+  padding-left: 0.34em;
+  color: var(--amber);
+}
+.na-titlecard .tc-hint {
+  margin-top: 26px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--fg);
+  opacity: 0.55;
+}
+@keyframes na-titlecard {
+  0% {
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  74% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 /* ── results stamp ───────────────────────────────────────────── */
 .na-stamp {
   font-size: 34px;

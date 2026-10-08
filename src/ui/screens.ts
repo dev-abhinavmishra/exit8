@@ -819,6 +819,29 @@ export class GameUi {
     }
   }
 
+  /** Cold-open title card — the run's quiet beat before the corridor
+   *  takes over. Fades in, holds, fades out; pointer-events none.
+   *  reducedMotion keeps the same content on a shorter clock. */
+  titleCard(title: string, sub: string, hint: string): void {
+    const el = document.createElement("div");
+    el.className = "na-titlecard";
+    if (this.settings.accessibility.reducedMotion) el.classList.add("fast");
+    for (const [cls, txt] of [
+      ["tc-main", title],
+      ["tc-sub", sub],
+      ["tc-hint", hint],
+    ] as const) {
+      const d = document.createElement("div");
+      d.className = cls;
+      d.textContent = txt;
+      el.appendChild(d);
+    }
+    this.root.appendChild(el);
+    el.addEventListener("animationend", () => el.remove());
+    // safety net if the animation event never fires
+    setTimeout(() => el.remove(), 6000);
+  }
+
   setDebug(on: boolean): void {
     this.debugEl.classList.toggle("on", on);
   }

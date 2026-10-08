@@ -299,6 +299,11 @@ export class App {
     this.ui.show("none");
     this.state = "playing";
     this.lastChapter = 1;
+    this.ui.titleCard(
+      "NIGHT AUDIT",
+      this.params.practice ? "PRACTICE ROUTE" : "INSPECTION LOOP 7",
+      "file the divergence or walk on — judgment settles at the far end",
+    );
     // headless WebKit / permission-denied contexts reject the promise —
     // pointer-lock fallback input keeps working either way
     void Promise.resolve(this.canvas.requestPointerLock?.()).catch(() => {});
