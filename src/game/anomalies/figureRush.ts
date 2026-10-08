@@ -42,6 +42,7 @@ export const figureRush: AnomalyDef = {
     let woken = false;
     let gone = false;
     let bobT = 0;
+    let stepT = 0;
     const step = new Vector3();
     return {
       update(dt) {
@@ -68,6 +69,11 @@ export const figureRush: AnomalyDef = {
           return;
         }
         bobT += dt * 2.2;
+        stepT -= dt;
+        if (stepT <= 0) {
+          stepT = 0.28; // sprint cadence — you hear it coming before it lands
+          ctx.audio.playFootstep(node.position.clone(), 0.95, true);
+        }
         step.set(dx / dist, 0, dz / dist).scaleInPlace(Math.min(SPEED * dt, dist - CONTACT * 0.5));
         node.position.addInPlace(step);
         node.rotation.y = Math.atan2(dx, dz);

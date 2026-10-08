@@ -507,6 +507,12 @@ npm run build` — currently 186 unit + 26/26 e2e green; per the quality
   z ≤ −2.9 north (or ≥ 57.9 south) CROSSES THE COMMIT LINE** in a
   probe — the loop advances under you and the screenshot shows the
   wrong loop; stay ≥ −2.8 to inspect the north cap.
+- 2026-10-08: `ctx.penalize(amount)` — docks stability, floored at 1 so
+  a contact scare can never skip the verdict flow (endings stay
+  commit-plane verdicts). First user: `figure.rush` (dangerous: true —
+  wakes <6.5 m, sprints 4.6 m/s, contact −6 then vanishes). South cap
+  carries `sign.attempt`, the repainted PASS 0N plate (diegetic loop
+  counter); loopManager repaints it via drawSign at every roll.
 - 2026-10-07 additions: `AnomalyDef` requires ALL of `progressionRange`,
   `testSeed`, `dangerous` (TS2739 missing them). `update(dt)` gets
   `ctx` closure — `ctx.player.position`, `ctx.audio.play*`,
