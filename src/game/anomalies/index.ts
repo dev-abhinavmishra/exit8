@@ -140,6 +140,7 @@ import { vendRebrand } from "./vendRebrand";
 import { faceGlass } from "./faceGlass";
 import { airlockDark } from "./airlockDark";
 import { arrowExtra } from "./arrowExtra";
+import { capLeaks } from "./capLeaks";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -343,6 +344,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   faceGlass,
   airlockDark,
   arrowExtra,
+  capLeaks,
   lightRed,
   benchFlipped,
   stripGrows,

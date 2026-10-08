@@ -5,7 +5,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 ## Where we are
 
 - PR #1 (`devin/night-audit-vertical-slice`) carries M0–M5:
-  **204 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+  **205 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
   daily/custom routes, practice mode, route archive, field notes +
   dossier ending, gamepad, ambient walker + watcher, missed-divergence
   report. NOT yet merged. Current gates: 186 unit, 26/26 e2e (~13m;
@@ -499,7 +499,14 @@ npm run build` — currently 186 unit + 26/26 e2e green; per the quality
   x-offset +18 when spec.figure set.
 - Fastest probe recipe: `?e2e=1&seed=<s>&anomaly=<id>` arms that
   anomaly for loop 1 — no forceAnomaly call needed; then teleport +
-  look + 600 ms + screenshot.
+  look + 600 ms + screenshot. TWO more traps learned the hard way on
+  cap.leaks: **CreatePlane's normal faces −z** — a corridor-facing
+  plane at world rotation.y=0 renders INVISIBLE (back-face culled);
+  needs `rotation.y = π`. Lying a plane flat for a floor decal is
+  `rotation.x = +π/2` (not −π/2 — that's face-down). And **teleport
+  z ≤ −2.9 north (or ≥ 57.9 south) CROSSES THE COMMIT LINE** in a
+  probe — the loop advances under you and the screenshot shows the
+  wrong loop; stay ≥ −2.8 to inspect the north cap.
 - 2026-10-07 additions: `AnomalyDef` requires ALL of `progressionRange`,
   `testSeed`, `dangerous` (TS2739 missing them). `update(dt)` gets
   `ctx` closure — `ctx.player.position`, `ctx.audio.play*`,

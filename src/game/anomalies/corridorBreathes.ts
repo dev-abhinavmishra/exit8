@@ -20,7 +20,7 @@ export const corridorBreathes: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.6,
   progressionRange: [45, 100],
-  requires: SEGMENTS,
+  requires: ["wall.left.0", "wall.left.2", "wall.left.3", "wall.right.0", "wall.right.2"],
   excludes: ["hall.stretch", "depth.mismatch", "sightline.impossible", "pace.dissolves", "zone.pulse"],
   testSeed: "test.corridor.breathes",
   dangerous: false,
