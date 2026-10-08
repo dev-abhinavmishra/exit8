@@ -1179,6 +1179,31 @@ export class AudioSystem {
     this.caption("the PA horn spits static", pos);
   }
 
+  /** A breathy exhale — one long lowpassed noise swell with a soft
+   *  attack and a slow fall, close enough to feel. Spatialized. */
+  playBreath(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.setValueAtTime(520, t0);
+    lp.frequency.exponentialRampToValueAtTime(300, t0 + 0.55);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.001, t0);
+    g.gain.exponentialRampToValueAtTime(0.16 * sp.gain, t0 + 0.12);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.6);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    src.connect(lp).connect(g).connect(pan).connect(this.bus("voices"));
+    src.start(t0, 0, 0.65);
+    src.stop(t0 + 0.65);
+    this.caption("a breath, close behind you", pos);
+  }
+
   /** Inner door slide — a soft pneumatic hiss + servo whirr on open,
    *  and a lower whirr settling into a seal thump on close. Fires on
    *  every target change: auto-open on approach, seal on commit,

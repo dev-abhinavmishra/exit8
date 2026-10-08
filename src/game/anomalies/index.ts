@@ -127,6 +127,7 @@ import { noticeFace } from "./noticeFace";
 import { facePaneNorth } from "./facePaneNorth";
 import { figureFountain } from "./figureFountain";
 import { hornCrackle } from "./hornCrackle";
+import { voiceNear } from "./voiceNear";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -317,6 +318,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   facePaneNorth,
   figureFountain,
   hornCrackle,
+  voiceNear,
   lightRed,
   benchFlipped,
   stripGrows,
