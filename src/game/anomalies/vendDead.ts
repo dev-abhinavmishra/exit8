@@ -25,10 +25,13 @@ export const vendDead: AnomalyDef = {
       .getChildMeshes()
       .filter((m) => m.name === "prop.vend.face" || m.name === "prop.vend.slot");
     targets.forEach((m) => m.setEnabled(false));
+    // the compressor dies with the face — a dead machine doesn't hum
+    ctx.audio.setVendGainScale(() => 0);
     return {
       update() {},
       cleanup() {
         targets.forEach((m) => m.setEnabled(true));
+        ctx.audio.setVendGainScale(null);
       },
     };
   },

@@ -255,6 +255,7 @@ export class App {
         noRumble: this.params.e2e,
         troffers: this.world.anchors.troffers,
         clockPos: this.world.anchors.clock,
+        vendPos: this.world.anchors.vend,
       });
       // a first gesture arriving while paused must not un-mute the scene
       if (this.state === "paused") this.audio.suspend();

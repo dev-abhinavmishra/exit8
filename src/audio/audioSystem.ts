@@ -183,7 +183,7 @@ export class AudioSystem {
     ventPositions: Vector3[],
     machinePos: Vector3,
     rng: RngStream,
-    opts: { noRumble?: boolean; troffers?: Vector3[]; clockPos?: Vector3 } = {},
+    opts: { noRumble?: boolean; troffers?: Vector3[]; clockPos?: Vector3; vendPos?: Vector3 } = {},
   ): void {
     if (!this.ctx || !this.noiseBuffer || this.ambienceStarted) return;
     this.ambienceStarted = true;
@@ -257,6 +257,32 @@ export class AudioSystem {
       this.ventUpdaters.push(update);
     }
 
+    // vending-unit compressor — a low cycling buzz that swells for a
+    // stretch then idles, so the machine sounds like it's keeping
+    // something cold behind the lit face
+    if (opts.vendPos) {
+      const pos = opts.vendPos;
+      const vo = ctx.createOscillator();
+      vo.type = "sawtooth";
+      vo.frequency.value = 88;
+      const vlp = ctx.createBiquadFilter();
+      vlp.type = "lowpass";
+      vlp.frequency.value = 130;
+      const vg = ctx.createGain();
+      vg.gain.value = 0;
+      const vp = ctx.createStereoPanner();
+      vo.connect(vlp).connect(vg).connect(vp).connect(this.bus("machinery"));
+      vo.start();
+      this.ventUpdaters.push(() => {
+        const sp = this.spatialParams(pos);
+        // ~26s duty cycle: on for 14s, rests for 12s, soft ramps
+        const ph = (ctx.currentTime % 26) / 26;
+        const duty = ph < 0.08 ? ph / 0.08 : ph < 0.54 ? 1 : ph < 0.62 ? (0.62 - ph) / 0.08 : 0;
+        vg.gain.value = 0.05 * sp.gain * duty * (this.vendGainScaleFn?.() ?? 1);
+        vp.pan.value = sp.pan;
+      });
+    }
+
     this.clockPos = opts.clockPos ?? null;
 
     // junction machinery thrum
@@ -309,6 +335,13 @@ export class AudioSystem {
   private rumbleScheduler: ((dt: number) => void) | null = null;
   private machineGainScale: (() => number) | null = null;
   private machinePitchFn: (() => number) | null = null;
+
+  /** Anomaly hook: scale the vend-unit compressor gain (vend.dead
+   *  silences it — the machine is off, not just dark). */
+  setVendGainScale(fn: (() => number) | null): void {
+    this.vendGainScaleFn = fn;
+  }
+  private vendGainScaleFn: (() => number) | null = null;
 
   /** Anomalies duck the junction-machine hum through this (multiplier
    *  evaluated per update; pass null to clear). */
