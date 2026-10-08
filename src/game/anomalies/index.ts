@@ -112,6 +112,7 @@ import { mopBucket } from "./mopBucket";
 import { counterBell } from "./counterBell";
 import { recordsVoice } from "./recordsVoice";
 import { doorRattle } from "./doorRattle";
+import { echoSteps } from "./echoSteps";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -287,6 +288,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   counterBell,
   recordsVoice,
   doorRattle,
+  echoSteps,
   lightRed,
   benchFlipped,
   stripGrows,
