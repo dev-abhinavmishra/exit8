@@ -1,7 +1,9 @@
 /**
  * floor.flood — one zone's floor is under still black water: a dark
  * mirrored sheet where terrazzo and guide strip should be. The
- * corridor's best-known betrayal. Unmistakable spatial-class anomaly.
+ * corridor's best-known betrayal — and it punishes lingering: every
+ * stride in it sounds wet, and standing in it too long docks the run.
+ * File the flood; don't stand in it. Dangerous spatial-class anomaly.
  */
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
@@ -36,7 +38,7 @@ export const floorFlood: AnomalyDef = {
     "floor",
   ],
   testSeed: "test.floor.flood",
-  dangerous: false,
+  dangerous: true,
   activate(ctx) {
     const { scene, rng } = ctx;
     const [, z0, z1] = rng.pick(ZONES);
@@ -51,8 +53,29 @@ export const floorFlood: AnomalyDef = {
     plane.material = water;
     plane.rotation.x = -Math.PI / 2;
     plane.position = new Vector3(0, 0.035, (z0 + z1) / 2);
+    let waded = false;
+    let soakT = 0;
+    let plinkT = 0;
     return {
-      update() {},
+      update(dt) {
+        const p = ctx.player.position;
+        const inWater = p.z > z0 && p.z < z1 && Math.abs(p.x) < 1.7;
+        if (!inWater) return;
+        // wading is often forced — the water spans the corridor — but
+        // standing in it is a choice: soak for ~2s and the route feels it
+        soakT += dt;
+        if (!waded && soakT > 2.0) {
+          waded = true;
+          ctx.penalize?.(4);
+          ctx.player.jolt(0.35);
+          ctx.audio.caption("the water is freezing — the route felt it", p.clone());
+        }
+        plinkT -= dt;
+        if (plinkT <= 0) {
+          plinkT = 0.42; // every stride sounds wet while you wade
+          ctx.audio.playWaterPlink(p.clone());
+        }
+      },
       cleanup() {
         plane.dispose();
         water.dispose();
