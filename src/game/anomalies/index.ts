@@ -86,6 +86,7 @@ import { signWrongway } from "./signWrongway";
 import { terminalBlack } from "./terminalBlack";
 import { binFlipped } from "./binFlipped";
 import { hatchOpen } from "./hatchOpen";
+import { hatchKnocks } from "./hatchKnocks";
 import { stripGrows } from "./stripGrows";
 import { mullionExtra } from "./mullionExtra";
 import { glassWriting } from "./glassWriting";
@@ -233,6 +234,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   terminalBlack,
   binFlipped,
   hatchOpen,
+  hatchKnocks,
   stripGrows,
   mullionExtra,
   glassWriting,

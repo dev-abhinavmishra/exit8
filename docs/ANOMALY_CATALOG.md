@@ -386,8 +386,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 107. ★ `walker.midstep` — the inspector is frozen mid-stride, legs
      split and arms mid-swing, facing his direction of travel. Subtle.
      (slice)
+108. ★ `hatch.knocks` — a soft knock-knock comes through the always-shut
+     service hatch while you stand near it, the plate shuddering.
+     Moderate. (slice)
 
-Slice count: **148 implemented — the full catalog**. New hooks:
+Slice count: **149 implemented — the full catalog**. New hooks:
+`audio.playKnock(pos)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

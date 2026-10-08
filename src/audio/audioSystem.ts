@@ -528,6 +528,41 @@ export class AudioSystem {
     this.caption("doors slam shut", pos);
   }
 
+  /** A muffled knock from behind a wall panel — low thud plus a woody
+   *  tap. Used by hatch.knocks; quieter and duller than playSlam, so it
+   *  reads as behind-something rather than in the corridor. */
+  playKnock(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const o = ctx.createOscillator();
+    o.type = "sine";
+    o.frequency.setValueAtTime(150, t0);
+    o.frequency.exponentialRampToValueAtTime(68, t0 + 0.08);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.14 * sp.gain, t0);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.13);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    o.connect(g).connect(pan).connect(this.bus("anomaly"));
+    o.start(t0);
+    o.stop(t0 + 0.15);
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.playbackRate.value = 0.9;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 300;
+    const g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0.12 * sp.gain, t0);
+    g2.gain.exponentialRampToValueAtTime(0.001, t0 + 0.06);
+    src.connect(lp).connect(g2).connect(pan);
+    src.start(t0);
+    src.stop(t0 + 0.08);
+    this.caption("something knocks behind the panel", pos);
+  }
+
   /** Clock tick generator — used by baseline and clock anomalies. */
   createTicker(name: string): {
     start(): void;
