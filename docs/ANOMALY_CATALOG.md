@@ -443,8 +443,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 125. `duct.clang` — somewhere far down the system metal strikes metal:
      one hard snap and a long dull ring down the ducts. Sound-only.
      Moderate. (slice)
+126. `cable.hangs` — a cable is down from the ceiling tray in a loose J,
+     swaying like it parted a moment ago. Nothing else in the corridor
+     hangs. Moderate. (slice)
 
-Slice count: **166 implemented — the full catalog**. New hooks:
+Slice count: **167 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`, `audio.playScrape(pos)`,
