@@ -59,51 +59,75 @@ export function drawFace(t: DynamicTexture, blank = false): void {
   // the skull instead of reading as a slab floating proud of it
   c.clearRect(0, 0, 128, 160);
   const c2d = c as unknown as CanvasRenderingContext2D;
+  // narrower, longer oval — a tired adult face, not a round minifig
   c2d.beginPath();
-  c2d.ellipse(64, 78, 60, 76, 0, 0, Math.PI * 2);
+  c2d.ellipse(64, 80, 54, 78, 0, 0, Math.PI * 2);
   c2d.clip();
-  // skin base — matches the head material, shading toward jaw
+  // sallow institutional skin, pale under fluorescents, shadowing
+  // toward the jaw and temples
   const skin = c.createLinearGradient(0, 0, 0, 160);
-  skin.addColorStop(0, "#8a6f5e");
-  skin.addColorStop(0.7, "#83685a");
-  skin.addColorStop(1, "#6f564b");
+  skin.addColorStop(0, "#a08b78");
+  skin.addColorStop(0.6, "#97816e");
+  skin.addColorStop(1, "#74604f");
   c.fillStyle = skin;
   c.fillRect(0, 0, 128, 160);
+  // cheek hollows — soft gray wash from temple to jaw = gaunt
   if (!blank) {
-    const stroke = "#2c211d";
-    c.strokeStyle = stroke;
-    c.fillStyle = stroke;
-    c.lineWidth = 3;
-    // hairline
+    const hollow = c.createLinearGradient(0, 84, 0, 134);
+    hollow.addColorStop(0, "rgba(70,55,45,0)");
+    hollow.addColorStop(0.5, "rgba(70,55,45,0.22)");
+    hollow.addColorStop(1, "rgba(70,55,45,0.06)");
+    c.fillStyle = hollow;
+    c.beginPath();
+    c2d.ellipse(30, 108, 18, 30, -0.25, 0, Math.PI * 2);
+    c2d.fill();
+    c.beginPath();
+    c2d.ellipse(98, 108, 18, 30, 0.25, 0, Math.PI * 2);
+    c2d.fill();
+  }
+  if (!blank) {
+    // hairline — receding at the corners
     c.fillStyle = "#221a17";
     c.beginPath();
-    c.moveTo(0, 30);
-    c.quadraticCurveTo(64, 12, 128, 30);
-    c.lineTo(128, 0);
-    c.lineTo(0, 0);
+    c.moveTo(8, 34);
+    c.quadraticCurveTo(64, 16, 120, 34);
+    c.lineTo(120, 0);
+    c.lineTo(8, 0);
     c.closePath();
     c.fill();
-    // brows — level, close to the eyes: a neutral watcher's expression
-    c.fillStyle = "#241b18";
-    c.fillRect(26, 56, 30, 4);
-    c.fillRect(72, 56, 30, 4);
-    // eyes — dark almond lids, deeper pupil, the faintest lid line above
-    c.fillStyle = "#171110";
-    for (const cx of [41, 87]) {
-      c2d.beginPath();
-      c2d.ellipse(cx, 66, 12, 6, 0, 0, Math.PI * 2);
-      c2d.fill();
-      c.fillStyle = "#050404";
+    // brows — thin, level, slightly down at the inner ends: tired
+    c.strokeStyle = "#2b211c";
+    c.lineWidth = 3;
+    c.beginPath();
+    c.moveTo(32, 58);
+    c.quadraticCurveTo(44, 55, 56, 57);
+    c.moveTo(72, 57);
+    c.quadraticCurveTo(84, 55, 96, 58);
+    c.stroke();
+    // eyes — pale whites with a small dark iris read more human than
+    // a solid almond, and the gaze carries across the corridor
+    for (const cx of [40, 88]) {
+      c.fillStyle = "#c9bfb0";
       c.beginPath();
-      c.arc(cx, 66, 4, 0, Math.PI * 2);
+      c2d.ellipse(cx, 66, 10, 4.5, 0, 0, Math.PI * 2);
       c.fill();
-      c.fillStyle = "#171110";
-      // upper lid crease
-      c.strokeStyle = "#3d2e28";
-      c.lineWidth = 2;
+      c.fillStyle = "#171210";
       c.beginPath();
-      c.moveTo(cx - 12, 61);
-      c.quadraticCurveTo(cx, 57, cx + 12, 61);
+      c.arc(cx, 66.5, 3.4, 0, Math.PI * 2);
+      c.fill();
+      // upper lid crease + a heavy lid line = tired
+      c.strokeStyle = "#4a382e";
+      c.lineWidth = 1.6;
+      c.beginPath();
+      c.moveTo(cx - 10, 62);
+      c.quadraticCurveTo(cx, 58.5, cx + 10, 62);
+      c.stroke();
+      // faint bag under the eye
+      c.strokeStyle = "rgba(90,68,55,0.4)";
+      c.lineWidth = 1.4;
+      c.beginPath();
+      c.moveTo(cx - 8, 72);
+      c.quadraticCurveTo(cx, 75, cx + 8, 72);
       c.stroke();
     }
   }
@@ -115,7 +139,7 @@ export function drawFace(t: DynamicTexture, blank = false): void {
   c.fillRect(0, 26, 128, 40);
   if (!blank) {
     // nose — ridge shadow + nostril hint
-    c.strokeStyle = "#4d3a32";
+    c.strokeStyle = "#5b4537";
     c.lineWidth = 3;
     c.beginPath();
     c.moveTo(64, 70);
@@ -125,21 +149,28 @@ export function drawFace(t: DynamicTexture, blank = false): void {
     c.moveTo(56, 98);
     c.quadraticCurveTo(64, 103, 72, 98);
     c.stroke();
-    // mouth — a thin closed line, no expression
-    c.strokeStyle = "#38291f";
+    // mouth — dead level, slightly downturned at the corners
+    c.strokeStyle = "#3a2b21";
     c.lineWidth = 3;
     c.beginPath();
-    c.moveTo(44, 118);
-    c.quadraticCurveTo(64, 121, 84, 118);
+    c.moveTo(46, 117);
+    c.lineTo(82, 117);
     c.stroke();
-    // faint nasolabial + jaw shading
-    c.strokeStyle = "#544139";
     c.lineWidth = 2;
     c.beginPath();
-    c.moveTo(40, 100);
-    c.quadraticCurveTo(42, 114, 46, 122);
-    c.moveTo(88, 100);
-    c.quadraticCurveTo(86, 114, 82, 122);
+    c.moveTo(46, 117);
+    c.lineTo(44, 119);
+    c.moveTo(82, 117);
+    c.lineTo(84, 119);
+    c.stroke();
+    // faint nasolabial folds
+    c.strokeStyle = "#5f4a3d";
+    c.lineWidth = 2;
+    c.beginPath();
+    c.moveTo(42, 100);
+    c.quadraticCurveTo(44, 112, 48, 120);
+    c.moveTo(86, 100);
+    c.quadraticCurveTo(84, 112, 80, 120);
     c.stroke();
   }
   t.update();
