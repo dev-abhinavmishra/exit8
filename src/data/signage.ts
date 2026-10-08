@@ -65,6 +65,14 @@ export const SIGNS: SignSpec[] = [
     tone: "amber",
   },
   {
+    id: "sign.diverge.north",
+    title: "DIVERGENCE POINT",
+    sub: "FILE DIVERGENCE",
+    arrow: "left",
+    figure: "left",
+    tone: "amber",
+  },
+  {
     id: "sign.notice.board",
     title: "NOTICE",
     sub: "LOOP INSPECTIONS RESUMED 04:12",

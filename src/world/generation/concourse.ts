@@ -371,9 +371,11 @@ function buildAirlock(
   term.rotation.y = -Math.PI / 2;
   registry.register(`al.${side}.terminal`, term);
 
-  // sign above inner door, facing into the corridor
+  // sign above inner door, facing into the corridor — the two commit
+  // ends read as a designed pair: FILE ROUTE CLEAR south, FILE
+  // DIVERGENCE north, arrows mirroring each other
   const above = kit.wallSign(
-    side === "north" ? "sign.notice.board" : "sign.exit.south",
+    side === "north" ? "sign.diverge.north" : "sign.exit.south",
     mats,
     scene,
     al,
