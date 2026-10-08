@@ -94,7 +94,7 @@ export class AudioSystem {
       const g = this.buses.get(b);
       if (g) g.gain.value = v;
     };
-    set("ambience", a.ambience);
+    set("ambience", a.ambience * this.ambienceScale);
     set("footsteps", a.footsteps);
     set("machinery", a.ambience * 0.9);
     set("voices", a.ambience);
@@ -114,11 +114,25 @@ export class AudioSystem {
   private duckAmbience(holdS: number): void {
     if (!this.ctx) return;
     const g = this.bus("ambience");
-    const base = this.settings.audio.ambience;
+    const base = this.settings.audio.ambience * this.ambienceScale;
     const t = this.ctx.currentTime;
     g.gain.cancelScheduledValues(t);
     g.gain.setTargetAtTime(base * 0.63, t, 0.06);
     g.gain.setTargetAtTime(base, t + holdS, 0.9);
+  }
+
+  /** Persistent ambience multiplier — anomalies that take the whole
+   *  room tone away (a dead corridor feed) rather than duck a cue.
+   *  Unlike hushAmbience this recovers: pass 1 on cleanup. Honored by
+   *  applyVolumes and duckAmbience's recover target. */
+  private ambienceScale = 1;
+  setAmbienceScale(scale: number): void {
+    this.ambienceScale = Math.max(0, Math.min(1, scale));
+    if (!this.ctx) return;
+    const g = this.bus("ambience");
+    const t = this.ctx.currentTime;
+    g.gain.cancelScheduledValues(t);
+    g.gain.setTargetAtTime(this.settings.audio.ambience * this.ambienceScale, t, 0.5);
   }
 
   /** Drown one bus to silence for a window, then let it breathe back —

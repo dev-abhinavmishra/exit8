@@ -45,6 +45,9 @@ export const lightsBlackout: AnomalyDef = {
       for (const s of zone.shafts) s.setEnabled(on);
     };
 
+    // a dead feed means a dead machine — the junction thrum goes too
+    ctx.audio.setMachineGainScale(() => 0);
+
     const fig = buildFigure(ctx.scene, world.root, "anomaly.lights.blackout", {
       kind: "silhouette",
       material: world.materials.rubber,
@@ -72,6 +75,9 @@ export const lightsBlackout: AnomalyDef = {
             killed === 0 ? "a breaker drops — the feed is going zone by zone" : "",
           );
           killed++;
+          // the fluorescent hum dies with the fixtures — each breaker
+          // takes another quarter of the room tone
+          ctx.audio.setAmbienceScale(1 - 0.94 * (killed / zones.length));
         }
         if (killed >= zones.length) world.hemi.intensity = Math.max(0.22, world.hemi.intensity - dt * 3);
         if (gone) return;
@@ -111,6 +117,8 @@ export const lightsBlackout: AnomalyDef = {
       cleanup() {
         for (const z of zones) setLit(z, true);
         world.hemi.intensity = hemiBase;
+        ctx.audio.setAmbienceScale(1);
+        ctx.audio.setMachineGainScale(null);
         g.dispose();
       },
     };
