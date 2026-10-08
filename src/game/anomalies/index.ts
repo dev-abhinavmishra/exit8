@@ -95,6 +95,7 @@ import { terminalAdvisory } from "./terminalAdvisory";
 import { phoneGone } from "./phoneGone";
 import { hatchScratched } from "./hatchScratched";
 import { shadowFigure } from "./shadowFigure";
+import { figureCorridor } from "./figureCorridor";
 import { stripGrows } from "./stripGrows";
 import { mullionExtra } from "./mullionExtra";
 import { glassWriting } from "./glassWriting";
@@ -250,6 +251,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   phoneGone,
   hatchScratched,
   shadowFigure,
+  figureCorridor,
   stripGrows,
   mullionExtra,
   glassWriting,
