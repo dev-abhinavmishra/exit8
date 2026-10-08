@@ -339,10 +339,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     Subtle. (slice)
 91. ★ `floor.flood` — one zone's floor is under still black water, a
     dark mirrored sheet where the terrazzo and guide strip should
-    be. Unmistakable. (slice)
+    be. Unmistakable. **Dangerous** — every wading stride plinks, and
+    lingering in it >2 s docks stability −4. (slice)
 92. ★ `walker.charge` — the inspector breaks off his route and sprints
     down his lane to a step behind you, then holds at your shoulder.
-    Unmistakable. (slice)
+    Unmistakable. **Dangerous** — letting him arrive (<1.35 m) docks
+    stability −6; file before he closes. (slice)
 93. ★ `poster.hollow` — Inspector Vance's staff portrait stares back
     with two void sockets where his eyes were. Subtle. (slice)
 94. ★ `troffer.falls` — one ceiling light panel has broken loose and
@@ -477,7 +479,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      juddering. Something pushed from the other side. Moderate.
      (slice)
 
-Slice count: **207 implemented — the full catalog**. New hooks:
+Slice count: **207 implemented — the full catalog**. Dangerous class
+(`dangerous: true` — engaging the anomaly itself costs, floored so a
+scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`.
+Contacts land on the report under ROUTE INCIDENTS. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`, `audio.playScrape(pos)`,
