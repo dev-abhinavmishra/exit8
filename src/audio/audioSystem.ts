@@ -752,6 +752,36 @@ export class AudioSystem {
     this.caption("the PA clicks — dead air", pos);
   }
 
+  /** A vent sighs — the duct breathes once: airy noise swelling then
+   *  dying over ~2.5s, band-limited like air through louvres, pitch
+   *  sagging as the breath runs out. Spatialized to the grille. */
+  playSigh(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.loop = true;
+    src.playbackRate.value = 0.55;
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.setValueAtTime(480, t0);
+    bp.frequency.linearRampToValueAtTime(340, t0 + 2.6); // pitch falls as it dies
+    bp.Q.value = 0.7;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(0.05 * sp.gain, t0 + 0.7);
+    g.gain.linearRampToValueAtTime(0.03 * sp.gain, t0 + 1.6);
+    g.gain.linearRampToValueAtTime(0, t0 + 2.7);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    src.connect(bp).connect(g).connect(pan).connect(this.bus("ambience"));
+    src.start(t0);
+    src.stop(t0 + 2.75);
+    this.caption("a vent sighs", pos);
+  }
+
   /** Two-burst internal phone ring — a warbling trill pair, used by
    *  phone.rings. Spatialized to the handset niche. */
   playRing(pos: Vector3): void {
