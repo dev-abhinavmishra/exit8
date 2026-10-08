@@ -103,6 +103,37 @@ export function buildFixtures(
   const hoseNoz = kit.box("dress.hose.nozzle", 0.04, 0.16, 0.04, mats.steel, scene, root);
   hoseNoz.position = new Vector3(-WALL_X + 0.14, 1.14, 44.75);
 
+  // ---- janitorial bucket + mop, west wall z≈42.2 — yellow bucket
+  //      against the wall, mop leaning. Registered node (not merged):
+  //      bucket.tipped spills it ----
+  const mopYellow = new StandardMaterial("mat.mop.yellow", scene);
+  mopYellow.diffuseColor = new Color3(0.55, 0.42, 0.05);
+  mopYellow.emissiveColor = new Color3(0.02, 0.015, 0.002);
+  mopYellow.specularColor = new Color3(0.08, 0.08, 0.08);
+  const mopSet = new TransformNode("mop.bucket", scene);
+  mopSet.parent = root;
+  mopSet.position = new Vector3(-WALL_X + 0.3, 0, 42.2);
+  registry.register("mop.bucket", mopSet);
+  const bucket = CreateCylinder(
+    "mop.bucket.body",
+    { height: 0.26, diameterTop: 0.24, diameterBottom: 0.19, tessellation: 16 },
+    scene,
+  );
+  bucket.material = mopYellow;
+  bucket.parent = mopSet;
+  bucket.position = new Vector3(0, 0.13, 0);
+  const wringer = kit.box("mop.bucket.wringer", 0.16, 0.14, 0.18, mats.rubber, scene);
+  wringer.parent = mopSet;
+  wringer.position = new Vector3(-0.04, 0.3, 0);
+  const mop = CreateCylinder("mop.bucket.mop", { height: 1.35, diameter: 0.025, tessellation: 8 }, scene);
+  mop.material = mats.wallPanel;
+  mop.parent = mopSet;
+  mop.position = new Vector3(-0.18, 0.65, 0.12);
+  mop.rotation.z = 0.12;
+  const mopHead = kit.box("mop.bucket.mophead", 0.06, 0.14, 0.06, mats.rubber, scene);
+  mopHead.parent = mopSet;
+  mopHead.position = new Vector3(-0.11, 0.07, 0.12);
+
   // ---- first aid cabinet, east wall z≈46 — white surface-mount box,
   //      green cross; fills the bare span between vending and the
   //      lift lobby. Registered node (not merged): aid.gone removes it ----

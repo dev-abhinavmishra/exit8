@@ -254,8 +254,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 57. ★ `door.lit` — warm light leaks from the service room around the
     door's edge. Someone left a light on — or someone is in there.
     Moderate. (slice)
+58. ★ `bucket.tipped` — the janitorial bucket is on its side, mop
+    fallen across the floor, water pooled. Nobody heard it go over.
+    Moderate. (slice)
 
-Slice count: **98 implemented — the full catalog**. New hooks:
+Slice count: **99 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
