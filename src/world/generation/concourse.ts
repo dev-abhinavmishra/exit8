@@ -880,7 +880,7 @@ export function buildConcourse(
     stencilMat.opacityTexture = stencilTex;
     stencilMat.disableLighting = true;
     const stencilPlane = kit.plane("junction.bay.stencil", 0.7, 0.35, stencilMat, scene);
-    stencilPlane.position = new Vector3(backFace + 0.02, 2.0, BAY_Z1 - 0.7);
+    stencilPlane.position = new Vector3(backFace + 0.02, 2.0, BAY_Z0 + 0.7);
     stencilPlane.rotation.y = Math.PI / 2;
     stencilPlane.parent = root;
     // floor drain at the bay's low edge — service bays drain
@@ -888,7 +888,7 @@ export function buildConcourse(
     bayDrain.position = new Vector3(-C.xHalf - BAY_DEPTH / 2, 0.005, BAY_ZC);
     // motes drifting in the bay lamp's pool — junction zone index
     moteAnchors.push({ x: -C.xHalf - BAY_DEPTH / 2, z: BAY_Z0 + 0.7, zi: 3 });
-    moteAnchors.push({ x: -C.xHalf - BAY_DEPTH / 2, z: BAY_Z1 - 0.7, zi: 3 });
+    moteAnchors.push({ x: -C.xHalf - BAY_DEPTH / 2, z: BAY_Z0 + 0.7, zi: 3 });
   }
 
   // ─── dust motes hanging in the light shafts ───────────────────────
