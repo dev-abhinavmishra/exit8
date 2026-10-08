@@ -270,8 +270,10 @@ export class AudioSystem {
     this.machineUpdater = () => {
       const sp = this.spatialParams(machinePos);
       const duck = this.machineGainScale ? this.machineGainScale() : 1;
+      const pitch = this.machinePitchFn ? this.machinePitchFn() : 1;
       machG.gain.value = 0.12 * sp.gain * duck;
       machPan.pan.value = sp.pan;
+      mach.frequency.value = 55 * pitch;
     };
 
     // rare distant rumble — seeded so runs are reproducible
@@ -302,11 +304,19 @@ export class AudioSystem {
   private machineUpdater: (() => void) | null = null;
   private rumbleScheduler: ((dt: number) => void) | null = null;
   private machineGainScale: (() => number) | null = null;
+  private machinePitchFn: (() => number) | null = null;
 
   /** Anomalies duck the junction-machine hum through this (multiplier
    *  evaluated per update; pass null to clear). */
   setMachineGainScale(fn: (() => number) | null): void {
     this.machineGainScale = fn;
+  }
+
+  /** Anomalies detune the junction-machine thrum through this (pitch
+   *  multiplier evaluated per update; pass null to clear). pitch.sags
+   *  drives the corridor drone a semitone flat over a slow drift. */
+  setMachinePitch(fn: (() => number) | null): void {
+    this.machinePitchFn = fn;
   }
 
   /** Per-frame spatialization refresh; call from sim or render. */

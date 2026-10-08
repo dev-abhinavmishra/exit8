@@ -104,6 +104,7 @@ import { extGone } from "./extGone";
 import { aidGone } from "./aidGone";
 import { phoneOffhook } from "./phoneOffhook";
 import { phoneRings } from "./phoneRings";
+import { pitchSags } from "./pitchSags";
 import { fountainRuns } from "./fountainRuns";
 import { fountainBlood } from "./fountainBlood";
 import { panelOpen } from "./panelOpen";
@@ -244,6 +245,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   aidGone,
   phoneOffhook,
   phoneRings,
+  pitchSags,
   fountainRuns,
   fountainBlood,
   panelOpen,

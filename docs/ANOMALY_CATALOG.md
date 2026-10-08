@@ -365,8 +365,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 100. ★ `vend.empty` — the cold dispense unit stays lit and humming,
      but every shelf behind the glass is bare; OUT OF STOCK — CWA.
      Moderate. (slice)
+101. ★ `pitch.sags` — the junction machinery thrum drifts flat over
+     the loop, a slow quarter-tone sag that never resolves. Subtle.
+     (slice)
 
-Slice count: **141 implemented — the full catalog**. New hooks:
+Slice count: **142 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
