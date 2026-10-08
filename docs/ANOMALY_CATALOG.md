@@ -356,8 +356,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 97. ★ `fountain.blood` — the drinking fountain runs dark and rust-red;
     the basin face and a floor spill are wet gloss, not water.
     Unmistakable. (slice)
+98. ★ `phone.rings` — the dead internal handset rings by itself, a
+    warbling double-burst trill, LINE lamp blinking red in time.
+    Unmistakable. (slice)
 
-Slice count: **138 implemented — the full catalog**. New hooks:
+Slice count: **139 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

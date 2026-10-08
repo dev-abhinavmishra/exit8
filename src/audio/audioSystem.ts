@@ -418,6 +418,37 @@ export class AudioSystem {
     this.caption("PA chime", pos);
   }
 
+  /** Two-burst internal phone ring — a warbling trill pair, used by
+   *  phone.rings. Spatialized to the handset niche. */
+  playRing(pos: Vector3): void {
+    this.duckAmbience(0.85);
+    if (!this.ctx) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    for (const [burst, n] of [
+      [0, 8],
+      [0.55, 8],
+    ] as const) {
+      for (let i = 0; i < n; i++) {
+        const o = ctx.createOscillator();
+        o.type = "square";
+        o.frequency.value = i % 2 === 0 ? 1046 : 880;
+        const g = ctx.createGain();
+        const at = t0 + burst + i * 0.055;
+        g.gain.setValueAtTime(0, at);
+        g.gain.linearRampToValueAtTime(0.028 * sp.gain, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.001, at + 0.05);
+        const pan = ctx.createStereoPanner();
+        pan.pan.value = sp.pan;
+        o.connect(g).connect(pan).connect(this.bus("ambience"));
+        o.start(at);
+        o.stop(at + 0.06);
+      }
+    }
+    this.caption("phone ringing", pos);
+  }
+
   /** Clock tick generator — used by baseline and clock anomalies. */
   createTicker(name: string): {
     start(): void;
