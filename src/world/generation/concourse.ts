@@ -608,10 +608,12 @@ export function buildConcourse(
   // ─── ceiling troffers (4 light zones) ─────────────────────────────
   const zones: LightZone[] = [];
   const zoneDefs = [
-    { name: "entry", z0: 0, z1: 14 },
-    { name: "gallery", z0: 14, z1: 32 },
-    { name: "clinic", z0: 32, z1: 46 },
-    { name: "junction", z0: 46, z1: 55 },
+    { name: "entry", z0: 0, z1: 14, tint: [1.0, 0.95, 0.85] as const },
+    { name: "gallery", z0: 14, z1: 32, tint: [1.0, 0.94, 0.83] as const },
+    // the clinic stretch runs a touch cooler — fluorescent wing off a
+    // service intake reads institutional, not warm
+    { name: "clinic", z0: 32, z1: 46, tint: [0.96, 0.97, 0.9] as const },
+    { name: "junction", z0: 46, z1: 55, tint: [1.0, 0.93, 0.8] as const },
   ];
   for (let zi = 0; zi < zoneDefs.length; zi++) {
     const zd = zoneDefs[zi];
@@ -656,7 +658,7 @@ export function buildConcourse(
       new Vector3(0, C.height - 0.25, (zd.z0 + zd.z1) / 2),
       scene,
     );
-    point.diffuse = new Color3(1.0, 0.94, 0.83);
+    point.diffuse = new Color3(zd.tint[0], zd.tint[1], zd.tint[2]);
     point.intensity = 7.6;
     point.range = (zd.z1 - zd.z0) * 0.9 + 8;
     zones.push({
