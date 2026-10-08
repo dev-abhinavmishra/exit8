@@ -40,4 +40,15 @@ test.describe("practice mode", () => {
     await expect(page.getByText("PRACTICE SHIFT")).toBeVisible({ timeout: 10_000 });
     await expect(page.getByText("LOOPS WALKED")).toBeVisible();
   });
+
+  test("a dangerous contact lands on the report as ROUTE INCIDENTS", async ({ page }) => {
+    await boot(page, "&anomaly=figure.rush");
+    // stand inside its trigger band — it wakes, sprints, reaches us
+    await page.evaluate(`${NA}.teleport(0, 0, 35)`);
+    await page.waitForFunction(`${NA}.stability() < 40`, null, { timeout: 20_000 });
+    await page.keyboard.press("Escape");
+    await page.getByRole("button", { name: /ABANDON SHIFT/ }).click();
+    await expect(page.getByText("ROUTE INCIDENTS")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText("It Comes At You")).toBeVisible();
+  });
 });
