@@ -718,3 +718,5 @@ moderate / unmistakable — enforced by weights, not catalog counts (the
 catalog is quiet-first by design: 15 subtle / 12 moderate / 4
 unmistakable at 31 defs). ≤2 major shocks per first run. Every
 sound-led anomaly carries a visual cue path.
+214. `poster.backs` — Posters Face-In · CH I · subtle
+215. `pass.stuck` — Counter Didn't Advance · CH II · subtle
