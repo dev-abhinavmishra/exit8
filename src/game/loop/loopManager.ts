@@ -16,6 +16,7 @@ import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
 import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
+import { buildFigure } from "../../world/figures";
 import type { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import type { ConcourseWorld } from "../../world/generation/concourse";
 import { LAYOUT, type DoorRig } from "../../world/generation/concourse";
@@ -68,6 +69,7 @@ export class LoopManager {
   private endingCap: AbstractMesh | null = null;
   private endingCapY0 = 0;
   private endingLight: PointLight | null = null;
+  private endingOutcome: "secure" | "lost" | null = null;
   private anomalyRolls: RngStream;
   private anomalyRuntime: RngStream;
   readonly stability = new StabilityIndex();
@@ -285,6 +287,8 @@ export class LoopManager {
       });
       if (result.outcome === "secure") {
         this.beginSecureEnding(this.pendingCommit === "retreat" ? "north" : "south");
+      } else if (result.outcome === "lost") {
+        this.beginLostEnding(this.pendingCommit === "retreat" ? "north" : "south");
       } else this.events.onEnd?.(result.outcome);
       this.emit();
       return;
@@ -357,14 +361,51 @@ export class LoopManager {
     this.endingLight = new PointLight("ending.light", new Vector3(0, 1.9, endZ + dir * 0.9), this.scene);
     this.endingLight.diffuse = new Color3(1.0, 0.95, 0.84);
     this.endingLight.intensity = 0;
+    this.endingOutcome = "secure";
     this.endingT = 0;
     const at = new Vector3(0, 1.6, endZ + dir);
     this.audio.playChime(at);
     this.audio.caption("the far end opens onto daylight", at);
   }
 
+  /**
+   * The lost-route mirror: the lamps across the whole corridor drown
+   * at once, and where the sealed cap stood a moment ago there is now
+   * a person facing you. ~2.6s, then the shift report.
+   */
+  private beginLostEnding(side: "north" | "south"): void {
+    for (const z of this.world.zones) z.point.intensity = z.point.intensity * 0.05;
+    const endZ = side === "south" ? LAYOUT.southAirlock.z1 : LAYOUT.northAirlock.z0;
+    const dir = side === "south" ? -1 : 1;
+    // barely-seen silhouette: a whisper of cold emissive, no light
+    // dependency — the figure is just barely there in the drowned
+    // corridor, which is what makes it wrong
+    const figMat = new StandardMaterial("ending.figure.mat", this.scene);
+    figMat.disableLighting = true;
+    figMat.emissiveColor = new Color3(0.15, 0.17, 0.22);
+    const fig = buildFigure(this.scene, this.world.root, "ending.figure", {
+      kind: "silhouette",
+      material: figMat,
+    });
+    fig.root.position = new Vector3(0, 0, endZ + dir * 0.35);
+    fig.root.rotation.y = side === "south" ? Math.PI : 0;
+
+    this.endingOutcome = "lost";
+    this.endingT = 0;
+    const at = new Vector3(0, 1.6, endZ + dir);
+    this.audio.playGroan(at);
+    this.audio.caption("it was always the same corridor", at);
+  }
+
   private updateEnding(dt: number): void {
     this.endingT += dt;
+    if (this.endingOutcome === "lost") {
+      if (this.endingT > 2.6) {
+        this.endingT = -1;
+        this.events.onEnd?.("lost");
+      }
+      return;
+    }
     const h = LAYOUT.corridor.height;
     // blast-door drop: slow ease-out over ~2.4s — the player watches
     // the seal sink and the light widen; slight early hold
