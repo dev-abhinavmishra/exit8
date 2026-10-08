@@ -808,6 +808,12 @@ export class GameUi {
       void el.offsetWidth; // restart the pulse on back-to-back drops
       el.classList.add("hit");
       window.setTimeout(() => el.classList.remove("hit"), 650);
+      // and the cost itself floats off the readout — the run felt it
+      const chip = document.createElement("span");
+      chip.className = "stab-delta";
+      chip.textContent = `−${this.prevStability - v}`;
+      el.appendChild(chip);
+      window.setTimeout(() => chip.remove(), 900);
     }
     this.prevStability = v;
     this.stabilityEl.num.textContent = String(v);

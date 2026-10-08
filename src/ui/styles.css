@@ -351,9 +351,36 @@
 .na-hud .stability.hit {
   animation: na-stab-hit 0.4s ease;
 }
+@keyframes na-stab-delta {
+  0% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+.na-hud .stability .stab-delta {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--bad);
+  animation: na-stab-delta 0.85s ease forwards;
+}
 @media (prefers-reduced-motion: reduce) {
   .na-hud .stability.hit {
     animation: none;
+  }
+  .na-hud .stability .stab-delta {
+    animation: none;
+    opacity: 1;
   }
 }
 .na-hud .loop-tag {
