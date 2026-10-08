@@ -121,6 +121,7 @@ import { figureCorner } from "./figureCorner";
 import { lockerTaps } from "./lockerTaps";
 import { figureRecords } from "./figureRecords";
 import { zoneSick } from "./zoneSick";
+import { facePane } from "./facePane";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -305,6 +306,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   lockerTaps,
   figureRecords,
   zoneSick,
+  facePane,
   lightRed,
   benchFlipped,
   stripGrows,
