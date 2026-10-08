@@ -431,11 +431,15 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 121. ★ `draft.sheet` — a lone paper sheet on open terrazzo slides half a
      metre in a draft that touches nothing else; the scrape gives it
      away if you are close enough to hear. Subtle. (slice)
+122. `pa.deadair` — a PA horn keys up on dead air: relay click, the
+     carrier hiss held a beat, click off. No announcement follows.
+     Moderate. (slice)
 
-Slice count: **162 implemented — the full catalog**. New hooks:
+Slice count: **163 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
-`audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
+`audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`, `audio.playScrape(pos)`,
+`audio.playPaDeadAir(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
 
 Balance: per-loop exposure aims for roughly thirds across subtle /

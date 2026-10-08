@@ -709,6 +709,49 @@ export class AudioSystem {
     this.caption("PA announcement", pos);
   }
 
+  /** PA keyed up on dead air — a relay click, the horn's open-line
+   *  carrier hiss held a beat, then click off. No announcement. */
+  playPaDeadAir(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    pan.connect(this.bus("voices"));
+    const click = (at: number) => {
+      const src = ctx.createBufferSource();
+      src.buffer = this.noiseBuffer;
+      src.playbackRate.value = 3;
+      const hp = ctx.createBiquadFilter();
+      hp.type = "highpass";
+      hp.frequency.value = 2400;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.06 * sp.gain, at);
+      g.gain.exponentialRampToValueAtTime(0.001, at + 0.045);
+      src.connect(hp).connect(g).connect(pan);
+      src.start(at, 0.6, 0.05);
+    };
+    click(t0);
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.loop = true;
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = 1350;
+    bp.Q.value = 0.8;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t0 + 0.04);
+    g.gain.linearRampToValueAtTime(0.02 * sp.gain, t0 + 0.1);
+    g.gain.setValueAtTime(0.02 * sp.gain, t0 + 1.3);
+    g.gain.linearRampToValueAtTime(0, t0 + 1.42);
+    src.connect(bp).connect(g).connect(pan);
+    src.start(t0 + 0.03);
+    src.stop(t0 + 1.45);
+    click(t0 + 1.45);
+    this.caption("the PA clicks — dead air", pos);
+  }
+
   /** Two-burst internal phone ring — a warbling trill pair, used by
    *  phone.rings. Spatialized to the handset niche. */
   playRing(pos: Vector3): void {
