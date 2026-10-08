@@ -151,17 +151,21 @@ export class AudioSystem {
     const t0 = this.ctx.currentTime;
     const src = this.ctx.createBufferSource();
     src.buffer = this.noiseBuffer;
-    src.playbackRate.value = 0.9 + this.rng.draw() * 0.3;
+    // tactile guide strip: rubber thuds underfoot, it doesn't click like
+    // terrazzo — lower, duller, a touch longer. Anomalous footsteps keep
+    // the terrazzo timbre (they are never yours).
+    const onStrip = !anomalous && Math.abs(pos.x - 0.72) < 0.2 && pos.z > 3.0 && pos.z < 54.2;
+    src.playbackRate.value = (onStrip ? 0.7 : 0.9) + this.rng.draw() * 0.3;
     const bp = this.ctx.createBiquadFilter();
     bp.type = "bandpass";
-    bp.frequency.value = 320 + this.rng.draw() * 120;
-    bp.Q.value = 1.1;
+    bp.frequency.value = (onStrip ? 205 : 320) + this.rng.draw() * (onStrip ? 60 : 120);
+    bp.Q.value = onStrip ? 1.5 : 1.1;
     const g = this.ctx.createGain();
     const sp = this.spatialParams(pos);
-    const peak = 0.5 * intensity * sp.gain;
+    const peak = 0.5 * intensity * sp.gain * (onStrip ? 0.85 : 1);
     g.gain.setValueAtTime(0, t0);
     g.gain.linearRampToValueAtTime(peak, t0 + 0.012);
-    g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.13);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + (onStrip ? 0.17 : 0.13));
     const pan = this.ctx.createStereoPanner();
     pan.pan.value = sp.pan;
     src
