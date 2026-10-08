@@ -331,6 +331,7 @@ export class LoopManager {
       },
       { label: "STABILITY", value: `${result.stability} (${result.delta >= 0 ? "+" : ""}${result.delta})` },
       { label: "ROUTE", value: `LOOP ${String(this.loopIndex).padStart(2, "0")}` },
+      { label: "PASS", value: `${String(this.streak).padStart(2, "0")}`, tone: correct ? "ok" : "bad" },
     );
 
     this.events.onJudgment?.({
@@ -379,6 +380,7 @@ export class LoopManager {
       { label: COPY.airlockTerminal.prompt, value: "" },
       { label: "STABILITY", value: `${this.stability.current}` },
       { label: "LOOP", value: String(this.loopIndex).padStart(2, "0") },
+      { label: "PASS", value: String(this.streak + 1).padStart(2, "0") },
     );
     this.emit();
   }
