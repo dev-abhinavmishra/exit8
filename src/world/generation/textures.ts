@@ -73,8 +73,17 @@ export function buildEnvironmentTexture(scene: Scene): CubeTexture {
       }
     }),
     face((c) => {
-      c.fillStyle = "#0d0c0b";
+      // down: the lit terrazzo bouncing light back up — a warm dim
+      // field with the amber guide-line suggestion, fading at the
+      // edges. This face is what ceilings and undersides sample.
+      const g = c.createRadialGradient(S / 2, S / 2, S * 0.06, S / 2, S / 2, S * 0.72);
+      g.addColorStop(0, "#403b31");
+      g.addColorStop(0.55, "#2b2823");
+      g.addColorStop(1, "#161514");
+      c.fillStyle = g;
       c.fillRect(0, 0, S, S);
+      c.fillStyle = "rgba(140,110,52,0.5)";
+      c.fillRect(S * 0.56, S * 0.04, S * 0.05, S * 0.92);
     }),
     wall(1.3), // pz — the lit south mouth
     wall(0.7), // nz — the dimmer north end
