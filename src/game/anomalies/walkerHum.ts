@@ -8,7 +8,6 @@
  * minor-ish scale, each detuned a touch, note/gap timing varied. After
  * each phrase he rests a few seconds, then starts a new one.
  */
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { AnomalyDef } from "./types";
 
 // natural minor on A2 — a range a person would actually whistle in
@@ -77,8 +76,8 @@ export const walkerHum: AnomalyDef = {
         }
         const pos = walkerNode.getAbsolutePosition();
         pos.y += 0.35; // mouth, not feet
-        ctx.audio.playWhistle(pos as Vector3, notes[idx]!, durs[idx]!);
-        if (idx === 0) ctx.audio.caption("whistling", pos as Vector3);
+        ctx.audio.playWhistle(pos, notes[idx]!, durs[idx]!);
+        if (idx === 0) ctx.audio.caption("whistling", pos);
         wait = durs[idx]! * 0.75 + gaps[idx]!;
         idx++;
       },

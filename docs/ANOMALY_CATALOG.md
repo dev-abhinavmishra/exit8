@@ -419,7 +419,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      off-key tune wanders his route with him, phrases resting between.
      You hear it before you see him. Unmistakable. (slice)
 
-Slice count: **159 implemented — the full catalog**. New hooks:
+119. ★ `figure.wall` — a dark figure stands at the east wall, nose to the
+     panels, arms at its sides; it does not move while watched, but once
+     you have walked well past it the next glance back finds it turned
+     to face up-corridor. Unmistakable. (slice)
+
+Slice count: **160 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
