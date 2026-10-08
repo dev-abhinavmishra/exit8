@@ -231,6 +231,8 @@ export interface PosterDef {
   sub: string[];
   bg: string;
   fg: string;
+  /** draws an engraved staff portrait instead of a text block */
+  portrait?: boolean;
 }
 
 /** Fictional notice posters — municipal micro-copy, never real branding. */
@@ -242,10 +244,11 @@ export const POSTER_DEFS: PosterDef[] = [
     fg: "#e8a33d",
   },
   {
-    title: "SORT YOUR REFUSE",
-    sub: ["ORGANICS · GLASS · MIXED", "BAY 12 · RECORDS WALL", "AIDER CITY BYLAW 44-C"],
-    bg: "#1d2b2b",
-    fg: "#4fa8b8",
+    title: "FACE OF THE ROUTE",
+    sub: ["INSPECTOR R. VANCE", "27 YEARS ON LOOP 7"],
+    bg: "#232120",
+    fg: "#d8d5cd",
+    portrait: true,
   },
   {
     title: "REPORT DRIFT",
@@ -268,7 +271,7 @@ export const POSTER_DEFS: PosterDef[] = [
 ];
 
 /** Redraw a poster texture in place — used at build and by poster anomalies. */
-export function drawPoster(t: DynamicTexture, d: PosterDef, mirror = false): void {
+export function drawPoster(t: DynamicTexture, d: PosterDef, mirror = false, hollow = false): void {
   const w = 256;
   const h = 384;
   const c = ctx(t);
@@ -288,8 +291,42 @@ export function drawPoster(t: DynamicTexture, d: PosterDef, mirror = false): voi
   c.font = "bold 24px Arial, sans-serif";
   c.textAlign = "center";
   c.fillText(d.title, w / 2, 76);
-  c.font = "16px Arial, sans-serif";
-  d.sub.forEach((line, j) => c.fillText(line, w / 2, 150 + j * 44));
+  if (d.portrait) {
+    // engraved staff portrait — dark shoulder block, pale face oval,
+    // crude woodcut features; hollow swaps the eyes for void sockets
+    c.fillStyle = "#17191d";
+    c.beginPath();
+    c.ellipse(w / 2, 215, 50, 60, 0, 0, Math.PI * 2);
+    c.fill();
+    c.fillRect(w / 2 - 70, 262, 140, 64);
+    c.fillStyle = hollow ? "#4a443e" : "#c9c2b4";
+    c.beginPath();
+    c.ellipse(w / 2, 208, 37, 47, 0, 0, Math.PI * 2);
+    c.fill();
+    c.fillStyle = hollow ? "#08080a" : "#2a2622";
+    c.beginPath();
+    c.ellipse(w / 2 - 13, 199, hollow ? 8 : 5, hollow ? 11 : 5, 0, 0, Math.PI * 2);
+    c.fill();
+    c.beginPath();
+    c.ellipse(w / 2 + 13, 199, hollow ? 8 : 5, hollow ? 11 : 5, 0, 0, Math.PI * 2);
+    c.fill();
+    c.strokeStyle = hollow ? "#1c1a18" : "#4a443c";
+    c.lineWidth = 3;
+    c.beginPath();
+    c.moveTo(w / 2, 206);
+    c.lineTo(w / 2 - 3, 224);
+    c.stroke();
+    c.beginPath();
+    c.moveTo(w / 2 - 11, 238);
+    c.lineTo(w / 2 + 11, 238);
+    c.stroke();
+    c.font = "15px Arial, sans-serif";
+    c.fillStyle = d.fg;
+    d.sub.forEach((line, j) => c.fillText(line, w / 2, 300 + j * 24));
+  } else {
+    c.font = "16px Arial, sans-serif";
+    d.sub.forEach((line, j) => c.fillText(line, w / 2, 150 + j * 44));
+  }
   c.font = "15px Arial, sans-serif";
   c.fillText("— 7 —", w / 2, h - 40);
   if (mirror) c.restore();

@@ -343,8 +343,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 92. ★ `walker.charge` — the inspector breaks off his route and sprints
     down his lane to a step behind you, then holds at your shoulder.
     Unmistakable. (slice)
+93. ★ `poster.hollow` — Inspector Vance's staff portrait stares back
+    with two void sockets where his eyes were. Subtle. (slice)
 
-Slice count: **133 implemented — the full catalog**. New hooks:
+Slice count: **134 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
