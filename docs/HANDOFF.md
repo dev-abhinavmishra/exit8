@@ -5,7 +5,7 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 ## Where we are
 
 - PR #1 (`devin/night-audit-vertical-slice`) carries M0–M5:
-  **208 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+  **212 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
   daily/custom routes, practice mode, route archive, field notes +
   dossier ending, gamepad, ambient walker + watcher, missed-divergence
   report. NOT yet merged. Current gates: 236 unit, 27/27 e2e (~13m;
@@ -45,6 +45,38 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   footsteps got a slap-echo send (0.115s delay × 0.3 fb, LP 1500, wet
   0.22 — constructor `unlock()` block); pause/titlecard bleed fixed in
   `show()` (live `.na-titlecard`s removed when any screen opens).
+- 2026-10-08 world-tic pass: `world.fanSpeed` knob (0..1+) + the
+  junction extraction fan (registered `junction.machine.fan` TransformNode
+  with TWO crossed blades — per-blade pivots read wrong) spun by
+  `world.update(dt)` (called from app after ambientWalker). machine.silence
+  / fan.dead / lights.blackout throttle it to 0, fan.racing 4.2× + gain
+  1.5. `world.dust` (ParticleSystem|null, null under reducedMotion) —
+  blackout stops the motes so "the dark holds nothing moving". New:
+  fan.dead, fan.racing, gallery.dark (lamp mats trofferLit→trofferDim
+  on the 3 registered gallery lamp nodes), pane.face (face + fingers
+  pressed into south door's wired pane — see traps below).
+- 2026-10-08 fix batch: `notice.amends` was dead code — requires pointed
+  at `sign.sign.notice.board` (double prefix, never registered → silent
+  skip; the forced sweep caught it) AND it repainted a sign material
+  applied to no mesh. Now it restamps one pinned rota sheet via
+  `drawNote` + a StandardMaterial swap (sheets are children of
+  `notice.board`, `notice.sheet.${i}`). sheets.cleared/sheets.added
+  exclude it. Door vision panes: `doorGlassMat` specular 0.2→0.06 —
+  they caught a blown white highlight that read as lit windows at any
+  distance.
+- **E2E sweep flake**: the 4-lane forced-activation sweep can stall a
+  lane (poster.*/pitch.sags timed out once at 16m — re-probed fine in a
+  serial mini-sweep). It's GL-context contention on SwiftShader, not a
+  product bug: re-probe ids serially before believing a sweep timeout.
+- **Decal/plate traps (proven)**: (a) `backFaceCulling = false` is
+  REQUIRED on any plane whose facing is uncertain — a culled plane is
+  invisible with visible+enabled true; (b) a plate inside leaf-local
+  geometry hides INSIDE the win box (leaf face z ±0.06 vs plate -0.064)
+  — parent to world.root at an absolute position instead; (c) debug an
+  invisible mesh with `meshInfo(name)` → {pos,rot,visible,enabled}, then
+  a baseline screenshot with a DIFFERENT anomaly to separate scene
+  artifacts from your mesh (the "white pane" was lamp specular in
+  baseline, not the plate).
 - Working mode (user, latest): QUALITY over quantity — replica parity
   with the Exit 8 corridor, not catalog count. Same subway loop, many
   anomaly versions of it. Test only after MAJOR additions: quick probe

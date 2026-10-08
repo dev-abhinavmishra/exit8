@@ -267,6 +267,7 @@ export class App {
         troffers: this.world.anchors.troffers,
         clockPos: this.world.anchors.clock,
         vendPos: this.world.anchors.vend,
+        fanScale: () => this.world.fanSpeed,
       });
       // a first gesture arriving while paused must not un-mute the scene
       if (this.state === "paused") this.audio.suspend();

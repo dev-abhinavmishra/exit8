@@ -239,7 +239,14 @@ export class AudioSystem {
     ventPositions: Vector3[],
     machinePos: Vector3,
     rng: RngStream,
-    opts: { noRumble?: boolean; troffers?: Vector3[]; clockPos?: Vector3; vendPos?: Vector3 } = {},
+    opts: {
+      noRumble?: boolean;
+      troffers?: Vector3[];
+      clockPos?: Vector3;
+      vendPos?: Vector3;
+      /** live getter for world.fanSpeed — the extraction fan's whoosh */
+      fanScale?: () => number;
+    } = {},
   ): void {
     if (!this.ctx || !this.noiseBuffer || this.ambienceStarted) return;
     this.ambienceStarted = true;
@@ -353,6 +360,32 @@ export class AudioSystem {
     const machPan = ctx.createStereoPanner();
     mach.connect(machLp).connect(machG).connect(machPan).connect(this.bus("machinery"));
     mach.start();
+
+    // extraction-fan airflow — broadband whoosh at the machine; gain,
+    // bandpass and blade-flutter all follow world.fanSpeed (opts.fanScale)
+    // so fan.dead / fan.racing / machine.silence / blackout are audible
+    // on the blades, not just on the rotor.
+    this.fanScaleFn = opts.fanScale ?? null;
+    const fanSrc = ctx.createBufferSource();
+    fanSrc.buffer = this.noiseBuffer;
+    fanSrc.loop = true;
+    const fanBp = ctx.createBiquadFilter();
+    fanBp.type = "bandpass";
+    fanBp.frequency.value = 520;
+    fanBp.Q.value = 0.9;
+    const fanG = ctx.createGain();
+    fanG.gain.value = 0;
+    const fanPan = ctx.createStereoPanner();
+    const fanLfo = ctx.createOscillator();
+    fanLfo.type = "sine";
+    fanLfo.frequency.value = 7;
+    const fanLfoG = ctx.createGain();
+    fanLfoG.gain.value = 0;
+    fanLfo.connect(fanLfoG).connect(fanG.gain);
+    fanSrc.connect(fanBp).connect(fanG).connect(fanPan).connect(this.bus("machinery"));
+    fanSrc.start();
+    fanLfo.start();
+
     this.machineUpdater = () => {
       const sp = this.spatialParams(machinePos);
       const duck = this.machineGainScale ? this.machineGainScale() : 1;
@@ -360,6 +393,12 @@ export class AudioSystem {
       machG.gain.value = 0.12 * sp.gain * duck;
       machPan.pan.value = sp.pan;
       mach.frequency.value = 55 * pitch;
+      const fan = Math.min(Math.max(this.fanScaleFn?.() ?? 1, 0), 5);
+      fanG.gain.value = 0.085 * sp.gain * Math.min(fan, 1.8);
+      fanPan.pan.value = sp.pan;
+      fanBp.frequency.value = 380 + 300 * Math.min(fan, 2.2);
+      fanLfo.frequency.value = 5 + 8 * fan;
+      fanLfoG.gain.value = 0.022 * Math.min(fan, 1.6) * sp.gain;
     };
 
     // rare distant rumble — seeded so runs are reproducible
@@ -391,6 +430,7 @@ export class AudioSystem {
   private rumbleScheduler: ((dt: number) => void) | null = null;
   private machineGainScale: (() => number) | null = null;
   private machinePitchFn: (() => number) | null = null;
+  private fanScaleFn: (() => number) | null = null;
 
   /** Anomaly hook: scale the vend-unit compressor gain (vend.dead
    *  silences it — the machine is off, not just dark). */
