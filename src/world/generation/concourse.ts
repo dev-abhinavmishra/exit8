@@ -77,6 +77,9 @@ export interface LightZone {
   z1: number;
   /** zone color target for lighting anomalies */
   baseDiffuse: Color3;
+  /** extra lights inside the zone's footprint (e.g. the machinery bay's
+   *  bulkhead lamp) — every zone-dim path scales these with `point` */
+  extraLights: PointLight[];
 }
 
 export interface ConcourseWorld {
@@ -497,6 +500,14 @@ export function buildConcourse(
   const len = C.z1 - C.z0;
   const zc = (C.z0 + C.z1) / 2;
 
+  // S-2 machinery bay — a real recess in the west wall, z 46.2–49.4,
+  // 1.15 m deep. Every wall run / trim strip / collider that used to
+  // cross this stretch splits around the mouth.
+  const BAY_Z0 = 46.2;
+  const BAY_Z1 = 49.4;
+  const BAY_DEPTH = 1.15;
+  const BAY_ZC = (BAY_Z0 + BAY_Z1) / 2;
+
   // ─── shell ───────────────────────────────────────────────────────
   const floor = kit.box("floor", C.xHalf * 2 + 0.3, 0.1, len, mats.terrazzo, scene, root);
   floor.position = new Vector3(0, -0.05, zc);
@@ -530,7 +541,10 @@ export function buildConcourse(
   kit.wallRun("wall.left.0", -C.xHalf, 0, 12, C.height, mats.wallPanel, scene, root, registry);
   kit.wallRun("wall.left.1", -C.xHalf, 12, 32, C.height, mats.wallPanel, scene, root, registry); // records wall face
   kit.wallRun("wall.left.2", -C.xHalf, 32, 42, C.height, mats.wallPanel, scene, root, registry);
-  kit.wallRun("wall.left.3", -C.xHalf, 42, 55, C.height, mats.wallPanel, scene, root, registry);
+  // wall.left.3 ends at the S-2 machinery bay mouth (z 46.2–49.4, a real
+  // recess — see the bay block below); wall.left.4 resumes past it
+  kit.wallRun("wall.left.3", -C.xHalf, 42, 46.2, C.height, mats.wallPanel, scene, root, registry);
+  kit.wallRun("wall.left.4", -C.xHalf, 49.4, 55, C.height, mats.wallPanel, scene, root, registry);
   kit.wallRun("wall.right.0", C.xHalf, 0, 20, C.height, mats.wallPanel, scene, root, registry);
   // right wall 20–32: glass gallery
   const glass = kit.box("wall.gallery.glass", 0.06, 2.0, 12, mats.darkGlass, scene, root);
@@ -593,19 +607,29 @@ export function buildConcourse(
   registry.register("wall.gallery.back", galleryBack);
   kit.wallRun("wall.right.2", C.xHalf, 32, 55, C.height, mats.wallPanel, scene, root, registry);
 
-  // continuous colliders per wall (glass section collides too)
+  // continuous colliders per wall (glass section collides too); the west
+  // wall splits around the S-2 bay mouth (z 46.2–49.4) so you can walk in
   for (const sx of [-1, 1]) {
-    colliders.push(
-      kit.collider(
-        `wall.col.${sx}`,
-        0.12,
-        C.height,
-        len,
-        new Vector3(sx * C.xHalf, C.height / 2, zc),
-        scene,
-        root,
-      ),
-    );
+    const spans: [number, number][] =
+      sx < 0
+        ? [
+            [C.z0, BAY_Z0],
+            [BAY_Z1, C.z1],
+          ]
+        : [[C.z0, C.z1]];
+    spans.forEach(([s0, s1], i) => {
+      colliders.push(
+        kit.collider(
+          `wall.col.${sx}.${i}`,
+          0.12,
+          C.height,
+          s1 - s0,
+          new Vector3(sx * C.xHalf, C.height / 2, (s0 + s1) / 2),
+          scene,
+          root,
+        ),
+      );
+    });
   }
 
   // ─── ceiling troffers (4 light zones) ─────────────────────────────
@@ -674,9 +698,197 @@ export function buildConcourse(
       z0: zd.z0,
       z1: zd.z1,
       baseDiffuse: point.diffuse.clone(),
+      extraLights: [],
     });
     // lighting anomalies address zones by name through the registry
     registry.register(point.name, point as unknown as AbstractMesh);
+  }
+
+  // ─── S-2 machinery bay — a real recess in the west wall ───────────
+  // The junction sign promises a service space; now it's walkable. The
+  // extraction machine sits inside on service concrete, pipes run the
+  // bay's back and drop into it, and a caged bulkhead lamp burns over
+  // the works. Shell meshes are junction.bay.* (static merge); colliders
+  // make the mouth a real doorway.
+  {
+    const bayW = BAY_Z1 - BAY_Z0;
+    const backFace = -C.xHalf - BAY_DEPTH; // interior back face
+    // wall continues over the mouth — header + a steel lintel edge so
+    // the opening reads as a finished service aperture, not a void
+    const bayHeader = kit.box("junction.bay.header", 0.12, 0.7, bayW + 0.24, mats.wallPanel, scene, root);
+    bayHeader.position = new Vector3(-C.xHalf, C.height - 0.35, BAY_ZC);
+    const bayLintel = kit.box("junction.bay.lintel", 0.06, 0.08, bayW + 0.26, mats.steel, scene, root);
+    bayLintel.position = new Vector3(-C.xHalf + 0.06, C.height - 0.72, BAY_ZC);
+    colliders.push(
+      kit.collider(
+        "junction.bay.headerCol",
+        0.14,
+        0.72,
+        bayW + 0.24,
+        bayHeader.position.clone(),
+        scene,
+        root,
+      ),
+    );
+    // concrete cheeks + back — service-bay material break from the
+    // corridor's panel walls
+    for (const bz of [BAY_Z0, BAY_Z1]) {
+      const cheek = kit.box(
+        `junction.bay.cheek.${bz}`,
+        BAY_DEPTH + 0.12,
+        C.height,
+        0.12,
+        mats.concrete,
+        scene,
+        root,
+      );
+      cheek.position = new Vector3(-C.xHalf - BAY_DEPTH / 2, C.height / 2, bz);
+      colliders.push(
+        kit.collider(
+          `junction.bay.cheekCol.${bz}`,
+          BAY_DEPTH + 0.14,
+          C.height,
+          0.14,
+          cheek.position.clone(),
+          scene,
+          root,
+        ),
+      );
+    }
+    const bayBack = kit.box("junction.bay.back", 0.12, C.height, bayW + 0.24, mats.concrete, scene, root);
+    bayBack.position = new Vector3(backFace - 0.06, C.height / 2, BAY_ZC);
+    colliders.push(
+      kit.collider(
+        "junction.bay.backCol",
+        0.14,
+        C.height,
+        bayW + 0.24,
+        bayBack.position.clone(),
+        scene,
+        root,
+      ),
+    );
+    const bayCeil = kit.box(
+      "junction.bay.ceil",
+      BAY_DEPTH + 0.3,
+      0.1,
+      bayW + 0.24,
+      mats.ceiling,
+      scene,
+      root,
+    );
+    bayCeil.position = new Vector3(-C.xHalf - BAY_DEPTH / 2, C.height + 0.05, BAY_ZC);
+    const bayFloor = kit.box(
+      "junction.bay.floor",
+      BAY_DEPTH + 0.3,
+      0.1,
+      bayW + 0.24,
+      mats.concrete,
+      scene,
+      root,
+    );
+    bayFloor.position = new Vector3(-C.xHalf - BAY_DEPTH / 2, -0.05, BAY_ZC);
+    colliders.push(
+      kit.collider(
+        "junction.bay.floorCol",
+        BAY_DEPTH + 0.3,
+        0.1,
+        bayW + 0.24,
+        bayFloor.position.clone(),
+        scene,
+        root,
+      ),
+    );
+    // worn steel threshold across the mouth
+    const baySill = kit.box("dress.threshold.bay", 0.07, 0.012, bayW + 0.2, mats.steel, scene, root);
+    baySill.position = new Vector3(-C.xHalf + 0.05, 0.006, BAY_ZC);
+    // baseboards wrap INTO the bay — a real opening trims its cheeks
+    for (const bz of [BAY_Z0 + 0.06, BAY_Z1 - 0.06]) {
+      const skirt = kit.box(
+        `junction.bay.skirt.${bz}`,
+        BAY_DEPTH - 0.06,
+        0.14,
+        0.06,
+        mats.rubber,
+        scene,
+        root,
+      );
+      skirt.position = new Vector3(-C.xHalf - BAY_DEPTH / 2, 0.07, bz);
+    }
+    const bayBackSkirt = kit.box("junction.bay.skirtBack", 0.06, 0.14, bayW - 0.2, mats.rubber, scene, root);
+    bayBackSkirt.position = new Vector3(backFace - 0.02, 0.07, BAY_ZC);
+    // caged bulkhead lamp high on the back wall — self-lit so it burns
+    // in the bay's shade; rides the junction zone's kills/dips via
+    // troffers (material swap) + extraLights (intensity scale)
+    const cageLamp = kit.box("junction.bay.cage", 0.2, 0.12, 0.12, mats.rubber, scene, root);
+    cageLamp.position = new Vector3(backFace + 0.1, 2.35, BAY_Z1 - 0.32);
+    const cageGlass = kit.box("junction.baylamp", 0.05, 0.09, 0.16, mats.trofferLit, scene, root);
+    cageGlass.position = new Vector3(backFace + 0.16, 2.35, BAY_Z1 - 0.32);
+    for (const cy of [-0.03, 0.03]) {
+      const bar = kit.box(`junction.bay.cagebar.${cy}`, 0.17, 0.012, 0.012, mats.rubber, scene, root);
+      bar.position = new Vector3(backFace + 0.13, 2.35 + cy, BAY_Z1 - 0.32);
+    }
+    const bayLight = new PointLight("light.bay", new Vector3(-C.xHalf - 0.35, 2.3, BAY_ZC), scene);
+    bayLight.diffuse = new Color3(1.0, 0.88, 0.7);
+    bayLight.intensity = 4.6;
+    bayLight.range = 6;
+    const junctionZone = zones.find((z) => z.name === "junction");
+    if (junctionZone) {
+      junctionZone.extraLights.push(bayLight);
+      junctionZone.troffers.push(cageGlass);
+    }
+    registry.register("light.bay", bayLight as unknown as AbstractMesh);
+    registry.register("junction.baylamp", cageGlass);
+    // valve wheel + pressure gauge cluster on the back wall beside the
+    // machine — the bay reads as a working service space
+    const valve = CreateCylinder(
+      "junction.bay.valve",
+      { height: 0.03, diameter: 0.16, tessellation: 12 },
+      scene,
+    );
+    valve.material = mats.cabinetRed;
+    valve.rotation.z = Math.PI / 2;
+    valve.position = new Vector3(backFace + 0.08, 1.5, BAY_Z0 + 0.5);
+    for (let sp = 0; sp < 4; sp++) {
+      const spoke = kit.box(`junction.bay.valvespoke.${sp}`, 0.012, 0.14, 0.012, mats.rubber, scene, root);
+      spoke.position = new Vector3(backFace + 0.09, 1.5, BAY_Z0 + 0.5);
+      spoke.rotation.x = (sp * Math.PI) / 4;
+    }
+    const bayGauge = CreateCylinder(
+      "junction.bay.gauge",
+      { height: 0.03, diameter: 0.11, tessellation: 12 },
+      scene,
+    );
+    bayGauge.material = mats.trofferLit;
+    bayGauge.rotation.z = Math.PI / 2;
+    bayGauge.position = new Vector3(backFace + 0.08, 1.72, BAY_Z0 + 0.5);
+    // bay stencil — S-2 stenciled on the back wall in worn paint
+    const stencilTex = new DynamicTexture("tex.bayStencil", { width: 256, height: 128 }, scene, true);
+    {
+      const c = stencilTex.getContext() as unknown as CanvasRenderingContext2D;
+      c.clearRect(0, 0, 256, 128);
+      c.font = "bold 92px monospace";
+      c.fillStyle = "rgba(205,200,185,0.82)";
+      c.textAlign = "center";
+      c.fillText("S-2", 128, 96);
+      stencilTex.update();
+    }
+    const stencilMat = new StandardMaterial("mat.bayStencil", scene);
+    stencilMat.diffuseTexture = stencilTex;
+    stencilMat.emissiveTexture = stencilTex;
+    stencilMat.emissiveColor = new Color3(0.25, 0.25, 0.23);
+    stencilMat.opacityTexture = stencilTex;
+    stencilMat.disableLighting = true;
+    const stencilPlane = kit.plane("junction.bay.stencil", 0.7, 0.35, stencilMat, scene);
+    stencilPlane.position = new Vector3(backFace + 0.02, 2.0, BAY_Z1 - 0.7);
+    stencilPlane.rotation.y = Math.PI / 2;
+    stencilPlane.parent = root;
+    // floor drain at the bay's low edge — service bays drain
+    const bayDrain = kit.box("dress.drain.bay", 0.3, 0.008, 0.3, mats.rubber, scene, root);
+    bayDrain.position = new Vector3(-C.xHalf - BAY_DEPTH / 2, 0.005, BAY_ZC);
+    // motes drifting in the bay lamp's pool — junction zone index
+    moteAnchors.push({ x: -C.xHalf - BAY_DEPTH / 2, z: BAY_Z0 + 0.7, zi: 3 });
+    moteAnchors.push({ x: -C.xHalf - BAY_DEPTH / 2, z: BAY_Z1 - 0.7, zi: 3 });
   }
 
   // ─── dust motes hanging in the light shafts ───────────────────────
@@ -751,9 +963,20 @@ export function buildConcourse(
   // the corridor grounds itself instead of walls meeting floor at a
   // razor edge
   for (const sx of [-1, 1]) {
-    const strip = kit.plane(`dress.ao.${sx}`, 55, 0.55, mats.aoStrip, scene, root);
-    strip.position = new Vector3(sx * (C.xHalf - 0.065), 0.28, 27.5);
-    strip.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
+    // the west strip splits around the bay mouth so no wash floats
+    // across the opening at floor level
+    const spans: [number, number][] =
+      sx < 0
+        ? [
+            [C.z0, BAY_Z0],
+            [BAY_Z1, C.z1],
+          ]
+        : [[C.z0, C.z1]];
+    spans.forEach(([s0, s1], i) => {
+      const strip = kit.plane(`dress.ao.${sx}${i ? ".s" : ""}`, s1 - s0, 0.55, mats.aoStrip, scene, root);
+      strip.position = new Vector3(sx * (C.xHalf - 0.065), 0.28, (s0 + s1) / 2);
+      strip.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
+    });
   }
 
   // dark terrazzo border band along each wall base — station-floor
@@ -1016,18 +1239,36 @@ export function buildConcourse(
     registry.register(`vent.grille.${i}`, g);
   });
 
-  // baseboard trim grounds the walls
+  // baseboard trim grounds the walls — west splits around the bay mouth
   for (const sx of [-1, 1]) {
-    const base = kit.box(`baseboard.${sx}`, 0.06, 0.14, len, mats.rubber, scene, root);
-    base.position = new Vector3(sx * (C.xHalf - 0.03), 0.07, zc);
+    const spans: [number, number][] =
+      sx < 0
+        ? [
+            [C.z0, BAY_Z0],
+            [BAY_Z1, C.z1],
+          ]
+        : [[C.z0, C.z1]];
+    spans.forEach(([s0, s1], i) => {
+      const base = kit.box(`baseboard.${sx}${i ? ".s" : ""}`, 0.06, 0.14, s1 - s0, mats.rubber, scene, root);
+      base.position = new Vector3(sx * (C.xHalf - 0.03), 0.07, (s0 + s1) / 2);
+    });
   }
 
   // continuous wainscot bumper rail — splits the big wall fields
   // horizontally like a real concourse; runs behind furniture, which
   // occludes the overlap (rail x sits inside cabinet/bench volumes)
   for (const sx of [-1, 1]) {
-    const rail = kit.box(`dress.rail.${sx}`, 0.035, 0.09, len, mats.steel, scene, root);
-    rail.position = new Vector3(sx * (C.xHalf - 0.018), 1.04, zc);
+    const spans: [number, number][] =
+      sx < 0
+        ? [
+            [C.z0, BAY_Z0],
+            [BAY_Z1, C.z1],
+          ]
+        : [[C.z0, C.z1]];
+    spans.forEach(([s0, s1], i) => {
+      const rail = kit.box(`dress.rail.${sx}${i ? ".s" : ""}`, 0.035, 0.09, s1 - s0, mats.steel, scene, root);
+      rail.position = new Vector3(sx * (C.xHalf - 0.018), 1.04, (s0 + s1) / 2);
+    });
   }
 
   // pilaster pair at the service-junction mouth (z≈46) — the corridor's
@@ -1262,11 +1503,31 @@ export function buildConcourse(
   // Baseline-fixed: these never change between loops — if they do, it's
   // an anomaly, and none registers on them.
   for (const sx of [-1, 1]) {
-    const tray = kit.box(`dress.tray.${sx}`, 0.12, 0.07, len, mats.steel, scene, root);
-    tray.position = new Vector3(sx * (C.xHalf - 0.28), C.height - 0.09, zc);
-    const conduit = kit.box(`dress.conduit.${sx}`, 0.05, 0.05, len, mats.steel, scene, root);
-    conduit.position = new Vector3(sx * (C.xHalf - 0.12), C.height - 0.05, zc);
+    // west tray + conduit gap at the bay mouth — the services branch
+    // into the bay instead of floating across the opening
+    const spans: [number, number][] =
+      sx < 0
+        ? [
+            [C.z0, BAY_Z0],
+            [BAY_Z1, C.z1],
+          ]
+        : [[C.z0, C.z1]];
+    spans.forEach(([s0, s1], i) => {
+      const tray = kit.box(`dress.tray.${sx}${i ? ".s" : ""}`, 0.12, 0.07, s1 - s0, mats.steel, scene, root);
+      tray.position = new Vector3(sx * (C.xHalf - 0.28), C.height - 0.09, (s0 + s1) / 2);
+      const conduit = kit.box(
+        `dress.conduit.${sx}${i ? ".s" : ""}`,
+        0.05,
+        0.05,
+        s1 - s0,
+        mats.steel,
+        scene,
+        root,
+      );
+      conduit.position = new Vector3(sx * (C.xHalf - 0.12), C.height - 0.05, (s0 + s1) / 2);
+    });
     for (let z = 4; z < C.z1; z += 6) {
+      if (sx < 0 && z > BAY_Z0 - 0.5 && z < BAY_Z1 + 0.5) continue; // no hanger floats over the mouth
       const h = kit.box(`dress.hanger.${sx}.${z}`, 0.03, 0.09, 0.16, mats.steel, scene, root);
       h.position = new Vector3(sx * (C.xHalf - 0.28), C.height - 0.02, z);
     }
@@ -1364,10 +1625,19 @@ export function buildConcourse(
   // ceiling cove — a soft dark line where wall meets ceiling on both
   // runs, so the junction reads as a finished edge not a hard seam
   for (const sx of [-1, 1]) {
-    const cove = kit.plane(`dress.cove.${sx}`, 55, 0.14, mats.aoStrip, scene, root);
-    cove.position = new Vector3(sx * (C.xHalf - 0.03), 2.93, zc);
-    cove.rotation.y = sx > 0 ? Math.PI / 2 : -Math.PI / 2;
-    cove.rotation.z = Math.PI; // solid edge up at the ceiling line
+    const spans: [number, number][] =
+      sx < 0
+        ? [
+            [C.z0, BAY_Z0],
+            [BAY_Z1, C.z1],
+          ]
+        : [[C.z0, C.z1]];
+    spans.forEach(([s0, s1], i) => {
+      const cove = kit.plane(`dress.cove.${sx}${i ? ".s" : ""}`, s1 - s0, 0.14, mats.aoStrip, scene, root);
+      cove.position = new Vector3(sx * (C.xHalf - 0.03), 2.93, (s0 + s1) / 2);
+      cove.rotation.y = sx > 0 ? Math.PI / 2 : -Math.PI / 2;
+      cove.rotation.z = Math.PI; // solid edge up at the ceiling line
+    });
   }
 
   // clinic shuttered counter LEFT z 35–40
@@ -1443,28 +1713,32 @@ export function buildConcourse(
     cam.rotation.y = z < 27 ? 0 : Math.PI;
   });
 
-  // service junction conduits + machinery cabinet z 44–50
+  // service junction conduits — the pipe run now lives INSIDE the bay
+  // along its back wall instead of crossing the mouth in mid-air
   for (let i = 0; i < 3; i++) {
-    const pipe = kit.box(`junction.pipe.${i}`, 0.07, 0.07, 8, mats.steel, scene, root);
-    pipe.position = new Vector3(-C.xHalf + 0.1, C.height - 0.4 - i * 0.12, 47);
+    const pipe = kit.box(`junction.pipe.${i}`, 0.07, 0.07, 2.9, mats.steel, scene, root);
+    pipe.position = new Vector3(-C.xHalf - BAY_DEPTH + 0.1, C.height - 0.4 - i * 0.12, BAY_ZC);
     registry.register(`junction.pipe.${i}`, pipe);
   }
-  // vertical risers dropping the ceiling run into the machine bay +
+  // vertical risers drop the bay's ceiling run into the machine +
   // one full-height stack past the bank — junction.pipe.* merges
   for (let i = 0; i < 2; i++) {
-    const riser = kit.box(`junction.pipe.r${i}`, 0.06, 0.62, 0.06, mats.steel, scene, root);
-    riser.position = new Vector3(-C.xHalf + 0.1, 2.2, 46.6 + i * 0.5);
+    const riser = kit.box(`junction.pipe.r${i}`, 0.06, 0.9, 0.06, mats.steel, scene, root);
+    riser.position = new Vector3(-C.xHalf - BAY_DEPTH + 0.35, 2.05, BAY_ZC - 0.3 + i * 0.6);
   }
   const stack = kit.box("junction.pipe.stack", 0.09, 2.7, 0.09, mats.steel, scene, root);
   stack.position = new Vector3(-C.xHalf + 0.12, 1.35, 44.3);
   const stackBase = kit.box("junction.pipe.stackbase", 0.16, 0.3, 0.16, mats.rubber, scene, root);
   stackBase.position = new Vector3(-C.xHalf + 0.12, 0.15, 44.3);
-  const machine = kit.box("junction.machine", 0.8, 1.9, 1.2, mats.steel, scene, root);
-  machine.position = new Vector3(-C.xHalf + 0.45, 0.95, 47.5);
+  // the extraction machine sits INSIDE the bay, centred on it — its
+  // dressed face still reads to the corridor, and it no longer eats
+  // a chunk of the walkway
+  const machine = kit.box("junction.machine", 0.6, 1.9, 1.2, mats.wallPanel, scene, root);
+  machine.position = new Vector3(-C.xHalf - BAY_DEPTH + 0.38, 0.95, BAY_ZC);
   registry.register("junction.machine", machine);
-  colliders.push(kit.collider("junction.machine.col", 0.9, 2.0, 1.3, machine.position.clone(), scene, root));
+  colliders.push(kit.collider("junction.machine.col", 0.7, 2.0, 1.3, machine.position.clone(), scene, root));
   const machineLamp = kit.box("junction.machine.lamp", 0.06, 0.06, 0.06, mats.trofferLit, scene, root);
-  machineLamp.position = new Vector3(-C.xHalf + 0.86, 1.7, 47.2);
+  machineLamp.position = new Vector3(-C.xHalf - BAY_DEPTH + 0.71, 1.78, BAY_ZC - 0.3);
   registry.register("junction.machine.lamp", machineLamp);
   // machine face detail — gauge dial, vent slats, access seam (children
   // of the cabinet so they ride any anomaly that moves it)
@@ -1473,7 +1747,6 @@ export function buildConcourse(
     { height: 0.03, diameter: 0.16, tessellation: 14 },
     scene,
   );
-  gauge.material = mats.rubber;
   gauge.parent = machine;
   gauge.rotation.z = Math.PI / 2;
   gauge.position = new Vector3(0.41, 0.55, -0.2);

@@ -206,7 +206,7 @@ export function buildFixtures(
   //      Registered node (not merged): locker.ajar swings a door ----
   const lockers = new TransformNode("lockers", scene);
   lockers.parent = root;
-  lockers.position = new Vector3(-WALL_X + 0.15, 0, 48);
+  lockers.position = new Vector3(-WALL_X + 0.15, 0, 51.0); // south of the S-2 bay mouth — still a corridor landmark
   registry.register("lockers", lockers);
   const lockerCar = kit.box("lockers.carcase", 0.28, 1.9, 1.84, mats.wallPanel, scene);
   lockerCar.parent = lockers;
