@@ -331,9 +331,10 @@
     width 300ms ease,
     background 300ms ease;
 }
-.na-hud .stability.hit b,
-.na-hud .stability.hit .bar i {
+.na-hud .stability.hit b {
   color: var(--bad);
+}
+.na-hud .stability.hit .bar i {
   background: var(--bad);
 }
 @keyframes na-stab-hit {
