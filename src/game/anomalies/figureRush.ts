@@ -79,6 +79,7 @@ export const figureRush: AnomalyDef = {
         step.set(dx / dist, 0, dz / dist).scaleInPlace(Math.min(SPEED * dt, dist - CONTACT * 0.5));
         node.position.addInPlace(step);
         node.rotation.y = Math.atan2(dx, dz);
+        node.rotation.x = Math.min(0.14, node.rotation.x + dt * 0.5); // lean into it
         const swing = Math.sin(bobT * 3.4);
         for (const [i, leg] of fig.hips.entries()) leg.rotation.x = (i === 0 ? 1 : -1) * swing * 0.68;
         for (const [i, arm] of fig.arms.entries()) arm.rotation.x = (i === 0 ? -1 : 1) * swing * 0.42;
