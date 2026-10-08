@@ -322,6 +322,15 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
       l.rotation.z = -sx * 0.38;
       l.rotation.x = -0.05;
     }
+    // placket — the closed coat front: a thin stepped seam down the
+    // sternum, following each torso segment's own front face
+    for (const [py, h, fz] of [
+      [1.3, 0.32, 0.128],
+      [1.02, 0.28, 0.118],
+      [0.72, 0.38, 0.133],
+    ] as const) {
+      box(`${name}.placket.${py}`, 0.022, h, 0.01, lapel, scene, g, 0, py, fz);
+    }
     // neck
     const neck = CreateCylinder(`${name}.neck`, { height: 0.1, diameter: 0.11, tessellation: 10 }, scene);
     neck.material = use(skin);

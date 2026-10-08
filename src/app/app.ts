@@ -301,7 +301,7 @@ export class App {
     this.player.update(dt);
     this.loop.update(dt);
     this.rig?.update();
-    this.world.ambientWalker.update(dt);
+    this.world.ambientWalker.update(dt, this.player.position);
     this.world.update(dt);
     this.audio.setListener(this.player.position, this.player.forward());
     const fwd = this.player.camera.getForwardRay().direction;

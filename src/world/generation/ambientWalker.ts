@@ -28,7 +28,7 @@ export type WalkerMode =
   "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast" | "charge" | "midstep" | "offlane";
 
 export interface AmbientWalker {
-  update(dt: number): void;
+  update(dt: number, playerPos?: Vector3): void;
   reset(): void;
   /** anomaly hook — 'backwards' flips facing vs travel, 'stare' halts
    *  mid-corridor facing the player's approach. reset() restores normal. */
@@ -158,7 +158,7 @@ export function buildAmbientWalker(
         g.rotation.y = Math.PI;
       }
     },
-    update(dt) {
+    update(dt, playerPos) {
       // crawl: route and cadence intact but nearly stationary — he
       // covers a fifth of the route with a slowed, heavy stride
       // fast: same route at nearly double pace — he breezes the loop
@@ -217,6 +217,21 @@ export function buildAmbientWalker(
         pauseT -= dt;
         if (inspectT > 0) inspectT -= dt;
       } else {
+        // he gives way: if the player is planted on his lane ahead, he
+        // halts and waits rather than walking through them. Baseline
+        // behavior — scripted modes above are exempt.
+        const blocked =
+          playerPos != null &&
+          Math.abs(playerPos.x - lane) < 0.85 &&
+          dir * (playerPos.z - z) > 0.25 &&
+          dir * (playerPos.z - z) < 1.15;
+        if (blocked) {
+          for (const p of [...legPivots, ...armPivots]) p.rotation.x *= 0.85;
+          fig.headPivot.rotation.x *= 0.85;
+          g.rotation.y = dir > 0 ? 0 : Math.PI;
+          g.position.set(lane, 0, z);
+          return;
+        }
         z += dir * SPEED * dt * pace;
         if (z >= WALK_Z1 && dir > 0) {
           z = WALK_Z1;
