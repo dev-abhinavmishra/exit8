@@ -310,8 +310,16 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     the unit still hums but its eye is dark. Subtle. (slice)
 79. ★ `bench.gone` — the mid-corridor bench is simply not there. The
     wall run where it sat is bare. Moderate. (slice)
+80. ★ `totem.gone` — the mid-route hanging totem is simply not there;
+    the empty rod hangs over bare corridor. Moderate. (slice)
+81. ★ `arrows.gone` — every route decal ground into the terrazzo is
+    gone; the floor carries no marks at all. Subtle. (slice)
+82. ★ `cctv.drooped` — one dome camera hangs tilted straight down,
+    dead. The other three still sweep. Subtle. (slice)
+83. ★ `phone.lit` — the corridor phone's LINE lamp, dead since your
+    first shift, glows a dull red. Subtle. (slice)
 
-Slice count: **120 implemented — the full catalog**. New hooks:
+Slice count: **124 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
