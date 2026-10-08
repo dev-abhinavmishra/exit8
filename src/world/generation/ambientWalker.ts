@@ -23,7 +23,8 @@ const SPEED = 1.05;
 const PAUSE_S = 5;
 const HOME_Z = 16; // loop-rebaseline spot — always mid-corridor on loop 1
 
-export type WalkerMode = "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast" | "charge";
+export type WalkerMode =
+  "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast" | "charge" | "midstep";
 
 export interface AmbientWalker {
   update(dt: number): void;
@@ -152,6 +153,18 @@ export function buildAmbientWalker(
         // dead still except the slightest drift of the head
         g.position.set(0.55, 0, z);
         for (const p of [...legPivots, ...armPivots]) p.rotation.x = 0;
+        return;
+      }
+      if (mode === "midstep") {
+        // frozen mid-stride — legs split, arms mid-swing, facing his
+        // direction of travel; reads normal at a glance and wrong the
+        // moment you watch for the next step that never lands
+        g.rotation.y = dir > 0 ? 0 : Math.PI;
+        g.position.set(0.55, 0, z);
+        legPivots[0]!.rotation.x = 0.46;
+        legPivots[1]!.rotation.x = -0.46;
+        armPivots[0]!.rotation.x = -0.3;
+        armPivots[1]!.rotation.x = 0.3;
         return;
       }
       if (mode === "charge") {

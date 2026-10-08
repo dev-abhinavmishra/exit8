@@ -383,8 +383,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 106. ★ `gallery.occupied` — a dark figure sits at the monitor desk
      behind the observation glass, facing the corridor. Moderate.
      (slice)
+107. ★ `walker.midstep` — the inspector is frozen mid-stride, legs
+     split and arms mid-swing, facing his direction of travel. Subtle.
+     (slice)
 
-Slice count: **147 implemented — the full catalog**. New hooks:
+Slice count: **148 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
