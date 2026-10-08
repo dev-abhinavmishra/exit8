@@ -159,6 +159,7 @@ import { fanDead } from "./fanDead";
 import { fanRacing } from "./fanRacing";
 import { paneFace } from "./paneFace";
 import { galleryOccupied } from "./galleryOccupied";
+import { galleryMirror } from "./galleryMirror";
 import { liftCalls } from "./liftCalls";
 import { benchSit } from "./benchSit";
 import { stainSpread } from "./stainSpread";
@@ -370,6 +371,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   fanRacing,
   paneFace,
   galleryOccupied,
+  galleryMirror,
   liftCalls,
   benchSit,
   stainSpread,
