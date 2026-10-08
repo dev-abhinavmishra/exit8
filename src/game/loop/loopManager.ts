@@ -27,8 +27,9 @@ import { RngStream } from "../state/rng";
 import { StabilityIndex, type JudgmentResult } from "../progression/stability";
 import type { AnomalyRegistry } from "../anomalies/registry";
 import type { AnomalyContext, AnomalyDef, AnomalyInstance } from "../anomalies/types";
-import { drawTerminal } from "../../world/generation/textures";
-import { COPY } from "../../data/signage";
+import { drawTerminal, drawSign } from "../../world/generation/textures";
+import { COPY, SIGNS } from "../../data/signage";
+import type { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 
 export type LoopPhase = "open" | "commit_pending" | "cycling" | "ended";
 
@@ -215,6 +216,13 @@ export class LoopManager {
 
     // roll next loop
     this.loopIndex += 1;
+    // the pass counter on the south cap keeps count in-world — the
+    // exit-number equivalent: your loops, readable at the commit door
+    {
+      const spec = SIGNS.find((s) => s.id === "sign.attempt");
+      const t = this.world.materials.sign.get("sign.attempt")?.diffuseTexture as DynamicTexture | undefined;
+      if (spec && t) drawSign(t, { ...spec, title: `PASS ${String(this.loopIndex).padStart(2, "0")}` });
+    }
     // harmless scatter drifts each loop — a changed detail is not a
     // divergence; keeps memorization honest (loop.dressing stream)
     this.world.scatter.refresh(this.loopIndex);

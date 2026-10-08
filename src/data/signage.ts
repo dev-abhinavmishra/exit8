@@ -93,6 +93,15 @@ export const SIGNS: SignSpec[] = [
     tone: "dark",
   },
   {
+    // repainted every loop by the loop manager — the in-world pass
+    // counter on the south cap (the exit-number equivalent)
+    id: "sign.attempt",
+    title: "PASS 01",
+    sub: "INSPECTION LOOP 7",
+    arrow: "none",
+    tone: "cyan",
+  },
+  {
     id: "sign.totem.mid",
     title: "INSPECTION LOOP 7",
     sub: "FILE ALL DIVERGENCES AT THE POINT",

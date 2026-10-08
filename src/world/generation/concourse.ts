@@ -224,6 +224,16 @@ function buildAirlock(
   plaque.parent = cap;
   plaque.position = new Vector3(0, 2.32 - h / 2, capFace);
   plaque.rotation.y = capRot;
+  if (side === "south") {
+    // pass counter — repainted each loop; sits on the commit-side cap
+    // face where you read it walking up to file "route clear"
+    const attemptMat = mats.sign.get("sign.attempt");
+    if (!attemptMat) throw new Error("missing sign material: sign.attempt");
+    const attempt = kit.plane(`al.${side}.cap.attempt`, 0.7, 0.22, attemptMat, scene);
+    attempt.parent = cap;
+    attempt.position = new Vector3(0, 1.55 - h / 2, capFace);
+    attempt.rotation.y = capRot;
+  }
   for (const [bx, btag] of [
     [-w / 2 + 0.16, "l"],
     [w / 2 - 0.16, "r"],
