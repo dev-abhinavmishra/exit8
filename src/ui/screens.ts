@@ -789,6 +789,9 @@ export class GameUi {
   show(id: "start" | "archive" | "pause" | "settings" | "results" | "credits" | "none"): void {
     for (const [k, s] of this.screens) s.classList.toggle("on", k === id);
     this.hud.classList.toggle("on", id === "none");
+    // the cold-open title card keeps animating otherwise — it sits under
+    // the translucent screen backdrop and bleeds its text through
+    if (id !== "none") this.root.querySelectorAll(".na-titlecard").forEach((el) => el.remove());
   }
 
   veilOn(label: string | null, tone: "dark" | "light" = "dark"): void {
