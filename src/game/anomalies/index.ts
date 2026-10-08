@@ -105,6 +105,7 @@ import { doorLit } from "./doorLit";
 import { bucketTipped } from "./bucketTipped";
 import { cabGone } from "./cabGone";
 import { radLeaks } from "./radLeaks";
+import { lockerAjar } from "./lockerAjar";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -206,6 +207,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   bucketTipped,
   cabGone,
   radLeaks,
+  lockerAjar,
   vendDead,
   sheetsCleared,
 ];

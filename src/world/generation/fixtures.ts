@@ -174,6 +174,52 @@ export function buildFixtures(
   radPipe.parent = radSet;
   radPipe.position = new Vector3(0, 0.12, 0.94);
 
+  // ---- staff lockers, west wall z≈48 — a run of four narrow lockers
+  //      filling the dark stretch before the south airlock.
+  //      Registered node (not merged): locker.ajar swings a door ----
+  const lockers = new TransformNode("lockers", scene);
+  lockers.parent = root;
+  lockers.position = new Vector3(-WALL_X + 0.15, 0, 48);
+  registry.register("lockers", lockers);
+  const lockerCar = kit.box("lockers.carcase", 0.28, 1.9, 1.84, mats.wallPanel, scene);
+  lockerCar.parent = lockers;
+  lockerCar.position = new Vector3(-0.05, 0.95, 0);
+  const lockerKick = kit.box("lockers.kick", 0.26, 0.08, 1.8, mats.rubber, scene);
+  lockerKick.parent = lockers;
+  lockerKick.position = new Vector3(-0.05, 0.04, 0);
+  const lockerTop = kit.box("lockers.top", 0.3, 0.04, 1.86, mats.wallPanel, scene);
+  lockerTop.parent = lockers;
+  lockerTop.position = new Vector3(-0.05, 1.92, 0);
+  for (let i = 0; i < 4; i++) {
+    const dz = -0.675 + i * 0.45;
+    if (i === 2) {
+      // third locker gets a hinge pivot so locker.ajar can swing it
+      const pivot = new TransformNode("lockers.door2.pivot", scene);
+      pivot.parent = lockers;
+      pivot.position = new Vector3(0.09, 0.95, dz - 0.21);
+      registry.register("lockers.door2.pivot", pivot);
+      const leaf2 = kit.box("lockers.door.2", 0.012, 1.7, 0.42, mats.wallPanel, scene);
+      leaf2.parent = pivot;
+      leaf2.position = new Vector3(0, 0, 0.21);
+      const vent2 = kit.box("lockers.door.2.vent", 0.008, 0.16, 0.3, mats.rubber, scene);
+      vent2.parent = leaf2;
+      vent2.position = new Vector3(0.009, 0.55, 0);
+      const hnd2 = kit.box("lockers.door.2.hnd", 0.02, 0.1, 0.03, mats.steel, scene);
+      hnd2.parent = leaf2;
+      hnd2.position = new Vector3(0.016, -0.1, 0.16);
+      continue;
+    }
+    const leaf = kit.box(`lockers.door.${i}`, 0.012, 1.7, 0.42, mats.wallPanel, scene);
+    leaf.parent = lockers;
+    leaf.position = new Vector3(0.09, 0.95, dz);
+    const vent = kit.box(`lockers.door.${i}.vent`, 0.008, 0.16, 0.3, mats.rubber, scene);
+    vent.parent = leaf;
+    vent.position = new Vector3(0.009, 0.55, 0);
+    const hnd = kit.box(`lockers.door.${i}.hnd`, 0.02, 0.1, 0.03, mats.steel, scene);
+    hnd.parent = leaf;
+    hnd.position = new Vector3(0.016, -0.1, 0.16);
+  }
+
   // ---- first aid cabinet, east wall z≈46 — white surface-mount box,
   //      green cross; fills the bare span between vending and the
   //      lift lobby. Registered node (not merged): aid.gone removes it ----

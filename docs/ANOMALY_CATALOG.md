@@ -262,8 +262,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     (slice)
 60. ★ `rad.leaks` — the heating convector is leaking: a puddle spreads
     under the valve end, a dark drip trail feeds it. Subtle. (slice)
+61. ★ `locker.ajar` — one staff locker hangs open on its hinge, dark
+    interior showing. Every door on the route was shut. Moderate.
+    (slice)
 
-Slice count: **101 implemented — the full catalog**. New hooks:
+Slice count: **102 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
