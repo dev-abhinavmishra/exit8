@@ -170,6 +170,8 @@ npm run build` — currently 186 unit + 26/26 e2e green; per the quality
   TRAP: registry.mesh(name) needs an explicit registry.register() —
   kit.plane() does NOT register (kit.box/bench/wallSign do); a missing
   name makes requires-validation pass but the anomaly a silent no-op.
+  kit.box does NOT register either (2026-10-08: `dress.emlight.*` lamps
+  registered explicitly so anomalies can wake them).
   FIXTURES: bench.south z≈33 left, bin z≈51.5 right, fire point glass +
   FIRE POINT sign over the existing cabinet z≈18.
 - Batch (**38**): `poster.swapped` (redraws two posters with each other's
