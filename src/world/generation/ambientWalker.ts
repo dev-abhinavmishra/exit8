@@ -38,6 +38,10 @@ export interface AmbientWalker {
   /** move his hold point to z and freeze him there facing north —
    *  walker.wait stations him at the south mouth this way. */
   holdAt(z: number): void;
+  /** wired by the app to audio — fires on each stride landing while
+   *  he is actually walking. Not anomalous footsteps: his cadence is
+   *  baseline, so a changed cadence stays anomalous. */
+  onStep?: (pos: Vector3) => void;
 }
 
 export function buildAmbientWalker(
@@ -102,10 +106,18 @@ export function buildAmbientWalker(
   let dir = 1; // walking south (+z) at loop start
   let pauseT = 0;
   let bobT = 0;
+  let lastStepPh = 0;
   let mode: WalkerMode = "normal";
   let chargeZ: number | null = null;
+  const stepIfLanded = (stepping: boolean) => {
+    const ph = Math.floor((bobT * 3.4) / Math.PI);
+    if (ph !== lastStepPh) {
+      lastStepPh = ph;
+      if (stepping) api.onStep?.(g.position);
+    }
+  };
 
-  return {
+  const api: AmbientWalker = {
     reset() {
       mode = "normal";
       chargeZ = null;
@@ -189,6 +201,7 @@ export function buildAmbientWalker(
         legPivots[1]!.rotation.x = -swing * 0.62;
         armPivots[0]!.rotation.x = -swing * 0.4;
         armPivots[1]!.rotation.x = swing * 0.4;
+        stepIfLanded(closing);
         return;
       }
       if (pauseT > 0) {
@@ -219,6 +232,8 @@ export function buildAmbientWalker(
       legPivots[1]!.rotation.x = -swing * 0.5;
       armPivots[0]!.rotation.x = -swing * 0.32;
       armPivots[1]!.rotation.x = swing * 0.32;
+      stepIfLanded(stepping);
     },
   };
+  return api;
 }

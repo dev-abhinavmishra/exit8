@@ -204,6 +204,9 @@ export class App {
     this.loop.start();
     // the player's own cadence — footsteps.extra layers a second one on top
     this.player.onFootstep((pos, intensity) => this.audio.playFootstep(pos, intensity));
+    // the other inspector's stride — his footsteps are part of normal,
+    // a distant softer cadence on the same bus as the player's own
+    this.world.ambientWalker.onStep = (pos) => this.audio.playFootstep(pos, 0.5);
     // gamepad: A uses the focused interactable, start toggles pause
     this.player.onPadButton(0, () => {
       if (this.focused && this.state === "playing") this.focused.onUse();
