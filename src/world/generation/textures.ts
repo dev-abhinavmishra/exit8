@@ -740,6 +740,13 @@ export function drawTerminal(
  *  product silhouettes. All signage copy stays inside CWA fiction. */
 export function makeVendingFace(scene: Scene): DynamicTexture {
   const t = tex("tex.vendingFace", 256, 512, scene);
+  drawVendingFace(t);
+  return finish(t);
+}
+
+/** Repaint the vending face — `empty` leaves the shelves bare with a
+ *  printed OUT OF STOCK strip where the brand band's pride used to be. */
+export function drawVendingFace(t: DynamicTexture, empty = false): void {
   const c = ctx(t);
   c.scale(2, 2); // drawn against a 128×256 reference frame
   // dark glass field
@@ -767,6 +774,14 @@ export function makeVendingFace(scene: Scene): DynamicTexture {
     // shelf line
     c.fillStyle = "rgba(180,200,205,0.25)";
     c.fillRect(8, y + 26, 112, 2);
+    if (empty) {
+      // bare shelf — dusty underside line + a lone stock tag
+      c.fillStyle = "rgba(120,130,135,0.12)";
+      c.fillRect(10, y + 6, 108, 20);
+      c.fillStyle = "rgba(190,190,170,0.5)";
+      c.fillRect(14, y + 12, 18, 8);
+      continue;
+    }
     for (let col = 0; col < 4; col++) {
       const x = 12 + col * 27;
       const h = 18 + Math.floor(rng(r * 7 + col) * 8);
@@ -777,6 +792,11 @@ export function makeVendingFace(scene: Scene): DynamicTexture {
       c.fillStyle = "rgba(0,0,0,0.35)";
       c.fillRect(x, y + 20, 16, 4); // label shadow
     }
+  }
+  if (empty) {
+    c.fillStyle = "rgba(150,60,50,0.85)";
+    c.font = "bold 9px Arial, sans-serif";
+    c.fillText("OUT OF STOCK — CWA", 64, 208);
   }
   // glass sheen — diagonal highlight
   const sheen = c.createLinearGradient(0, 0, 128, 256);
@@ -791,7 +811,7 @@ export function makeVendingFace(scene: Scene): DynamicTexture {
   c.strokeStyle = "#2b3438";
   c.lineWidth = 2;
   c.strokeRect(26, 218, 76, 26);
-  return finish(t);
+  t.update();
 }
 
 /** Linear fade strip for fake-AO — opaque at `head`, transparent at the

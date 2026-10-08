@@ -72,6 +72,7 @@ import { shutterAjar } from "./shutterAjar";
 import { recordsBreach } from "./recordsBreach";
 import { galleryFrost } from "./galleryFrost";
 import { vendDead } from "./vendDead";
+import { vendEmpty } from "./vendEmpty";
 import { sheetsCleared } from "./sheetsCleared";
 import { doorStuck } from "./doorStuck";
 import { doorsOpen } from "./doorsOpen";
@@ -285,5 +286,6 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   ceilingCrack,
   floorFlood,
   vendDead,
+  vendEmpty,
   sheetsCleared,
 ];

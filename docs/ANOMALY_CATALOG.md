@@ -362,8 +362,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 99. ★ `poster.grin` — Inspector Vance's engraved smile widens past
     where a mouth should reach, teeth catching the light. Subtle.
     (slice)
+100. ★ `vend.empty` — the cold dispense unit stays lit and humming,
+     but every shelf behind the glass is bare; OUT OF STOCK — CWA.
+     Moderate. (slice)
 
-Slice count: **140 implemented — the full catalog**. New hooks:
+Slice count: **141 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
