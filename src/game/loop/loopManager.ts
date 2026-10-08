@@ -60,6 +60,9 @@ export class LoopManager {
   private loopIndex = 0;
   /** correct judgments filed this run — chapters unlock on competence */
   private correctCount = 0;
+  /** consecutive correct filings — the diegetic PASS counter's number;
+   *  a wrong call resets it to 0 like the original's exit counter */
+  private streak = 0;
   private activeDef: AnomalyDef | null = null;
   private activeInstance: AnomalyInstance | null = null;
   private cycleT = 0;
@@ -219,11 +222,13 @@ export class LoopManager {
     // roll next loop
     this.loopIndex += 1;
     // the pass counter on the south cap keeps count in-world — the
-    // exit-number equivalent: your loops, readable at the commit door
+    // exit-number equivalent: consecutive correct filings, reset to 01
+    // by a wrong call, readable at the commit door
     {
       const spec = SIGNS.find((s) => s.id === "sign.attempt");
       const t = this.world.materials.sign.get("sign.attempt")?.diffuseTexture as DynamicTexture | undefined;
-      if (spec && t) drawSign(t, { ...spec, title: `PASS ${String(this.loopIndex).padStart(2, "0")}` });
+      if (spec && t)
+        drawSign(t, { ...spec, title: `PASS ${String(Math.min(99, this.streak + 1)).padStart(2, "0")}` });
     }
     // harmless scatter drifts each loop — a changed detail is not a
     // divergence; keeps memorization honest (loop.dressing stream)
@@ -298,6 +303,7 @@ export class LoopManager {
       (this.pendingCommit === "retreat" && !!this.activeDef);
     const result = this.stability.judge(correct, this.chapter);
     if (correct) this.correctCount += 1;
+    this.streak = correct ? this.streak + 1 : 0;
     // training keeps the stakes visible but clamps instead of terminating
     if (this.training && result.outcome !== "continue") {
       this.stability.set(result.outcome === "secure" ? 85 : 15);
