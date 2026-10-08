@@ -137,6 +137,13 @@ export const SIGNS: SignSpec[] = [
     figure: "right",
     tone: "green",
   },
+  {
+    id: "sign.safety",
+    title: "SITE SAFETY",
+    sub: "REPORT HAZARDS TO DESK 4 · MIND WET FLOORS",
+    arrow: "none",
+    tone: "green",
+  },
 ];
 
 /** Diegetic micro-copy; used on posters, terminals, notices. */

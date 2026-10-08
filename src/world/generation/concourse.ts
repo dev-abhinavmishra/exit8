@@ -1266,6 +1266,11 @@ export function buildConcourse(
   const sClinic = kit.wallSign("sign.clinic", mats, scene, root, registry, 1.5, 0.45);
   sClinic.position = new Vector3(-C.xHalf + 0.08, 2.5, 37);
   sClinic.rotation.y = -Math.PI / 2;
+  // safety placard further along the clinic stretch — fills the bare
+  // panel field between the clinic sign and the junction pilasters
+  const sSafety = kit.wallSign("sign.safety", mats, scene, root, registry, 0.85, 0.28);
+  sSafety.position = new Vector3(-C.xHalf + 0.06, 1.82, 41.5);
+  sSafety.rotation.y = -Math.PI / 2;
   const sJunction = kit.hangingSign("sign.junction", mats, scene, root, registry, C.height);
   sJunction.position.x = 0;
   sJunction.position.z = 45;
