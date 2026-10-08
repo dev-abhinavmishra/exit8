@@ -33,6 +33,7 @@ import { totemSways } from "./totemSways";
 import { stripeWrong } from "./stripeWrong";
 import { cctvSleeps } from "./cctvSleeps";
 import { ventGroan } from "./ventGroan";
+import { posterBacks } from "./posterBacks";
 import { posterChanged } from "./posterChanged";
 import { counterWorker } from "./counterWorker";
 import { walkerBackwards } from "./walkerBackwards";
@@ -248,6 +249,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   stripeWrong,
   cctvSleeps,
   ventGroan,
+  posterBacks,
   posterChanged,
   counterWorker,
   walkerBackwards,
