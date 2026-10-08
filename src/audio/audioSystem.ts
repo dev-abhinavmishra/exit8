@@ -1091,4 +1091,30 @@ export class AudioSystem {
     src.connect(hp).connect(g).connect(this.bus("ui"));
     src.start(t0, 0.5, 0.08);
   }
+
+  /** A loose sheet dragged across terrazzo — a dry soft scrape that
+   *  swells as the paper bites then dies. Spatialized to the sheet. */
+  playScrape(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.playbackRate.value = 0.8;
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = 640;
+    bp.Q.value = 1.4;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(0.05 * sp.gain, t0 + 0.25);
+    g.gain.linearRampToValueAtTime(0.018 * sp.gain, t0 + 0.7);
+    g.gain.linearRampToValueAtTime(0, t0 + 1.1);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    src.connect(bp).connect(g).connect(pan).connect(this.bus("ambience"));
+    src.start(t0, 0.4, 1.1);
+    this.caption("a sheet slides", pos);
+  }
 }

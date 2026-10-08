@@ -99,6 +99,7 @@ import { shadowFigure } from "./shadowFigure";
 import { figureCorridor } from "./figureCorridor";
 import { figureWall } from "./figureWall";
 import { ratsScurry } from "./ratsScurry";
+import { draftSheet } from "./draftSheet";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -259,6 +260,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   figureCorridor,
   figureWall,
   ratsScurry,
+  draftSheet,
   lightRed,
   benchFlipped,
   stripGrows,
