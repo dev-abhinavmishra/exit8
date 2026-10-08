@@ -170,7 +170,9 @@ export class LoopManager {
     // the other inspector returns to his mid-corridor post — his
     // constancy is what makes him part of normal
     this.world.ambientWalker.reset();
-    const rate = CHAPTER_ANOMALY_RATE[this.chapter] ?? 0.5;
+    // loop 1 is always clean — the first corridor teaches the baseline
+    // the way Exit 8's does; anomalies start rolling on loop 2
+    const rate = this.loopIndex === 1 ? 0 : (CHAPTER_ANOMALY_RATE[this.chapter] ?? 0.5);
     if (this.forcedAnomalyId !== null) {
       this.activeDef = this.forcedAnomalyId === "none" ? null : this.anomalies.get(this.forcedAnomalyId);
       this.forcedAnomalyId = null;
