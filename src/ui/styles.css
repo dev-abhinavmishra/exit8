@@ -399,6 +399,9 @@
 .na-route-log .row.missed {
   color: var(--bad, #c96a5e);
 }
+.na-route-log .row.contact {
+  color: var(--amber, #d8a848);
+}
 .na-archive {
   max-height: 38vh;
   overflow-y: auto;

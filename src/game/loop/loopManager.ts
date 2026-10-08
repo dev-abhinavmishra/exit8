@@ -46,6 +46,8 @@ export interface LoopEvents {
   onPhaseChange?: (s: LoopState) => void;
   onJudgment?: (s: LoopState) => void;
   onFade?: (opacity: number, label: string | null, tone?: "dark" | "light") => void;
+  /** a dangerous anomaly physically reached the auditor — report names it */
+  onContact?: (def: AnomalyDef) => void;
   onEnd?: (outcome: "secure" | "lost" | "practice") => void;
 }
 
@@ -269,6 +271,7 @@ export class LoopManager {
           // a contact scare costs real judgment room but never ends the
           // run on its own — endings stay verdicts of the commit planes
           this.stability.set(Math.max(1, this.stability.current - amount));
+          if (this.activeDef) this.events.onContact?.(this.activeDef);
         },
       });
     }

@@ -614,6 +614,7 @@ export class GameUi {
       discovered: number;
       filed: { name: string; chapter: number }[];
       missed?: { name: string; chapter: number }[];
+      contacts?: { name: string; chapter: number }[];
       practice?: boolean;
       ending?: "standard" | "investigative" | "lost" | "practice";
       notes?: string;
@@ -709,6 +710,29 @@ export class GameUi {
         mlog.appendChild(row);
       }
       body.appendChild(mlog);
+    }
+
+    // a dangerous divergence that reached you — filed or not, it marks the run
+    if (stats.contacts && stats.contacts.length > 0) {
+      const clog = document.createElement("div");
+      clog.className = "na-route-log";
+      const ch2 = document.createElement("div");
+      ch2.className = "h";
+      ch2.textContent = "ROUTE INCIDENTS";
+      clog.appendChild(ch2);
+      for (const f of stats.contacts) {
+        const row = document.createElement("div");
+        row.className = "row contact";
+        const nm = document.createElement("span");
+        nm.textContent = f.name;
+        const ch = document.createElement("span");
+        ch.className = "ch";
+        ch.textContent = `CH ${["I", "II", "III"][f.chapter - 1] ?? "I"}`;
+        row.appendChild(nm);
+        row.appendChild(ch);
+        clog.appendChild(row);
+      }
+      body.appendChild(clog);
     }
 
     body.appendChild(this.btn("FILE ANOTHER SHIFT", "new run", () => this.cb.onRestart(), "primary"));

@@ -96,6 +96,7 @@ export class App {
   private stats = { correct: 0, mistakes: 0 };
   private filed: { name: string; chapter: number }[] = [];
   private missed: { name: string; chapter: number }[] = [];
+  private contacts: { name: string; chapter: number }[] = [];
   private lastChapter = 1;
   private runSeed: string;
 
@@ -189,6 +190,11 @@ export class App {
       this.runSeed,
       {
         onJudgment: (s) => this.onJudgment(s),
+        onContact: (def) => {
+          if (!this.contacts.some((c) => c.name === def.displayName)) {
+            this.contacts.push({ name: def.displayName, chapter: def.chapter });
+          }
+        },
         onEnd: (outcome) => this.onEnd(outcome),
         onFade: (opacity, label, tone) => {
           if (opacity > 0) this.ui.veilOn(label, tone);
@@ -505,6 +511,7 @@ export class App {
       discovered,
       filed: this.filed,
       missed: this.missed,
+      contacts: this.contacts,
       practice: outcome === "practice",
       ending: investigative ? "investigative" : outcome === "secure" ? "standard" : "lost",
       notes: `${prog.discoveries.length}/${EVIDENCE_NOTES.length}`,
