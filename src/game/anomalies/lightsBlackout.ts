@@ -58,6 +58,7 @@ export const lightsBlackout: AnomalyDef = {
     // a dead feed means a dead machine — the junction thrum goes too
     ctx.audio.setMachineGainScale(() => 0);
     world.fanSpeed = 0; // the extraction fan dies with the feed
+    world.dust?.stop(); // the air itself stops moving — the dust settles
     // and the inspector isn't out there — the dark holds ONE figure,
     // so a patrolling second silhouette can't dilute the standoff
     world.ambientWalker.setMode("absent");
@@ -151,6 +152,7 @@ export const lightsBlackout: AnomalyDef = {
         ctx.audio.setAmbienceScale(1);
         ctx.audio.setMachineGainScale(null);
         world.fanSpeed = 1;
+        world.dust?.start();
         world.ambientWalker.setMode("normal");
         for (const m of emLamps) m.material = world.materials.trofferDim;
         emLight.dispose();

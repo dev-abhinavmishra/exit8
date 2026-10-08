@@ -114,6 +114,9 @@ export interface ConcourseWorld {
   fanSpeed: number;
   /** per-frame world tics that aren't anomaly-owned: the fan rotor */
   update(dt: number): void;
+  /** drifting dust motes — null under reduced motion; the blackout
+   *  stills the air so the dark holds nothing moving */
+  dust: ParticleSystem | null;
 }
 
 /** Late-bound detail materials — small shared surfaces, never registry-reached. */
@@ -1550,6 +1553,7 @@ export function buildConcourse(
   // dust motes drifting through the troffer light — one additive
   // particle system filling the corridor volume; skipped entirely when
   // the player asks for reduced motion
+  let dust: ParticleSystem | null = null;
   if (!opts.reducedMotion) {
     const dotTex = new DynamicTexture("tex.dustdot", { width: 32, height: 32 }, scene, false);
     const dctx = dotTex.getContext() as unknown as CanvasRenderingContext2D;
@@ -1560,7 +1564,7 @@ export function buildConcourse(
     dctx.fillStyle = dg;
     dctx.fillRect(0, 0, 32, 32);
     dotTex.update();
-    const dust = new ParticleSystem("fx.dust", 400, scene);
+    dust = new ParticleSystem("fx.dust", 400, scene);
     dust.particleTexture = dotTex;
     dust.emitter = new Vector3(0, 0, 0);
     dust.createBoxEmitter(
@@ -1621,6 +1625,7 @@ export function buildConcourse(
     condensationPatch: condensation,
     scatter,
     ambientWalker,
+    dust,
     fanSpeed: 1,
     update(dt: number): void {
       const rotor = registry.get("junction.machine.fan");
