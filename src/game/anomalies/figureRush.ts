@@ -1,11 +1,11 @@
 /**
- * figure.rush — the corridor's only dangerous verdict. A dark figure
+ * figure.rush — the loop's first dangerous anomaly. A dark figure
  * stands mid-route squared on you like figure.corridor — but this one
  * does not vanish. Close within a few metres and it breaks into a dead
  * sprint straight at you. If it reaches you, it is simply gone again —
  * with a cost to the run. The right play is to file the divergence
- * before it arrives. The loop's first dangerous anomaly: the catalog's
- * consequence floor, capped so the scare can't end the run alone.
+ * before it arrives. The catalog's consequence floor, capped so the
+ * scare can't end the run alone.
  */
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { buildFigure } from "../../world/figures";
