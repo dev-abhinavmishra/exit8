@@ -701,8 +701,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 211. `gallery.dark` — Gallery Gone Dark · CH I · moderate
 212. `pane.face` — Face at the Glass · CH III · subtle
 213. `gallery.mirror` — Mirrored Occupant · CH III · subtle
+214. `poster.backs` — Posters Face-In · CH I · subtle
+215. `pass.stuck` — Counter Didn't Advance · CH II · subtle
+216. `bay.occupied` — Someone In The Bay · CH II · moderate
 
-Slice count: **213 implemented — the full catalog**. Dangerous class
+Slice count: **216 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -717,4 +720,4 @@ Balance: per-loop exposure aims for roughly thirds across subtle /
 moderate / unmistakable — enforced by weights, not catalog counts (the
 catalog is quiet-first by design: 15 subtle / 12 moderate / 4
 unmistakable at 31 defs). ≤2 major shocks per first run. Every
-sound-led anomaly carries a visual cue path. 214. `poster.backs` — Posters Face-In · CH I · subtle 215. `pass.stuck` — Counter Didn't Advance · CH II · subtle
+sound-led anomaly carries a visual cue path.
