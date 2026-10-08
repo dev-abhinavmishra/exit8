@@ -340,8 +340,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 91. ★ `floor.flood` — one zone's floor is under still black water, a
     dark mirrored sheet where the terrazzo and guide strip should
     be. Unmistakable. (slice)
+92. ★ `walker.charge` — the inspector breaks off his route and sprints
+    down his lane to a step behind you, then holds at your shoulder.
+    Unmistakable. (slice)
 
-Slice count: **132 implemented — the full catalog**. New hooks:
+Slice count: **133 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

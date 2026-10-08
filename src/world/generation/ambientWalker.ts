@@ -21,7 +21,7 @@ const SPEED = 1.05;
 const PAUSE_S = 5;
 const HOME_Z = 16; // loop-rebaseline spot — always mid-corridor on loop 1
 
-export type WalkerMode = "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast";
+export type WalkerMode = "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast" | "charge";
 
 export interface AmbientWalker {
   update(dt: number): void;
@@ -29,6 +29,9 @@ export interface AmbientWalker {
   /** anomaly hook — 'backwards' flips facing vs travel, 'stare' halts
    *  mid-corridor facing the player's approach. reset() restores normal. */
   setMode(mode: WalkerMode): void;
+  /** 'charge' mode only — the driving anomaly feeds the player's z each
+   *  frame; he sprints to within a step of it and holds there. */
+  chargeAt(playerZ: number): void;
 }
 
 export function buildAmbientWalker(
@@ -60,16 +63,21 @@ export function buildAmbientWalker(
   let pauseT = 0;
   let bobT = 0;
   let mode: WalkerMode = "normal";
+  let chargeZ: number | null = null;
 
   return {
     reset() {
       mode = "normal";
+      chargeZ = null;
       z = HOME_Z;
       dir = 1;
       pauseT = 0;
       g.setEnabled(true);
       g.position.set(0.55, 0, z);
       g.rotation.y = dir > 0 ? 0 : Math.PI;
+    },
+    chargeAt(playerZ: number) {
+      chargeZ = playerZ;
     },
     setMode(m: WalkerMode) {
       mode = m;
@@ -97,6 +105,30 @@ export function buildAmbientWalker(
         // dead still except the slightest drift of the head
         g.position.set(0.55, 0, z);
         for (const p of [...legPivots, ...armPivots]) p.rotation.x = 0;
+        return;
+      }
+      if (mode === "charge") {
+        // the man you know runs at you — sprint along his lane until a
+        // step behind the player, then hold there at your shoulder.
+        // Driven per-frame by the anomaly through chargeAt().
+        if (chargeZ === null) {
+          g.position.set(0.55, 0, z);
+          return;
+        }
+        const dz = chargeZ - z;
+        const closing = Math.abs(dz) > 1.15;
+        if (closing) {
+          z += Math.sign(dz) * 3.4 * dt;
+          bobT += dt * 2.6;
+          g.rotation.y = dz > 0 ? 0 : Math.PI;
+        }
+        const bob = closing ? Math.abs(Math.sin(bobT * 3.4)) * 0.04 : 0;
+        g.position.set(0.55, bob, z);
+        const swing = closing ? Math.sin(bobT * 3.4) : 0;
+        legPivots[0]!.rotation.x = swing * 0.62;
+        legPivots[1]!.rotation.x = -swing * 0.62;
+        armPivots[0]!.rotation.x = -swing * 0.4;
+        armPivots[1]!.rotation.x = swing * 0.4;
         return;
       }
       if (pauseT > 0) {
