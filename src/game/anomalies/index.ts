@@ -115,6 +115,8 @@ import { doorRattle } from "./doorRattle";
 import { echoSteps } from "./echoSteps";
 import { figureNorth } from "./figureNorth";
 import { totemFallen } from "./totemFallen";
+import { signFallen } from "./signFallen";
+import { vendDispensed } from "./vendDispensed";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -293,6 +295,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   echoSteps,
   figureNorth,
   totemFallen,
+  signFallen,
+  vendDispensed,
   lightRed,
   benchFlipped,
   stripGrows,
