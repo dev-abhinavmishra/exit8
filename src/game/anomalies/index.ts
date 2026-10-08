@@ -92,6 +92,7 @@ import { blindsOpen } from "./blindsOpen";
 import { rotaStamped } from "./rotaStamped";
 import { sheetsAdded } from "./sheetsAdded";
 import { terminalAdvisory } from "./terminalAdvisory";
+import { phoneGone } from "./phoneGone";
 import { stripGrows } from "./stripGrows";
 import { mullionExtra } from "./mullionExtra";
 import { glassWriting } from "./glassWriting";
@@ -132,7 +133,6 @@ import { signMirror } from "./signMirror";
 import { guideShort } from "./guideShort";
 import { radGone } from "./radGone";
 import { lockersAll } from "./lockersAll";
-import { phoneGone } from "./phoneGone";
 import { mopGone } from "./mopGone";
 import { posterDup } from "./posterDup";
 import { exitDark } from "./exitDark";
@@ -245,6 +245,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   rotaStamped,
   sheetsAdded,
   terminalAdvisory,
+  phoneGone,
   stripGrows,
   mullionExtra,
   glassWriting,
