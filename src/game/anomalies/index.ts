@@ -104,6 +104,7 @@ import { paDeadAir } from "./paDeadAir";
 import { ventSigh } from "./ventSigh";
 import { ductClang } from "./ductClang";
 import { cableHangs } from "./cableHangs";
+import { jacketDrapes } from "./jacketDrapes";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -270,6 +271,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   ventSigh,
   ductClang,
   cableHangs,
+  jacketDrapes,
   lightRed,
   benchFlipped,
   stripGrows,

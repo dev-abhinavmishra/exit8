@@ -446,8 +446,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 126. `cable.hangs` — a cable is down from the ceiling tray in a loose J,
      swaying like it parted a moment ago. Nothing else in the corridor
      hangs. Moderate. (slice)
+127. `jacket.drapes` — a work jacket lies folded over the mid-corridor
+     bench, collar roll up, one sleeve hanging off the edge. Nobody
+     sits here on this route. Moderate. (slice)
 
-Slice count: **167 implemented — the full catalog**. New hooks:
+Slice count: **168 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`, `audio.playWhistle(pos, freq, dur)`, `audio.playScrape(pos)`,
