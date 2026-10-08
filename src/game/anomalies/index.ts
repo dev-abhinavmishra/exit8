@@ -154,6 +154,9 @@ import { doorSlow } from "./doorSlow";
 import { cabinetRows } from "./cabinetRows";
 import { mullionMissing } from "./mullionMissing";
 import { galleryLit } from "./galleryLit";
+import { galleryDark } from "./galleryDark";
+import { fanDead } from "./fanDead";
+import { fanRacing } from "./fanRacing";
 import { galleryOccupied } from "./galleryOccupied";
 import { liftCalls } from "./liftCalls";
 import { benchSit } from "./benchSit";
@@ -361,6 +364,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   cabinetRows,
   mullionMissing,
   galleryLit,
+  galleryDark,
+  fanDead,
+  fanRacing,
   galleryOccupied,
   liftCalls,
   benchSit,

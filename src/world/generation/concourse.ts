@@ -549,6 +549,9 @@ export function buildConcourse(
   // than the monitor, reads through the dark panes as depth
   const glamp = kit.box("dress.gal.lamp", 0.05, 0.06, 0.05, mats.trofferLit, scene, root);
   glamp.position = new Vector3(C.xHalf + 0.52, 0.82, 24.2);
+  registry.register("wall.gallery.cove", gcove);
+  registry.register("wall.gallery.monitor", gmon);
+  registry.register("wall.gallery.lamp", glamp);
   registry.register("wall.gallery.back", galleryBack);
   kit.wallRun("wall.right.2", C.xHalf, 32, 55, C.height, mats.wallPanel, scene, root, registry);
 
