@@ -717,13 +717,15 @@ export function buildConcourse(
     const vs = kit.box(`dress.cabseam.v.${z}`, 0.014, 1.5, 0.02, mats.rubber, scene, root);
     vs.position = new Vector3(-C.xHalf + 0.255, 1.15, z);
   }
-  for (const z of [15.5, 18.5, 21.5, 24.5, 27.5, 30.5]) {
-    const pull = kit.box(`dress.cabpull.${z}`, 0.03, 0.05, 0.24, mats.steel, scene, root);
-    pull.position = new Vector3(-C.xHalf + 0.265, 1.55, z);
-    // index-card label holder above each pull — what an archive bank
-    // actually carries on every drawer
-    const lbl = kit.box(`dress.cablabel.${z}`, 0.022, 0.07, 0.16, mats.rubber, scene, root);
-    lbl.position = new Vector3(-C.xHalf + 0.26, 1.68, z);
+  // pulls + label holders on every drawer row — a real card bank
+  // carries hardware on every cell, not just one
+  for (const py of [0.24, 0.66, 1.06, 1.46]) {
+    for (const z of [15.5, 18.5, 21.5, 24.5, 27.5, 30.5]) {
+      const pull = kit.box(`dress.cabpull.${py}.${z}`, 0.03, 0.05, 0.24, mats.steel, scene, root);
+      pull.position = new Vector3(-C.xHalf + 0.265, py, z);
+      const lbl = kit.box(`dress.cablabel.${py}.${z}`, 0.022, 0.07, 0.16, mats.rubber, scene, root);
+      lbl.position = new Vector3(-C.xHalf + 0.26, py + 0.14, z);
+    }
   }
   // ARCHIVES fascia — the institutional label band across the bank's
   // upper face, like the printed stock headers on real archive walls
