@@ -77,8 +77,11 @@ export class LoopManager {
   private endingOpenFired = false;
   private endingWalked = false;
   /** brown-out: while a judgment resolves the corridor's feed dips —
-   *  lamps, fixture emissive and shafts fall to a third under the veil,
-   *  then come back as the next loop opens. null = running bright. */
+   *  lamps, fixture emissive and shafts ease down and breathe back as
+   *  the next loop opens. brown01 0 = bright, 1 = dipped; the snapshot
+   *  holds each zone's pre-dip level for the multiply. */
+  private brown01 = 0;
+  private brownTarget = 0;
   private brownBase: {
     zones: [LightZone, number][];
     emissive: Color3;
@@ -356,24 +359,31 @@ export class LoopManager {
    * The one time the loop leads somewhere. Plays ~3s in-world, then
    * the shift report takes over.
    */
-  /** Corridor brown-out. On: snapshot lamp + fixture state, dip to a
-   *  third. Off: restore the snapshot — runs before rebaseline so a
+  /** Corridor brown-out. On: snapshot lamp + fixture state, ease down.
+   *  Off: ramp back to the snapshot — called before rebaseline so a
    *  lighting anomaly's own restore still lands on the true base. */
   private dipLights(on: boolean): void {
-    const tl = this.world.materials.trofferLit;
-    const sh = this.world.materials.lightShaft;
     if (on && !this.brownBase) {
-      const zones = this.world.zones.map((z) => [z, z.point.intensity] as [LightZone, number]);
-      this.brownBase = { zones, emissive: tl.emissiveColor.clone(), shaftAlpha: sh.alpha };
-      for (const [z] of zones) z.point.intensity *= 0.42;
-      tl.emissiveColor = this.brownBase.emissive.scale(0.3);
-      sh.alpha = this.brownBase.shaftAlpha * 0.32;
-    } else if (!on && this.brownBase) {
-      for (const [z, v] of this.brownBase.zones) z.point.intensity = v;
-      tl.emissiveColor = this.brownBase.emissive;
-      sh.alpha = this.brownBase.shaftAlpha;
-      this.brownBase = null;
+      const tl = this.world.materials.trofferLit;
+      const sh = this.world.materials.lightShaft;
+      this.brownBase = {
+        zones: this.world.zones.map((z) => [z, z.point.intensity] as [LightZone, number]),
+        emissive: tl.emissiveColor.clone(),
+        shaftAlpha: sh.alpha,
+      };
     }
+    this.brownTarget = on ? 1 : 0;
+  }
+
+  /** Applies the current dip level as a multiply over the snapshot. */
+  private applyBrown(): void {
+    const b = this.brownBase;
+    if (!b) return;
+    const f = 1 - 0.66 * this.brown01;
+    for (const [z, v] of b.zones) z.point.intensity = v * f;
+    this.world.materials.trofferLit.emissiveColor = b.emissive.scale(1 - 0.72 * this.brown01);
+    this.world.materials.lightShaft.alpha = b.shaftAlpha * (1 - 0.7 * this.brown01);
+    if (this.brown01 === 0 && this.brownTarget === 0) this.brownBase = null;
   }
 
   private beginSecureEnding(side: "north" | "south"): void {
@@ -516,6 +526,15 @@ export class LoopManager {
       d.right.position.x = half / 2 + d.open01 * half * 0.92;
       d.leftCollider.position.x = d.left.position.x;
       d.rightCollider.position.x = d.right.position.x;
+    }
+
+    // corridor brown-out ramp — down over ~0.7s, back over ~1.1s so the
+    // lamps breathe back after the cycle veil lifts
+    if (this.brown01 !== this.brownTarget) {
+      const rate = this.brownTarget > this.brown01 ? 3.4 : 2.2;
+      this.brown01 += (this.brownTarget - this.brown01) * Math.min(1, rate * dt);
+      if (Math.abs(this.brown01 - this.brownTarget) < 0.01) this.brown01 = this.brownTarget;
+      this.applyBrown();
     }
 
     if (this.phase === "ended" && this.endingT >= 0) this.updateEnding(dt);
