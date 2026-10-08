@@ -22,10 +22,14 @@ renderer-visible count for that frame.
 | south airlock     | 52          | 992   |
 | look back (north) | 162         | 2272  |
 
+Re-measured 2026-10-08 after the fidelity pass (motes +1 draw, status
+domes, ending throat): spawn 541 / mid 277 / south mouth 75 — inside
+the original envelope.
+
 **Worst case: the spawn view** — the whole corridor plus both airlock
-interiors sits in frustum at once (~562 draws). It collapses to ~350 by
-mid-corridor and ~50–190 inside the airlocks/gallery where culling cuts
-the corridor.
+interiors sits in frustum at once (~540–560 draws). It collapses to
+~280–350 by mid-corridor and ~50–190 inside the airlocks/gallery where
+culling cuts the corridor.
 
 ## Where the draws go
 
