@@ -20,9 +20,18 @@ that never arrives.
 ## Lighting
 
 - Baseline: cool-neutral troffer field ~4200 K, gently uneven (a few
-  fixtures fractionally dimmer — baseline, not anomaly)
-- Airlocks: warmer 3200 K pools
-- Service junction: slightly greener institutional cast
+  fixtures fractionally dimmer — baseline, not anomaly). Per-zone tint
+  variation in `zoneDefs` — the clinic stretch runs subtly cooler,
+  junction warmer; hemisphere ambient ~1.14 keeps mid-tones between
+  light pools honest.
+- Airlocks: warmer 3200 K pools, and a status dome over each inner
+  door — amber sealed, teal open, pulsing mid-travel.
+- Volumetrics: crossed-plane shafts under each troffer plus one
+  corridor-wide points cloud of drifting dust motes (zone-coherent —
+  a dead zone's motes die with its lamps).
+- Procedural IBL: a painted 128px cubemap (troffer bars up-face, warm
+  floor bounce down-face) feeds every `environmentIntensity` — metals
+  and terrazzo hold their specular in dim zones.
 - Anomaly lighting uses _changes_ (temperature drift, delayed response,
   shadow from nothing) — never full dark-outs as a default
 
@@ -34,12 +43,21 @@ radius corners on counters, brushed-steel door frames, skirting + shadow
 gap details. Everything reads manufactured and repeatable — anomalies
 break that repetition.
 
-## Procedural texture strategy (M1)
+## Procedural texture strategy
 
-DynamicTexture-generated: terrazzo speckle + brass strips, panel micro-
-noise, signage/pictograms (original fictional copy from `src/data/signage.ts`),
-clock face. M2: Blender-authored kit + KTX2 + lightmaps replace the hero
-surfaces; procedural set remains as fallback tier.
+DynamicTexture-generated, zero external assets: terrazzo speckle +
+brass strips, panel micro-noise, signage/pictograms (original fictional
+copy from `src/data/signage.ts`), clock face, emissive troffer louver
+faces (scale ~0.62 — higher washes the fin detail to white). Height-
+field→Sobel normal maps (`normalsFromHeight`) on wall panels, terrazzo,
+shutter, and ceiling tile turn grout/brass/slat/tee-bar lines into lit
+relief. Emissive textures live on `disableLighting` materials; a lit
+emissive-material StandardMaterial either washes out or — without
+texture — reads as a blown slab.
+
+Shadows are real, not painted: the inspection-rig spot casts walls,
+figure parts, and hero props; anomaly-spawned meshes self-register as
+casters. Figures also carry fake contact blobs so feet never float.
 
 ## Do / Don't
 
