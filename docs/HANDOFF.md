@@ -96,6 +96,20 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   with the Exit 8 corridor, not catalog count. Same subway loop, many
   anomaly versions of it. Test only after MAJOR additions: quick probe
   - unit/build per change, e2e suite deferred for small anomalies.
+- 2026-10-08 render-fidelity pass 5 (this stretch): airlock status
+  domes (amber sealed → teal open, pulsing mid-travel, driven in
+  loopManager's door-slide block); troffer louver faces
+  (emissiveTexture at 0.62 scale — the >0.8 blowout rule); records-bank
+  card labels; real figure/prop shadows under the inspection spot
+  (caster allowlist + onNewMeshAdded self-registration); per-zone
+  light tints (`zoneDefs` — clinic cool, junction warm); hemi ambient
+  1.32→1.14 for genre contrast; env-cubemap down-face floor bounce
+  (lifts ceilings/undersides); dust motes via ONE corridor
+  PointsCloudSystem (zone-coherent through groupId→zone intensity);
+  walker inspect beat faces west (−π/2) not east; scuff decals
+  aoStrip→grime (the large-slab trap — black shards at thresholds).
+  Verified live: cold open, watcher.follows, lights.blackout (motes
+  cluster in the surviving pool), gallery.mirror, inspector face.
 - IBL trap (fidelity pass 4, the big one): `environmentIntensity` was
   set on 8 PBR materials but `scene.environmentTexture` never existed —
   every env knob was a silent no-op and metals went black in dim zones.
