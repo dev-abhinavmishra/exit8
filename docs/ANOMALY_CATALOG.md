@@ -377,10 +377,13 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 104. ★ `sign.mirror` — the mid-route INSPECTION LOOP 7 totem reads
      backwards, every glyph mirrored, arrow reversed. Moderate.
      (slice)
+105. ★ `doors.slam` — the south leaves part for your commit walk, then
+     crash shut in your face, hold a breath, and open again.
+     Unmistakable. (slice)
 
-Slice count: **145 implemented — the full catalog**. New hooks:
+Slice count: **146 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
-`audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
+`audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
 
 Balance: per-loop exposure aims for roughly thirds across subtle /

@@ -493,6 +493,41 @@ export class AudioSystem {
     this.caption("water dripping", pos);
   }
 
+  /** A door slam — deep body thud plus a mid metal crack, used by
+   *  doors.slam. Heavier than a footstep; spatialized to the leaves. */
+  playSlam(pos: Vector3): void {
+    this.duckAmbience(0.8);
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const o = ctx.createOscillator();
+    o.type = "sine";
+    o.frequency.setValueAtTime(115, t0);
+    o.frequency.exponentialRampToValueAtTime(42, t0 + 0.22);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.3 * sp.gain, t0);
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.3);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    o.connect(g).connect(pan).connect(this.bus("anomaly"));
+    o.start(t0);
+    o.stop(t0 + 0.32);
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    src.playbackRate.value = 0.7;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 420;
+    const g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0.22 * sp.gain, t0);
+    g2.gain.exponentialRampToValueAtTime(0.001, t0 + 0.09);
+    src.connect(lp).connect(g2).connect(pan);
+    src.start(t0);
+    src.stop(t0 + 0.1);
+    this.caption("doors slam shut", pos);
+  }
+
   /** Clock tick generator — used by baseline and clock anomalies. */
   createTicker(name: string): {
     start(): void;

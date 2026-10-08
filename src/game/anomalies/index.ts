@@ -77,6 +77,7 @@ import { vendEmpty } from "./vendEmpty";
 import { sheetsCleared } from "./sheetsCleared";
 import { doorStuck } from "./doorStuck";
 import { doorsOpen } from "./doorsOpen";
+import { doorsSlam } from "./doorsSlam";
 import { walkerCrowd } from "./walkerCrowd";
 import { lightFollows } from "./lightFollows";
 import { glassEyes } from "./glassEyes";
@@ -221,6 +222,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   galleryFrost,
   doorStuck,
   doorsOpen,
+  doorsSlam,
   walkerCrowd,
   lightFollows,
   glassEyes,
