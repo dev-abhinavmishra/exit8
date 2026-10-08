@@ -403,8 +403,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 113. ★ `terminal.advisory` — a beat into the loop the airlock terminals
      print a row the paperwork never issues: ADVISORY — LOOK BEHIND
      YOU / COUNT AGAIN / NOT YOUR LOOP. Unmistakable. (slice)
+114. ★ `hatch.scratched` — fresh score marks radiate from under the
+     sealed hatch's rim onto the wall panels; nothing opened it —
+     something tried to. Moderate. (slice)
 
-Slice count: **154 implemented — the full catalog**. New hooks:
+Slice count: **155 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,

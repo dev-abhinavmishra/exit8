@@ -93,6 +93,7 @@ import { rotaStamped } from "./rotaStamped";
 import { sheetsAdded } from "./sheetsAdded";
 import { terminalAdvisory } from "./terminalAdvisory";
 import { phoneGone } from "./phoneGone";
+import { hatchScratched } from "./hatchScratched";
 import { stripGrows } from "./stripGrows";
 import { mullionExtra } from "./mullionExtra";
 import { glassWriting } from "./glassWriting";
@@ -246,6 +247,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   sheetsAdded,
   terminalAdvisory,
   phoneGone,
+  hatchScratched,
   stripGrows,
   mullionExtra,
   glassWriting,
@@ -286,7 +288,6 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   guideShort,
   radGone,
   lockersAll,
-  phoneGone,
   mopGone,
   posterDup,
   exitDark,
