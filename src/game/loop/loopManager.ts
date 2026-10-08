@@ -19,7 +19,7 @@ import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 import { buildFigure } from "../../world/figures";
 import type { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import type { ConcourseWorld } from "../../world/generation/concourse";
-import { LAYOUT, type DoorRig } from "../../world/generation/concourse";
+import { LAYOUT, type DoorRig, type LightZone } from "../../world/generation/concourse";
 import type { PlayerController } from "../../player/controller";
 import type { AudioSystem } from "../../audio/audioSystem";
 import type { SaveStore } from "../state/save";
@@ -76,6 +76,14 @@ export class LoopManager {
   private endingCrossZ = 0;
   private endingOpenFired = false;
   private endingWalked = false;
+  /** brown-out: while a judgment resolves the corridor's feed dips —
+   *  lamps, fixture emissive and shafts fall to a third under the veil,
+   *  then come back as the next loop opens. null = running bright. */
+  private brownBase: {
+    zones: [LightZone, number][];
+    emissive: Color3;
+    shaftAlpha: number;
+  } | null = null;
   private anomalyRolls: RngStream;
   private anomalyRuntime: RngStream;
   /** PA announcements — the corridor's recurring voice; first one
@@ -247,7 +255,9 @@ export class LoopManager {
     this.pendingCommit = commit;
     this.judgeT = JUDGE_DELAY;
     this.player.enabled = false;
-    // seal both inner doors
+    // seal both inner doors — and the corridor's feed dips while it
+    // judges (the brown-out rides out under the cycle veil)
+    this.dipLights(true);
     this.world.doors.northInner.target01 = 0;
     this.world.doors.southInner.target01 = 0;
     this.emit();
@@ -322,6 +332,7 @@ export class LoopManager {
   }
 
   private finishCycle(): void {
+    this.dipLights(false);
     this.rebaseline();
     // teleport back into the north airlock facing the corridor
     this.player.teleport(LAYOUT.spawn.clone(), LAYOUT.spawnYaw);
@@ -345,6 +356,26 @@ export class LoopManager {
    * The one time the loop leads somewhere. Plays ~3s in-world, then
    * the shift report takes over.
    */
+  /** Corridor brown-out. On: snapshot lamp + fixture state, dip to a
+   *  third. Off: restore the snapshot — runs before rebaseline so a
+   *  lighting anomaly's own restore still lands on the true base. */
+  private dipLights(on: boolean): void {
+    const tl = this.world.materials.trofferLit;
+    const sh = this.world.materials.lightShaft;
+    if (on && !this.brownBase) {
+      const zones = this.world.zones.map((z) => [z, z.point.intensity] as [LightZone, number]);
+      this.brownBase = { zones, emissive: tl.emissiveColor.clone(), shaftAlpha: sh.alpha };
+      for (const [z] of zones) z.point.intensity *= 0.42;
+      tl.emissiveColor = this.brownBase.emissive.scale(0.3);
+      sh.alpha = this.brownBase.shaftAlpha * 0.32;
+    } else if (!on && this.brownBase) {
+      for (const [z, v] of this.brownBase.zones) z.point.intensity = v;
+      tl.emissiveColor = this.brownBase.emissive;
+      sh.alpha = this.brownBase.shaftAlpha;
+      this.brownBase = null;
+    }
+  }
+
   private beginSecureEnding(side: "north" | "south"): void {
     const cap = this.world.registry.mesh(`al.${side}.cap`);
     this.endingCap = cap;
