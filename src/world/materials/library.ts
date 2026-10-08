@@ -45,9 +45,12 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   // stretches across 20m walls and every seam blurs away
   tex.wallPanel.uScale = 8;
   tex.wallPanel.vScale = 1;
-  wallPanel.roughness = 0.55;
+  // glazed-tile specular — the reference passage reads polished, not
+  // matte; lockers/radiator/lift doors share this material and gain
+  // the same enamelled sheen
+  wallPanel.roughness = 0.4;
   wallPanel.metallic = 0.02;
-  wallPanel.environmentIntensity = 0.5;
+  wallPanel.environmentIntensity = 0.65;
 
   const terrazzo = new PBRMaterial("mat.terrazzo", scene);
   terrazzo.albedoTexture = tex.terrazzo;
