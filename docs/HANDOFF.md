@@ -83,6 +83,13 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   lane (poster.*/pitch.sags timed out once at 16m — re-probed fine in a
   serial mini-sweep). It's GL-context contention on SwiftShader, not a
   product bug: re-probe ids serially before believing a sweep timeout.
+- **Sealed-box trap (proven, fire cabinet)**: contents placed INSIDE a
+  solid box are occluded by its own front face forever — a "window" on
+  a solid box shows the face, not the interior. A lit material inside a
+  closed box also renders black (no light). Pattern that works: glass
+  stands proud of the face (+ bezel + pull handle), contents live in
+  the face→glass gap and are self-illuminated (disableLighting +
+  low emissive) so they silhouette through the smoke.
 - **Decal/plate traps (proven)**: (a) `backFaceCulling = false` is
   REQUIRED on any plane whose facing is uncertain — a culled plane is
   invisible with visible+enabled true; (b) a plate inside leaf-local
