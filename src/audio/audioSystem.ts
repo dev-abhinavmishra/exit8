@@ -103,6 +103,17 @@ export class AudioSystem {
     g.gain.setTargetAtTime(base, t + holdS, 0.9);
   }
 
+  /** Kill the ambience bed outright — used by the lost ending, where the
+   *  corridor drowning into silence IS the scare. Stays down; the next
+   *  run rebuilds the audio graph on reload. */
+  hushAmbience(): void {
+    if (!this.ctx) return;
+    const g = this.bus("ambience");
+    const t = this.ctx.currentTime;
+    g.gain.cancelScheduledValues(t);
+    g.gain.setTargetAtTime(0.001, t, 0.5);
+  }
+
   setListener(pos: Vector3, fwd: Vector3): void {
     this.listenerPos.copyFrom(pos);
     this.listenerFwd.copyFrom(fwd);

@@ -462,6 +462,8 @@ export class LoopManager {
 
     this.endingOutcome = "lost";
     this.endingT = 0;
+    // the corridor goes dead quiet as it drowns — silence is the scare
+    this.audio.hushAmbience();
     const at = new Vector3(0, 1.6, endZ + dir);
     this.audio.playGroan(at);
     this.audio.caption("it was always the same corridor", at);
