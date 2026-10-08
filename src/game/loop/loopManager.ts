@@ -29,7 +29,7 @@ import type { AnomalyRegistry } from "../anomalies/registry";
 import type { AnomalyContext, AnomalyDef, AnomalyInstance } from "../anomalies/types";
 import { drawTerminal, drawSign } from "../../world/generation/textures";
 import { COPY, SIGNS } from "../../data/signage";
-import type { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
+import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 
 export type LoopPhase = "open" | "commit_pending" | "cycling" | "ended";
 
@@ -453,17 +453,46 @@ export class LoopManager {
       step.material = dark;
       step.position = new Vector3(0, sh / 2, endZ + into * (0.34 + i * 0.42));
     }
-    const glow = CreatePlane("ending.glow", { width: w + 0.6, height: h + 0.4 }, this.scene);
+    // a handrail climbing the flight — the one silhouette that
+    // reads instantly as "stairwell" against the light
+    const rail = CreateBox("ending.rail", { width: 0.05, height: 0.05, depth: 2.1 }, this.scene);
+    rail.material = dark;
+    rail.position = new Vector3(-(w / 2 - 0.32), 1.18, endZ + into * 1.0);
+    rail.rotation.x = -into * 0.62;
+    const post = CreateBox("ending.railpost", { width: 0.05, height: 0.78, depth: 0.05 }, this.scene);
+    post.material = dark;
+    post.position = new Vector3(-(w / 2 - 0.32), 0.42, endZ + into * 0.36);
+    // the daylight beyond: not a card — a hot core low in the opening
+    // (the sky past the stair head) falling off to warm brown edges,
+    // with a brighter lane up the middle where the shaft of light is
+    const glow = CreatePlane("ending.glow", { width: w + 0.2, height: h + 0.3 }, this.scene);
     const mat = new StandardMaterial("ending.glow.mat", this.scene);
     mat.disableLighting = true;
-    mat.emissiveColor = new Color3(1.06, 1.0, 0.9);
     mat.backFaceCulling = false;
+    const gtx = new DynamicTexture("ending.glow.tex", { width: 256, height: 512 }, this.scene, false);
+    const gc = gtx.getContext();
+    const grad = gc.createRadialGradient(128, 300, 24, 128, 300, 330);
+    grad.addColorStop(0, "rgb(255,253,244)");
+    grad.addColorStop(0.42, "rgb(240,226,196)");
+    grad.addColorStop(0.78, "rgb(122,102,66)");
+    grad.addColorStop(1, "rgb(24,20,12)");
+    gc.fillStyle = grad;
+    gc.fillRect(0, 0, 256, 512);
+    const shaftG = gc.createLinearGradient(0, 0, 0, 512);
+    shaftG.addColorStop(0, "rgba(255,255,246,0.85)");
+    shaftG.addColorStop(0.55, "rgba(244,230,198,0.25)");
+    shaftG.addColorStop(1, "rgba(0,0,0,0)");
+    gc.fillStyle = shaftG;
+    gc.fillRect(92, 0, 72, 512);
+    gtx.update();
+    mat.emissiveTexture = gtx;
     glow.material = mat;
-    glow.position = new Vector3(0, h / 2 + 0.35, glowZ);
+    glow.position = new Vector3(0, h / 2 + 0.3, glowZ);
     glow.rotation.y = side === "south" ? Math.PI : 0;
     this.endingLight = new PointLight("ending.light", new Vector3(0, 1.9, endZ + dir * 0.9), this.scene);
     this.endingLight.diffuse = new Color3(1.0, 0.95, 0.84);
     this.endingLight.intensity = 0;
+    this.endingLight.range = 11;
     this.endingOutcome = "secure";
     this.endingT = 0;
     const at = new Vector3(0, 1.6, endZ + dir);
@@ -518,7 +547,7 @@ export class LoopManager {
     const p = Math.min(1, t / 2.4);
     const e = 1 - (1 - p) * (1 - p);
     if (this.endingCap) this.endingCap.position.y = this.endingCapY0 - e * (h + 0.5);
-    if (this.endingLight) this.endingLight.intensity = e * 2.6;
+    if (this.endingLight) this.endingLight.intensity = e * 4.4;
 
     // the cap is down — hand control back and let the player step into
     // the light. The cap collider dies with it so the doorway is real.
