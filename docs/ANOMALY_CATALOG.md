@@ -406,8 +406,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 114. ★ `hatch.scratched` — fresh score marks radiate from under the
      sealed hatch's rim onto the wall panels; nothing opened it —
      something tried to. Moderate. (slice)
+115. ★ `shadow.figure` — a person's shadow stands on the east wall,
+     cast long toward the floor by nobody and nothing. Unmistakable
+     once seen. (slice)
 
-Slice count: **155 implemented — the full catalog**. New hooks:
+Slice count: **156 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
