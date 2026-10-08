@@ -121,6 +121,19 @@ export class AudioSystem {
     g.gain.setTargetAtTime(base, t + holdS, 0.9);
   }
 
+  /** Drown one bus to silence for a window, then let it breathe back —
+   *  used by anomalies that take a sound away rather than add one
+   *  (e.g. your own footfalls stop answering you). */
+  muteBusFor(name: BusName, seconds: number): void {
+    if (!this.ctx) return;
+    const g = this.bus(name);
+    const t = this.ctx.currentTime;
+    const base = Math.max(g.gain.value, 0.01);
+    g.gain.cancelScheduledValues(t);
+    g.gain.setTargetAtTime(0.0001, t, 0.2);
+    g.gain.setTargetAtTime(base, t + seconds, 0.7);
+  }
+
   /** Kill the ambience bed outright — used by the lost ending, where the
    *  corridor drowning into silence IS the scare. Stays down; the next
    *  run rebuilds the audio graph on reload. */
@@ -1180,8 +1193,9 @@ export class AudioSystem {
   }
 
   /** A breathy exhale — one long lowpassed noise swell with a soft
-   *  attack and a slow fall, close enough to feel. Spatialized. */
-  playBreath(pos: Vector3): void {
+   *  attack and a slow fall, close enough to feel. Spatialized.
+   *  Caption names the source — a shoulder, a drain, a vent. */
+  playBreath(pos: Vector3, caption = "a breath, close behind you"): void {
     if (!this.ctx || !this.noiseBuffer) return;
     const ctx = this.ctx;
     const t0 = ctx.currentTime;
@@ -1201,7 +1215,7 @@ export class AudioSystem {
     src.connect(lp).connect(g).connect(pan).connect(this.bus("voices"));
     src.start(t0, 0, 0.65);
     src.stop(t0 + 0.65);
-    this.caption("a breath, close behind you", pos);
+    this.caption(caption, pos);
   }
 
   /** Inner door slide — a soft pneumatic hiss + servo whirr on open,

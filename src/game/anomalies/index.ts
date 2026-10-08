@@ -132,6 +132,8 @@ import { zonePulse } from "./zonePulse";
 import { trofferSparks } from "./trofferSparks";
 import { clockStopped } from "./clockStopped";
 import { panelWires } from "./panelWires";
+import { walkSilence } from "./walkSilence";
+import { drainGurgles } from "./drainGurgles";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -327,6 +329,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   trofferSparks,
   clockStopped,
   panelWires,
+  walkSilence,
+  drainGurgles,
   lightRed,
   benchFlipped,
   stripGrows,
