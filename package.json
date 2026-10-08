@@ -1,0 +1,39 @@
+{
+  "name": "night-audit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NIGHT AUDIT \u2014 an original first-person anomaly-detection psychological-horror game for the web (Babylon.js + TypeScript + Vite).",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "predev": "node tools/assets/copy-webgpu-assets.mjs",
+    "prebuild": "node tools/assets/copy-webgpu-assets.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . && prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "validate:assets": "node tools/validation/validate-assets.mjs",
+    "optimize:assets": "node tools/assets/optimize.mjs",
+    "validate:catalog": "vitest run tests/unit/catalog.spec.ts"
+  },
+  "dependencies": {
+    "@babylonjs/core": "^9.29.0",
+    "@babylonjs/loaders": "^9.29.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^20.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^17.13.0",
+    "prettier": "^3.4.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.71.1",
+    "vite": "^7.1.0",
+    "vitest": "^3.2.4"
+  }
+}
