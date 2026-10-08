@@ -648,3 +648,22 @@ npm run build` — currently 186 unit + 26/26 e2e green; per the quality
   WebKit rejects `requestPointerLock()` — every call site now wraps it
   in `Promise.resolve(...).catch(() => {})` since the fallback input
   path covers the denial anyway.
+
+## Fidelity-pass traps (2026-10)
+
+- **Emissive blowout swallows texture detail**: an emissiveColor scale
+  >~0.8 on a StandardMaterial washes any emissiveTexture to a white
+  slab under the post pipeline. Keep textured emissive fixtures at
+  ~0.62 scale (troffer louver face) — verified by point-blank probe.
+- `__nightaudit.matInfo(name)` returns { mat, emissiveTex, emissiveR }
+  for registry/scope meshes — material audit helper.
+- Shadow rig: `buildInspectionRig` casts walls + figure parts
+  (.leg./.coat./.chest/etc.) + big props (bench., bin, prop.vend.,
+  prop.fountain., junction.machine, sign.totem., dress.caution.) under
+  the camera spot; anomaly figures self-register via
+  onNewMeshAddedObservable. The spot is a headlamp — figure shadows
+  land on whatever is BEHIND the figure; verify silhouettes against
+  lit faces (cap face, gallery), not head-on.
+- Status domes `al.<side>.statusdome` are registry meshes driven from
+  loopManager's door-slide block (amber sealed → teal open, pulse
+  mid-travel) — NOT dress.* so they stay discrete.
