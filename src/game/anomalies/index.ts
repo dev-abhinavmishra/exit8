@@ -134,6 +134,8 @@ import { clockStopped } from "./clockStopped";
 import { panelWires } from "./panelWires";
 import { walkSilence } from "./walkSilence";
 import { drainGurgles } from "./drainGurgles";
+import { corridorBreathes } from "./corridorBreathes";
+import { figureDoubles } from "./figureDoubles";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -331,6 +333,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   panelWires,
   walkSilence,
   drainGurgles,
+  corridorBreathes,
+  figureDoubles,
   lightRed,
   benchFlipped,
   stripGrows,
