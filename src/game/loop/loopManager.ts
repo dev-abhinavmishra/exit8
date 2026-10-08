@@ -620,8 +620,13 @@ export class LoopManager {
       // cross the commit plane to file)
       if (p.z > LAYOUT.southAirlock.z0 - 1.2) this.world.doors.southInner.target01 = 1;
       // muffled PA — fires only while the corridor is open: endings
-      // and judgments keep their own quiet
-      this.paT -= dt;
+      // and judgments keep their own quiet, and anomalies that own the
+      // horns (or kill the feed they run on) mute it entirely
+      const paMuted =
+        this.activeDef?.id === "lights.blackout" ||
+        this.activeDef?.id === "pa.deadair" ||
+        this.activeDef?.id === "announce.spatial";
+      if (!paMuted) this.paT -= dt;
       if (this.paT <= 0) {
         this.paT = 40 + this.paRng.range(0, 45);
         this.audio.playAnnouncement(this.paRng.pick(this.world.anchors.paHorns));
