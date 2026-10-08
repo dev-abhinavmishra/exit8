@@ -113,6 +113,16 @@ export class LoopManager {
   readonly stability = new StabilityIndex();
   /** last announced door targets — fires playDoorSlide on flips */
   private prevDoorTargets = new Map<DoorRig, number>();
+  private domeMats = new Map<string, StandardMaterial>();
+  private statusPulseT = 0;
+
+  private domeMat(key: string): StandardMaterial | null {
+    const mesh = this.world.registry.mesh(key);
+    const m = mesh?.material;
+    const mat = m instanceof StandardMaterial ? m : null;
+    if (mat) this.domeMats.set(key, mat);
+    return mat;
+  }
   private baseClockMinute = 0;
   private baseClockHour = 0;
 
@@ -600,7 +610,22 @@ export class LoopManager {
       d.right.position.x = half / 2 + d.open01 * half * 0.92;
       d.leftCollider.position.x = d.left.position.x;
       d.rightCollider.position.x = d.right.position.x;
+      // status dome over the mouth: amber sealed → teal open, pulsing
+      // while the leaves are mid-travel
+      const domeKey = d === this.world.doors.northInner ? "al.north.statusdome" : "al.south.statusdome";
+      const domeMat = this.domeMats.get(domeKey) ?? this.domeMat(domeKey);
+      if (domeMat) {
+        const moving = Math.abs(d.target01 - d.open01) > 0.02;
+        const pulse = moving ? 0.75 + 0.45 * Math.sin(this.statusPulseT) : 1;
+        const t = Math.min(1, d.open01);
+        domeMat.emissiveColor.set(
+          (1.0 - t * 0.72) * pulse,
+          (0.55 + t * 0.25) * pulse,
+          (0.15 + t * 0.55) * pulse,
+        );
+      }
     }
+    this.statusPulseT += dt * 9;
 
     // corridor brown-out ramp — down over ~0.7s, back over ~1.1s so the
     // lamps breathe back after the cycle veil lifts

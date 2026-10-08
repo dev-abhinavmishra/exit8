@@ -336,6 +336,20 @@ function buildAirlock(
   track.parent = doorNode;
   track.position = new Vector3(0, leafH + 0.04, 0);
 
+  // airlock status dome over the mouth — shifts amber→teal with the
+  // door cycle (driven from loopManager's door-slide block); reads as
+  // the "doors are live" cue from the corridor
+  const domeMat = new StandardMaterial(`mat.statusdome.${side}`, scene);
+  domeMat.disableLighting = true;
+  domeMat.emissiveColor = new Color3(1.0, 0.55, 0.15);
+  const domeHousing = kit.box(`al.${side}.statusdome.housing`, 0.16, 0.12, 0.05, mats.steel, scene);
+  domeHousing.parent = doorNode;
+  domeHousing.position = new Vector3(0, leafH + 0.16, faceZ * 0.6);
+  const statusDome = kit.box(`al.${side}.statusdome`, 0.11, 0.085, 0.045, domeMat, scene);
+  statusDome.parent = doorNode;
+  statusDome.position = new Vector3(0, leafH + 0.15, faceZ * 0.6 + (faceZ > 0 ? 0.024 : -0.024));
+  registry.register(`al.${side}.statusdome`, statusDome);
+
   const lc = kit.collider(
     `door.${side}.inner.colL`,
     w / 2,
