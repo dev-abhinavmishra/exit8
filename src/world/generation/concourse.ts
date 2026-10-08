@@ -844,7 +844,12 @@ export function buildConcourse(
     // troffers (material swap) + extraLights (intensity scale)
     const cageLamp = kit.box("junction.bay.cage", 0.2, 0.12, 0.12, mats.rubber, scene, root);
     cageLamp.position = new Vector3(backFace + 0.1, 2.35, BAY_Z1 - 0.32);
-    const cageGlass = kit.box("junction.baylamp", 0.05, 0.09, 0.16, mats.trofferLit, scene, root);
+    // dimmer dedicated emissive — full trofferLit blows to a white blob at
+    // arm's length inside the bay (still zone-killed via junction.troffers)
+    const bayLampMat = new StandardMaterial("mat.baylamp", scene);
+    bayLampMat.diffuseColor = new Color3(0.32, 0.3, 0.26);
+    bayLampMat.emissiveColor = new Color3(0.5, 0.42, 0.3);
+    const cageGlass = kit.box("junction.baylamp", 0.05, 0.09, 0.16, bayLampMat, scene, root);
     cageGlass.position = new Vector3(backFace + 0.16, 2.35, BAY_Z1 - 0.32);
     for (const cy of [-0.03, 0.03]) {
       const bar = kit.box(`junction.bay.cagebar.${cy}`, 0.17, 0.012, 0.012, mats.rubber, scene, root);
