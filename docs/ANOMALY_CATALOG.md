@@ -348,8 +348,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 94. ★ `troffer.falls` — one ceiling light panel has broken loose and
     hangs tilted into the corridor, still burning, swaying on its
     dead edge. Subtle. (slice)
+95. ★ `walker.wait` — the inspector is not on his route; he stands at
+    the south airlock mouth, squared up the corridor, waiting on the
+    threshold you have to pass. Unmistakable. (slice)
 
-Slice count: **135 implemented — the full catalog**. New hooks:
+Slice count: **136 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

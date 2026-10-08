@@ -32,6 +32,9 @@ export interface AmbientWalker {
   /** 'charge' mode only — the driving anomaly feeds the player's z each
    *  frame; he sprints to within a step of it and holds there. */
   chargeAt(playerZ: number): void;
+  /** move his hold point to z and freeze him there facing north —
+   *  walker.wait stations him at the south mouth this way. */
+  holdAt(z: number): void;
 }
 
 export function buildAmbientWalker(
@@ -78,6 +81,14 @@ export function buildAmbientWalker(
     },
     chargeAt(playerZ: number) {
       chargeZ = playerZ;
+    },
+    holdAt(zHold: number) {
+      z = zHold;
+      mode = "stare";
+      pauseT = 0;
+      g.setEnabled(true);
+      g.rotation.y = Math.PI;
+      g.position.set(0.55, 0, z);
     },
     setMode(m: WalkerMode) {
       mode = m;

@@ -15,7 +15,7 @@ export const walkerCharge: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.7,
   progressionRange: [40, 100],
-  requires: ["ambient.walker.faceplate"],
+  requires: ["ambient.walker"],
   excludes: [
     "walker",
     "walker.absent",

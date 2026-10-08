@@ -14,7 +14,7 @@ export const walkerFast: AnomalyDef = {
   detectability: "subtle",
   weight: 0.9,
   progressionRange: [25, 100],
-  requires: ["ambient.walker.faceplate"],
+  requires: ["ambient.walker"],
   excludes: [
     "walker",
     "walker.absent",
