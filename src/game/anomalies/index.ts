@@ -97,6 +97,7 @@ import { hatchScratched } from "./hatchScratched";
 import { shadowFigure } from "./shadowFigure";
 import { figureCorridor } from "./figureCorridor";
 import { lightRed } from "./lightRed";
+import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
 import { mullionExtra } from "./mullionExtra";
 import { glassWriting } from "./glassWriting";
@@ -253,6 +254,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   shadowFigure,
   figureCorridor,
   lightRed,
+  benchFlipped,
   stripGrows,
   mullionExtra,
   glassWriting,
@@ -311,7 +313,6 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   intakeGone,
   bellGone,
   noticeGone,
-  lightRed,
   walkerFast,
   walkerCharge,
   walkerWait,

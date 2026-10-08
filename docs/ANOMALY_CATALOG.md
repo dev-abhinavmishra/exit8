@@ -412,8 +412,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 116. ★ `figure.corridor` — a dark figure stands mid-route, squared on
      the center line; close the distance and it is simply gone.
      Unmistakable while it lasts. (slice)
+117. `bench.flipped` — the west-wall bench lies overturned: seat face
+     to the floor, legs in the air. Moderate. (slice)
 
-Slice count: **157 implemented — the full catalog**. New hooks:
+Slice count: **158 implemented — the full catalog**. New hooks:
 `audio.playKnock(pos)`; `drawRouteMap(t, hereStop)`, `drawRotaBoard(t, stamped)`;
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,

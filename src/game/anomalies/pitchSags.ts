@@ -13,7 +13,7 @@ export const pitchSags: AnomalyDef = {
   detectability: "subtle",
   weight: 0.9,
   progressionRange: [10, 100],
-  requires: [],
+  requires: ["junction.machine"],
   excludes: ["machine.silence"],
   testSeed: "test.pitch.sags",
   dangerous: false,
