@@ -173,9 +173,11 @@ let _doorGlassMat: StandardMaterial | null = null;
 function doorGlassMaterial(scene: Scene): StandardMaterial {
   if (_doorGlassMat) return _doorGlassMat;
   _doorGlassMat = new StandardMaterial("mat.doorGlass", scene);
-  _doorGlassMat.diffuseColor = new Color3(0.04, 0.055, 0.065);
-  _doorGlassMat.specularColor = new Color3(0.2, 0.22, 0.24);
-  _doorGlassMat.emissiveColor = new Color3(0.006, 0.009, 0.012);
+  _doorGlassMat.diffuseColor = new Color3(0.05, 0.066, 0.078);
+  // low specular — the panes otherwise catch a white slab of glare that
+  // reads as a lit window from any distance
+  _doorGlassMat.specularColor = new Color3(0.06, 0.07, 0.08);
+  _doorGlassMat.emissiveColor = new Color3(0.008, 0.012, 0.016);
   return _doorGlassMat;
 }
 
