@@ -511,9 +511,11 @@ npm run build` — currently 186 unit + 26/26 e2e green; per the quality
   a contact scare can never skip the verdict flow (endings stay
   commit-plane verdicts). Dangerous trio: `figure.rush` (wakes <6.5 m,
   sprints 4.6 m/s leaning in, contact −6 then vanishes), `walker.charge`
-  (arrival <1.35 m −6), `floor.flood` (wading plinks; soaking >2 s −4 —
-  the flood spans the corridor so entry is often forced, only lingering
-  costs). South cap carries `sign.attempt`, the repainted PASS 0N plate
+  (arrival <1.35 m −6 — he halts ~0.9 s first, the routine visibly
+  breaking before the sprint; charge leans like the rusher and resets
+  on setMode/reset), `floor.flood` (wading plinks; soaking >2 s −4 —
+  the flood spans the corridor so entry is often forced, only
+  lingering costs). South cap carries `sign.attempt`, the repainted PASS 0N plate
   (diegetic loop counter); loopManager repaints it via drawSign at every
   roll. **Anomalies only `update()` while phase === "open"** — a chase
   could otherwise dock a player already frozen mid-judgment.
