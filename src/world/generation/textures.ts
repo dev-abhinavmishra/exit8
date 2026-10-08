@@ -427,6 +427,7 @@ export function drawSign(t: DynamicTexture, spec: SignSpec): void {
     amber: { bg: "#23262c", fg: "#e8a33d", edge: "#e8a33d" },
     cyan: { bg: "#1e2a2c", fg: "#7fd4e0", edge: "#4fa8b8" },
     dark: { bg: "#17191d", fg: "#c9c6bc", edge: "#4a4d52" },
+    green: { bg: "#0d2416", fg: "#5fe08a", edge: "#3da867" },
   }[spec.tone];
   c.fillStyle = tones.bg;
   c.fillRect(0, 0, w, h);

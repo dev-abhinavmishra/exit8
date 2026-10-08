@@ -1041,6 +1041,12 @@ export function buildConcourse(
   dir.position = new Vector3(C.xHalf - 0.06, 1.86, 10.9);
   dir.rotation.y = Math.PI / 2;
 
+  // lit green evacuation-route sign high on the west wall, pointing the
+  // way to the south inspection point — the only green on the route
+  const exitRoute = kit.wallSign("sign.exitroute", mats, scene, root, registry, 0.7, 0.24);
+  exitRoute.position = new Vector3(-C.xHalf + 0.06, 2.1, 53.2);
+  exitRoute.rotation.y = -Math.PI / 2;
+
   // PA horns — wall-mounted flared speakers high at each end of the run
   for (const [sx, pz, dirZ] of [
     [1, 12.2, 1],

@@ -265,8 +265,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 61. ★ `locker.ajar` — one staff locker hangs open on its hinge, dark
     interior showing. Every door on the route was shut. Moderate.
     (slice)
+62. ★ `exit.wrongway` — the green EXIT ROUTE sign's running figure and
+    arrow now point back up the corridor, away from the inspection
+    point. Subtle. (slice)
 
-Slice count: **102 implemented — the full catalog**. New hooks:
+Slice count: **103 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

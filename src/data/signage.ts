@@ -23,8 +23,8 @@ export interface SignSpec {
   arrow?: "left" | "right" | "none";
   /** optional walking-figure pictogram, drawn left of the title */
   figure?: "left" | "right";
-  /** amber | cyan | dark variants */
-  tone: "amber" | "cyan" | "dark";
+  /** amber | cyan | dark | green variants */
+  tone: "amber" | "cyan" | "dark" | "green";
 }
 
 export const SIGNS: SignSpec[] = [
@@ -112,6 +112,13 @@ export const SIGNS: SignSpec[] = [
     sub: "LOOP 7 ENTRY · INSPECTION POINT SOUTH",
     arrow: "right",
     tone: "cyan",
+  },
+  {
+    id: "sign.exitroute",
+    title: "EXIT ROUTE",
+    arrow: "right",
+    figure: "right",
+    tone: "green",
   },
 ];
 
