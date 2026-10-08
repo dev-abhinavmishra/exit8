@@ -114,9 +114,11 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   darkGlass.alpha = 0.45;
   darkGlass.environmentIntensity = 1.6;
 
-  // Troffer fixtures: emissive rectangles read as lit panels.
+  // Troffer fixtures: emissive rectangles read as lit panels; the
+  // louver-cell face keeps them from reading as flat glow slabs.
   const trofferLit = new StandardMaterial("mat.trofferLit", scene);
-  trofferLit.emissiveColor = new Color3(1.0, 0.94, 0.82).scale(1.6);
+  trofferLit.emissiveColor = new Color3(1.0, 0.94, 0.82).scale(0.62);
+  trofferLit.emissiveTexture = tex.trofferFace;
   trofferLit.disableLighting = true;
 
   const trofferDim = new StandardMaterial("mat.trofferDim", scene);

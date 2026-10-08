@@ -105,6 +105,7 @@ export interface TextureSet {
   domePad: DynamicTexture; // truncated-dome warning pad at door thresholds
   blinds: DynamicTexture; // horizontal venetian slats, alpha-gapped
   puddle: DynamicTexture; // radial damp patch for floor drains
+  trofferFace: DynamicTexture; // louver-cell diffuser face for lit troffers
 }
 
 /** Speckled terrazzo with brass divider strips. Tiles every 1.2 m. */
@@ -138,6 +139,43 @@ function makeTerrazzo(scene: Scene, rng: RngStream): DynamicTexture {
   c.fillStyle = "rgba(255,240,200,0.25)";
   c.fillRect(10, 0, 4, s);
   c.fillRect(0, 10, s, 4);
+  return finish(t);
+}
+
+/** Lit troffer diffuser face — parabolic louver cells. Painted bright;
+ * the material's emissiveColor still scales it (brown-out, zone knobs). */
+function makeTrofferFace(scene: Scene): DynamicTexture {
+  const w = 256;
+  const h = 128;
+  const t = tex("tex.trofferFace", w, h, scene);
+  const c = ctx(t);
+  c.fillStyle = "#e6d9c0";
+  c.fillRect(0, 0, w, h);
+  // soft hot centre, warm falloff toward the frame edges — kept under
+  // bloom threshold so the louver cells don't smear to a white slab
+  const g = c.createRadialGradient(w / 2, h / 2, h * 0.15, w / 2, h / 2, w * 0.62);
+  g.addColorStop(0, "rgba(240,232,214,0.4)");
+  g.addColorStop(1, "rgba(138,120,94,0.62)");
+  c.fillStyle = g;
+  c.fillRect(0, 0, w, h);
+  // louver fins: vertical ribs every ~26px, near-opaque dark so the
+  // cells survive the emissive blowout and mip falloff at distance
+  for (let x = 0; x <= w; x += 26) {
+    c.fillStyle = "rgba(74,62,44,0.92)";
+    c.fillRect(x, 0, 4, h);
+    c.fillStyle = "rgba(255,255,250,0.5)";
+    c.fillRect(x + 4, 0, 2, h);
+  }
+  // two cross ribs split the cell rows
+  for (const y of [h / 3, (2 * h) / 3]) {
+    c.fillStyle = "rgba(74,62,44,0.75)";
+    c.fillRect(0, y - 2, w, 4);
+    c.fillStyle = "rgba(255,255,250,0.35)";
+    c.fillRect(0, y + 2, w, 2);
+  }
+  // faint glass seam line down the diffuser centre
+  c.fillStyle = "rgba(120,104,80,0.4)";
+  c.fillRect(w / 2 - 1, 0, 2, h);
   return finish(t);
 }
 
@@ -754,6 +792,7 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     domePad: makeDomePad(scene),
     blinds: makeBlinds(scene),
     puddle: makePuddle(scene),
+    trofferFace: makeTrofferFace(scene),
   };
 }
 

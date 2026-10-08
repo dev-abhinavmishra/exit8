@@ -38,6 +38,12 @@ export interface DebugHandle {
     visible: boolean;
     enabled: boolean;
   } | null;
+  /** material slot info for a named mesh — audit helper */
+  matInfo(name: string): {
+    mat: string;
+    emissiveTex: string | null;
+    emissiveR: number | null;
+  } | null;
   ready: boolean;
 }
 
@@ -96,6 +102,17 @@ export function installDebugHandle(app: App): void {
         rot: [r.x, r.y, r.z],
         visible: m.isVisible,
         enabled: m.isEnabled(),
+      };
+    },
+    matInfo: (name) => {
+      const m = refs().scene.getMeshByName(name);
+      const mat = m?.material;
+      if (!mat) return null;
+      const std = mat as { emissiveTexture?: { name?: string }; emissiveColor?: { r: number } };
+      return {
+        mat: mat.name,
+        emissiveTex: std.emissiveTexture?.name ?? null,
+        emissiveR: std.emissiveColor?.r ?? null,
       };
     },
   };
