@@ -327,7 +327,34 @@
   display: block;
   height: 100%;
   background: var(--amber);
-  transition: width 300ms ease;
+  transition:
+    width 300ms ease,
+    background 300ms ease;
+}
+.na-hud .stability.hit b,
+.na-hud .stability.hit .bar i {
+  color: var(--bad);
+  background: var(--bad);
+}
+@keyframes na-stab-hit {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+}
+.na-hud .stability.hit {
+  animation: na-stab-hit 0.4s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .na-hud .stability.hit {
+    animation: none;
+  }
 }
 .na-hud .loop-tag {
   position: absolute;

@@ -30,11 +30,13 @@ export class GameUi {
   private veilLabel: HTMLDivElement;
   private captions: HTMLDivElement;
   private stabilityEl!: {
+    root: HTMLElement;
     num: HTMLElement;
     bar: HTMLElement;
     tag: HTMLElement;
     ch: HTMLElement;
   };
+  private prevStability = -1;
   private commitHint!: HTMLDivElement;
   private usePrompt!: HTMLDivElement;
   private debugEl: HTMLDivElement;
@@ -741,6 +743,7 @@ export class GameUi {
       </div>
     `;
     this.stabilityEl = {
+      root: h.querySelector(".stability") as HTMLElement,
       num: h.querySelector(".stability .n") as HTMLElement,
       bar: h.querySelector(".stability .bar i") as HTMLElement,
       tag: h.querySelector(".loop-tag .n") as HTMLElement,
@@ -773,6 +776,16 @@ export class GameUi {
   }
 
   setStability(v: number): void {
+    // a drop flashes the readout red — the hit of a bad call or a
+    // contact scare; gains and the first paint stay amber
+    if (this.prevStability >= 0 && v < this.prevStability) {
+      const el = this.stabilityEl.root;
+      el.classList.remove("hit");
+      void el.offsetWidth; // restart the pulse on back-to-back drops
+      el.classList.add("hit");
+      window.setTimeout(() => el.classList.remove("hit"), 650);
+    }
+    this.prevStability = v;
     this.stabilityEl.num.textContent = String(v);
     this.stabilityEl.bar.style.width = `${Math.max(0, Math.min(100, v))}%`;
   }
