@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -13,38 +13,57 @@ const IDS = readdirSync(ANOMALY_DIR)
   .flatMap((f) => {
     const s = readFileSync(join(ANOMALY_DIR, f), "utf8");
     const m = s.match(/export const \w+:\s*AnomalyDef\s*=\s*\{[\s\S]*?id:\s*"([^"]+)"/);
-    return m ? [m[1]] : [];
+    const id = m?.[1];
+    return id ? [id] : [];
   });
 
 // Catches the silent-skip class: a `requires` entry that names a node the
 // registry never registered makes loopManager drop the anomaly (console
 // warning only) — the route runs clean and the divergence never fires.
-// ~8-20 min: a fresh navigation per def, as the seed query is read at boot.
-test("every catalog anomaly activates when forced", async ({ page }) => {
-  test.setTimeout(35 * 60_000);
+// Ids are split across N concurrent pages so the sweep stays a few
+// minutes as the catalog grows; each page still boots a fresh context
+// per def (about:blank teardown), which keeps GL context pile-up away.
+test("every catalog anomaly activates when forced", async ({ page, context }) => {
+  test.setTimeout(20 * 60_000);
+  const LANES = 4;
   const failed: string[] = [];
-  for (const id of IDS) {
+  const runOne = async (pg: typeof page, id: string) => {
     let reason = "";
     const onConsole = (m: { text(): string }) => {
       const t = m.text();
       if (t.includes("missing registry node")) reason = t;
     };
-    page.on("console", onConsole);
+    pg.on("console", onConsole);
     try {
-      // about:blank tears down the previous boot's engine — ~160 navigations
+      // about:blank tears down the previous boot's engine — navigations
       // on one page otherwise pile up GL contexts and late boots crawl.
-      await page.goto("about:blank");
-      await page.goto(`/?e2e=1&seed=sweep&anomaly=${id}`, { waitUntil: "domcontentloaded" });
-      await page.waitForFunction(`${NA} && ${NA}.ready === true`, null, { timeout: 120_000 });
-      await page.getByRole("button", { name: /BEGIN SHIFT/ }).click();
-      await page.waitForFunction(`${NA}.loop() === 1`, null, { timeout: 30_000 });
-      const active = await page.evaluate(`${NA}.anomaly()`);
+      await pg.goto("about:blank");
+      await pg.goto(`/?e2e=1&seed=sweep&anomaly=${id}`, { waitUntil: "domcontentloaded" });
+      await pg.waitForFunction(`${NA} && ${NA}.ready === true`, null, { timeout: 120_000 });
+      await pg.getByRole("button", { name: /BEGIN SHIFT/ }).click();
+      await pg.waitForFunction(`${NA}.loop() === 1`, null, { timeout: 30_000 });
+      const active = await pg.evaluate(`${NA}.anomaly()`);
       if (active !== id) reason ||= `active=${JSON.stringify(active)}`;
     } catch (e) {
       reason ||= String(e).split("\n")[0] ?? "error";
     }
-    page.off("console", onConsole);
+    pg.off("console", onConsole);
     if (reason) failed.push(`${id}: ${reason}`);
+  };
+  const lanes: Page[] = [
+    page,
+    ...(await Promise.all(Array.from({ length: LANES - 1 }, () => context.newPage()))),
+  ];
+  try {
+    await Promise.all(
+      lanes.map(async (pg, lane) => {
+        for (const id of IDS.filter((_, i) => i % LANES === lane)) {
+          await runOne(pg, id);
+        }
+      }),
+    );
+  } finally {
+    await Promise.all(lanes.slice(1).map((pg) => pg.close()));
   }
   expect(failed).toEqual([]);
 });
