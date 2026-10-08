@@ -735,14 +735,17 @@ export function buildConcourse(
     const vs = kit.box(`dress.cabseam.v.${z}`, 0.014, 1.5, 0.02, mats.rubber, scene, root);
     vs.position = new Vector3(-C.xHalf + 0.255, 1.15, z);
   }
-  // pulls + label holders on every drawer row — a real card bank
-  // carries hardware on every cell, not just one
+  // pulls + label cards on every drawer row — a real card bank reads
+  // as a grid of pale label windows, not a slab with dark ticks
+  const cardMat = new StandardMaterial("mat.cardlabel", scene);
+  cardMat.diffuseColor = new Color3(0.78, 0.74, 0.64);
+  cardMat.specularColor = new Color3(0.06, 0.06, 0.06);
   for (const py of [0.24, 0.66, 1.06, 1.46]) {
     for (const z of [15.5, 18.5, 21.5, 24.5, 27.5, 30.5]) {
-      const pull = kit.box(`dress.cabpull.${py}.${z}`, 0.03, 0.05, 0.24, mats.steel, scene, root);
-      pull.position = new Vector3(-C.xHalf + 0.265, py, z);
-      const lbl = kit.box(`dress.cablabel.${py}.${z}`, 0.022, 0.07, 0.16, mats.rubber, scene, root);
-      lbl.position = new Vector3(-C.xHalf + 0.26, py + 0.14, z);
+      const pull = kit.box(`dress.cabpull.${py}.${z}`, 0.04, 0.055, 0.24, mats.steel, scene, root);
+      pull.position = new Vector3(-C.xHalf + 0.275, py, z);
+      const lbl = kit.box(`dress.cablabel.${py}.${z}`, 0.018, 0.09, 0.18, cardMat, scene, root);
+      lbl.position = new Vector3(-C.xHalf + 0.26, py + 0.15, z);
     }
   }
   // ARCHIVES fascia — the institutional label band across the bank's
