@@ -88,6 +88,7 @@ export interface TextureSet {
   wallPanelBump: DynamicTexture; // normal map for the grout relief
   terrazzoBump: DynamicTexture; // normal map for the brass-joint relief
   shutterBump: DynamicTexture; // normal map for the slat corrugation
+  ceilingBump: DynamicTexture; // normal map for the tee-bar recess
   ceilingTile: DynamicTexture;
   steel: DynamicTexture;
   shutter: DynamicTexture;
@@ -256,6 +257,20 @@ function makeWallPanelBump(scene: Scene): DynamicTexture {
   groove(0, 0, 5, s);
   groove(s - 5, 0, 5, s);
   return normalsFromHeight(scene, "tex.wallPanel.bump", height, s, 4.5);
+}
+
+function makeCeilingTileBump(scene: Scene): DynamicTexture {
+  const s = 512;
+  const height = new Float32Array(s * s).fill(1);
+  // recessed border matching makeCeilingTile's strokeRect tee-bar edge
+  for (let y = 0; y < s; y++) {
+    for (let x = 0; x < s; x++) {
+      if (x < 4 || x >= s - 4 || y < 4 || y >= s - 4) {
+        height[y * s + x] = 0.4;
+      }
+    }
+  }
+  return normalsFromHeight(scene, "tex.ceilingTile.bump", height, s, 3.5);
 }
 
 function makeCeilingTile(scene: Scene, rng: RngStream): DynamicTexture {
@@ -722,6 +737,7 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     wallPanelBump: makeWallPanelBump(scene),
     terrazzoBump: makeTerrazzoBump(scene),
     shutterBump: makeShutterBump(scene),
+    ceilingBump: makeCeilingTileBump(scene),
     ceilingTile: makeCeilingTile(scene, rng),
     steel: makeSteel(scene, rng),
     shutter: makeShutter(scene, rng),

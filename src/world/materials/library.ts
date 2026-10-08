@@ -77,6 +77,9 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   ceiling.albedoTexture = tex.ceilingTile;
   tex.ceilingTile.uScale = 6;
   tex.ceilingTile.vScale = 60;
+  ceiling.bumpTexture = tex.ceilingBump;
+  tex.ceilingBump.uScale = 6;
+  tex.ceilingBump.vScale = 60;
   ceiling.roughness = 0.9;
   ceiling.metallic = 0;
   ceiling.environmentIntensity = 0.6;

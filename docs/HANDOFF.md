@@ -18,13 +18,13 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   backlit silhouette at z49, head-track <6.5m, contact −5; ambient
   walker goes absent so the dark holds ONE figure). PASS counter =
   consecutive-correct STREAK (resets on wrong call), plate + terminal
-  + report BEST PASS + archive career `progression.bestPass` (migrates
-  v1 saves). North airlock sign swapped NOTICE→`sign.diverge.north`
-  (← DIVERGENCE POINT, mirrors south — notice.gone retargeted).
-  Secure-ending reveal rebuilt: radial-gradient glow (not a card),
-  stair flight + handrail/newel silhouettes, spill 4.4/range 11.
-  **Trap**: the reveal plays at the cap the player FILED at
-  (retreat→north, continue→south) — probes must look the right way.
+  - report BEST PASS + archive career `progression.bestPass` (migrates
+    v1 saves). North airlock sign swapped NOTICE→`sign.diverge.north`
+    (← DIVERGENCE POINT, mirrors south — notice.gone retargeted).
+    Secure-ending reveal rebuilt: radial-gradient glow (not a card),
+    stair flight + handrail/newel silhouettes, spill 4.4/range 11.
+    **Trap**: the reveal plays at the cap the player FILED at
+    (retreat→north, continue→south) — probes must look the right way.
 - 2026-10-08 second pass: rats.scurry (sub-second wall-crossing, once),
   draft.sheet (`audio.playScrape` — a lone sheet slides in an unseen
   draft), pa.deadair (`audio.playPaDeadAir` — relay click + carrier
@@ -96,10 +96,23 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   with the Exit 8 corridor, not catalog count. Same subway loop, many
   anomaly versions of it. Test only after MAJOR additions: quick probe
   - unit/build per change, e2e suite deferred for small anomalies.
+- IBL trap (fidelity pass 4, the big one): `environmentIntensity` was
+  set on 8 PBR materials but `scene.environmentTexture` never existed —
+  every env knob was a silent no-op and metals went black in dim zones.
+  `buildEnvironmentTexture()` (textures.ts) now paints a 128px 6-face
+  cubemap (troffer bars on +Y so the terrazzo smears lamps into streaks).
+  CHECK envTexture exists FIRST when a PBR surface reads wrong; the
+  pale-material workarounds for steel-in-dim predated this and still
+  look right, so they stay.
+- Procedural normal maps: `normalsFromHeight(scene,name,height,s,
+strength)` (textures.ts) — rebuild the albedo's grooves in a
+  Float32Array height field, get a tangent-space RGB map. Currently:
+  wallPanel grout (4.5), terrazzo brass joints (3.0), shutter slats
+  (5.0). Bump texture tiling MUST match the albedo's uScale/vScale.
 - Material traps, both directions (fidelity pass 3): (a) LIT
   StandardMaterials WASH OUT to blown pale under zone lights —
   `elec.panel.leaf` read as a glowing slab until `disableLighting =
-  true` on elecPaint/elecDark (diffuse 0.16 / 0.03); use unlit matte
+true` on elecPaint/elecDark (diffuse 0.16 / 0.03); use unlit matte
   for dark hardware that must STAY dark. (b) Steel still goes
   near-black in dim zones — same fix, pale/unlit material instead.
 - Walker give-way: `ambientWalker.update(dt, playerPos)` — playerPos
