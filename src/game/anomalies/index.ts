@@ -122,6 +122,8 @@ import { lockerTaps } from "./lockerTaps";
 import { figureRecords } from "./figureRecords";
 import { zoneSick } from "./zoneSick";
 import { facePane } from "./facePane";
+import { walkerLook } from "./walkerLook";
+import { noticeFace } from "./noticeFace";
 import { lightRed } from "./lightRed";
 import { benchFlipped } from "./benchFlipped";
 import { stripGrows } from "./stripGrows";
@@ -307,6 +309,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   figureRecords,
   zoneSick,
   facePane,
+  walkerLook,
+  noticeFace,
   lightRed,
   benchFlipped,
   stripGrows,
