@@ -57,6 +57,9 @@ export const lightsBlackout: AnomalyDef = {
 
     // a dead feed means a dead machine — the junction thrum goes too
     ctx.audio.setMachineGainScale(() => 0);
+    // and the inspector isn't out there — the dark holds ONE figure,
+    // so a patrolling second silhouette can't dilute the standoff
+    world.ambientWalker.setMode("absent");
 
     // the emergency units answer it: the three dead twin-lamps wake
     // along the corridor, and the junction-side one throws the
@@ -146,6 +149,7 @@ export const lightsBlackout: AnomalyDef = {
         world.hemi.intensity = hemiBase;
         ctx.audio.setAmbienceScale(1);
         ctx.audio.setMachineGainScale(null);
+        world.ambientWalker.setMode("normal");
         for (const m of emLamps) m.material = world.materials.trofferDim;
         emLight.dispose();
         g.dispose();
