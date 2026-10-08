@@ -1023,6 +1023,8 @@ export function buildConcourse(
         root,
       );
       lamp.position = new Vector3(sx * (C.xHalf - 0.09), 2.62, pz + dz);
+      // anomalies address the lamps (a dead feed wakes them)
+      registry.register(lamp.name, lamp);
     }
   }
 

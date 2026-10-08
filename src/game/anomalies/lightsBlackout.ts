@@ -9,7 +9,10 @@
  * arm's reach and it costs stability. The right play is to turn back
  * and file it, not to inspect the dark.
  */
+import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { PointLight } from "@babylonjs/core/Lights/pointLight";
+import type { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import type { LightZone } from "../../world/generation/concourse";
 import { buildFigure } from "../../world/figures";
 import type { AnomalyDef } from "./types";
@@ -27,7 +30,14 @@ export const lightsBlackout: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.45,
   progressionRange: [55, 100],
-  requires: ["light.zone.entry", "light.zone.gallery", "light.zone.clinic", "light.zone.junction"],
+  requires: [
+    "light.zone.entry",
+    "light.zone.gallery",
+    "light.zone.clinic",
+    "light.zone.junction",
+    "dress.emlight.7.5.lampa",
+    "dress.emlight.50.lampa",
+  ],
   excludes: ["light", "shaft", "figure", "walker.crowd", "zone.gallery", "zone.clinic"],
   testSeed: "test.lights.blackout",
   dangerous: true,
@@ -47,6 +57,23 @@ export const lightsBlackout: AnomalyDef = {
 
     // a dead feed means a dead machine — the junction thrum goes too
     ctx.audio.setMachineGainScale(() => 0);
+
+    // the emergency units answer it: the three dead twin-lamps wake
+    // along the corridor, and the junction-side one throws the
+    // figure's rim light — it stands where the emergency lamp reaches
+    const emLamps: AbstractMesh[] = [];
+    for (const z of [7.5, 33.2, 50]) {
+      for (const s of ["a", "b"]) {
+        const m = world.registry.get(`dress.emlight.${z}.lamp${s}`);
+        if (!("material" in m)) continue;
+        m.material = world.materials.trofferLit;
+        emLamps.push(m);
+      }
+    }
+    const emLight = new PointLight("anomaly.blackout.emlight", new Vector3(1.45, 2.45, 50.1), ctx.scene);
+    emLight.diffuse = new Color3(1.0, 0.7, 0.4);
+    emLight.intensity = 3.0;
+    emLight.range = 11;
 
     const fig = buildFigure(ctx.scene, world.root, "anomaly.lights.blackout", {
       kind: "silhouette",
@@ -119,6 +146,8 @@ export const lightsBlackout: AnomalyDef = {
         world.hemi.intensity = hemiBase;
         ctx.audio.setAmbienceScale(1);
         ctx.audio.setMachineGainScale(null);
+        for (const m of emLamps) m.material = world.materials.trofferDim;
+        emLight.dispose();
         g.dispose();
       },
     };
