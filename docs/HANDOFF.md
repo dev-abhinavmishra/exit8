@@ -5,13 +5,26 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 ## Where we are
 
 - PR #1 (`devin/night-audit-vertical-slice`) carries M0–M5:
-  **207 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
+  **208 anomalies** (the full catalog — ANOMALY_CATALOG.md), chapters,
   daily/custom routes, practice mode, route archive, field notes +
   dossier ending, gamepad, ambient walker + watcher, missed-divergence
-  report. NOT yet merged. Current gates: 186 unit, 26/26 e2e (~13m;
-  anomalies.spec forces all 163 ids, ~7m alone — it now navigates to
+  report. NOT yet merged. Current gates: 236 unit, 27/27 e2e (~13m;
+  anomalies.spec forces all 208 ids, ~7-8m alone — it navigates to
   about:blank between ids to drop dead GL contexts, which was the
-  cause of a previous 8m "timeout" misdiagnosis).
+  cause of a previous 8m "timeout" misdiagnosis; suite cap is 35m).
+- 2026-10-08 consequence/fidelity pass: dangerous QUARTET complete —
+  figure.rush approach, walker.charge arrival (0.9s telegraph),
+  floor.flood soak, lights.blackout STANDOFF (zone kills → emlights +
+  backlit silhouette at z49, head-track <6.5m, contact −5; ambient
+  walker goes absent so the dark holds ONE figure). PASS counter =
+  consecutive-correct STREAK (resets on wrong call), plate + terminal
+  + report BEST PASS + archive career `progression.bestPass` (migrates
+  v1 saves). North airlock sign swapped NOTICE→`sign.diverge.north`
+  (← DIVERGENCE POINT, mirrors south — notice.gone retargeted).
+  Secure-ending reveal rebuilt: radial-gradient glow (not a card),
+  stair flight + handrail/newel silhouettes, spill 4.4/range 11.
+  **Trap**: the reveal plays at the cap the player FILED at
+  (retreat→north, continue→south) — probes must look the right way.
 - 2026-10-08 second pass: rats.scurry (sub-second wall-crossing, once),
   draft.sheet (`audio.playScrape` — a lone sheet slides in an unseen
   draft), pa.deadair (`audio.playPaDeadAir` — relay click + carrier
