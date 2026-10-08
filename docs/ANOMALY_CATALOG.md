@@ -486,7 +486,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      −5; the right play is turning back, not inspecting the dark.
      (slice)
 
-### Generated index (all 208)
+### Generated index (all 213)
 
 1. `clock.reverse` — Counterclockwise Clock · CH I · moderate
 2. `doorway.extra` — Unmapped Doorway · CH I · unmistakable
@@ -696,8 +696,13 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 206. `vend.empty` — Vending Shelves Bare · CH II · moderate
 207. `sheets.cleared` — Stripped Notice Board · CH II · subtle
 208. `lights.blackout` — Someone Is In The Dark · CH III · unmistakable · **dangerous**
+209. `fan.dead` — Extraction Fan Stopped · CH II · subtle
+210. `fan.racing` — Extraction Fan Racing · CH II · subtle
+211. `gallery.dark` — Gallery Gone Dark · CH I · moderate
+212. `pane.face` — Face at the Glass · CH III · subtle
+213. `gallery.mirror` — Mirrored Occupant · CH III · subtle
 
-Slice count: **208 implemented — the full catalog**. Dangerous class
+Slice count: **213 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
