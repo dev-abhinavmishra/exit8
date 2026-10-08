@@ -380,8 +380,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 105. ★ `doors.slam` — the south leaves part for your commit walk, then
      crash shut in your face, hold a breath, and open again.
      Unmistakable. (slice)
+106. ★ `gallery.occupied` — a dark figure sits at the monitor desk
+     behind the observation glass, facing the corridor. Moderate.
+     (slice)
 
-Slice count: **146 implemented — the full catalog**. New hooks:
+Slice count: **147 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`, `audio.playDrip(pos)`, `audio.setMachinePitch(fn)`, `audio.playSlam(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

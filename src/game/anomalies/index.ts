@@ -93,6 +93,7 @@ import { doorSlow } from "./doorSlow";
 import { cabinetRows } from "./cabinetRows";
 import { mullionMissing } from "./mullionMissing";
 import { galleryLit } from "./galleryLit";
+import { galleryOccupied } from "./galleryOccupied";
 import { liftCalls } from "./liftCalls";
 import { benchSit } from "./benchSit";
 import { stainSpread } from "./stainSpread";
@@ -238,6 +239,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   cabinetRows,
   mullionMissing,
   galleryLit,
+  galleryOccupied,
   liftCalls,
   benchSit,
   stainSpread,
