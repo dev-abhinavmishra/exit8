@@ -68,6 +68,10 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   terrazzo.roughness = 0.27;
   terrazzo.metallic = 0.05;
   terrazzo.environmentIntensity = 0.85;
+  // recessed joint relief matching the baked brass-strip edges
+  terrazzo.bumpTexture = tex.terrazzoBump;
+  tex.terrazzoBump.uScale = 4;
+  tex.terrazzoBump.vScale = 20;
 
   const ceiling = new PBRMaterial("mat.ceiling", scene);
   ceiling.albedoTexture = tex.ceilingTile;

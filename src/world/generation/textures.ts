@@ -37,6 +37,7 @@ export interface TextureSet {
   terrazzo: DynamicTexture;
   wallPanel: DynamicTexture;
   wallPanelBump: DynamicTexture; // normal map for the grout relief
+  terrazzoBump: DynamicTexture; // normal map for the brass-joint relief
   ceilingTile: DynamicTexture;
   steel: DynamicTexture;
   shutter: DynamicTexture;
@@ -86,6 +87,45 @@ function makeTerrazzo(scene: Scene, rng: RngStream): DynamicTexture {
   c.fillStyle = "rgba(255,240,200,0.25)";
   c.fillRect(10, 0, 4, s);
   c.fillRect(0, 10, s, 4);
+  return finish(t);
+}
+
+/** Normal map matching makeTerrazzo's brass-strip edges so the divider
+ * channels read as recessed joints under the zone lights — subtler
+ * than the wall bump since it's a walked surface. */
+function makeTerrazzoBump(scene: Scene): DynamicTexture {
+  const s = 1024;
+  const t = tex("tex.terrazzo.bump", s, s, scene);
+  const c = ctx(t);
+  const height = new Float32Array(s * s).fill(1);
+  const groove = (x0: number, y0: number, w: number, h: number) => {
+    for (let y = Math.max(0, y0); y < Math.min(s, y0 + h); y++) {
+      for (let x = Math.max(0, x0); x < Math.min(s, x0 + w); x++) {
+        height[y * s + x] = 0.45;
+      }
+    }
+  };
+  groove(0, 0, s, 14);
+  groove(0, 0, 14, s);
+  const img = c.createImageData(s, s);
+  const strength = 3.0;
+  for (let y = 0; y < s; y++) {
+    for (let x = 0; x < s; x++) {
+      const xm = (x - 1 + s) % s;
+      const xp = (x + 1) % s;
+      const ym = (y - 1 + s) % s;
+      const yp = (y + 1) % s;
+      const dx = (height[y * s + xp]! - height[y * s + xm]!) * strength;
+      const dy = (height[yp * s + x]! - height[ym * s + x]!) * strength;
+      const len = Math.hypot(dx, dy, 1);
+      const i = (y * s + x) * 4;
+      img.data[i] = Math.round(((-dx / len) * 0.5 + 0.5) * 255);
+      img.data[i + 1] = Math.round(((dy / len) * 0.5 + 0.5) * 255);
+      img.data[i + 2] = Math.round(((1 / len) * 0.5 + 0.5) * 255);
+      img.data[i + 3] = 255;
+    }
+  }
+  c.putImageData(img, 0, 0);
   return finish(t);
 }
 
@@ -624,6 +664,7 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     terrazzo: makeTerrazzo(scene, rng),
     wallPanel: makeWallPanel(scene, rng),
     wallPanelBump: makeWallPanelBump(scene),
+    terrazzoBump: makeTerrazzoBump(scene),
     ceilingTile: makeCeilingTile(scene, rng),
     steel: makeSteel(scene, rng),
     shutter: makeShutter(scene, rng),
