@@ -291,8 +291,19 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
     in the last stretch is simply not there. Subtle. (slice)
 71. ★ `poster.dup` — two spots on the notice row carry the same
     poster. Not swapped, not missing — duplicated. Subtle. (slice)
+72. ★ `exit.dark` — the green EXIT ROUTE sign still hangs in the last
+    stretch, but its lamp is dead: the letters don't glow. Subtle.
+    (slice)
+73. ★ `fountain.gone` — the drinking fountain by the east wall is
+    simply not there. Bare panels where the basin stood. Subtle.
+    (slice)
+74. ★ `poster.tilted` — one poster in the notice row hangs crooked in
+    its frame, leaned a few degrees off level. Subtle. (slice)
+75. ★ `hatch.gone` — the maintenance hatch plate on the east wall is
+    not there — painted-over wall where the access panel was. Subtle.
+    (slice)
 
-Slice count: **112 implemented — the full catalog**. New hooks:
+Slice count: **116 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

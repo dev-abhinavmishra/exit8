@@ -116,6 +116,10 @@ import { lockersAll } from "./lockersAll";
 import { phoneGone } from "./phoneGone";
 import { mopGone } from "./mopGone";
 import { posterDup } from "./posterDup";
+import { exitDark } from "./exitDark";
+import { fountainGone } from "./fountainGone";
+import { posterTilted } from "./posterTilted";
+import { hatchGone } from "./hatchGone";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -228,6 +232,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   phoneGone,
   mopGone,
   posterDup,
+  exitDark,
+  fountainGone,
+  posterTilted,
+  hatchGone,
   vendDead,
   sheetsCleared,
 ];
