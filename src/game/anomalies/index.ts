@@ -101,6 +101,7 @@ import { phoneOffhook } from "./phoneOffhook";
 import { fountainRuns } from "./fountainRuns";
 import { panelOpen } from "./panelOpen";
 import { pilotDead } from "./pilotDead";
+import { doorLit } from "./doorLit";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -198,6 +199,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   fountainRuns,
   panelOpen,
   pilotDead,
+  doorLit,
   vendDead,
   sheetsCleared,
 ];

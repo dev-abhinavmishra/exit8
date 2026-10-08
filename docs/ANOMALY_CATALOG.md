@@ -251,8 +251,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 56. ★ `pilot.dead` — the amber pilot lamp beside the south airlock
     mouth is out; an empty socket where the route-open light was.
     Subtle. (slice)
+57. ★ `door.lit` — warm light leaks from the service room around the
+    door's edge. Someone left a light on — or someone is in there.
+    Moderate. (slice)
 
-Slice count: **97 implemented — the full catalog**. New hooks:
+Slice count: **98 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.
