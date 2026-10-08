@@ -673,9 +673,9 @@ npm run build` — currently 186 unit + 26/26 e2e green; per the quality
 ## Fidelity-pass traps (2026-10)
 
 - **Emissive blowout swallows texture detail**: an emissiveColor scale
-  >~0.8 on a StandardMaterial washes any emissiveTexture to a white
-  slab under the post pipeline. Keep textured emissive fixtures at
-  ~0.62 scale (troffer louver face) — verified by point-blank probe.
+  > ~0.8 on a StandardMaterial washes any emissiveTexture to a white
+  > slab under the post pipeline. Keep textured emissive fixtures at
+  > ~0.62 scale (troffer louver face) — verified by point-blank probe.
 - `__nightaudit.matInfo(name)` returns { mat, emissiveTex, emissiveR }
   for registry/scope meshes — material audit helper.
 - Shadow rig: `buildInspectionRig` casts walls + figure parts
@@ -689,7 +689,7 @@ npm run build` — currently 186 unit + 26/26 e2e green; per the quality
   loopManager's door-slide block (amber sealed → teal open, pulse
   mid-travel) — NOT dress.* so they stay discrete.
 - **PointsCloudSystem pointSize is PIXELS, not world units** — `new
-  PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
+PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
   0.017 render as subpixels (invisible). The dust motes use 2.8px.
   Per-particle color needs `p.color` set in addPoints AND re-set in
   updateParticle (it's the fade channel); `p.groupId` (not groupID)
