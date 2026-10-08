@@ -330,6 +330,22 @@ npm run build` — currently 117 unit + 24/24 e2e green.
   `mats.grime` (alpha ~0.3). New wall/prop dressing must either parent
   to an anomaly target or fold into STATIC_PREFIXES in `merge.ts`
   (`dress.*` families are registered there).
+- More traps (later same pass): `world.scene` does NOT exist on
+  ConcourseWorld — use `const { scene, world } = ctx`.
+  `registry.get(name)` returns a TransformNode (rotation/position/
+  getChildMeshes); `registry.mesh(name)` returns the mesh (.material,
+  .setEnabled). A mesh that an anomaly moves/hides MUST NOT match a
+  STATIC_PREFIXES prefix or merge.ts folds it (south pilot lamp was
+  renamed `dress.doorlight.s.lamp` → `pilot.south` + registered).
+  There is no `mats.amber` — use `mats.guideStrip` for amber accents.
+  `mats.wallPanel` reads pale in lit zones but near-black in the
+  z45–55 dark stretch — dark-span fixtures want a dedicated material
+  with diffuse ~0.2–0.4 + tiny emissive (mat.elec.paint, mat.mop.yellow,
+  mat.firstaid.white pattern). drawSign figure glyph: cx 32, title
+  x-offset +18 when spec.figure set.
+- Fastest probe recipe: `?e2e=1&seed=<s>&anomaly=<id>` arms that
+  anomaly for loop 1 — no forceAnomaly call needed; then teleport +
+  look + 600 ms + screenshot.
 
 ## User-context notes (from prior sessions)
 
