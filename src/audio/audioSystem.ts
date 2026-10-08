@@ -51,6 +51,24 @@ export class AudioSystem {
       g.connect(this.master);
       this.buses.set(b, g);
     }
+    // corridor slap-echo: the tiled passage answers each step a beat
+    // later — send off the footsteps bus through a short feedback delay,
+    // lowpassed like hard plaster reflections
+    const delay = this.ctx.createDelay(0.5);
+    delay.delayTime.value = 0.115;
+    const echoLp = this.ctx.createBiquadFilter();
+    echoLp.type = "lowpass";
+    echoLp.frequency.value = 1500;
+    const fb = this.ctx.createGain();
+    fb.gain.value = 0.3;
+    const wet = this.ctx.createGain();
+    wet.gain.value = 0.22;
+    this.bus("footsteps").connect(delay);
+    delay.connect(echoLp);
+    echoLp.connect(fb);
+    fb.connect(delay);
+    echoLp.connect(wet);
+    wet.connect(this.master);
     // pre-render 2s of white noise used by most synths
     const len = this.ctx.sampleRate * 2;
     this.noiseBuffer = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
