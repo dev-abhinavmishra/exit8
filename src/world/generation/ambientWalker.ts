@@ -219,8 +219,10 @@ export function buildAmbientWalker(
       } else {
         // he gives way: if the player is planted on his lane ahead, he
         // halts and waits rather than walking through them. Baseline
-        // behavior — scripted modes above are exempt.
+        // behavior only — scripted modes are exempt (a frozen
+        // 'crawl'/'fast' would mute the anomaly's own signal).
         const blocked =
+          mode === "normal" &&
           playerPos != null &&
           Math.abs(playerPos.x - lane) < 0.85 &&
           dir * (playerPos.z - z) > 0.25 &&
