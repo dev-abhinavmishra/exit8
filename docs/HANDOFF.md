@@ -96,6 +96,22 @@ Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
   with the Exit 8 corridor, not catalog count. Same subway loop, many
   anomaly versions of it. Test only after MAJOR additions: quick probe
   - unit/build per change, e2e suite deferred for small anomalies.
+- Material traps, both directions (fidelity pass 3): (a) LIT
+  StandardMaterials WASH OUT to blown pale under zone lights —
+  `elec.panel.leaf` read as a glowing slab until `disableLighting =
+  true` on elecPaint/elecDark (diffuse 0.16 / 0.03); use unlit matte
+  for dark hardware that must STAY dark. (b) Steel still goes
+  near-black in dim zones — same fix, pale/unlit material instead.
+- Walker give-way: `ambientWalker.update(dt, playerPos)` — playerPos
+  optional; patrol halts when the player stands ahead on his lane
+  (decays limb swing, faces travel dir). Scare modes unaffected.
+- Walker block uses LANE-relative test: |px−LANE_X|<0.85 and player
+  0.25–1.15 m AHEAD along travel dir — him walking away or player
+  behind does not block (verified: teleporting onto the lane behind
+  him correctly does NOT freeze him).
+- records bank hardware: pulls+labels now on ALL 4 drawer rows
+  (`dress.cabpull.<y>.<z>`, `dress.cablabel.<y>.<z>`) — merges fine;
+  one-row-only reads as flat slab at arm's length.
 - M5 landed this pass: `src/world/merge.ts` folds ~160 static dressing
   meshes into per-material merged meshes (440→342 draws/frame measured —
   BENCHMARK.md has the 8-waypoint route capture); ACCESSIBILITY.md audit
