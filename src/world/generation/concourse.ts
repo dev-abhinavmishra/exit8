@@ -253,6 +253,8 @@ function buildAirlock(
     face.parent = root;
     face.position = new Vector3(-1.54, 1.72, 54.93);
     registry.register("sign.attempt.face", face);
+    const faceBez = kit.box(`dress.passbez.${side}`, 0.5, 0.19, 0.015, mats.steel, scene, root);
+    faceBez.position = new Vector3(-1.54, 1.72, 54.945);
   }
   for (const [bx, btag] of [
     [-w / 2 + 0.16, "l"],
