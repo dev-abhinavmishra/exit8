@@ -302,8 +302,16 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 75. ★ `hatch.gone` — the maintenance hatch plate on the east wall is
     not there — painted-over wall where the access panel was. Subtle.
     (slice)
+76. ★ `guide.red` — the tactile guide strip still runs the full
+    corridor, but the amber bars run red. Subtle. (slice)
+77. ★ `dir.gone` — the ROUTE DIRECTORY wall sign over the radiator is
+    simply not there. Subtle. (slice)
+78. ★ `machine.dead` — the status lamp on the junction machine is out;
+    the unit still hums but its eye is dark. Subtle. (slice)
+79. ★ `bench.gone` — the mid-corridor bench is simply not there. The
+    wall run where it sat is bare. Moderate. (slice)
 
-Slice count: **116 implemented — the full catalog**. New hooks:
+Slice count: **120 implemented — the full catalog**. New hooks:
 `audio.setMachineGainScale(fn)`, `audio.playChime(pos)`,
 `audio.playGroan(pos)`; `drawClockFace(t, numerals?)`, `drawSign(t, spec)`,
 `drawPoster(t, def)` + `POSTER_DEFS`.

@@ -120,6 +120,10 @@ import { exitDark } from "./exitDark";
 import { fountainGone } from "./fountainGone";
 import { posterTilted } from "./posterTilted";
 import { hatchGone } from "./hatchGone";
+import { guideRed } from "./guideRed";
+import { dirGone } from "./dirGone";
+import { machineDead } from "./machineDead";
+import { benchGone } from "./benchGone";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -236,6 +240,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   fountainGone,
   posterTilted,
   hatchGone,
+  guideRed,
+  dirGone,
+  machineDead,
+  benchGone,
   vendDead,
   sheetsCleared,
 ];
