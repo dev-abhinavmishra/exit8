@@ -756,7 +756,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      inspector quits his route and trails ~3 m behind your direction of
      travel; stop and he just stands there. New walker mode `follow`.
 
-Slice count: **230 implemented — the full catalog**. Dangerous class
+231. `light.cold` — Wrong Light · CH III · unmistakable — every lamp
+     runs surgical blue-white (zone diffuses + troffer emissive swap);
+     the same corridor in the wrong light. Restores on cleanup.
+
+Slice count: **231 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
