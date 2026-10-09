@@ -34,8 +34,10 @@ test("every catalog anomaly activates when forced", async ({ page, context }) =>
       if (t.includes("missing registry node")) reason = t;
     };
     pg.on("console", onConsole);
-    // one retry absorbs SwiftShader boot stalls under 4-lane contention
-    for (let attempt = 0; attempt < 2; attempt++) {
+    // retries absorb SwiftShader boot stalls under 4-lane contention —
+    // a single retry still lost a lane twice in a row (corridor.mirror
+    // flake, arc5 suite); three attempts keeps the sweep honest
+    for (let attempt = 0; attempt < 3; attempt++) {
       reason = "";
       try {
         // about:blank tears down the previous boot's engine — navigations
