@@ -18,7 +18,7 @@ export const walkerNotes: AnomalyDef = {
   detectability: "moderate",
   weight: 0.8,
   progressionRange: [6, 100],
-  requires: [],
+  requires: ["ambient.walker"],
   excludes: ["walker.absent", "walker.charge", "walker.stare", "walker.crawl", "walker.midstep"],
   testSeed: "test.walker.notes",
   dangerous: false,

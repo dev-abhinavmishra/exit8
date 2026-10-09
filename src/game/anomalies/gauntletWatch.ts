@@ -19,7 +19,7 @@ export const gauntletWatch: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.5,
   progressionRange: [12, 100],
-  requires: [],
+  requires: ["ambient.walker"],
   excludes: ["figure.corridor", "figure.threshold", "lights.blackout", "walker.crowd"],
   testSeed: "test.gauntlet.watch",
   dangerous: false,

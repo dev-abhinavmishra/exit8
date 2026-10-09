@@ -20,7 +20,7 @@ export const figureThreshold: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.5,
   progressionRange: [8, 100],
-  requires: [],
+  requires: ["service.door.leaf"],
   excludes: ["figure.corridor", "figure.wall", "lights.blackout", "walker.wait"],
   testSeed: "test.figure.threshold",
   dangerous: false,

@@ -17,7 +17,7 @@ export const corridorMirror: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.5,
   progressionRange: [10, 100],
-  requires: [],
+  requires: ["wall.left.0"],
   excludes: ["sign.mirror", "walker.offlane", "depth.mismatch", "clinic.staffed"],
   testSeed: "test.corridor.mirror",
   dangerous: false,

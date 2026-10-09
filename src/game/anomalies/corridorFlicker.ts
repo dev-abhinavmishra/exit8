@@ -17,7 +17,7 @@ export const corridorFlicker: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.6,
   progressionRange: [8, 100],
-  requires: [],
+  requires: ["light.zone.entry"],
   excludes: ["lights.blackout", "light.delay", "zone.gallery", "zone.clinic"],
   testSeed: "test.corridor.flicker",
   dangerous: false,
