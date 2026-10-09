@@ -23,7 +23,7 @@ export const staffDoorAjar: AnomalyDef = {
   weight: 0.9,
   progressionRange: [20, 100],
   requires: ["sdoor.north.panel", "sdoor.south.panel"],
-  excludes: ["corridor.mirror", "corridor.long", "airlock.breach"],
+  excludes: ["corridor.mirror", "corridor.long", "corridor.narrow", "airlock.breach"],
   testSeed: "test.staff.door.ajar",
   dangerous: false,
   activate(ctx): AnomalyInstance {

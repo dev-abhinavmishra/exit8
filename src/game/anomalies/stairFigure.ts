@@ -2,7 +2,6 @@
  * stair.figure — the service door stands open on the lit stairwell
  * again, but this time someone is down there: a dark figure at the
  * mid-landing, squared up the flight toward you. Stand back and it
- * just waits; step closer and it starts climbing — the door slams
  * shut on its threshold, never yours. Unmistakable, worse than empty.
  */
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -14,7 +13,6 @@ const HALF = 0.44;
 const OPEN_TH = 1.25;
 const SLAM_D2 = 2.6 * 2.6;
 const SLAM_S = 0.42;
-// the figure climbs one tread per interval when you linger near — the
 // nearer you stand, the faster it comes
 const STEP_X = 0.24;
 const STEP_Y = 0.185;
@@ -38,6 +36,7 @@ export const stairFigure: AnomalyDef = {
     "depth.mismatch",
     "corridor.mirror",
     "corridor.long",
+    "corridor.narrow",
     "corridor.breathes",
     "figure.rush",
     "gauntlet.watch",
@@ -67,7 +66,6 @@ export const stairFigure: AnomalyDef = {
     fig.root.position.set(figX0, figY0, 15.5);
     fig.root.rotation.y = -Math.PI / 2;
     let steps = 0;
-    let climb = 0;
     let stepAcc = 0;
     let caption = false;
     let slammed = false;
@@ -85,7 +83,6 @@ export const stairFigure: AnomalyDef = {
             caption = true;
             ctx.audio.caption("someone is on the service stair", DOOR);
           }
-          // proximity drives the climb: inside 5.5m it starts, inside
           // 3m it hurries — the figure's step rate scales with 1/d
           const d = Math.sqrt(d2);
           if (d < 5.5 && steps < 8) {
@@ -98,7 +95,6 @@ export const stairFigure: AnomalyDef = {
           // ease toward the current tread
           const tx = figX0 - steps * STEP_X;
           const ty = figY0 + steps * STEP_Y;
-          climb = Math.min(1, climb + dt * 2.2);
           fig.root.position.x += (tx - fig.root.position.x) * Math.min(1, dt * 4);
           fig.root.position.y += (ty - fig.root.position.y) * Math.min(1, dt * 4);
           if (d2 < SLAM_D2 || steps >= 8) {

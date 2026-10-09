@@ -22,7 +22,14 @@ export const archivesStaffed: AnomalyDef = {
   weight: 0.7,
   progressionRange: [34, 100],
   requires: ["archives.door.leaf"],
-  excludes: ["corridor.mirror", "corridor.long", "archives.open", "service.stairwell", "clinic.staffed"],
+  excludes: [
+    "corridor.mirror",
+    "corridor.long",
+    "corridor.narrow",
+    "archives.open",
+    "service.stairwell",
+    "clinic.staffed",
+  ],
   testSeed: "test.archives.staffed",
   dangerous: false,
   activate(ctx): AnomalyInstance {

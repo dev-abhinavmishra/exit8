@@ -19,7 +19,14 @@ export const corridorMirror: AnomalyDef = {
   weight: 0.5,
   progressionRange: [10, 100],
   requires: ["wall.left.0"],
-  excludes: ["sign.mirror", "walker.offlane", "depth.mismatch", "clinic.staffed"],
+  excludes: [
+    "corridor.narrow",
+    "corridor.long",
+    "sign.mirror",
+    "walker.offlane",
+    "depth.mismatch",
+    "clinic.staffed",
+  ],
   testSeed: "test.corridor.mirror",
   dangerous: false,
   activate(ctx) {
@@ -35,7 +42,7 @@ export const corridorMirror: AnomalyDef = {
     }
     // positional audio anchors are absolute — swing them to the side
     // the sound's source now lives on
-    const singles = [world.anchors.clock, world.anchors.vend];
+    const singles = [world.anchors.clock, world.anchors.vend, world.anchors.junctionMachine];
     const lists = [world.anchors.troffers, world.anchors.vents, world.anchors.paHorns];
     for (const a of singles) a.x = -a.x;
     for (const list of lists) for (const p of list) p.x = -p.x;

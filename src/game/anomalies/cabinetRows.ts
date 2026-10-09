@@ -27,6 +27,7 @@ export const cabinetRows: AnomalyDef = {
     const created: AbstractMesh[] = [];
     let i = 0;
     for (let z = 15; z <= 29; z += 2.3) {
+      if (z > 21.3 && z < 23.0) continue; // archives doorway — no drawer here
       for (const y of [1.35, 1.8]) {
         const depth = rng.range(0.06, 0.22);
         const drawer = CreateBox(`anomaly.rows.d${i}`, { width: depth, height: 0.28, depth: 0.4 }, scene);

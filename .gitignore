@@ -6,3 +6,6 @@ coverage/
 *.local
 .DS_Store
 .vite/
+.tmp-*/
+.tmp-*.mjs
+probe-*.mjs

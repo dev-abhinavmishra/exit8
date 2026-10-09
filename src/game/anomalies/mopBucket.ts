@@ -20,7 +20,7 @@ export const mopBucket: AnomalyDef = {
   detectability: "moderate",
   weight: 0.7,
   progressionRange: [0, 100],
-  requires: ["wall.right.2"],
+  requires: ["wall.right.2a"],
   excludes: [],
   testSeed: "test.mop.bucket",
   dangerous: false,

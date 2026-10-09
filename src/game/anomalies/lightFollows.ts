@@ -23,11 +23,15 @@ export const lightFollows: AnomalyDef = {
     const zones = ctx.world.zones;
     const bases = new Map<LightZone, number>();
     for (const z of zones) bases.set(z, z.point.intensity);
+    const extraBases = new Map(zones.map((z) => [z, z.extraLights.map((l) => l.intensity)]));
     const lit = new Set<LightZone>(zones);
     let prevZone: LightZone | undefined;
 
     const setLit = (zone: LightZone, on: boolean) => {
       zone.point.intensity = on ? bases.get(zone)! : bases.get(zone)! * 0.08;
+      zone.extraLights.forEach(
+        (l, i) => (l.intensity = (extraBases.get(zone)![i] ?? l.intensity) * (on ? 1 : 0.08)),
+      );
       const mat = on ? ctx.world.materials.trofferLit : ctx.world.materials.trofferDim;
       for (const tr of zone.troffers) tr.material = mat;
       for (const s of zone.shafts) s.setEnabled(on);

@@ -20,6 +20,7 @@ export const lightFlicker: AnomalyDef = {
     const zone = ctx.world.zones.find((z) => z.name === "gallery");
     if (!zone) return { update() {}, cleanup() {} };
     const base = zone.point.intensity;
+    const extraBase = zone.extraLights.map((l) => l.intensity);
     // deterministic stutter pattern: alternating on/off interval lengths.
     // Min 0.17s keeps a full off+on cycle ≥ 0.34s — under the WCAG
     // ~3 flashes/s photosensitivity threshold even in the fastest burst.
@@ -30,6 +31,7 @@ export const lightFlicker: AnomalyDef = {
     let lit = true;
     const apply = () => {
       zone.point.intensity = lit ? base : base * 0.08;
+      zone.extraLights.forEach((l, i) => (l.intensity = lit ? extraBase[i]! : extraBase[i]! * 0.08));
       const mat = lit ? ctx.world.materials.trofferLit : ctx.world.materials.trofferDim;
       for (const t of zone.troffers) t.material = mat;
       for (const s of zone.shafts) s.setEnabled(lit);
@@ -47,6 +49,7 @@ export const lightFlicker: AnomalyDef = {
       },
       cleanup() {
         zone.point.intensity = base;
+        zone.extraLights.forEach((l, i) => (l.intensity = extraBase[i]!));
         for (const t of zone.troffers) t.material = ctx.world.materials.trofferLit;
         for (const s of zone.shafts) s.setEnabled(true);
       },

@@ -19,7 +19,7 @@ export const hatchOpen: AnomalyDef = {
   detectability: "moderate",
   weight: 0.85,
   progressionRange: [10, 100],
-  requires: ["wall.right.2", "hatch.plate"],
+  requires: ["wall.right.2a", "hatch.plate"],
   excludes: ["gallery", "door.ajar", "depth.mismatch"],
   testSeed: "test.hatch.open",
   dangerous: false,

@@ -20,7 +20,7 @@ export const figureCorner: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.65,
   progressionRange: [30, 100],
-  requires: ["wall.right.2"],
+  requires: ["wall.right.2a"],
   excludes: ["figure.corridor", "figure.south", "figure.north", "watcher.follows", "walker.crowd"],
   testSeed: "test.figure.corner",
   dangerous: false,

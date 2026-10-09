@@ -30,10 +30,16 @@ export const galleryDark: AnomalyDef = {
     // a blanket trofferLit restore would kill its live text for good
     const restore = lamps.map((m) => m.material ?? null);
     lamps.forEach((m) => (m.material = world.materials.trofferDim));
+    // the room's own PointLight is scene-level — dim it or the dead
+    // gallery keeps glowing
+    const gz = world.zones.find((z) => z.name === "gallery");
+    const extras = gz ? gz.extraLights.map((l) => l.intensity) : [];
+    if (gz) for (const l of gz.extraLights) l.intensity = 0;
     return {
       update() {},
       cleanup() {
         lamps.forEach((m, i) => (m.material = restore[i] ?? null));
+        if (gz) gz.extraLights.forEach((l, i) => (l.intensity = extras[i] ?? l.intensity));
       },
     };
   },

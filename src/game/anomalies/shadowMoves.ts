@@ -18,7 +18,7 @@ export const shadowMoves: AnomalyDef = {
   detectability: "moderate",
   weight: 0.6,
   progressionRange: [40, 100],
-  requires: ["wall.right.2"],
+  requires: ["wall.right.2a"],
   excludes: ["shadow.figure", "air.haze", "depth.mismatch"],
   testSeed: "test.shadow.moves",
   dangerous: false,

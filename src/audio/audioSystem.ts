@@ -216,7 +216,10 @@ export class AudioSystem {
     // longer tail than terrazzo
     const inBay = !anomalous && pos.x < -1.75 && pos.z > 46.0 && pos.z < 49.6;
     const inGallery = !anomalous && pos.x > 1.75 && pos.z > 19.8 && pos.z < 32.2;
-    const inRoom = inBay || inGallery;
+    const inArchives = !anomalous && pos.x < -1.8 && pos.z > 20.0 && pos.z < 24.6;
+    const inStaffroom = !anomalous && pos.x > 1.8 && pos.z > 38.6 && pos.z < 41.2;
+    const inStairwell = !anomalous && pos.x > 1.8 && pos.z > 14.3 && pos.z < 17.5;
+    const inRoom = inBay || inGallery || inArchives || inStaffroom || inStairwell;
     src.playbackRate.value = (inRoom ? 0.62 : onStrip ? 0.7 : 0.9) + this.rng.draw() * 0.3;
     const bp = this.ctx.createBiquadFilter();
     bp.type = "bandpass";

@@ -25,7 +25,8 @@ export const recordsBreach: AnomalyDef = {
   activate(ctx) {
     const { scene, world, rng } = ctx;
     const created: AbstractMesh[] = [];
-    const z = rng.range(15, 29); // within the cabinet bank's z 13–31
+    // within the cabinet bank's z 13–31, clear of the archives doorway (21.4–22.8)
+    const z = rng.chance(0.45) ? rng.range(15, 21.2) : rng.range(23.0, 29);
     const y = rng.range(1.0, 1.85);
 
     // drawer carcass proud of the face

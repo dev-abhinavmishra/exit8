@@ -537,6 +537,8 @@ export function buildConcourse(
   const BAY_Z1 = 49.4;
   const ARCH_Z0 = 21.4; // archives door bay in the records bank
   const ARCH_Z1 = 22.8;
+  const SR_Z0 = 39.2; // staff room doorway, east clinic stretch
+  const SR_Z1 = 40.6;
   const BAY_DEPTH = 1.15;
   const BAY_ZC = (BAY_Z0 + BAY_Z1) / 2;
   // S-2 lift lobby — east-wall alcove around the sealed lift (z≈49.5);
@@ -688,7 +690,7 @@ export function buildConcourse(
   // carry it
   const blind = kit.plane("wall.gallery.blind", 2.8, 1.9, mats.blinds, scene);
   blind.parent = glass;
-  blind.position = new Vector3(0.08, 0, -1.5);
+  blind.position = new Vector3(0.08, 0, 0.75);
   blind.rotation.y = -Math.PI / 2;
   registry.register("wall.gallery.blind", blind);
   const galleryBack = kit.box("wall.gallery.back", 0.1, 3.0, 12, mats.wallPanel, scene, root);
@@ -845,7 +847,33 @@ export function buildConcourse(
       ),
     );
   }
-  kit.wallRun("wall.right.2", C.xHalf, 32, LOB_Z0, C.height, mats.wallPanel, scene, root, registry);
+  // wall.right.2 splits around the staff room doorway (z 39.2–40.6) —
+  // same recipe as the archives cut on the west bank
+  kit.wallRun("wall.right.2a", C.xHalf, 32, SR_Z0, C.height, mats.wallPanel, scene, root, registry);
+  kit.wallRun("wall.right.2b", C.xHalf, SR_Z1, LOB_Z0, C.height, mats.wallPanel, scene, root, registry);
+  {
+    const srHead = kit.box(
+      "dress.staffroom.header",
+      0.12,
+      C.height - 2.02,
+      SR_Z1 - SR_Z0 + 0.06,
+      mats.wallPanel,
+      scene,
+      root,
+    );
+    srHead.position = new Vector3(C.xHalf, 2.02 + (C.height - 2.02) / 2, (SR_Z0 + SR_Z1) / 2);
+    colliders.push(
+      kit.collider(
+        "staffroom.headerCol",
+        0.14,
+        C.height - 1.98,
+        SR_Z1 - SR_Z0 + 0.1,
+        srHead.position.clone(),
+        scene,
+        root,
+      ),
+    );
+  }
   kit.wallRun("wall.right.2.s", C.xHalf, LOB_Z1, 55, C.height, mats.wallPanel, scene, root, registry);
 
   // continuous colliders per wall (glass section collides too); the west
@@ -861,8 +889,10 @@ export function buildConcourse(
             [BAY_Z1, C.z1],
           ]
         : [
-            [C.z0, GDOOR_Z0],
-            [GDOOR_Z1, LOB_Z0],
+            [C.z0, 15.0],
+            [16.0, GDOOR_Z0],
+            [GDOOR_Z1, SR_Z0],
+            [SR_Z1, LOB_Z0],
             [LOB_Z1, C.z1],
           ];
     spans.forEach(([s0, s1], i) => {
@@ -1737,6 +1767,165 @@ export function buildConcourse(
     }
   }
 
+  // ─── staff room — a locker room behind the east clinic stretch ────
+  // Glazed STAFF door at z 39.2–40.6 cut into wall.right.2a/b; behind
+  // it a real room runs east to x 4.15 — locker bank, bench, hooks,
+  // caged lamp. Sealed leaf by default; staffroom.* anomalies work it.
+  // Leaf collider is parented to the leaf so it swings with the door.
+  {
+    const SRD_Z = (SR_Z0 + SR_Z1) / 2; // 39.9 — door centre
+    const SR_LEAF_X = C.xHalf - 0.15;
+    const srframe = kit.box("staffroom.door.frame", 0.16, 0.12, SR_Z1 - SR_Z0, mats.steel, scene, root);
+    srframe.position = new Vector3(C.xHalf - 0.08, 2.06, SRD_Z);
+    registry.register("staffroom.door.frame", srframe);
+    const srleaf = kit.box("staffroom.door.leaf", 0.06, 2.02, 1.06, mats.door, scene, root);
+    srleaf.position = new Vector3(SR_LEAF_X, 1.01, SRD_Z);
+    registry.register("staffroom.door.leaf", srleaf);
+    const srpane = kit.plane("staffroom.door.pane", 0.5, 0.62, doorGlassMaterial(scene), scene);
+    srpane.parent = srleaf;
+    srpane.position = new Vector3(0.032, 0.52, 0);
+    srpane.rotation.y = Math.PI / 2;
+    const srpull = kit.box("staffroom.door.pull", 0.045, 0.34, 0.04, mats.steel, scene);
+    srpull.parent = srleaf;
+    srpull.position = new Vector3(0.055, -0.02, -0.38);
+    const srPlaque = kit.plane("staffroom.door.plaque", 0.3, 0.1, paperMaterial(scene), scene);
+    srPlaque.parent = srleaf;
+    srPlaque.position = new Vector3(0.033, 0.28, 0);
+    srPlaque.rotation.y = Math.PI / 2;
+    kit.collider("staffroom.door.col", 0.08, 2.02, 1.06, new Vector3(0, 0, 0), scene, srleaf);
+    // interior shell — concrete service space, mirrored from archives
+    const srX0 = C.xHalf; // 1.8 wall face
+    const srX1 = srX0 + 2.35; // back face 4.15
+    const srZ0 = SR_Z0 + 0.08;
+    const srZ1 = SR_Z1 - 0.08;
+    const srC = { x: (srX0 + srX1) / 2, z: (srZ0 + srZ1) / 2 };
+    const srfloor = kit.box(
+      "dress.staffroom.floor",
+      srX1 - srX0 + 0.2,
+      0.06,
+      srZ1 - srZ0 + 0.24,
+      mats.concrete,
+      scene,
+      root,
+    );
+    srfloor.position = new Vector3(srC.x, -0.02, srC.z);
+    const srceil = kit.box(
+      "dress.staffroom.ceil",
+      srX1 - srX0 + 0.2,
+      0.08,
+      srZ1 - srZ0 + 0.24,
+      mats.concrete,
+      scene,
+      root,
+    );
+    srceil.position = new Vector3(srC.x, 2.42, srC.z);
+    for (const [rz, tag] of [
+      [srZ0, "n"],
+      [srZ1, "s"],
+    ] as const) {
+      const rwall = kit.box(
+        `dress.staffroom.wall.${tag}`,
+        srX1 - srX0 + 0.2,
+        2.5,
+        0.1,
+        mats.concrete,
+        scene,
+        root,
+      );
+      rwall.position = new Vector3(srC.x, 1.22, rz);
+      colliders.push(
+        kit.collider(
+          `staffroom.wallCol.${tag}`,
+          srX1 - srX0 + 0.2,
+          2.5,
+          0.1,
+          rwall.position.clone(),
+          scene,
+          root,
+        ),
+      );
+    }
+    const srback = kit.box("dress.staffroom.back", 0.1, 2.5, srZ1 - srZ0 + 0.2, mats.concrete, scene, root);
+    srback.position = new Vector3(srX1 + 0.02, 1.22, srC.z);
+    colliders.push(
+      kit.collider("staffroom.backCol", 0.12, 2.5, srZ1 - srZ0 + 0.24, srback.position.clone(), scene, root),
+    );
+    // locker bank along the back wall — five steel units with vents,
+    // one door the locker.* anomalies can swing on its own copy
+    const lockerRow = new TransformNode("staffroom.lockers", scene);
+    lockerRow.parent = root;
+    registry.register("staffroom.lockers", lockerRow);
+    for (let li = 0; li < 5; li++) {
+      const lz = srZ0 + 0.24 + li * 0.34;
+      const lk = kit.box(`dress.staffroom.locker.${li}`, 0.36, 1.9, 0.3, mats.steel, scene);
+      lk.parent = lockerRow;
+      lk.position = new Vector3(srX1 - 0.22, 0.95, lz);
+      for (const vy of [0.62, 0.68, 0.74]) {
+        const vent = kit.box(`dress.staffroom.locker.${li}.vent${vy}`, 0.02, 0.02, 0.2, mats.rubber, scene);
+        vent.parent = lockerRow;
+        vent.position = new Vector3(srX1 - 0.42, 1.55 + (vy - 0.68), lz);
+      }
+      const lhandle = kit.box(`dress.staffroom.locker.${li}.handle`, 0.03, 0.09, 0.03, mats.rubber, scene);
+      lhandle.parent = lockerRow;
+      lhandle.position = new Vector3(srX1 - 0.42, 0.98, lz + 0.1);
+    }
+    colliders.push(
+      kit.collider(
+        "staffroom.lockerCol",
+        0.4,
+        1.95,
+        5 * 0.34 + 0.2,
+        new Vector3(srX1 - 0.22, 0.95, srZ0 + 0.24 + 2 * 0.34),
+        scene,
+        root,
+      ),
+    );
+    // bench mid-room + wall hooks, one bag hanging
+    const bench = kit.box("dress.staffroom.bench", 1.1, 0.42, 0.34, mats.rubber, scene, root);
+    bench.position = new Vector3(srX0 + 1.1, 0.21, srZ1 - 0.32);
+    colliders.push(kit.collider("staffroom.benchCol", 1.1, 0.45, 0.36, bench.position.clone(), scene, root));
+    for (let hi = 0; hi < 4; hi++) {
+      const hook = kit.box(`dress.staffroom.hook.${hi}`, 0.03, 0.05, 0.03, mats.steel, scene, root);
+      hook.position = new Vector3(srX0 + 0.06, 1.62, srZ0 + 0.18 + hi * 0.3);
+    }
+    const bag = kit.box("dress.staffroom.bag", 0.14, 0.26, 0.18, mats.rubber, scene, root);
+    bag.position = new Vector3(srX0 + 0.14, 1.44, srZ0 + 0.48);
+    // caged lamp + wash/pad — the lit-room read like the archives
+    const lampCage = kit.box("dress.staffroom.lampCage", 0.14, 0.16, 0.14, mats.steel, scene, root);
+    lampCage.position = new Vector3(srX1 - 0.12, 2.3, srC.z);
+    const lampCoreMat = new StandardMaterial("mat.staffroom.lampCore", scene);
+    lampCoreMat.diffuseColor = new Color3(0.1, 0.09, 0.07);
+    lampCoreMat.emissiveColor = new Color3(0.2, 0.14, 0.06);
+    lampCoreMat.specularColor = new Color3(0.02, 0.02, 0.02);
+    const lampCore = kit.box("dress.staffroom.lampCore", 0.1, 0.1, 0.1, lampCoreMat, scene, root);
+    lampCore.position = new Vector3(srX1 - 0.14, 2.3, srC.z);
+    const srwash = new StandardMaterial("mat.staffroom.wash", scene);
+    srwash.diffuseColor = new Color3(0.3, 0.22, 0.12);
+    srwash.emissiveColor = new Color3(0.18, 0.13, 0.05);
+    srwash.specularColor = new Color3(0, 0, 0);
+    const srwashP = kit.plane("dress.staffroom.wash", srZ1 - srZ0 - 0.1, 1.9, srwash, scene, root);
+    srwashP.position = new Vector3(srX1 - 0.045, 1.15, srC.z);
+    srwashP.rotation.y = -Math.PI / 2;
+    const srpadMat = new StandardMaterial("mat.staffroom.pad", scene);
+    srpadMat.diffuseColor = new Color3(0.38, 0.29, 0.15);
+    srpadMat.emissiveColor = new Color3(0.22, 0.16, 0.06);
+    srpadMat.specularColor = new Color3(0, 0, 0);
+    const srpad = kit.plane("dress.staffroom.pad", 1.5, srZ1 - srZ0 - 0.08, srpadMat, scene, root);
+    srpad.position = new Vector3(srX0 + 0.85, 0.015, srC.z);
+    srpad.rotation.x = -Math.PI / 2;
+    srpad.rotation.z = Math.PI / 2;
+    for (const [jz, tag] of [
+      [SR_Z0, "n"],
+      [SR_Z1, "s"],
+    ] as const) {
+      const jamb = kit.box(`dress.staffroom.jamb.${tag}`, 0.2, 2.1, 0.14, mats.steel, scene, root);
+      jamb.position = new Vector3(C.xHalf - 0.08, 1.05, jz);
+      colliders.push(
+        kit.collider(`staffroom.jambCol.${tag}`, 0.22, 2.1, 0.14, jamb.position.clone(), scene, root),
+      );
+    }
+  }
+
   // Notice board + posters right wall z 6–9
   const board = kit.box("notice.board", 0.05, 1.1, 1.6, mats.rubber, scene, root);
   board.position = new Vector3(C.xHalf - 0.08, 1.7, 7);
@@ -1785,8 +1974,13 @@ export function buildConcourse(
   );
 
   // recessed service door RIGHT z≈15.5 — baseline shut; door.ajar opens it
-  const sframe = kit.box("service.door.frame", 0.14, 2.2, 1.0, mats.steel, scene, root);
-  sframe.position = new Vector3(C.xHalf - 0.07, 1.1, 15.5);
+  for (const jz of [15.05, 15.95]) {
+    const sj = kit.box(`service.door.jamb.${jz}`, 0.14, 2.2, 0.12, mats.steel, scene, root);
+    sj.position = new Vector3(C.xHalf - 0.07, 1.1, jz);
+    registry.register(`service.door.jamb.${jz}`, sj);
+  }
+  const sframe = kit.box("service.door.frame", 0.14, C.height - 2.06, 1.0, mats.steel, scene, root);
+  sframe.position = new Vector3(C.xHalf - 0.07, 2.06 + (C.height - 2.06) / 2, 15.5);
   const sslit = kit.box("service.door.slit", 0.02, 2.05, 0.8, mats.rubber, scene, root);
   sslit.position = new Vector3(C.xHalf - 0.1, 1.02, 15.5);
   const sleaf = kit.box("service.door.leaf", 0.06, 2.1, 0.88, mats.door, scene, root);
@@ -1794,6 +1988,8 @@ export function buildConcourse(
   registry.register("service.door.frame", sframe);
   registry.register("service.door.leaf", sleaf);
   registry.register("service.door.slit", sslit);
+  // leaf collider owns the doorway until service.stairwell/door.ajar opens it
+  kit.collider("service.door.col", 0.08, 2.02, 0.94, new Vector3(0, 0, 0), scene, sleaf);
   // leaf hardware — parented so it rides door.ajar's swing
   const svcHandle = kit.box("service.door.handle", 0.045, 0.34, 0.04, mats.steel, scene);
   svcHandle.parent = sleaf;
@@ -2969,6 +3165,7 @@ export function buildConcourse(
   clinicLamp.diffuse = new Color3(0.95, 0.9, 0.72);
   clinicLamp.intensity = 0.0;
   clinicLamp.range = 3.4;
+  zones.find((z) => z.name === "clinic")?.extraLights.push(clinicLamp);
 
   // ─── service.stairwell — a lit stair throat behind the z≈15.5 service
   // door that cannot exist behind a 0.12 m wall. Prebuilt disabled like
