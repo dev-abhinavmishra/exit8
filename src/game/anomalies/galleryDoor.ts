@@ -6,6 +6,10 @@
  * anomaly you can walk into: the pocket between the desk rows is real.
  */
 import type { TransformNode } from "@babylonjs/core/Meshes/transformNode";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
+import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
+import { Color3 } from "@babylonjs/core/Maths/math.color";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { AnomalyDef, AnomalyInstance } from "./types";
 
 export const galleryDoor: AnomalyDef = {
@@ -22,11 +26,35 @@ export const galleryDoor: AnomalyDef = {
   testSeed: "test.gallery.door",
   dangerous: false,
   activate(ctx): AnomalyInstance {
+    const { scene, rng } = ctx;
     const leaf = ctx.world.registry.get("wall.gallery.door") as TransformNode;
     // slow creep open — you may catch it still moving on approach
     let t = 0;
     const pivot = leaf.getAbsolutePosition().clone();
     ctx.audio.playDoorSlide(pivot, true);
+    // spilled case file — sheets trail from the corridor through the
+    // open doorway into the room, someone left in a hurry
+    const paperMat = new StandardMaterial("anomaly.gdoor.paper", scene);
+    paperMat.diffuseColor = new Color3(0.72, 0.7, 0.64);
+    paperMat.emissiveColor = new Color3(0.06, 0.055, 0.045);
+    paperMat.specularColor = new Color3(0.02, 0.02, 0.02);
+    const spots: [number, number][] = [
+      [1.35, 28.4],
+      [1.58, 27.92],
+      [1.86, 28.18],
+      [2.12, 28.52],
+      [2.38, 28.82],
+      [2.28, 27.62],
+      [2.6, 28.3],
+    ];
+    const sheets = spots.map(([px, pz], i) => {
+      const s = CreateBox(`anomaly.gdoor.sheet.${i}`, { width: 0.16, height: 0.003, depth: 0.21 }, scene);
+      s.material = paperMat;
+      s.position = new Vector3(px, 0.008 + i * 0.0012, pz);
+      s.rotation.y = rng.range(-0.9, 0.9);
+      s.parent = ctx.world.root;
+      return s;
+    });
     return {
       update(dt: number) {
         if (t >= 1) return;
@@ -36,6 +64,8 @@ export const galleryDoor: AnomalyDef = {
       },
       cleanup() {
         leaf.rotation.y = 0;
+        for (const s of sheets) s.dispose();
+        paperMat.dispose();
       },
     };
   },

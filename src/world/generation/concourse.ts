@@ -646,6 +646,11 @@ export function buildConcourse(
   kick.position = new Vector3(0, -0.8, 0.55);
   const lever = kit.box("wall.gallery.door.lever", 0.16, 0.035, 0.045, mats.steel, scene, leaf);
   lever.position = new Vector3(-0.06, -0.52, 0.94);
+  const lever2 = kit.box("wall.gallery.door.lever2", 0.16, 0.035, 0.045, mats.steel, scene, leaf);
+  lever2.position = new Vector3(0.06, -0.52, 0.94);
+  // threshold sill across the bay base — a real lip under the leaf
+  const sill = kit.box("dress.gal.sill", 0.1, 0.022, GDOOR_Z1 - GDOOR_Z0 - 0.06, mats.steel, scene, root);
+  sill.position = new Vector3(C.xHalf, 0.011, (GDOOR_Z0 + GDOOR_Z1) / 2);
   // personnel plaque on the corridor face — AUTHORIZED PERSONNEL
   const plaque = kit.plane("wall.gallery.door.plaque", 0.52, 0.15, mats.sign.get("sign.gallery")!, scene);
   plaque.parent = leaf;
