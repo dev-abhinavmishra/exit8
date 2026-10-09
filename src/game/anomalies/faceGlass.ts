@@ -25,7 +25,7 @@ export const faceGlass: AnomalyDef = {
   weight: 0.6,
   progressionRange: [30, 100],
   requires: ["wall.gallery.glass"],
-  excludes: ["gallery.occupied", "gallery.frost", "glass.eyes", "glass.hands", "blinds.open"],
+  excludes: ["gallery.occupied", "gallery.frost", "glass.eyes", "glass.hands", "blinds.open", "gallery.door"],
   testSeed: "test.face.glass",
   dangerous: false,
   activate(ctx): AnomalyInstance {

@@ -21,8 +21,9 @@ export const mullionExtra: AnomalyDef = {
   dangerous: false,
   activate(ctx) {
     const { scene, world, rng } = ctx;
-    // existing mullions at z 20/23/26/29/32 — insert mid-bay
-    const mz = [21.5, 24.5, 27.5, 30.5][rng.int(0, 3)]!;
+    // existing mullions at z 20/23/26/29/32 — insert mid-bay; z≈27.5 is
+    // the staff door's hinge jamb, not a candidate
+    const mz = [21.5, 24.5, 30.5][rng.int(0, 2)]!;
     const m = CreateBox("anomaly.mullion", { width: 0.09, height: 2.0, depth: 0.18 }, scene);
     m.material = world.materials.steel;
     m.position = new Vector3(1.8, 1.5, mz);

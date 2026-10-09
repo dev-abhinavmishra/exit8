@@ -16,25 +16,29 @@ export const galleryFrost: AnomalyDef = {
   detectability: "moderate",
   weight: 0.8,
   progressionRange: [15, 100],
-  requires: ["wall.gallery.glass"],
-  excludes: ["gallery"],
+  requires: ["wall.gallery.glass", "wall.gallery.glass.b", "wall.gallery.doorlite"],
+  excludes: ["gallery", "gallery.door"],
   testSeed: "test.gallery.frost",
   dangerous: false,
   activate(ctx) {
     const { scene, world } = ctx;
-    const glass = world.registry.get("wall.gallery.glass") as { material: Material | null };
-    const orig = glass.material;
+    // the glass run is three pieces since the staff door went in — frost
+    // all of them or the doorway bay stays dark while the rest goes blind
+    const panes = ["wall.gallery.glass", "wall.gallery.glass.b", "wall.gallery.doorlite"].map(
+      (n) => world.registry.get(n) as { material: Material | null },
+    );
+    const origs = panes.map((p) => p.material);
 
     const frost = new StandardMaterial("anomaly.frost.mat", scene);
     frost.diffuseColor = new Color3(0.62, 0.64, 0.62);
     frost.specularColor = new Color3(0.05, 0.05, 0.05);
     frost.emissiveColor = new Color3(0.04, 0.04, 0.04);
-    glass.material = frost;
+    for (const p of panes) p.material = frost;
 
     return {
       update() {},
       cleanup() {
-        glass.material = orig;
+        panes.forEach((p, i) => (p.material = origs[i] ?? null));
         frost.dispose();
       },
     };

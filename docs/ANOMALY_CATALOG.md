@@ -710,8 +710,15 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 220. `egress.reversed` — Wrong Way Out · CH I · subtle
 221. `egress.gone` — Missing Egress Strip · CH II · subtle
 222. `walker.drop` — Dropped Case File · CH II · unmistakable
+223. `gallery.door` — Gallery Door Ajar · CH II · unmistakable — the
+     glazed staff door in the observation glass stands open on its north
+     hinge; a lit wedge spills into the corridor and the room's pocket
+     between the desk rows is genuinely walkable (the only gallery
+     anomaly you can step inside). Decal-class glass anomalies
+     (face.glass, glass.hands, glass.writing, depth.mismatch) are excluded
+     — they'd hang in the open gap.
 
-Slice count: **222 implemented — the full catalog**. Dangerous class
+Slice count: **223 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).

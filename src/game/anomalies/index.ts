@@ -103,6 +103,7 @@ import { bayOccupied } from "./bayOccupied";
 import { bayValve } from "./bayValve";
 import { egressReversed } from "./egressReversed";
 import { egressGone } from "./egressGone";
+import { galleryDoor } from "./galleryDoor";
 import { figureCorridor } from "./figureCorridor";
 import { figureRush } from "./figureRush";
 import { figureWall } from "./figureWall";
@@ -324,6 +325,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   bayValve,
   egressReversed,
   egressGone,
+  galleryDoor,
   figureCorridor,
   figureRush,
   figureWall,

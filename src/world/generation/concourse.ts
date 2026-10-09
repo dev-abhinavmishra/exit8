@@ -533,6 +533,10 @@ export function buildConcourse(
   // the doors sit recessed behind a lit lobby face, a real shaft throat
   // behind them for lift.arrives to open onto
   const LOB_Z0 = 48.4;
+  // gallery staff door bay — the glass run splits around it and the
+  // leaf's own collider owns the doorway until an anomaly opens it
+  const GDOOR_Z0 = 27.5;
+  const GDOOR_Z1 = 28.7;
   const LOB_Z1 = 50.6;
   const LOB_DEPTH = 0.55;
   const LOB_ZC = (LOB_Z0 + LOB_Z1) / 2;
@@ -588,19 +592,61 @@ export function buildConcourse(
   kit.wallRun("wall.left.3", -C.xHalf, 42, 46.2, C.height, mats.wallPanel, scene, root, registry);
   kit.wallRun("wall.left.4", -C.xHalf, 49.4, 55, C.height, mats.wallPanel, scene, root, registry);
   kit.wallRun("wall.right.0", C.xHalf, 0, 20, C.height, mats.wallPanel, scene, root, registry);
-  // right wall 20–32: glass gallery
-  const glass = kit.box("wall.gallery.glass", 0.06, 2.0, 12, mats.darkGlass, scene, root);
-  glass.position = new Vector3(C.xHalf, 1.5, 26);
+  // right wall 20–32: glass gallery — split around a glazed staff door
+  // (z 27.5–28.7, in the gap between desk rows): two fixed panes + a
+  // leaf, so the reading room can actually be entered when an anomaly
+  // stands the door open
+  const glass = kit.box("wall.gallery.glass", 0.06, 2.0, GDOOR_Z0 - 20, mats.darkGlass, scene, root);
+  glass.position = new Vector3(C.xHalf, 1.5, (20 + GDOOR_Z0) / 2);
   registry.register("wall.gallery.glass", glass);
-  const glassLow = kit.box("wall.gallery.low", 0.12, 0.5, 12, mats.steel, scene, root);
-  glassLow.position = new Vector3(C.xHalf, 0.25, 26);
+  const glassB = kit.box("wall.gallery.glass.b", 0.06, 2.0, 32 - GDOOR_Z1, mats.darkGlass, scene, root);
+  glassB.position = new Vector3(C.xHalf, 1.5, (GDOOR_Z1 + 32) / 2);
+  registry.register("wall.gallery.glass.b", glassB);
+  for (const [lz0, lz1] of [
+    [20, GDOOR_Z0],
+    [GDOOR_Z1, 32],
+  ] as const) {
+    const glassLow = kit.box(`wall.gallery.low.${lz0}`, 0.12, 0.5, lz1 - lz0, mats.steel, scene, root);
+    glassLow.position = new Vector3(C.xHalf, 0.25, (lz0 + lz1) / 2);
+  }
   const glassHigh = kit.box("wall.gallery.high", 0.12, 0.5, 12, mats.steel, scene, root);
   glassHigh.position = new Vector3(C.xHalf, 2.75, 26);
-  // steel mullions break the 12m slab into readable window bays
+  // steel mullions break the run into readable window bays
   for (const mz of [20, 23, 26, 29, 32]) {
     const mullion = kit.box(`wall.gallery.mullion.${mz}`, 0.09, 2.0, 0.18, mats.steel, scene, root);
     mullion.position = new Vector3(C.xHalf, 1.5, mz);
   }
+  // door jambs at the hinge + strike lines
+  for (const jz of [GDOOR_Z0, GDOOR_Z1]) {
+    const jamb = kit.box(`wall.gallery.jamb.${jz}`, 0.09, 2.0, 0.1, mats.steel, scene, root);
+    jamb.position = new Vector3(C.xHalf, 1.5, jz);
+  }
+  // the glazed leaf — closed it reads as another window bay; hinged on
+  // the north jamb so it swings INTO the room when gallery.door opens it
+  const leaf = new TransformNode("wall.gallery.door", scene);
+  leaf.parent = root;
+  leaf.position = new Vector3(C.xHalf, 1.5, GDOOR_Z0 + 0.06);
+  registry.register("wall.gallery.door", leaf);
+  for (const lz of [0.04, 1.04]) {
+    const stile = kit.box(`wall.gallery.door.stile.${lz}`, 0.045, 2.0, 0.055, mats.steel, scene, leaf);
+    stile.position = new Vector3(0, 0, lz);
+  }
+  for (const [ly, lh] of [
+    [-0.94, 0.1],
+    [0.02, 0.07],
+    [0.94, 0.1],
+  ] as const) {
+    const rail = kit.box(`wall.gallery.door.rail.${ly}`, 0.045, lh, 1.0, mats.steel, scene, leaf);
+    rail.position = new Vector3(0, ly, 0.55);
+  }
+  const lite = kit.box("wall.gallery.doorlite", 0.016, 1.7, 0.94, mats.darkGlass, scene, leaf);
+  lite.position = new Vector3(0, 0.06, 0.55);
+  registry.register("wall.gallery.doorlite", lite);
+  const kick = kit.box("wall.gallery.door.kick", 0.05, 0.26, 1.0, mats.steel, scene, leaf);
+  kick.position = new Vector3(0, -0.8, 0.55);
+  const lever = kit.box("wall.gallery.door.lever", 0.16, 0.035, 0.045, mats.steel, scene, leaf);
+  lever.position = new Vector3(-0.06, -0.52, 0.94);
+  kit.collider("wall.gallery.door.col", 0.07, 2.0, 1.1, new Vector3(0, 0, 0.55), scene, leaf);
   // venetian blinds drawn down over one bay — the only bay you can't
   // read the room through; child of the glass so gallery anomalies
   // carry it
@@ -609,24 +655,32 @@ export function buildConcourse(
   blind.position = new Vector3(0.08, 0, -1.5);
   blind.rotation.y = -Math.PI / 2;
   registry.register("wall.gallery.blind", blind);
-  const galleryBack = kit.box("wall.gallery.back", 0.1, 3.0, 12, mats.rubber, scene, root);
+  const galleryBack = kit.box("wall.gallery.back", 0.1, 3.0, 12, mats.wallPanel, scene, root);
   galleryBack.position = new Vector3(C.xHalf + 1.4, 1.5, 26);
   // baseline reading-room interior behind the smoked glass — dark
-  // furniture silhouettes + one lit cove line inside the visible band
+  // furniture silhouettes + one lit cove line inside the visible band.
+  // The room gets its own paint + office-enamel materials: shared
+  // steel/rubber read as void inside (same trap as the records bank)
+  const galWall = new StandardMaterial("mat.gal.wall", scene);
+  galWall.diffuseColor = new Color3(0.3, 0.29, 0.26);
+  galWall.specularColor = new Color3(0.02, 0.02, 0.02);
+  const galEnamel = new StandardMaterial("mat.gal.enamel", scene);
+  galEnamel.diffuseColor = new Color3(0.36, 0.35, 0.31);
+  galEnamel.specularColor = new Color3(0.12, 0.12, 0.11);
   const galFloor = kit.box("dress.gal.floor", 1.35, 0.08, 12, mats.concrete, scene, root);
   galFloor.position = new Vector3(C.xHalf + 0.75, -0.02, 26);
-  const galCeil = kit.box("dress.gal.ceil", 1.35, 0.08, 12, mats.ceiling, scene, root);
+  const galCeil = kit.box("dress.gal.ceil", 1.35, 0.08, 12, galWall, scene, root);
   galCeil.position = new Vector3(C.xHalf + 0.75, C.height + 0.02, 26);
   for (const dz of [-6, 6]) {
-    const gside = kit.box(`dress.gal.side.${dz}`, 1.35, C.height, 0.1, mats.wallPanel, scene, root);
+    const gside = kit.box(`dress.gal.side.${dz}`, 1.35, C.height, 0.1, galWall, scene, root);
     gside.position = new Vector3(C.xHalf + 0.75, C.height / 2, 26 + dz);
   }
   for (const cz of [22, 24.5, 29.5]) {
-    const gcab = kit.box(`dress.gal.cab.${cz}`, 0.32, 1.9, 1.5, mats.steel, scene, root);
+    const gcab = kit.box(`dress.gal.cab.${cz}`, 0.32, 1.9, 1.5, galEnamel, scene, root);
     gcab.position = new Vector3(C.xHalf + 1.15, 0.95, cz);
   }
   for (const dz of [22.5, 26.5, 30]) {
-    const desk = kit.box(`dress.gal.desk.${dz}`, 0.55, 0.74, 1.5, mats.steel, scene, root);
+    const desk = kit.box(`dress.gal.desk.${dz}`, 0.55, 0.74, 1.5, galEnamel, scene, root);
     desk.position = new Vector3(C.xHalf + 0.72, 0.37, dz);
     const chair = kit.box(`dress.gal.chair.${dz}`, 0.35, 0.85, 0.4, mats.rubber, scene, root);
     chair.position = new Vector3(C.xHalf + 1.12, 0.42, dz + 0.3);
@@ -683,11 +737,56 @@ export function buildConcourse(
   registry.register("wall.gallery.monitor", gmon);
   registry.register("wall.gallery.lamp", glamp);
   registry.register("wall.gallery.back", galleryBack);
+  // interior shell colliders — sealed regardless of the leaf: the room
+  // becomes walkable only through the doorway itself, in the pocket
+  // between the furniture rows (z 27.3–28.9)
+  colliders.push(
+    kit.collider(
+      "gal.col.back",
+      0.12,
+      C.height,
+      12,
+      new Vector3(C.xHalf + 1.34, C.height / 2, 26),
+      scene,
+      root,
+    ),
+  );
+  for (const sz of [20, 32]) {
+    colliders.push(
+      kit.collider(
+        `gal.col.side.${sz}`,
+        1.4,
+        C.height,
+        0.12,
+        new Vector3(C.xHalf + 0.75, C.height / 2, sz),
+        scene,
+        root,
+      ),
+    );
+  }
+  for (const [cz0, cz1] of [
+    [20.5, 27.3],
+    [28.9, 31.6],
+  ] as const) {
+    colliders.push(
+      kit.collider(
+        `gal.col.furn.${cz0}`,
+        0.95,
+        1.3,
+        cz1 - cz0,
+        new Vector3(C.xHalf + 0.95, 0.65, (cz0 + cz1) / 2),
+        scene,
+        root,
+      ),
+    );
+  }
   kit.wallRun("wall.right.2", C.xHalf, 32, LOB_Z0, C.height, mats.wallPanel, scene, root, registry);
   kit.wallRun("wall.right.2.s", C.xHalf, LOB_Z1, 55, C.height, mats.wallPanel, scene, root, registry);
 
   // continuous colliders per wall (glass section collides too); the west
-  // wall splits around the S-2 bay mouth (z 46.2–49.4) so you can walk in
+  // wall splits around the S-2 bay mouth (z 46.2–49.4) so you can walk in,
+  // and the east wall splits at the gallery door bay (z 27.5–28.7) so the
+  // leaf's own collider owns the doorway
   for (const sx of [-1, 1]) {
     const spans: [number, number][] =
       sx < 0
@@ -696,7 +795,8 @@ export function buildConcourse(
             [BAY_Z1, C.z1],
           ]
         : [
-            [C.z0, LOB_Z0],
+            [C.z0, GDOOR_Z0],
+            [GDOOR_Z1, LOB_Z0],
             [LOB_Z1, C.z1],
           ];
     spans.forEach(([s0, s1], i) => {
@@ -785,6 +885,18 @@ export function buildConcourse(
     // lighting anomalies address zones by name through the registry
     registry.register(point.name, point as unknown as AbstractMesh);
   }
+
+  // a faint lamp inside the gallery room — makes the space read as
+  // occupied through the smoked panes, silhouettes the furniture when
+  // you're inside, and spills a lit wedge through the doorway when the
+  // leaf stands open; dies with the zone's kills
+  const galLight = new PointLight("light.gallery", new Vector3(C.xHalf + 0.7, 1.9, 27.0), scene);
+  galLight.diffuse = new Color3(0.95, 0.82, 0.6);
+  galLight.intensity = 2.3;
+  galLight.range = 5.2;
+  const galleryZone = zones.find((z) => z.name === "gallery");
+  if (galleryZone) galleryZone.extraLights.push(galLight);
+  registry.register("light.gallery", galLight as unknown as AbstractMesh);
 
   // ─── S-2 machinery bay — a real recess in the west wall ───────────
   // The junction sign promises a service space; now it's walkable. The
