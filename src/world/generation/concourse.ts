@@ -1273,7 +1273,7 @@ export function buildConcourse(
   // dark terrazzo border band along each wall base — station-floor
   // framing, and it grounds the AO strips
   for (const sx of [-1, 1]) {
-    const border = kit.plane(`dress.fborder.${sx}`, 0.36, 55, mats.rubber, scene, root);
+    const border = kit.plane(`dress.fborder.${sx}`, 0.36, 55, mats.fborder, scene, root);
     border.position = new Vector3(sx * (C.xHalf - 0.25), 0.009, 27.5);
     border.rotation.x = -Math.PI / 2;
   }
@@ -1752,6 +1752,43 @@ export function buildConcourse(
       // anomalies address the lamps (a dead feed wakes them)
       registry.register(lamp.name, lamp);
     }
+  }
+
+  // wall-mounted fire extinguisher on the clinic stretch — red cylinder
+  // on a steel bracket under a FIRE plaque; joins the safety-fixture
+  // family (call points, hose cabinet, aid point) on the last thin run
+  {
+    const ex = CreateCylinder("dress.ext.body", { height: 0.46, diameter: 0.13, tessellation: 12 }, scene);
+    ex.material = mats.cabinetRed;
+    ex.position = new Vector3(-(C.xHalf - 0.14), 0.82, 42.4);
+    ex.parent = root;
+    registry.register("dress.ext.body", ex);
+    const bracket = kit.box("dress.ext.bracket", 0.05, 0.1, 0.16, mats.steel, scene, root);
+    bracket.position = new Vector3(-(C.xHalf - 0.07), 1.02, 42.4);
+    const exValve = kit.box("dress.ext.valve", 0.05, 0.05, 0.05, mats.steel, scene, root);
+    exValve.position = new Vector3(-(C.xHalf - 0.14), 1.08, 42.4);
+    const exNozzle = kit.box("dress.ext.nozzle", 0.02, 0.16, 0.03, mats.rubber, scene, root);
+    exNozzle.position = new Vector3(-(C.xHalf - 0.14), 1.02, 42.49);
+    const fireTex = new DynamicTexture("tex.extsign", { width: 128, height: 96 }, scene, true);
+    {
+      const c = fireTex.getContext() as unknown as CanvasRenderingContext2D;
+      c.fillStyle = "#8e2020";
+      c.fillRect(0, 0, 128, 96);
+      c.fillStyle = "#e8e2d5";
+      c.font = "bold 36px sans-serif";
+      c.textAlign = "center";
+      c.fillText("FIRE", 64, 58);
+      fireTex.update();
+    }
+    const fireMat = new StandardMaterial("mat.extsign", scene);
+    fireMat.diffuseTexture = fireTex;
+    fireMat.emissiveTexture = fireTex;
+    fireMat.emissiveColor = new Color3(0.5, 0.5, 0.48);
+    fireMat.opacityTexture = fireTex;
+    fireMat.disableLighting = false;
+    const exSign = kit.plane("dress.ext.sign", 0.22, 0.16, fireMat, scene, root);
+    exSign.position = new Vector3(-(C.xHalf - 0.02), 1.85, 42.4);
+    exSign.rotation.y = Math.PI / 2;
   }
 
   // maintenance access hatches — recessed steel panels flush with the
