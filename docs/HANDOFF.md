@@ -928,3 +928,13 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   Swinging out corks the mouth diagonally at ~60°.
 - `teleport` resets yaw — pass the 4th arg or look() AFTER teleporting,
   always (re-bitten this arc).
+
+## Arc 10 notes (2026-10-10)
+
+- Staff room mirrors the archives recipe on the east wall (z39.2-40.6):
+  wall.right.2a/b split + east collider span gap + header; leaf swings
+  +x into the room (`rot.y=+TH`, hinge at north end
+  `z=LEAF_Z-0.53+cos(TH)*0.53`, `x=LEAF_X+sin(TH)*0.53`).
+- The east wall now carries three recess doors: gallery door (z27.5),
+  staff room (z39.9), lift lobby (z48.4-50.6) — collider spans must
+  stay ordered or the whole wall bricks.

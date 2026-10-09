@@ -824,7 +824,21 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      fanned over its lip. Nothing moves, nothing sounds — you have
      to know the bank.
 
-Slice count: **243 implemented**. Dangerous class
+244. `staffroom.ajar` — The Staff Room Is Open · CH II · moderate —
+     the east clinic stretch's sealed STAFF door stands swung into a
+     lit locker room (lockers, bench, hooks, caged lamp) that can be
+     walked into.
+
+245. `staffroom.occupied` — Someone Is Changing In There · CH III ·
+     unmistakable — the open staff room plus a silhouette at the
+     locker bank, back to the corridor; glow breathes on its own.
+
+246. `locker.banging` — A Locker Keeps Swinging · CH II · moderate —
+     the staff door ajar; deep in the room one locker door swings on
+     its own and clangs shut every few seconds — you hear it from the
+     corridor before you see the open door.
+
+Slice count: **246 implemented**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
