@@ -26,7 +26,7 @@ export const ventsCrawl: AnomalyDef = {
   weight: 1,
   progressionRange: [14, 100],
   requires: ["duct.grate.0"],
-  excludes: ["lights.blackout", "corridor.mirror"],
+  excludes: ["lights.blackout", "corridor.mirror", "corridor.long", "corridor.narrow"],
   testSeed: "test.vents.crawl",
   dangerous: false,
   activate(ctx): AnomalyInstance {

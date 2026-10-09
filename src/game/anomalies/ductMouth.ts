@@ -21,7 +21,7 @@ export const ductMouth: AnomalyDef = {
   weight: 1,
   progressionRange: [8, 100],
   requires: [GRATE],
-  excludes: ["vent.loose"],
+  excludes: ["vent.loose", "corridor.mirror", "corridor.long", "corridor.narrow"],
   testSeed: "test.duct.mouth",
   dangerous: false,
   activate(ctx): AnomalyInstance {
