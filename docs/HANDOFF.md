@@ -796,3 +796,35 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
 - shaft.occupied (#218): silhouette in the shaft at (2.56,0.02,49.5) +
   cold glow; leaves parked open 0.32-0.4.
 - Catalog: 222. Egress/egress.gone/walker.drop verified by seeded probe.
+
+## arc4 (PR #4 — enterable observation gallery)
+- Gallery glass run splits around a staff-door bay **z 27.5–28.7**
+  (`GDOOR_Z0/GDOOR_Z1` consts): `wall.gallery.glass` (z20–27.5, keeps the
+  registered name) + `wall.gallery.glass.b` (z28.7–32), jambs at both
+  bay edges, mullions unchanged at z20/23/26/29/32.
+- Leaf = `wall.gallery.door` (TransformNode at z27.56, hinge north):
+  stiles/rails/`wall.gallery.doorlite`/kick/levers both sides/steel
+  sill (`dress.gal.sill` merges)/plaque `wall.gallery.door.plaque`
+  (`sign.gallery` texture, rotation.y=+π/2 faces −x corridor).
+  `gallery.door` (223) rotates leaf.rotation.y → ~1.62 rad over 2.4 s
+  with playDoorSlide; drops paper-trail sheets corridor→room.
+- **Colliders**: east wall collider splits `[z0,27.5],[28.7,LOB_Z0],
+  [LOB_Z1,z1]`; leaf collider parented to the leaf rotates with it
+  (verified: closed blocks x≈1.42, open admits x≈2.74 inside); room
+  sealed by `gal.col.back/side.*/furn.*` except the z27.3–28.9 pocket.
+- **Interior-material trap**: shared `mats.steel`/`mats.rubber` inside
+  the room = void — the room has dedicated `mat.gal.wall`/`mat.gal.enamel`
+  (StandardMaterial, real diffuse; records-bank pale-enamel precedent).
+- Interior lamp `light.gallery` (PointLight x2.5,y1.9,z27, int 2.3,
+  range 5.2) rides `galleryZone.extraLights`; `gcove`+`glamp` join
+  `zone.troffers` (both trofferLit — restore path writes trofferLit to
+  every member unconditionally, so the `mat.terminal`/`dimMonMat`
+  monitors MUST stay out or they lose their material on zone kills).
+- Ripple fixes: `galleryFrost` frosts all 3 panes; `mullionExtra`
+  dropped the z27.5 jamb candidate; `faceGlass`/`glassHands`/
+  `glassWriting`/`galleryDoor` mutually exclude (decals would hang in
+  the open gap). Footsteps in the gallery pocket = concrete timbre.
+- Dressing (`dress.gal.` merge prefix): binder shelf + 7 binders, coat
+  rail + coat, waste bin, red mug on desk.
+- Verified: closed leaf reads as another bay; open swing + walk-in;
+  inside-out corridor view through the glass is the payoff frame.

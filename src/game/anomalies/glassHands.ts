@@ -66,7 +66,7 @@ export const glassHands: AnomalyDef = {
   weight: 0.65,
   progressionRange: [20, 100],
   requires: ["wall.gallery.glass"],
-  excludes: ["gallery", "footsteps.extra", "glass.writing", "glass.eyes"],
+  excludes: ["gallery", "footsteps.extra", "glass.writing", "glass.eyes", "gallery.door"],
   testSeed: "test.glass.hands",
   dangerous: false,
   activate(ctx) {

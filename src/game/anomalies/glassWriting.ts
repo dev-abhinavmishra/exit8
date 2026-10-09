@@ -19,7 +19,7 @@ export const glassWriting: AnomalyDef = {
   weight: 0.7,
   progressionRange: [35, 100],
   requires: ["wall.gallery.glass"],
-  excludes: ["gallery", "footsteps.extra"],
+  excludes: ["gallery", "footsteps.extra", "gallery.door"],
   testSeed: "test.glass.writing",
   dangerous: false,
   activate(ctx) {
