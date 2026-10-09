@@ -573,6 +573,10 @@ function buildLiftLobby(scene: Scene, root: TransformNode, mats: MaterialSet, re
     const leaf = kit.box(`lift.door.${sx}`, 0.035, 2.3, 0.66, mats.wallPanel, scene, node);
     leaf.position = new Vector3(WALL_X + 0.5, 1.15, sx * 0.36);
     registry.register(`lift.door.${sx}`, leaf);
+    // leaf collider parented to the leaf — rides the slide so parted
+    // leaves leave a REAL gap (walk-through defect: closed doors were
+    // visual-only and you could ghost into the sealed shaft)
+    kit.collider(`lift.door.${sx}.col`, 0.05, 2.3, 0.66, new Vector3(0, 0, 0), scene, leaf);
     // dark hinge edge on the leaf's outer side — children ride lift.door
     const edge = kit.box(`lift.door.${sx}.edge`, 0.008, 2.3, 0.025, mats.rubber, scene);
     edge.parent = leaf;

@@ -1625,26 +1625,27 @@ export function buildConcourse(
     egressMats.set(dir, em);
   }
   // one continuous strip on the west wall like a real tunnel run —
-  // mounted on the gallery sill band where the glass runs, and broken
-  // only by the bay mouth. Texture-right is -z on the west wall, so the
-  // printed arrow direction is dir = -targetDirection.
+  // mounted on the records bank face where the cabinets cover the wall
+  // (z13–31, face −1.55), and broken only by the bay mouth. Wall face is
+  // −1.74 → boards mount proud at −1.72; the bank's face takes −1.53.
+  // Texture-right is -z on the west wall, so dir = -targetDirection.
   const egressSpots: [number, number][] = [
-    [10, -0.02],
-    [15.5, -0.02],
-    [19, -0.02],
-    [24, -0.08],
-    [31, -0.08],
-    [32.6, -0.02],
-    [36, -0.02],
-    [41, -0.02],
-    [45.5, -0.02],
-    [52, -0.02],
+    [10, -1.72],
+    [15.5, -1.53],
+    [19, -1.53],
+    [24, -1.53],
+    [30, -1.53],
+    [32.6, -1.72],
+    [36, -1.72],
+    [41, -1.72],
+    [45.5, -1.72],
+    [52, -1.72],
   ];
-  egressSpots.forEach(([ez, ox], i) => {
+  egressSpots.forEach(([ez, ex], i) => {
     const dir = ez < 28 ? 1 : -1; // point at the nearer airlock
     const p = kit.plane(`dress.egress.${i}`, 0.5, 0.19, egressMats.get(dir)!, scene, root);
-    p.rotation.y = Math.PI / 2; // faces +x, into the corridor
-    p.position = new Vector3(-C.xHalf - ox, ez > 20 && ez < 32 ? 0.45 : 0.4, ez);
+    p.rotation.y = -Math.PI / 2; // kit.plane faces -z at identity; -π/2 puts the face at +x
+    p.position = new Vector3(ex, 0.4, ez);
     registry.register(`dress.egress.${i}`, p);
   });
 
