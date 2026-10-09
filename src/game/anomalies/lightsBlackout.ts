@@ -35,8 +35,8 @@ export const lightsBlackout: AnomalyDef = {
     "light.zone.gallery",
     "light.zone.clinic",
     "light.zone.junction",
-    "dress.emlight.7.5.lampa",
-    "dress.emlight.50.lampa",
+    "dress.emlamp.7.5.lampa",
+    "dress.emlamp.50.lampa",
   ],
   excludes: ["light", "shaft", "figure", "walker.crowd", "zone.gallery", "zone.clinic"],
   testSeed: "test.lights.blackout",
@@ -72,7 +72,7 @@ export const lightsBlackout: AnomalyDef = {
     const emLamps: AbstractMesh[] = [];
     for (const z of [7.5, 33.2, 50]) {
       for (const s of ["a", "b"]) {
-        const m = world.registry.get(`dress.emlight.${z}.lamp${s}`);
+        const m = world.registry.get(`dress.emlamp.${z}.lamp${s}`);
         if (!("material" in m)) continue;
         m.material = world.materials.trofferLit;
         emLamps.push(m);

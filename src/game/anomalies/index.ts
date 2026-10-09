@@ -42,6 +42,7 @@ import { walkerMidstep } from "./walkerMidstep";
 import { walkerOfflane } from "./walkerOfflane";
 import { walkerHum } from "./walkerHum";
 import { walkerAbsent } from "./walkerAbsent";
+import { walkerDrop } from "./walkerDrop";
 import { fireOpen } from "./fireOpen";
 import { posterSwapped } from "./posterSwapped";
 import { posterHollow } from "./posterHollow";
@@ -101,6 +102,7 @@ import { shadowFigure } from "./shadowFigure";
 import { bayOccupied } from "./bayOccupied";
 import { bayValve } from "./bayValve";
 import { egressReversed } from "./egressReversed";
+import { egressGone } from "./egressGone";
 import { figureCorridor } from "./figureCorridor";
 import { figureRush } from "./figureRush";
 import { figureWall } from "./figureWall";
@@ -263,6 +265,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   walkerMidstep,
   walkerOfflane,
   walkerHum,
+  walkerDrop,
   walkerAbsent,
   fireOpen,
   posterSwapped,
@@ -320,6 +323,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   bayOccupied,
   bayValve,
   egressReversed,
+  egressGone,
   figureCorridor,
   figureRush,
   figureWall,

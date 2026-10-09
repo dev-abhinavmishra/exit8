@@ -633,15 +633,17 @@ export function buildConcourse(
   }
   // lit cove at the back — inside the glass band (y 0.5–2.5), the line
   // that makes the room read as occupied space, not void
-  const gcove = kit.box("dress.gal.cove", 0.06, 0.05, 11.4, mats.trofferLit, scene, root);
+  // NOTE: named dress.gal* (no dot) — dress.gal. is a merge prefix and these
+  // stay anomaly-reachable via the wall.gallery.* registrations
+  const gcove = kit.box("dress.galcove", 0.06, 0.05, 11.4, mats.trofferLit, scene, root);
   gcove.position = new Vector3(C.xHalf + 1.3, 2.36, 26);
   // one desk carries a lit monitor face toward the glass — the
   // occupied-room cue at walking distance
-  const gmon = kit.box("dress.gal.monitor", 0.02, 0.26, 0.38, mats.trofferLit, scene, root);
+  const gmon = kit.box("dress.galmonitor", 0.02, 0.26, 0.38, mats.trofferLit, scene, root);
   gmon.position = new Vector3(C.xHalf + 0.46, 0.88, 26.5);
   // a warm desk lamp left on — a point of light deeper in the room
   // than the monitor, reads through the dark panes as depth
-  const glamp = kit.box("dress.gal.lamp", 0.05, 0.06, 0.05, mats.trofferLit, scene, root);
+  const glamp = kit.box("dress.gallamp", 0.05, 0.06, 0.05, mats.trofferLit, scene, root);
   glamp.position = new Vector3(C.xHalf + 0.52, 0.82, 24.2);
   // the near screen carries live terminal text — mat.terminal rewrites
   // with the airlock screens, so terminal.advisory leaks into the room
@@ -994,6 +996,36 @@ export function buildConcourse(
     // motes drifting in the bay lamp's pool — junction zone index
     moteAnchors.push({ x: -C.xHalf - BAY_DEPTH / 2, z: BAY_Z0 + 0.7, zi: 3 });
     moteAnchors.push({ x: -C.xHalf - BAY_DEPTH / 2, z: BAY_Z0 + 0.7, zi: 3 });
+    // the bay's glow spills into the corridor — a crossed-plane shaft in
+    // the mouth plus a warm pool on the terrazzo. Both ride the junction
+    // zone's shafts[] so kills/dips/blackout douse them with the lamps.
+    // Names stay OFF junction.bay. — that prefix merges, and these must
+    // stay live meshes the zone can toggle.
+    const bayShaft = new TransformNode("junction.bayshaft", scene);
+    bayShaft.parent = root;
+    bayShaft.position = new Vector3(-C.xHalf + 0.08, 1.45, BAY_ZC);
+    registry.register("junction.bayshaft", bayShaft);
+    for (const ry of [0, Math.PI / 2]) {
+      const p = kit.plane(
+        `junction.bayshaft.${ry === 0 ? "z" : "x"}`,
+        0.72,
+        2.35,
+        mats.lightShaft,
+        scene,
+        bayShaft,
+      );
+      p.rotation.y = ry;
+      p.billboardMode = 0;
+    }
+    const baySpill = kit.plane("junction.bayspill", 1.5, 2.9, mats.lightShaft, scene, root);
+    baySpill.rotation.x = -Math.PI / 2; // flat, face-up on the floor
+    baySpill.rotation.z = Math.PI / 2; // long axis across the mouth
+    baySpill.position = new Vector3(-C.xHalf + 0.78, 0.015, BAY_ZC);
+    registry.register("junction.bayspill", baySpill);
+    if (junctionZone) {
+      junctionZone.shafts.push(bayShaft);
+      junctionZone.shafts.push(baySpill);
+    }
   }
 
   // ─── S-2 lift lobby — a lit alcove cut into the east wall z 48.4–50.6.
@@ -1625,26 +1657,28 @@ export function buildConcourse(
     egressMats.set(dir, em);
   }
   // one continuous strip on the west wall like a real tunnel run —
-  // mounted on the gallery sill band where the glass runs, and broken
-  // only by the bay mouth. Texture-right is -z on the west wall, so the
-  // printed arrow direction is dir = -targetDirection.
+  // mounted on the records bank face where the cabinets cover the wall
+  // (z13–31, face −1.55), and broken only by the bay mouth. Wall face is
+  // −1.74 → boards mount proud at −1.72; the bank's face takes −1.53.
+  // Texture-right is +z (south) on the west wall under rotation.y=-π/2,
+  // so dir = +1 draws the arrow south — point at the nearer airlock.
   const egressSpots: [number, number][] = [
-    [10, -0.02],
-    [15.5, -0.02],
-    [19, -0.02],
-    [24, -0.08],
-    [31, -0.08],
-    [32.6, -0.02],
-    [36, -0.02],
-    [41, -0.02],
-    [45.5, -0.02],
-    [52, -0.02],
+    [10, -1.72],
+    [15.5, -1.53],
+    [19, -1.53],
+    [24, -1.53],
+    [30, -1.53],
+    [32.6, -1.72],
+    [36, -1.72],
+    [41, -1.72],
+    [45.5, -1.72],
+    [52, -1.72],
   ];
-  egressSpots.forEach(([ez, ox], i) => {
-    const dir = ez < 28 ? 1 : -1; // point at the nearer airlock
+  egressSpots.forEach(([ez, ex], i) => {
+    const dir = ez < 28 ? -1 : 1; // dir=1 arrows +z (south), -1 arrows -z (north)
     const p = kit.plane(`dress.egress.${i}`, 0.5, 0.19, egressMats.get(dir)!, scene, root);
-    p.rotation.y = Math.PI / 2; // faces +x, into the corridor
-    p.position = new Vector3(-C.xHalf - ox, ez > 20 && ez < 32 ? 0.45 : 0.4, ez);
+    p.rotation.y = -Math.PI / 2; // kit.plane faces -z at identity; -π/2 puts the face at +x
+    p.position = new Vector3(ex, 0.4, ez);
     registry.register(`dress.egress.${i}`, p);
   });
 
@@ -1739,8 +1773,10 @@ export function buildConcourse(
     const el = kit.box(`dress.emlight.${pz}`, 0.07, 0.11, 0.3, mats.steel, scene, root);
     el.position = new Vector3(sx * (C.xHalf - 0.05), 2.62, pz);
     for (const dz of [-0.09, 0.09]) {
+      // dress.emlamp (no dot after eml) — dress.emlight. is a merge prefix;
+      // anomalies swap these lamp materials so they must stay live meshes
       const lamp = kit.box(
-        `dress.emlight.${pz}.lamp${dz < 0 ? "a" : "b"}`,
+        `dress.emlamp.${pz}.lamp${dz < 0 ? "a" : "b"}`,
         0.04,
         0.06,
         0.06,
@@ -2150,9 +2186,11 @@ export function buildConcourse(
   // service junction conduits — the pipe run now lives INSIDE the bay
   // along its back wall instead of crossing the mouth in mid-air
   for (let i = 0; i < 3; i++) {
-    const pipe = kit.box(`junction.pipe.${i}`, 0.07, 0.07, 2.9, mats.steel, scene, root);
+    // junction.pipeN (no dot) — junction.pipe. is a merge prefix; a
+    // registered mesh folded into a batch leaves anomalies animating air
+    const pipe = kit.box(`junction.pipe${i}`, 0.07, 0.07, 2.9, mats.steel, scene, root);
     pipe.position = new Vector3(-C.xHalf - BAY_DEPTH + 0.1, C.height - 0.4 - i * 0.12, BAY_ZC);
-    registry.register(`junction.pipe.${i}`, pipe);
+    registry.register(`junction.pipe${i}`, pipe);
   }
   // vertical risers drop the bay's ceiling run into the machine +
   // one full-height stack past the bank — junction.pipe.* merges

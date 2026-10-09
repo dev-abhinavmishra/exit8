@@ -741,3 +741,58 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
 - `mat.baylamp` — dimmer dedicated emissive for `junction.baylamp`
   (trofferLit blows white at arm's length).
 - Pause kicker shows live context: `ui.setPauseContext()` in app.pause().
+
+## arc3 — lift lobby, egress strip, merge-prefix revival (PR #3)
+
+### lift lobby (east wall z48.4-50.6, merged in PR #2 lineage)
+- Recess constants LOB_Z0=48.4 / LOB_Z1=50.6 / LOB_ZC=49.5;
+  `lback` (lobby back wall) = 2.35, `sback` (shaft back) = 2.85,
+  `doorHW` = 0.8. Lobby occupies x 1.8→2.35; shaft behind to 2.85.
+- `lift.reveal` void plate (fixtures.ts ~L568): black plate at x≈2.76
+  fills the door opening — anything anomaly-built deeper than x≈2.76 is
+  permanently occluded. Anomaly interiors park x<2.76.
+- Leaf colliders: `lift.door.${sx}.col` parented to each leaf (fixtures
+  ~L570) — the sealed doors were visual-only; you could ghost into the
+  shaft. Colliders ride the slide so parted anomalies still leave a gap.
+
+### egress strip (west wall, z10-52)
+- `dress.egress.{0-9}` — 0.5×0.19 photoluminescent boards, y=0.4.
+- **kit.plane faces −z at identity**: west-wall planes face +x corridor
+  with `rotation.y = −π/2` (same lesson as the airlock terminal). With
+  that facing, texture-right maps to −z.
+- Mount heights: −1.72 proud of the wall face; −1.53 on the records-bank
+  cabinet face (bank occupies z13-31, face −1.55). Boards inside the
+  bank span must sit on the bank, not the wall.
+- `egress.reversed` (#220) mirrors `dress.egress.4` via `scaling.x=−1`;
+  `egress.gone` (#221) hides all ten — requires them literally.
+
+### THE merge-prefix silent-death class (validator now guards it)
+- `mergeStaticDressing` folds every mesh whose NAME starts with a
+  `STATIC_PREFIXES` entry into `merged.static.N` — AFTER anomaly
+  `requires:` resolution. The registry keeps a stale ref: `requires:`
+  passes, `meshInfo`/`getMeshByName` return null, and the anomaly
+  animates a dead object FOREVER.
+- Convention: rename anomaly-reachable meshes OFF the prefix by
+  dropping the dot — `junction.bay.` → `junction.baylamp` /
+  `junction.bayvalve*`; `dress.gal.` → `dress.galcove/galmonitor/
+  gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
+- The trap bit 3× (bay valve spokes, gallery cove/monitor/lamp →
+  gallery.dark dead; blackout emergency lamps → rim-light never lit).
+- `validate:assets` now fails if: a `registry.register` wraps a
+  mesh whose name matches a prefix, or a `requires:`/`registry.get`
+  literal matches a prefix. This class cannot regress silently.
+
+### also fixed in arc3
+- `gallery.dark` cleanup restored all lamps to trofferLit — would have
+  wiped the monitor's `mats.terminal` forever; now restores captured
+  per-mesh materials.
+- `mat.fborder` (PBR albedoTexture=tex.terrazzo, albedo 0.16/0.16/0.175)
+  replaced the rubber-void floor border band.
+- `walker.drop` (#222): `ambient.walker.clip` disabled + a flat copy on
+  the terrazzo (box is ALREADY flat by construction — do NOT rotate.x;
+  that stands it on edge).
+- Fire extinguisher vignette at z42.4 west wall (`dress.ext.*`).
+- bay.valve (#219): `junction.bayvalve` + `junction.bayvalvespoke.{0-3}`.
+- shaft.occupied (#218): silhouette in the shaft at (2.56,0.02,49.5) +
+  cold glow; leaves parked open 0.32-0.4.
+- Catalog: 222. Egress/egress.gone/walker.drop verified by seeded probe.
