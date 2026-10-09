@@ -39,8 +39,8 @@ export const capLit: AnomalyDef = {
     // and the floor pool it would throw a hand's width in front
     const glow = new PointLight("anomaly.caplit.glow", GLOW, ctx.scene);
     glow.diffuse = new Color3(1.0, 0.88, 0.62);
-    glow.intensity = 0.35;
-    glow.range = 3.4;
+    glow.intensity = 0.55;
+    glow.range = 3.8;
     return {
       update() {},
       cleanup() {

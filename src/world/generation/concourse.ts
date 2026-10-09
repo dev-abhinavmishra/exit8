@@ -2239,11 +2239,12 @@ export function buildConcourse(
     st.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
   }
 
-  // ─── maintenance workbench — the last bare west stretch (z≈42–45.5)
-  // reads as a working service area: fold-down bench, pegboard with
-  // painted tool shadows (one hook empty), cable spool, task lamp
+  // ─── maintenance workbench — the west wall hugging the bay mouth
+  // (z≈44.5–46.1) reads as the bay's working bench: fold-down bench,
+  // pegboard with painted tool shadows (one hook empty), cable spool,
+  // task lamp
   {
-    const benchZ = 43.7;
+    const benchZ = 45.3;
     const wtop = kit.box("dress.bench.top", 0.56, 0.06, 1.6, mats.steel, scene, root);
     wtop.position = new Vector3(-C.xHalf + 0.32, 0.86, benchZ);
     for (const dz of [-0.68, 0.68]) {
@@ -2268,9 +2269,9 @@ export function buildConcourse(
     const pegTex = new DynamicTexture("tex.pegboard", { width: 384, height: 256 }, scene, true);
     const pc = pegTex.getContext() as unknown as CanvasRenderingContext2D;
     pc.scale(3, 3);
-    pc.fillStyle = "#181a1c";
+    pc.fillStyle = "#2b2e31";
     pc.fillRect(0, 0, 128, 85);
-    pc.fillStyle = "#24272a";
+    pc.fillStyle = "#1b1d1f";
     for (let y = 6; y < 82; y += 8) for (let x = 6; x < 126; x += 8) pc.fillRect(x, y, 1.4, 1.4);
     pc.strokeStyle = "#8f969b";
     pc.lineWidth = 1.6;
@@ -2303,10 +2304,10 @@ export function buildConcourse(
     const pegMat = new StandardMaterial("mat.pegboard", scene);
     pegMat.diffuseTexture = pegTex;
     pegMat.emissiveTexture = pegTex;
-    pegMat.emissiveColor = new Color3(0.3, 0.3, 0.28);
+    pegMat.emissiveColor = new Color3(0.55, 0.55, 0.5);
     pegMat.specularColor = new Color3(0.02, 0.02, 0.02);
     const peg = kit.plane("dress.bench.pegboard", 1.5, 0.95, pegMat, scene, root);
-    peg.position = new Vector3(-C.xHalf + 0.055, 1.62, benchZ);
+    peg.position = new Vector3(-C.xHalf + 0.065, 1.62, benchZ);
     peg.rotation.y = -Math.PI / 2;
     // shelf + clipped task lamp, faint warm glow under it
     const wshelf = kit.box("dress.bench.shelf", 0.32, 0.04, 1.2, mats.steel, scene, root);

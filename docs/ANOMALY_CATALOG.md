@@ -760,7 +760,33 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      runs surgical blue-white (zone diffuses + troffer emissive swap);
      the same corridor in the wrong light. Restores on cleanup.
 
-Slice count: **231 implemented — the full catalog**. Dangerous class
+232. `service.stairwell` — It Was Open a Moment Ago · CH III ·
+     unmistakable — the sealed service door stands wide on a lit
+     stairwell descending east (real prebuilt room: landing, nine
+     steps, rail, caged bulb, far door). Close inside ~4 m and it
+     slams itself shut on you; open it again and the corridor wall is
+     solid.
+
+233. `phone.dialtone` — Dead Line · CH I · subtle — the internal
+     handset by the gallery rings a steady 350+440 Hz dial tone; a
+     dead line is only audible inside ~2 m. New `startDialTone(pos)`
+     stoppable loop on the anomaly bus.
+
+234. `vent.loose` — One Grille Down · CH I · moderate — the east
+     grille at z30 hangs by its top screws, tilted into the corridor;
+     behind it, open duct black.
+
+235. `cap.lit` — Light Under the Door · CH I · subtle — warm
+     daylight bleeds under the sealed south cap — only readable in
+     the commit walk's last metres, where the original's promise
+     ("light at the far door means your call was right") should hold
+     silence.
+
+236. `walker.papers` — He Is Losing the Paperwork · CH II ·
+     moderate — the inspector sheds a pale audit sheet every ~2.7 m
+     of patrol; the trail behind him should not exist.
+
+Slice count: **236 implemented**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
