@@ -25,7 +25,7 @@ const PAUSE_S = 5;
 const HOME_Z = 16; // loop-rebaseline spot — always mid-corridor on loop 1
 
 export type WalkerMode =
-  "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast" | "charge" | "midstep" | "offlane";
+  "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast" | "charge" | "midstep" | "offlane" | "notes";
 
 export interface AmbientWalker {
   update(dt: number, playerPos?: Vector3): void;
@@ -172,6 +172,17 @@ export function buildAmbientWalker(
         g.position.set(lane, 0, z);
         for (const p of [...legPivots, ...armPivots]) p.rotation.x = 0;
         fig.headPivot.rotation.x = 0;
+        return;
+      }
+      if (mode === "notes") {
+        // writing you up: stopped where he stood, clipboard arm raised
+        // to his chest, head bent over the page, pen arm working
+        g.position.set(lane, 0, z);
+        for (const p of legPivots) p.rotation.x = 0;
+        armPivots[0]!.rotation.x = -1.05; // clipboard up
+        armPivots[1]!.rotation.x = -0.9 + Math.sin(bobT * 7) * 0.06; // pen scribbles
+        fig.headPivot.rotation.x = 0.55; // eyes on the page
+        fig.headPivot.rotation.y = 0;
         return;
       }
       if (mode === "midstep") {

@@ -60,6 +60,7 @@ import { clinicStaffed } from "./clinicStaffed";
 import { corridorMirror } from "./corridorMirror";
 import { figureThreshold } from "./figureThreshold";
 import { corridorFlicker } from "./corridorFlicker";
+import { walkerNotes } from "./walkerNotes";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -289,6 +290,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   corridorMirror,
   figureThreshold,
   corridorFlicker,
+  walkerNotes,
   liftArrives,
   gazeShift,
   paceDissolves,

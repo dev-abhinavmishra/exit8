@@ -742,7 +742,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      so the dark travels down the passage ahead of you (zones keep
      fighting, never die).
 
-Slice count: **227 implemented — the full catalog**. Dangerous class
+228. `walker.notes` — Wrote You Up · CH II · moderate — stand still ~6 s
+     and the inspector halts mid-route, clipboard up, head over the page,
+     pen working ("he is writing") — then back to patrol. Once per loop;
+     new walker mode `notes` in ambientWalker.
+
+Slice count: **228 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
