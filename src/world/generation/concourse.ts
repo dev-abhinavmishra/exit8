@@ -1660,7 +1660,8 @@ export function buildConcourse(
   // mounted on the records bank face where the cabinets cover the wall
   // (z13–31, face −1.55), and broken only by the bay mouth. Wall face is
   // −1.74 → boards mount proud at −1.72; the bank's face takes −1.53.
-  // Texture-right is -z on the west wall, so dir = -targetDirection.
+  // Texture-right is +z (south) on the west wall under rotation.y=-π/2,
+  // so dir = +1 draws the arrow south — point at the nearer airlock.
   const egressSpots: [number, number][] = [
     [10, -1.72],
     [15.5, -1.53],
@@ -1674,7 +1675,7 @@ export function buildConcourse(
     [52, -1.72],
   ];
   egressSpots.forEach(([ez, ex], i) => {
-    const dir = ez < 28 ? 1 : -1; // point at the nearer airlock
+    const dir = ez < 28 ? -1 : 1; // dir=1 arrows +z (south), -1 arrows -z (north)
     const p = kit.plane(`dress.egress.${i}`, 0.5, 0.19, egressMats.get(dir)!, scene, root);
     p.rotation.y = -Math.PI / 2; // kit.plane faces -z at identity; -π/2 puts the face at +x
     p.position = new Vector3(ex, 0.4, ez);
@@ -2185,9 +2186,11 @@ export function buildConcourse(
   // service junction conduits — the pipe run now lives INSIDE the bay
   // along its back wall instead of crossing the mouth in mid-air
   for (let i = 0; i < 3; i++) {
-    const pipe = kit.box(`junction.pipe.${i}`, 0.07, 0.07, 2.9, mats.steel, scene, root);
+    // junction.pipeN (no dot) — junction.pipe. is a merge prefix; a
+    // registered mesh folded into a batch leaves anomalies animating air
+    const pipe = kit.box(`junction.pipe${i}`, 0.07, 0.07, 2.9, mats.steel, scene, root);
     pipe.position = new Vector3(-C.xHalf - BAY_DEPTH + 0.1, C.height - 0.4 - i * 0.12, BAY_ZC);
-    registry.register(`junction.pipe.${i}`, pipe);
+    registry.register(`junction.pipe${i}`, pipe);
   }
   // vertical risers drop the bay's ceiling run into the machine +
   // one full-height stack past the bank — junction.pipe.* merges

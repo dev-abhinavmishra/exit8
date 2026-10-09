@@ -26,11 +26,17 @@ export const walkerDrop: AnomalyDef = {
   activate(ctx) {
     const { scene, rng } = ctx;
     const carried = scene.getMeshByName("ambient.walker.clip") as AbstractMesh | null;
+    // the sheet is a second mesh parented to the same arm — hide both or
+    // the page keeps floating in his hand while the board drops
+    const page = scene.getMeshByName("ambient.walker.clip.page") as AbstractMesh | null;
     if (carried) carried.setEnabled(false);
+    if (page) page.setEnabled(false);
     // the dropped copy — flat on the terrazzo, sheet face-up, seeded in
     // the walk lane so you step over it mid-route
     const drop = CreateBox("anomaly.walker.clip.floor", { width: 0.2, height: 0.02, depth: 0.28 }, scene);
-    const src = carried?.material;
+    // floor copy wears the sheet face — a board's top face reads as the
+    // audit page; its thin edges show stretched texture you can't see
+    const src = page?.material ?? carried?.material;
     if (src) {
       drop.material = src;
     } else {
@@ -44,6 +50,7 @@ export const walkerDrop: AnomalyDef = {
       update() {},
       cleanup() {
         if (carried) carried.setEnabled(true);
+        if (page) page.setEnabled(true);
         drop.dispose();
       },
     };
