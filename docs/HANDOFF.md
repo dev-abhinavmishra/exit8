@@ -938,3 +938,45 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
 - The east wall now carries three recess doors: gallery door (z27.5),
   staff room (z39.9), lift lobby (z48.4-50.6) — collider spans must
   stay ordered or the whole wall bricks.
+
+## Arc 10 review batch (b668d1f) — lessons from 25 confirmed findings
+
+- **Scene-level state is the recurring bug class.** Zone PointLights, audio
+  anchors, and unlit-emissive wash/pad interiors are NOT under `world.root`
+  and NOT covered by zone.point. Every world-transform anomaly (mirror,
+  narrow, long) must remap: off-axis `PointLight`s (filter |pos.x|>0.01 or
+  transform all on z), `world.anchors.*` INCLUDING `junctionMachine`, and
+  the PLAYER position itself (corridor.long moves `player.z` by the same
+  scale+offset or the spawn lands outside the shifted airlock).
+- **Renaming a wall run breaks every `requires` that names it** — silent
+  skip, loop rolls clear. `wall.right.2` → `.2a/.2b` orphaned 11 anomaly
+  defs until the requires were repointed. When splitting a registered
+  node, grep `requires` for the old id in the same commit.
+- **Every doorway recipe needs all four parts**: visual wall split, wall
+  collider span gap (check BOTH `wallRun` splits AND the `wall.col` spans
+  — the service door had the visual split but no collider gap for an
+  entire arc), jambs+header instead of a solid frame box, and a leaf-
+  parented `kit.collider`.
+- **`zone.point.intensity` ≠ the room's light.** Room lamps live in
+  `zone.extraLights` — dark anomalies that only touch `zone.point` or
+  swap fixture materials leave the room glowing. Dim extraLights too
+  (galleryDark/lightFlicker/lightFollows now do). Interior PointLights
+  must be PUSHED into a zone's extraLights (clinicLamp joined clinic).
+- **The lost ending must cancel `brownBase`** — applyBrown's snapshot
+  restore relights the drowned corridor mid-walk.
+- **Unlit-emissive interiors (wash/pad) never darken** — anomalies that
+  need real darkness dim them by name via `scene.getMaterialByName`.
+- **Per-frame displacement thresholds misjudge movement** — 0.06m/frame
+  is unreachable at 60Hz; walker.notes triggered while walking. Use
+  ~0.008 or accumulate.
+- **A stopped player has no heading** — hold the last nonzero sign
+  (ambientWalker's `followSide`), don't derive `behind` from a zero
+  delta.
+- **Caption text is a spoiler channel** — never caption a memorization
+  anomaly's identity (records.filed's "a drawer stands open" gave it
+  away).
+- **Caption the state for ambience, never the answer for memorization.**
+- **test timeouts ≥ their internal waits** — evidence.spec waited 90s
+  under a 60s suite cap.
+- **`.tmp-*` probe files leak into commits** — now gitignored; keep
+  probes in .tmp-* or tests/, never at root.
