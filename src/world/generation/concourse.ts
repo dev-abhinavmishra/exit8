@@ -2239,6 +2239,113 @@ export function buildConcourse(
     st.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
   }
 
+  // ─── maintenance workbench — the last bare west stretch (z≈42–45.5)
+  // reads as a working service area: fold-down bench, pegboard with
+  // painted tool shadows (one hook empty), cable spool, task lamp
+  {
+    const benchZ = 43.7;
+    const wtop = kit.box("dress.bench.top", 0.56, 0.06, 1.6, mats.steel, scene, root);
+    wtop.position = new Vector3(-C.xHalf + 0.32, 0.86, benchZ);
+    for (const dz of [-0.68, 0.68]) {
+      const leg = kit.box(`dress.bench.leg.${dz}`, 0.05, 0.84, 0.05, mats.steel, scene, root);
+      leg.position = new Vector3(-C.xHalf + 0.52, 0.42, benchZ + dz);
+      const wallLeg = kit.box(`dress.bench.wleg.${dz}`, 0.04, 0.84, 0.04, mats.steel, scene, root);
+      wallLeg.position = new Vector3(-C.xHalf + 0.08, 0.42, benchZ + dz);
+    }
+    colliders.push(
+      kit.collider(
+        "dress.bench.col",
+        0.62,
+        0.9,
+        1.7,
+        new Vector3(-C.xHalf + 0.32, 0.45, benchZ),
+        scene,
+        root,
+      ),
+    );
+    // pegboard — dark hardboard, peg holes, four tool shadows; the
+    // centre hook's tool is gone, its outline left behind
+    const pegTex = new DynamicTexture("tex.pegboard", { width: 384, height: 256 }, scene, true);
+    const pc = pegTex.getContext() as unknown as CanvasRenderingContext2D;
+    pc.scale(3, 3);
+    pc.fillStyle = "#181a1c";
+    pc.fillRect(0, 0, 128, 85);
+    pc.fillStyle = "#24272a";
+    for (let y = 6; y < 82; y += 8) for (let x = 6; x < 126; x += 8) pc.fillRect(x, y, 1.4, 1.4);
+    pc.strokeStyle = "#8f969b";
+    pc.lineWidth = 1.6;
+    // wrench
+    pc.strokeRect(10, 14, 6, 34);
+    pc.beginPath();
+    pc.arc(13, 10, 6, Math.PI * 0.7, Math.PI * 1.7);
+    pc.stroke();
+    // hammer
+    pc.strokeRect(34, 16, 5, 30);
+    pc.strokeRect(30, 10, 14, 8);
+    // snips
+    pc.beginPath();
+    pc.moveTo(62, 44);
+    pc.lineTo(68, 12);
+    pc.lineTo(73, 44);
+    pc.moveTo(62, 44);
+    pc.quadraticCurveTo(67, 52, 73, 44);
+    pc.stroke();
+    // empty hook — the missing fourth tool's dashed outline
+    pc.setLineDash([3, 3]);
+    pc.strokeStyle = "#565c61";
+    pc.strokeRect(96, 16, 7, 30);
+    pc.setLineDash([]);
+    pc.fillStyle = "#565c61";
+    pc.fillRect(97, 12, 5, 3);
+    pc.font = "5px monospace";
+    pc.fillText("SPARE", 95, 56);
+    pegTex.update();
+    const pegMat = new StandardMaterial("mat.pegboard", scene);
+    pegMat.diffuseTexture = pegTex;
+    pegMat.emissiveTexture = pegTex;
+    pegMat.emissiveColor = new Color3(0.3, 0.3, 0.28);
+    pegMat.specularColor = new Color3(0.02, 0.02, 0.02);
+    const peg = kit.plane("dress.bench.pegboard", 1.5, 0.95, pegMat, scene, root);
+    peg.position = new Vector3(-C.xHalf + 0.055, 1.62, benchZ);
+    peg.rotation.y = -Math.PI / 2;
+    // shelf + clipped task lamp, faint warm glow under it
+    const wshelf = kit.box("dress.bench.shelf", 0.32, 0.04, 1.2, mats.steel, scene, root);
+    wshelf.position = new Vector3(-C.xHalf + 0.18, 2.24, benchZ);
+    const lampShell = kit.box("dress.bench.lampshell", 0.12, 0.08, 0.1, mats.steel, scene, root);
+    lampShell.position = new Vector3(-C.xHalf + 0.18, 2.16, benchZ - 0.32);
+    const benchLampMat = new StandardMaterial("mat.benchlamp", scene);
+    benchLampMat.diffuseColor = new Color3(0.3, 0.24, 0.14);
+    benchLampMat.emissiveColor = new Color3(0.5, 0.38, 0.2);
+    const lampGlow = kit.box("dress.bench.lampglow", 0.08, 0.025, 0.06, benchLampMat, scene, root);
+    lampGlow.position = new Vector3(-C.xHalf + 0.18, 2.11, benchZ - 0.32);
+    // cable spool under the bench — wound drum on an axle
+    const spool = CreateCylinder(
+      "dress.bench.spool",
+      { diameter: 0.5, height: 0.34, tessellation: 18 },
+      scene,
+    );
+    spool.material = mats.rubber;
+    spool.rotation.z = Math.PI / 2;
+    spool.position = new Vector3(-C.xHalf + 0.34, 0.26, benchZ + 0.42);
+    const spoolAxle = kit.box("dress.bench.saxle", 0.05, 0.5, 0.05, mats.steel, scene, root);
+    spoolAxle.position = new Vector3(-C.xHalf + 0.34, 0.25, benchZ + 0.42);
+    // hand tools left on the bench
+    const wRng = new RngStream("loop.dressing", runSeed, "workbench");
+    for (let i = 0; i < 4; i++) {
+      const tool = kit.box(
+        `dress.bench.tool.${i}`,
+        wRng.range(0.06, 0.16),
+        0.025,
+        wRng.range(0.03, 0.07),
+        i === 3 ? mats.rubber : mats.steel,
+        scene,
+        root,
+      );
+      tool.position = new Vector3(-C.xHalf + wRng.range(0.14, 0.5), 0.9, benchZ + wRng.range(-0.62, 0.62));
+      tool.rotation.y = wRng.range(0, Math.PI);
+    }
+  }
+
   // signs
   const sGallery = kit.wallSign("sign.gallery", mats, scene, root, registry, 1.5, 0.45);
   sGallery.position = new Vector3(C.xHalf - 0.08, 2.5, 26);
