@@ -705,8 +705,9 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 215. `pass.stuck` — Counter Didn't Advance · CH II · subtle
 216. `bay.occupied` — Someone In The Bay · CH II · moderate
 217. `lift.car` — The Car Is Waiting · CH II · moderate
+218. `shaft.occupied` — Someone In The Shaft · CH III · moderate
 
-Slice count: **217 implemented — the full catalog**. Dangerous class
+Slice count: **218 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).

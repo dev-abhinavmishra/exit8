@@ -165,6 +165,7 @@ import { galleryOccupied } from "./galleryOccupied";
 import { galleryMirror } from "./galleryMirror";
 import { liftCalls } from "./liftCalls";
 import { liftCar } from "./liftCar";
+import { shaftOccupied } from "./shaftOccupied";
 import { benchSit } from "./benchSit";
 import { stainSpread } from "./stainSpread";
 import { signGhost } from "./signGhost";
@@ -381,6 +382,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   galleryMirror,
   liftCalls,
   liftCar,
+  shaftOccupied,
   benchSit,
   stainSpread,
   signGhost,
