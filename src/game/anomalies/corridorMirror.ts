@@ -7,6 +7,7 @@
  * geometry, which is the point). Unmistakable — if you ever look up.
  */
 import type { Material } from "@babylonjs/core/Materials/material";
+import { PointLight } from "@babylonjs/core/Lights/pointLight";
 import type { AnomalyDef } from "./types";
 
 export const corridorMirror: AnomalyDef = {
@@ -38,6 +39,16 @@ export const corridorMirror: AnomalyDef = {
     const lists = [world.anchors.troffers, world.anchors.vents, world.anchors.paHorns];
     for (const a of singles) a.x = -a.x;
     for (const list of lists) for (const p of list) p.x = -p.x;
+    // every light is scene-level, not under the mirrored root — swing
+    // each off-axis one across so its pool still lands under the fixture
+    // that flipped sides (bay/gallery lamps, the spill accents)
+    const flipped: PointLight[] = [];
+    for (const l of scene.lights) {
+      if (l instanceof PointLight && Math.abs(l.position.x) > 0.01) {
+        l.position.x = -l.position.x;
+        flipped.push(l);
+      }
+    }
     return {
       update() {},
       cleanup() {
@@ -45,6 +56,7 @@ export const corridorMirror: AnomalyDef = {
         for (const [m, o] of mats) m.sideOrientation = o;
         for (const a of singles) a.x = -a.x;
         for (const list of lists) for (const p of list) p.x = -p.x;
+        for (const l of flipped) l.position.x = -l.position.x;
       },
     };
   },
