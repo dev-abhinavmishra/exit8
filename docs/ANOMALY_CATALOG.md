@@ -747,7 +747,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      pen working ("he is writing") — then back to patrol. Once per loop;
      new walker mode `notes` in ambientWalker.
 
-Slice count: **228 implemented — the full catalog**. Dangerous class
+229. `gauntlet.watch` — The Queue · CH III · unmistakable — ten dark
+     figures stand along both walls facing the wall; crossing the
+     midpoint they all turn to face the corridor at once (groan +
+     "they are watching now"), heads tracking you the rest of the way.
+
+Slice count: **229 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).

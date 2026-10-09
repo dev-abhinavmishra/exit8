@@ -61,6 +61,7 @@ import { corridorMirror } from "./corridorMirror";
 import { figureThreshold } from "./figureThreshold";
 import { corridorFlicker } from "./corridorFlicker";
 import { walkerNotes } from "./walkerNotes";
+import { gauntletWatch } from "./gauntletWatch";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -291,6 +292,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   figureThreshold,
   corridorFlicker,
   walkerNotes,
+  gauntletWatch,
   liftArrives,
   gazeShift,
   paceDissolves,
