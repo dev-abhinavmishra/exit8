@@ -861,3 +861,17 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   ASIDE on <2.1m — files fine, never chases.
 - lift.car trap: step into the cab (x>2.32, |z-49.5|<.55) → leaves home
   over .9s, glow gutters 5s, release ~7.5s total. Dread not damage.
+- corridor.flicker recipe: per-zone intensity = base*(0.16+0.84*v) with
+  v=|sin(t*9.5-i*2.1)*sin(t*3.7+i*1.4)|; troffer lit/dim swap at v>0.42,
+  shafts at v>0.3 — mirrors lightDelay's setLit channel set.
+- light.cold: swap every zone point.diffuse/extraLights diffuse to
+  (0.55,0.72,1.0) + troffers to a dedicated cold emissive mat; restore
+  captured colors on cleanup (never assume trofferLit — capture).
+- walker.follow mode: target = player.z ± 2.7 by travel dir (lastPz),
+  clamp z 3..52, 1.55*dt pace (1.8x catchup >1m); same legs/arms swing
+  block as charge but 0.55/0.35 amplitude.
+- gauntlet head-track: east-side figure (x>0, faces -x after turn) uses
+  s=-1 in atan2(s*dx,s*dz); west uses s=+1.
+- Unit spec invariant: every def needs requires>0 anchored to a
+  registered always-present mesh (ambient.walker, light.zone.entry,
+  wall.left.0, service.door.leaf all work).
