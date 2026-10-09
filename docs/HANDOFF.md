@@ -839,3 +839,12 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
 - Figure type import: `buildFigure` returns `Figure` (headPivot field).
 - No spec reaches ROUTE LOST — verified live via probe (stability 5 →
   wrong retreat → walk north → contact → ROUTE LOST report).
+
+## arc6 — corridor.mirror (#225)
+- Whole-loop mirror: `world.root.scaling.x = -1` flips every fixture,
+  collider, and the walker's lane (all local under root) — plus every
+  material's `sideOrientation` (0↔1, default ??1) so faces still render
+  out. Sign textures mirror WITH the geometry = the anomaly's point.
+- Positional audio anchors are ABSOLUTE Vector3s, not parented —
+  negate `anchors.{clock,vend,troffers[],vents[],paHorns[]}.x` on
+  activate + cleanup or sound localizes to the pre-mirror side.
