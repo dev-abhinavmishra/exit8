@@ -24,7 +24,7 @@ export const figureRush: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.5,
   progressionRange: [55, 100],
-  requires: ["wall.right.2"],
+  requires: ["wall.right.2a"],
   excludes: ["figure", "watcher.follows", "walker.crowd"],
   testSeed: "test.figure.rush",
   dangerous: true,

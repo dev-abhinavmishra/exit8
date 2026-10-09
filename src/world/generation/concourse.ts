@@ -690,7 +690,7 @@ export function buildConcourse(
   // carry it
   const blind = kit.plane("wall.gallery.blind", 2.8, 1.9, mats.blinds, scene);
   blind.parent = glass;
-  blind.position = new Vector3(0.08, 0, -1.5);
+  blind.position = new Vector3(0.08, 0, 0.75);
   blind.rotation.y = -Math.PI / 2;
   registry.register("wall.gallery.blind", blind);
   const galleryBack = kit.box("wall.gallery.back", 0.1, 3.0, 12, mats.wallPanel, scene, root);
@@ -889,7 +889,8 @@ export function buildConcourse(
             [BAY_Z1, C.z1],
           ]
         : [
-            [C.z0, GDOOR_Z0],
+            [C.z0, 15.0],
+            [16.0, GDOOR_Z0],
             [GDOOR_Z1, SR_Z0],
             [SR_Z1, LOB_Z0],
             [LOB_Z1, C.z1],
@@ -1881,7 +1882,7 @@ export function buildConcourse(
     );
     // bench mid-room + wall hooks, one bag hanging
     const bench = kit.box("dress.staffroom.bench", 1.1, 0.42, 0.34, mats.rubber, scene, root);
-    bench.position = new Vector3(srX0 + 1.1, 0.21, srC.z);
+    bench.position = new Vector3(srX0 + 1.1, 0.21, srZ1 - 0.32);
     colliders.push(kit.collider("staffroom.benchCol", 1.1, 0.45, 0.36, bench.position.clone(), scene, root));
     for (let hi = 0; hi < 4; hi++) {
       const hook = kit.box(`dress.staffroom.hook.${hi}`, 0.03, 0.05, 0.03, mats.steel, scene, root);
@@ -1973,8 +1974,13 @@ export function buildConcourse(
   );
 
   // recessed service door RIGHT z≈15.5 — baseline shut; door.ajar opens it
-  const sframe = kit.box("service.door.frame", 0.14, 2.2, 1.0, mats.steel, scene, root);
-  sframe.position = new Vector3(C.xHalf - 0.07, 1.1, 15.5);
+  for (const jz of [15.05, 15.95]) {
+    const sj = kit.box(`service.door.jamb.${jz}`, 0.14, 2.2, 0.12, mats.steel, scene, root);
+    sj.position = new Vector3(C.xHalf - 0.07, 1.1, jz);
+    registry.register(`service.door.jamb.${jz}`, sj);
+  }
+  const sframe = kit.box("service.door.frame", 0.14, C.height - 2.06, 1.0, mats.steel, scene, root);
+  sframe.position = new Vector3(C.xHalf - 0.07, 2.06 + (C.height - 2.06) / 2, 15.5);
   const sslit = kit.box("service.door.slit", 0.02, 2.05, 0.8, mats.rubber, scene, root);
   sslit.position = new Vector3(C.xHalf - 0.1, 1.02, 15.5);
   const sleaf = kit.box("service.door.leaf", 0.06, 2.1, 0.88, mats.door, scene, root);
@@ -1982,6 +1988,8 @@ export function buildConcourse(
   registry.register("service.door.frame", sframe);
   registry.register("service.door.leaf", sleaf);
   registry.register("service.door.slit", sslit);
+  // leaf collider owns the doorway until service.stairwell/door.ajar opens it
+  kit.collider("service.door.col", 0.08, 2.02, 0.94, new Vector3(0, 0, 0), scene, sleaf);
   // leaf hardware — parented so it rides door.ajar's swing
   const svcHandle = kit.box("service.door.handle", 0.045, 0.34, 0.04, mats.steel, scene);
   svcHandle.parent = sleaf;
@@ -3157,6 +3165,7 @@ export function buildConcourse(
   clinicLamp.diffuse = new Color3(0.95, 0.9, 0.72);
   clinicLamp.intensity = 0.0;
   clinicLamp.range = 3.4;
+  zones.find((z) => z.name === "clinic")?.extraLights.push(clinicLamp);
 
   // ─── service.stairwell — a lit stair throat behind the z≈15.5 service
   // door that cannot exist behind a 0.12 m wall. Prebuilt disabled like

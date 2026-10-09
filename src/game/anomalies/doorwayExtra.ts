@@ -19,14 +19,14 @@ export const doorwayExtra: AnomalyDef = {
   detectability: "unmistakable",
   weight: 1,
   progressionRange: [0, 100],
-  requires: ["wall.right.2"],
+  requires: ["wall.right.2a"],
   excludes: ["spatial.east"],
   testSeed: "test.doorway.extra",
   dangerous: false,
   activate(ctx) {
     const world = ctx.world;
     const scene = ctx.scene;
-    const wallMesh = world.registry.mesh("wall.right.2");
+    const wallMesh = world.registry.mesh("wall.right.2a");
     const created: AbstractMesh[] = [];
 
     // Replace the solid wall segment with stub walls flanking the doorway,

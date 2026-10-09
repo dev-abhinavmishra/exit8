@@ -64,8 +64,8 @@ export const lockerBanging: AnomalyDef = {
         // slow drift open for 80% of the cycle, snap shut on the last beat
         const open = ph < 0.8 ? ph / 0.8 : 0;
         const ang = open * 1.15;
-        door.rotation.y = ang;
-        door.position.set(HX + Math.sin(ang) * 0.15, 0.95, HZ + Math.cos(ang) * 0.15 - 0.15);
+        door.rotation.y = -ang;
+        door.position.set(HX - Math.sin(ang) * 0.15, 0.95, HZ + Math.cos(ang) * 0.15 - 0.15);
         if (ph >= 0.8 && !banged) {
           banged = true;
           door.rotation.y = 0;

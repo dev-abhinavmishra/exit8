@@ -5,6 +5,7 @@
  * open. Unmistakable; the walkable room is the trap.
  */
 import { Color3 } from "@babylonjs/core/Maths/math.color";
+import type { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { PointLight } from "@babylonjs/core/Lights/pointLight";
 import type { AnomalyDef, AnomalyInstance } from "./types";
@@ -29,6 +30,7 @@ export const archivesSlam: AnomalyDef = {
   dangerous: false,
   activate(ctx): AnomalyInstance {
     const { scene, world } = ctx;
+    const savedMats: [StandardMaterial, Color3][] = [];
     const leaf = world.registry.mesh("archives.door.leaf");
     leaf.rotation.y = -OPEN_TH;
     leaf.position.x = LEAF_X - Math.sin(OPEN_TH) * 0.53;
@@ -73,6 +75,13 @@ export const archivesSlam: AnomalyDef = {
             leaf.position.z = LEAF_Z;
             phase = "dark";
             t = 0;
+            for (const n of ["mat.archives.wash", "mat.archives.pad"]) {
+              const m = scene.getMaterialByName(n) as StandardMaterial | null;
+              if (m) {
+                savedMats.push([m, m.emissiveColor.clone()]);
+                m.emissiveColor.scaleInPlace(0.05);
+              }
+            }
             ctx.audio.caption("it shut behind you", null);
           }
           return;
@@ -82,6 +91,8 @@ export const archivesSlam: AnomalyDef = {
           if (t > 3.2) {
             phase = "reopening";
             t = 0;
+            for (const [m, c] of savedMats) m.emissiveColor = c;
+            savedMats.length = 0;
             ctx.audio.playScrape(new Vector3(LEAF_X, 1.4, LEAF_Z));
           }
           return;
@@ -98,6 +109,7 @@ export const archivesSlam: AnomalyDef = {
         }
       },
       cleanup() {
+        for (const [m, c] of savedMats) m.emissiveColor = c;
         leaf.rotation.y = 0;
         leaf.position.x = LEAF_X;
         leaf.position.z = LEAF_Z;

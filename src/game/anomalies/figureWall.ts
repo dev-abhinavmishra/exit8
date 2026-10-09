@@ -20,7 +20,7 @@ export const figureWall: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.7,
   progressionRange: [25, 100],
-  requires: ["wall.right.2"],
+  requires: ["wall.right.2a"],
   excludes: ["figure", "watcher.follows", "walker.crowd", "gallery.eyes", "glass.eyes"],
   testSeed: "test.figure.wall",
   dangerous: false,

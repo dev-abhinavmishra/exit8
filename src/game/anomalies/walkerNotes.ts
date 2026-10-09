@@ -31,7 +31,7 @@ export const walkerNotes: AnomalyDef = {
     return {
       update(dt) {
         const p = ctx.player.position;
-        const moved = Math.abs(p.x - lastX) + Math.abs(p.z - lastZ) > 0.06;
+        const moved = Math.abs(p.x - lastX) + Math.abs(p.z - lastZ) > 0.008;
         lastX = p.x;
         lastZ = p.z;
         if (writing >= 0) {

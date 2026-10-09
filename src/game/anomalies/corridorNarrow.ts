@@ -5,6 +5,7 @@
  * passage should be the same every loop — it isn't. Unmistakable
  * once your shoulders remember the width.
  */
+import { PointLight } from "@babylonjs/core/Lights/pointLight";
 import type { AnomalyDef } from "./types";
 
 const SCALE = 0.85;
@@ -35,7 +36,7 @@ export const corridorNarrow: AnomalyDef = {
   testSeed: "test.corridor.narrow",
   dangerous: false,
   activate(ctx) {
-    const { world } = ctx;
+    const { scene, world } = ctx;
     world.root.scaling.x = SCALE;
     // positional audio anchors are absolute — pull them onto the
     // fixtures they still point at (wall-mounted horns/vents move in)
@@ -47,11 +48,19 @@ export const corridorNarrow: AnomalyDef = {
       ...world.anchors.paHorns,
     ];
     for (const a of anchors) a.x = a.x * SCALE;
+    // off-axis PointLights are scene-level — carry each pool onto its
+    // pinched fixture (bay/gallery/lobby lamps)
+    const lights = scene.lights.filter(
+      (l): l is PointLight => l instanceof PointLight && Math.abs(l.position.x) > 0.01,
+    );
+    const savedX = lights.map((l) => l.position.x);
+    for (const l of lights) l.position.x = l.position.x * SCALE;
     return {
       update() {},
       cleanup() {
         world.root.scaling.x = 1;
         for (const a of anchors) a.x = a.x / SCALE;
+        lights.forEach((l, i) => (l.position.x = savedX[i]!));
       },
     };
   },

@@ -533,9 +533,14 @@ export class LoopManager {
   /**
    * The lost-route mirror: the lamps across the whole corridor drown
    * at once, and where the sealed cap stood a moment ago there is now
-   * a person facing you. ~2.6s, then the shift report.
+   * a person facing you. The corridor stays playable — reaching it IS
+   * the ending (16s fallback), then the shift report.
    */
   private beginLostEnding(side: "north" | "south"): void {
+    // kill the brown-out restore first — its snapshot would relight the
+    // drowned corridor mid-walk
+    this.brown01 = this.brownTarget = 0;
+    this.brownBase = null;
     for (const z of this.world.zones) {
       z.point.intensity = z.point.intensity * 0.05;
       for (const l of z.extraLights) l.intensity = l.intensity * 0.05;

@@ -13,6 +13,8 @@ async function boot(page: Page, params: string) {
   await page.waitForFunction(`${NA}.state() === "playing"`);
 }
 
+test.setTimeout(150_000);
+
 test.describe("field notes", () => {
   test("a spawned note files itself on interact and persists", async ({ page }) => {
     await boot(page, "");

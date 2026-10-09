@@ -122,6 +122,7 @@ export function buildAmbientWalker(
   let mode: WalkerMode = "normal";
   let chargeZ: number | null = null;
   let lastPz: number | undefined;
+  let followSide = -2.7;
   const stepIfLanded = (stepping: boolean) => {
     const ph = Math.floor((bobT * 3.4) / Math.PI);
     if (ph !== lastStepPh) {
@@ -239,7 +240,9 @@ export function buildAmbientWalker(
         // he falls in behind you — holds ~2.7 m off whichever end you're
         // walking away from, matching your pace; when you stand still he
         // just stands there. Turn around: mid-stride or already waiting.
-        const behind = lastPz !== undefined && playerPos.z < lastPz ? 2.7 : -2.7;
+        if (lastPz === undefined || playerPos.z !== lastPz)
+          followSide = lastPz !== undefined && playerPos.z < lastPz ? 2.7 : -2.7;
+        const behind = followSide;
         lastPz = playerPos.z;
         const target = Math.min(Math.max(playerPos.z + behind, 3), 52);
         const dz = target - z;

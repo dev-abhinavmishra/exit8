@@ -42,7 +42,7 @@ export const corridorMirror: AnomalyDef = {
     }
     // positional audio anchors are absolute — swing them to the side
     // the sound's source now lives on
-    const singles = [world.anchors.clock, world.anchors.vend];
+    const singles = [world.anchors.clock, world.anchors.vend, world.anchors.junctionMachine];
     const lists = [world.anchors.troffers, world.anchors.vents, world.anchors.paHorns];
     for (const a of singles) a.x = -a.x;
     for (const list of lists) for (const p of list) p.x = -p.x;

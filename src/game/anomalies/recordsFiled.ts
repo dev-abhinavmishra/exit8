@@ -4,7 +4,6 @@
  * moves and nothing sounds — you have to know the face. Moderate.
  */
 import { Color3 } from "@babylonjs/core/Maths/math.color";
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 import type { AnomalyDef, AnomalyInstance } from "./types";
@@ -65,7 +64,6 @@ export const recordsFiled: AnomalyDef = {
       update() {
         if (!told && Math.abs(ctx.player.position.z - slot.z) < 1.6) {
           told = true;
-          ctx.audio.caption("a drawer stands open", new Vector3(BANK_X, slot.y, slot.z));
         }
       },
       cleanup() {

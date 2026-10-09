@@ -32,7 +32,11 @@ export const lightCold: AnomalyDef = {
     coldLit.emissiveColor = new Color3(0.62, 0.78, 1.0);
     const zones = world.zones;
     const saved = zones.map((z) => {
-      const d = { point: z.point.diffuse.clone(), extras: [] as [PointLight, Color3][] };
+      const d = {
+        point: z.point.diffuse.clone(),
+        extras: [] as [PointLight, Color3][],
+        trofferMats: z.troffers.map((tr) => tr.material),
+      };
       for (const l of z.extraLights) d.extras.push([l, l.diffuse.clone()]);
       return d;
     });
@@ -47,7 +51,7 @@ export const lightCold: AnomalyDef = {
         zones.forEach((z, i) => {
           z.point.diffuse = saved[i]!.point;
           saved[i]!.extras.forEach(([l, c]) => (l.diffuse = c));
-          for (const tr of z.troffers) tr.material = world.materials.trofferLit;
+          z.troffers.forEach((tr, ti) => (tr.material = saved[i]!.trofferMats[ti]!));
         });
         coldLit.dispose();
       },

@@ -19,14 +19,14 @@ export const depthMismatch: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.55,
   progressionRange: [20, 100],
-  requires: ["wall.right.2"],
+  requires: ["wall.right.2a"],
   excludes: ["spatial.east"],
   testSeed: "test.depth.mismatch",
   dangerous: false,
   activate(ctx): AnomalyInstance {
     const world = ctx.world;
     const scene = ctx.scene;
-    const wallMesh = world.registry.mesh("wall.right.2");
+    const wallMesh = world.registry.mesh("wall.right.2a");
     const created: AbstractMesh[] = [];
 
     wallMesh.isVisible = false;

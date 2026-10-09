@@ -18,7 +18,7 @@ export const shadowFigure: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.8,
   progressionRange: [30, 100],
-  requires: ["wall.right.2"],
+  requires: ["wall.right.2a"],
   excludes: ["air.haze", "depth.mismatch"],
   testSeed: "test.shadow.figure",
   dangerous: false,

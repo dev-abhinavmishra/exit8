@@ -18,7 +18,7 @@ const SEGMENTS = [
   "wall.left.4",
   "wall.right.0",
   "wall.right.0b",
-  "wall.right.2",
+  "wall.right.2a",
 ];
 
 export const corridorBreathes: AnomalyDef = {
@@ -36,7 +36,7 @@ export const corridorBreathes: AnomalyDef = {
     "wall.left.4",
     "wall.right.0",
     "wall.right.0b",
-    "wall.right.2",
+    "wall.right.2a",
   ],
   excludes: ["hall.stretch", "depth.mismatch", "sightline.impossible", "pace.dissolves", "zone.pulse"],
   testSeed: "test.corridor.breathes",
