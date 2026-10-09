@@ -463,6 +463,40 @@ export class AudioSystem {
     this.machinePitchFn = fn;
   }
 
+  /** A dead handset emitting a dial tone — the standard 350+440 Hz pair
+   *  spatialized to a fixed position until the returned stop runs. Used
+   *  by phone.dialtone. */
+  startDialTone(pos: Vector3): () => void {
+    const ctx = this.ctx;
+    if (!ctx) return () => {};
+    const o1 = ctx.createOscillator();
+    o1.frequency.value = 350;
+    const o2 = ctx.createOscillator();
+    o2.frequency.value = 440;
+    const g = ctx.createGain();
+    g.gain.value = 0;
+    const pan = ctx.createStereoPanner();
+    o1.connect(g);
+    o2.connect(g);
+    g.connect(pan).connect(this.bus("anomaly"));
+    o1.start();
+    o2.start();
+    const update = () => {
+      const sp = this.spatialParams(pos);
+      g.gain.value = 0.05 * sp.gain;
+      pan.pan.value = sp.pan;
+    };
+    this.ventUpdaters.push(update);
+    return () => {
+      const i = this.ventUpdaters.indexOf(update);
+      if (i >= 0) this.ventUpdaters.splice(i, 1);
+      const t = ctx.currentTime;
+      g.gain.linearRampToValueAtTime(0, t + 0.15);
+      o1.stop(t + 0.25);
+      o2.stop(t + 0.25);
+    };
+  }
+
   /** Per-frame spatialization refresh; call from sim or render. */
   update(dt: number): void {
     for (const u of this.ventUpdaters) u();

@@ -101,6 +101,9 @@ export interface ConcourseWorld {
   /** clinic.staffed prebuilt intake room behind the shuttered counter */
   clinicAlcove: TransformNode;
   clinicLamp: PointLight;
+  /** service.stairwell prebuilt stair throat behind the service door */
+  serviceStair: TransformNode;
+  serviceStairLamp: PointLight;
   condensationPatch: AbstractMesh;
   /** clock hands for the clock anomalies */
   clock: { hourPivot: TransformNode; minutePivot: TransformNode; face: AbstractMesh };
@@ -595,7 +598,13 @@ export function buildConcourse(
   // recess — see the bay block below); wall.left.4 resumes past it
   kit.wallRun("wall.left.3", -C.xHalf, 42, 46.2, C.height, mats.wallPanel, scene, root, registry);
   kit.wallRun("wall.left.4", -C.xHalf, 49.4, 55, C.height, mats.wallPanel, scene, root, registry);
-  kit.wallRun("wall.right.0", C.xHalf, 0, 20, C.height, mats.wallPanel, scene, root, registry);
+  // wall.right.0 splits at the service doorway (z 15.0–16.0) — a real
+  // opening behind the leaf so service.stairwell can reveal a throat
+  kit.wallRun("wall.right.0", C.xHalf, 0, 15.0, C.height, mats.wallPanel, scene, root, registry);
+  kit.wallRun("wall.right.0b", C.xHalf, 16.0, 20, C.height, mats.wallPanel, scene, root, registry);
+  const svcHeader = kit.box("service.door.header", 0.12, C.height - 2.2, 1.0, mats.wallPanel, scene, root);
+  svcHeader.position = new Vector3(C.xHalf, 2.2 + (C.height - 2.2) / 2, 15.5);
+  registry.register("service.door.header", svcHeader);
   // right wall 20–32: glass gallery — split around a glazed staff door
   // (z 27.5–28.7, in the gap between desk rows): two fixed panes + a
   // leaf, so the reading room can actually be entered when an anomaly
@@ -2230,6 +2239,114 @@ export function buildConcourse(
     st.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
   }
 
+  // ─── maintenance workbench — the west wall hugging the bay mouth
+  // (z≈44.5–46.1) reads as the bay's working bench: fold-down bench,
+  // pegboard with painted tool shadows (one hook empty), cable spool,
+  // task lamp
+  {
+    const benchZ = 45.3;
+    const wtop = kit.box("dress.bench.top", 0.56, 0.06, 1.6, mats.steel, scene, root);
+    wtop.position = new Vector3(-C.xHalf + 0.32, 0.86, benchZ);
+    for (const dz of [-0.68, 0.68]) {
+      const leg = kit.box(`dress.bench.leg.${dz}`, 0.05, 0.84, 0.05, mats.steel, scene, root);
+      leg.position = new Vector3(-C.xHalf + 0.52, 0.42, benchZ + dz);
+      const wallLeg = kit.box(`dress.bench.wleg.${dz}`, 0.04, 0.84, 0.04, mats.steel, scene, root);
+      wallLeg.position = new Vector3(-C.xHalf + 0.08, 0.42, benchZ + dz);
+    }
+    colliders.push(
+      kit.collider(
+        "dress.bench.col",
+        0.62,
+        0.9,
+        1.7,
+        new Vector3(-C.xHalf + 0.32, 0.45, benchZ),
+        scene,
+        root,
+      ),
+    );
+    // pegboard — dark hardboard, peg holes, four tool shadows; the
+    // centre hook's tool is gone, its outline left behind
+    const pegTex = new DynamicTexture("tex.pegboard", { width: 384, height: 256 }, scene, true);
+    const pc = pegTex.getContext() as unknown as CanvasRenderingContext2D;
+    pc.scale(3, 3);
+    pc.fillStyle = "#2b2e31";
+    pc.fillRect(0, 0, 128, 85);
+    pc.fillStyle = "#1b1d1f";
+    for (let y = 6; y < 82; y += 8) for (let x = 6; x < 126; x += 8) pc.fillRect(x, y, 1.4, 1.4);
+    pc.strokeStyle = "#8f969b";
+    pc.lineWidth = 1.6;
+    // wrench
+    pc.strokeRect(10, 14, 6, 34);
+    pc.beginPath();
+    pc.arc(13, 10, 6, Math.PI * 0.7, Math.PI * 1.7);
+    pc.stroke();
+    // hammer
+    pc.strokeRect(34, 16, 5, 30);
+    pc.strokeRect(30, 10, 14, 8);
+    // snips
+    pc.beginPath();
+    pc.moveTo(62, 44);
+    pc.lineTo(68, 12);
+    pc.lineTo(73, 44);
+    pc.moveTo(62, 44);
+    pc.quadraticCurveTo(67, 52, 73, 44);
+    pc.stroke();
+    // empty hook — the missing fourth tool's dashed outline
+    pc.setLineDash([3, 3]);
+    pc.strokeStyle = "#565c61";
+    pc.strokeRect(96, 16, 7, 30);
+    pc.setLineDash([]);
+    pc.fillStyle = "#565c61";
+    pc.fillRect(97, 12, 5, 3);
+    pc.font = "5px monospace";
+    pc.fillText("SPARE", 95, 56);
+    pegTex.update();
+    const pegMat = new StandardMaterial("mat.pegboard", scene);
+    pegMat.diffuseTexture = pegTex;
+    pegMat.emissiveTexture = pegTex;
+    pegMat.emissiveColor = new Color3(0.55, 0.55, 0.5);
+    pegMat.specularColor = new Color3(0.02, 0.02, 0.02);
+    const peg = kit.plane("dress.bench.pegboard", 1.5, 0.95, pegMat, scene, root);
+    peg.position = new Vector3(-C.xHalf + 0.065, 1.62, benchZ);
+    peg.rotation.y = -Math.PI / 2;
+    // shelf + clipped task lamp, faint warm glow under it
+    const wshelf = kit.box("dress.bench.shelf", 0.32, 0.04, 1.2, mats.steel, scene, root);
+    wshelf.position = new Vector3(-C.xHalf + 0.18, 2.24, benchZ);
+    const lampShell = kit.box("dress.bench.lampshell", 0.12, 0.08, 0.1, mats.steel, scene, root);
+    lampShell.position = new Vector3(-C.xHalf + 0.18, 2.16, benchZ - 0.32);
+    const benchLampMat = new StandardMaterial("mat.benchlamp", scene);
+    benchLampMat.diffuseColor = new Color3(0.3, 0.24, 0.14);
+    benchLampMat.emissiveColor = new Color3(0.5, 0.38, 0.2);
+    const lampGlow = kit.box("dress.bench.lampglow", 0.08, 0.025, 0.06, benchLampMat, scene, root);
+    lampGlow.position = new Vector3(-C.xHalf + 0.18, 2.11, benchZ - 0.32);
+    // cable spool under the bench — wound drum on an axle
+    const spool = CreateCylinder(
+      "dress.bench.spool",
+      { diameter: 0.5, height: 0.34, tessellation: 18 },
+      scene,
+    );
+    spool.material = mats.rubber;
+    spool.rotation.z = Math.PI / 2;
+    spool.position = new Vector3(-C.xHalf + 0.34, 0.26, benchZ + 0.42);
+    const spoolAxle = kit.box("dress.bench.saxle", 0.05, 0.5, 0.05, mats.steel, scene, root);
+    spoolAxle.position = new Vector3(-C.xHalf + 0.34, 0.25, benchZ + 0.42);
+    // hand tools left on the bench
+    const wRng = new RngStream("loop.dressing", runSeed, "workbench");
+    for (let i = 0; i < 4; i++) {
+      const tool = kit.box(
+        `dress.bench.tool.${i}`,
+        wRng.range(0.06, 0.16),
+        0.025,
+        wRng.range(0.03, 0.07),
+        i === 3 ? mats.rubber : mats.steel,
+        scene,
+        root,
+      );
+      tool.position = new Vector3(-C.xHalf + wRng.range(0.14, 0.5), 0.9, benchZ + wRng.range(-0.62, 0.62));
+      tool.rotation.y = wRng.range(0, Math.PI);
+    }
+  }
+
   // signs
   const sGallery = kit.wallSign("sign.gallery", mats, scene, root, registry, 1.5, 0.45);
   sGallery.position = new Vector3(C.xHalf - 0.08, 2.5, 26);
@@ -2652,6 +2769,69 @@ export function buildConcourse(
   clinicLamp.intensity = 0.0;
   clinicLamp.range = 3.4;
 
+  // ─── service.stairwell — a lit stair throat behind the z≈15.5 service
+  // door that cannot exist behind a 0.12 m wall. Prebuilt disabled like
+  // depthRoom/clinicAlcove; the anomaly shows it with the leaf swung in.
+  const serviceStair = new TransformNode("anomaly.stair.room", scene);
+  serviceStair.parent = root;
+  {
+    const sm = (
+      name: string,
+      w: number,
+      h: number,
+      d: number,
+      x: number,
+      y: number,
+      z: number,
+      mat: Material = mats.concrete,
+    ) => {
+      const b = kit.box(name, w, h, d, mat, scene, serviceStair);
+      b.position = new Vector3(x, y, z);
+      return b;
+    };
+    // warm incandescent — the stairwell does not run on corridor current
+    const stairBulbMat = new StandardMaterial("mat.stairbulb", scene);
+    stairBulbMat.diffuseColor = new Color3(0.35, 0.26, 0.14);
+    stairBulbMat.emissiveColor = new Color3(0.85, 0.6, 0.28);
+    const stairSlitMat = new StandardMaterial("mat.stairslit", scene);
+    stairSlitMat.diffuseColor = new Color3(0.4, 0.24, 0.08);
+    stairSlitMat.emissiveColor = new Color3(1.0, 0.62, 0.22);
+    // landing at corridor floor level, then a straight flight down (+x)
+    sm("anomaly.stair.landing", 0.9, 0.1, 1.3, 2.24, -0.05, 15.5);
+    for (let i = 0; i < 9; i++) {
+      sm(`anomaly.stair.step.${i}`, 0.26, 0.3, 1.2, 2.75 + i * 0.24, -(i + 1) * 0.185 - 0.15, 15.5);
+    }
+    sm("anomaly.stair.bottom", 0.7, 0.1, 1.3, 5.0, -1.72, 15.5);
+    // end wall + the far door with light living under it — it continues
+    sm("anomaly.stair.endwall", 0.12, 4.6, 1.5, 5.35, 0.42, 15.5);
+    sm("anomaly.stair.fardoor", 0.08, 1.9, 0.72, 5.27, -0.73, 15.5, mats.rubber);
+    sm("anomaly.stair.farslit", 0.03, 0.05, 0.6, 5.21, -1.66, 15.5, stairSlitMat);
+    // side walls close the throat; heights reach the landing ceiling
+    sm("anomaly.stair.wall.0", 3.7, 4.7, 0.12, 3.6, 0.48, 14.85);
+    sm("anomaly.stair.wall.1", 3.7, 4.7, 0.12, 3.6, 0.48, 16.15);
+    sm("anomaly.stair.above", 0.1, 0.6, 1.3, 1.95, 2.4, 15.5);
+    sm("anomaly.stair.ceil", 0.95, 0.08, 1.3, 2.24, 2.66, 15.5);
+    const soffit = sm("anomaly.stair.soffit", 2.75, 0.08, 1.3, 3.75, 1.82, 15.5);
+    soffit.rotation.z = -0.658;
+    // reveal liners filling the cut wall's raw edges
+    sm("anomaly.stair.reveal.0", 0.24, 2.2, 0.06, 1.86, 1.1, 15.01);
+    sm("anomaly.stair.reveal.1", 0.24, 2.2, 0.06, 1.86, 1.1, 15.99);
+    // handrail riding the flight on the south wall
+    const rail = sm("anomaly.stair.rail", 2.3, 0.05, 0.05, 3.62, 0.1, 16.05, mats.steel);
+    rail.rotation.z = -0.658;
+    sm("anomaly.stair.railpost.0", 0.04, 0.9, 0.04, 2.95, -0.12, 16.05, mats.steel);
+    sm("anomaly.stair.railpost.1", 0.04, 0.9, 0.04, 4.25, -1.12, 16.05, mats.steel);
+    // the hanging bulb over the landing — pull cord and all
+    sm("anomaly.stair.cage", 0.14, 0.05, 0.14, 2.24, 2.56, 15.5, mats.steel);
+    sm("anomaly.stair.cord", 0.015, 0.22, 0.015, 2.24, 2.42, 15.5, mats.steel);
+    sm("anomaly.stair.bulb", 0.075, 0.1, 0.075, 2.24, 2.46, 15.5, stairBulbMat);
+  }
+  serviceStair.setEnabled(false);
+  const serviceStairLamp = new PointLight("anomaly.stair.lamp", new Vector3(2.2, 2.25, 15.5), scene);
+  serviceStairLamp.diffuse = new Color3(1.0, 0.72, 0.38);
+  serviceStairLamp.intensity = 0.0;
+  serviceStairLamp.range = 3.6;
+
   // dust motes drifting through the troffer light — one additive
   // particle system filling the corridor volume; skipped entirely when
   // the player asks for reduced motion
@@ -2726,6 +2906,8 @@ export function buildConcourse(
     depthSpill,
     clinicAlcove: clinicRoom,
     clinicLamp,
+    serviceStair,
+    serviceStairLamp,
     condensationPatch: condensation,
     scatter,
     ambientWalker,

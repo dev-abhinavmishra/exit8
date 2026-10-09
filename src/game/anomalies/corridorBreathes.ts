@@ -11,7 +11,15 @@ import type { AnomalyDef, AnomalyInstance } from "./types";
 // breathing applies to the plain wall runs; the records facade and the
 // gallery wall stay put (their fixtures would shear off otherwise)
 // wall.left.4 is the run south of the S-2 bay mouth — it breathes too
-const SEGMENTS = ["wall.left.0", "wall.left.2", "wall.left.3", "wall.left.4", "wall.right.0", "wall.right.2"];
+const SEGMENTS = [
+  "wall.left.0",
+  "wall.left.2",
+  "wall.left.3",
+  "wall.left.4",
+  "wall.right.0",
+  "wall.right.0b",
+  "wall.right.2",
+];
 
 export const corridorBreathes: AnomalyDef = {
   id: "corridor.breathes",
@@ -21,7 +29,15 @@ export const corridorBreathes: AnomalyDef = {
   detectability: "unmistakable",
   weight: 0.6,
   progressionRange: [45, 100],
-  requires: ["wall.left.0", "wall.left.2", "wall.left.3", "wall.left.4", "wall.right.0", "wall.right.2"],
+  requires: [
+    "wall.left.0",
+    "wall.left.2",
+    "wall.left.3",
+    "wall.left.4",
+    "wall.right.0",
+    "wall.right.0b",
+    "wall.right.2",
+  ],
   excludes: ["hall.stretch", "depth.mismatch", "sightline.impossible", "pace.dissolves", "zone.pulse"],
   testSeed: "test.corridor.breathes",
   dangerous: false,

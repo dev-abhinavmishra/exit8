@@ -875,3 +875,33 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
 - Unit spec invariant: every def needs requires>0 anchored to a
   registered always-present mesh (ambient.walker, light.zone.entry,
   wall.left.0, service.door.leaf all work).
+
+## Arc 7 notes (2026-10-08)
+
+- **Probe handle name**: the debug surface is `window.__nightaudit`
+  (there is no `window.NA` — `NA` in specs is a const holding that
+  string). Probes MUST click "BEGIN SHIFT" after `ready === true` —
+  `state() === "playing"` never fires on its own. A probe that waits
+  for state without clicking burns its whole timeout; this cost a
+  full session stretch once.
+- **wall.right.0 split**: east wall z0–15 = `wall.right.0`, z16–20 =
+  `wall.right.0b`, with `service.door.header` lintel over the
+  service-door reveal at z15–16. corridorBreathes SEGMENTS gained
+  `wall.right.0b`; any east-wall anomaly needing the whole run must
+  require both.
+- **serviceStair room** (`world.serviceStair` + `serviceStairLamp`):
+  prebuilt-disabled like depthRoom/clinicAlcove — landing + 9 steps
+  - endwall + fardoor/farslit + rail + caged bulb east of the
+    service door. `setEnabled(true)` only inside service.stairwell.
+- **Scene-level lights do not follow world.root**: corridor.mirror
+  flips geometry under the root but PointLights are created on the
+  scene directly — the fix iterates `scene.lights`, negates
+  `position.x` for `|x| > 0.01`, restores on cleanup. Any future
+  root-space transform anomaly must handle lights the same way.
+- **Desktop Chrome can starve probes**: the Devin browser's GPU
+  process (SwiftShader) has been observed at 260%+ CPU for the whole
+  session — if probes stall while nothing else runs, check
+  `top -bn1` and kill the gpu-process/chrome parent, not vite.
+- **Stoppable loop-audio pattern**: `startDialTone(pos)` pushes an
+  updater into `ventUpdaters` and returns a stop fn that splices +
+  ramps + stops oscillators — reuse for future sustained tones.
