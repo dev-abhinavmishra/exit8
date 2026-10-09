@@ -57,6 +57,13 @@ import { routeReacts } from "./routeReacts";
 import { sightlineImpossible } from "./sightlineImpossible";
 import { depthMismatch } from "./depthMismatch";
 import { clinicStaffed } from "./clinicStaffed";
+import { corridorMirror } from "./corridorMirror";
+import { figureThreshold } from "./figureThreshold";
+import { corridorFlicker } from "./corridorFlicker";
+import { walkerNotes } from "./walkerNotes";
+import { gauntletWatch } from "./gauntletWatch";
+import { walkerFollow } from "./walkerFollow";
+import { lightCold } from "./lightCold";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -283,6 +290,13 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   sightlineImpossible,
   depthMismatch,
   clinicStaffed,
+  corridorMirror,
+  figureThreshold,
+  corridorFlicker,
+  walkerNotes,
+  gauntletWatch,
+  walkerFollow,
+  lightCold,
   liftArrives,
   gazeShift,
   paceDissolves,

@@ -100,8 +100,35 @@ export const liftCar: AnomalyDef = {
 
     ctx.audio.playChime(new Vector3(2.1, 1.7, DOOR_Z));
 
+    // the trap: step inside the cab and the leaves take you back — the
+    // doors shut behind you, the car light gutters, and it holds you a
+    // few seconds before letting go. Dread, not damage.
+    let trapped = false;
+    let tt = 0;
     return {
-      update() {},
+      update(dt) {
+        if (!trapped) {
+          const p = ctx.player.position;
+          if (p.x > 2.32 && Math.abs(p.z - DOOR_Z) < 0.55) {
+            trapped = true;
+            ctx.player.jolt(0.55);
+            ctx.audio.playDoorSlide(new Vector3(2.1, 1.4, DOOR_Z), false);
+            ctx.audio.caption("the car is not a way out", new Vector3(2.1, 1.4, DOOR_Z));
+          }
+          return;
+        }
+        tt += dt;
+        const close = Math.min(1, tt / 0.9); // leaves return home over 0.9s
+        const reo = Math.max(0, Math.min(1, (tt - 6.6) / 0.9)); // release after the hold
+        const k = reo > 0 ? reo : 1 - close;
+        leaves.forEach((l, i) => {
+          l.position.z = home[i]! + (i === 0 ? -open : open) * k;
+        });
+        // the cab light gutters while it's got you
+        glow.intensity =
+          tt > 1 && tt < 6.4 ? 1.0 + Math.abs(Math.sin(tt * 11) * Math.sin(tt * 23)) * 1.9 : 3.2;
+        if (tt > 1 && tt < 1.05) ctx.audio.playGroan(new Vector3(2.4, 1.6, DOOR_Z));
+      },
       cleanup() {
         lamp.material = world.materials.trofferDim;
         leaves.forEach((l, i) => {

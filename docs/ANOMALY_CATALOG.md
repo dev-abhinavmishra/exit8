@@ -725,7 +725,42 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      figure working at the desk, back to the window. `clinicAlcove` is a
      prebuilt disabled room like `depthRoom`; `clinicLamp` does the light.
 
-Slice count: **224 implemented — the full catalog**. Dangerous class
+225. `corridor.mirror` — The Wrong Side · CH III · unmistakable — the
+     whole loop flips east-for-west (`world.root.scaling.x = -1`, every
+     material's sideOrientation flips winding): records bank on the
+     right, gallery on the left, every sign reads backwards, the
+     walker's lane mirrors with the world. Audio anchors negate to the
+     mirrored side.
+
+226. `figure.threshold` — Standing in the Way · CH III · unmistakable — a
+     silhouette stands in the south mouth itself, head tracking you the
+     whole walk; inside arm's reach it steps aside ("it makes room") —
+     filing means walking through where it stood. Dread not damage.
+
+227. `corridor.flicker` — The Corridor Chokes · CH III · unmistakable — a
+     rolling fluorescent failure: zone brightness beats on offset sines
+     so the dark travels down the passage ahead of you (zones keep
+     fighting, never die).
+
+228. `walker.notes` — Wrote You Up · CH II · moderate — stand still ~6 s
+     and the inspector halts mid-route, clipboard up, head over the page,
+     pen working ("he is writing") — then back to patrol. Once per loop;
+     new walker mode `notes` in ambientWalker.
+
+229. `gauntlet.watch` — The Queue · CH III · unmistakable — ten dark
+     figures stand along both walls facing the wall; crossing the
+     midpoint they all turn to face the corridor at once (groan +
+     "they are watching now"), heads tracking you the rest of the way.
+
+230. `walker.follow` — In Step Behind You · CH III · moderate — the
+     inspector quits his route and trails ~3 m behind your direction of
+     travel; stop and he just stands there. New walker mode `follow`.
+
+231. `light.cold` — Wrong Light · CH III · unmistakable — every lamp
+     runs surgical blue-white (zone diffuses + troffer emissive swap);
+     the same corridor in the wrong light. Restores on cleanup.
+
+Slice count: **231 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).

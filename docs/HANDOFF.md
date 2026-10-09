@@ -745,6 +745,7 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
 ## arc3 — lift lobby, egress strip, merge-prefix revival (PR #3)
 
 ### lift lobby (east wall z48.4-50.6, merged in PR #2 lineage)
+
 - Recess constants LOB_Z0=48.4 / LOB_Z1=50.6 / LOB_ZC=49.5;
   `lback` (lobby back wall) = 2.35, `sback` (shaft back) = 2.85,
   `doorHW` = 0.8. Lobby occupies x 1.8→2.35; shaft behind to 2.85.
@@ -756,6 +757,7 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
   shaft. Colliders ride the slide so parted anomalies still leave a gap.
 
 ### egress strip (west wall, z10-52)
+
 - `dress.egress.{0-9}` — 0.5×0.19 photoluminescent boards, y=0.4.
 - **kit.plane faces −z at identity**: west-wall planes face +x corridor
   with `rotation.y = −π/2` (same lesson as the airlock terminal). With
@@ -767,6 +769,7 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
   `egress.gone` (#221) hides all ten — requires them literally.
 
 ### THE merge-prefix silent-death class (validator now guards it)
+
 - `mergeStaticDressing` folds every mesh whose NAME starts with a
   `STATIC_PREFIXES` entry into `merged.static.N` — AFTER anomaly
   `requires:` resolution. The registry keeps a stale ref: `requires:`
@@ -775,7 +778,7 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
 - Convention: rename anomaly-reachable meshes OFF the prefix by
   dropping the dot — `junction.bay.` → `junction.baylamp` /
   `junction.bayvalve*`; `dress.gal.` → `dress.galcove/galmonitor/
-  gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
+gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
 - The trap bit 3× (bay valve spokes, gallery cove/monitor/lamp →
   gallery.dark dead; blackout emergency lamps → rim-light never lit).
 - `validate:assets` now fails if: a `registry.register` wraps a
@@ -783,6 +786,7 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
   literal matches a prefix. This class cannot regress silently.
 
 ### also fixed in arc3
+
 - `gallery.dark` cleanup restored all lamps to trofferLit — would have
   wiped the monitor's `mats.terminal` forever; now restores captured
   per-mesh materials.
@@ -798,6 +802,7 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
 - Catalog: 222. Egress/egress.gone/walker.drop verified by seeded probe.
 
 ## arc4 (PR #4 — enterable observation gallery)
+
 - Gallery glass run splits around a staff-door bay **z 27.5–28.7**
   (`GDOOR_Z0/GDOOR_Z1` consts): `wall.gallery.glass` (z20–27.5, keeps the
   registered name) + `wall.gallery.glass.b` (z28.7–32), jambs at both
@@ -809,7 +814,7 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
   `gallery.door` (223) rotates leaf.rotation.y → ~1.62 rad over 2.4 s
   with playDoorSlide; drops paper-trail sheets corridor→room.
 - **Colliders**: east wall collider splits `[z0,27.5],[28.7,LOB_Z0],
-  [LOB_Z1,z1]`; leaf collider parented to the leaf rotates with it
+[LOB_Z1,z1]`; leaf collider parented to the leaf rotates with it
   (verified: closed blocks x≈1.42, open admits x≈2.74 inside); room
   sealed by `gal.col.back/side.*/furn.*` except the z27.3–28.9 pocket.
 - **Interior-material trap**: shared `mats.steel`/`mats.rubber` inside
@@ -830,6 +835,7 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
   inside-out corridor view through the glass is the payoff frame.
 
 ## arc5 — interactive lost ending
+
 - Lost ending is now a walk, not a cut: `beginLostEnding` parts the
   commit-side inner door (`doors.{side}Inner.target01 = 1`), so the
   drowned vestibule opens and the figure at the cap becomes reachable.
@@ -839,3 +845,33 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
 - Figure type import: `buildFigure` returns `Figure` (headPivot field).
 - No spec reaches ROUTE LOST — verified live via probe (stability 5 →
   wrong retreat → walk north → contact → ROUTE LOST report).
+
+## arc6 — corridor.mirror (#225)
+
+- Whole-loop mirror: `world.root.scaling.x = -1` flips every fixture,
+  collider, and the walker's lane (all local under root) — plus every
+  material's `sideOrientation` (0↔1, default ??1) so faces still render
+  out. Sign textures mirror WITH the geometry = the anomaly's point.
+- Positional audio anchors are ABSOLUTE Vector3s, not parented —
+  negate `anchors.{clock,vend,troffers[],vents[],paHorns[]}.x` on
+  activate + cleanup or sound localizes to the pre-mirror side.
+
+- figure.threshold yield pattern: buildFigure at the commit spot facing
+  north (rotation.y=π, same atan2 sign flip as the lost figure), slide
+  ASIDE on <2.1m — files fine, never chases.
+- lift.car trap: step into the cab (x>2.32, |z-49.5|<.55) → leaves home
+  over .9s, glow gutters 5s, release ~7.5s total. Dread not damage.
+- corridor.flicker recipe: per-zone intensity = base*(0.16+0.84*v) with
+  v=|sin(t*9.5-i*2.1)*sin(t*3.7+i*1.4)|; troffer lit/dim swap at v>0.42,
+  shafts at v>0.3 — mirrors lightDelay's setLit channel set.
+- light.cold: swap every zone point.diffuse/extraLights diffuse to
+  (0.55,0.72,1.0) + troffers to a dedicated cold emissive mat; restore
+  captured colors on cleanup (never assume trofferLit — capture).
+- walker.follow mode: target = player.z ± 2.7 by travel dir (lastPz),
+  clamp z 3..52, 1.55*dt pace (1.8x catchup >1m); same legs/arms swing
+  block as charge but 0.55/0.35 amplitude.
+- gauntlet head-track: east-side figure (x>0, faces -x after turn) uses
+  s=-1 in atan2(s*dx,s*dz); west uses s=+1.
+- Unit spec invariant: every def needs requires>0 anchored to a
+  registered always-present mesh (ambient.walker, light.zone.entry,
+  wall.left.0, service.door.leaf all work).
