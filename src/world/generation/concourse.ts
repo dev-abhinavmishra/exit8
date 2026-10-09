@@ -646,6 +646,11 @@ export function buildConcourse(
   kick.position = new Vector3(0, -0.8, 0.55);
   const lever = kit.box("wall.gallery.door.lever", 0.16, 0.035, 0.045, mats.steel, scene, leaf);
   lever.position = new Vector3(-0.06, -0.52, 0.94);
+  // personnel plaque on the corridor face — AUTHORIZED PERSONNEL
+  const plaque = kit.plane("wall.gallery.door.plaque", 0.52, 0.15, mats.sign.get("sign.gallery")!, scene);
+  plaque.parent = leaf;
+  plaque.position = new Vector3(-0.028, 0.34, 0.55);
+  plaque.rotation.y = Math.PI / 2; // face -x (corridor)
   kit.collider("wall.gallery.door.col", 0.07, 2.0, 1.1, new Vector3(0, 0, 0.55), scene, leaf);
   // venetian blinds drawn down over one bay — the only bay you can't
   // read the room through; child of the glass so gallery anomalies
@@ -895,7 +900,13 @@ export function buildConcourse(
   galLight.intensity = 2.3;
   galLight.range = 5.2;
   const galleryZone = zones.find((z) => z.name === "gallery");
-  if (galleryZone) galleryZone.extraLights.push(galLight);
+  if (galleryZone) {
+    galleryZone.extraLights.push(galLight);
+    // the room's lit cove + desk lamp are trofferLit — they die with
+    // the zone like every other fixture face. The monitors keep their
+    // own materials (a dead zone can still have live screens)
+    galleryZone.troffers.push(gcove, glamp);
+  }
   registry.register("light.gallery", galLight as unknown as AbstractMesh);
 
   // ─── S-2 machinery bay — a real recess in the west wall ───────────
