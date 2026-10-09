@@ -24,7 +24,7 @@ const IDS = readdirSync(ANOMALY_DIR)
 // minutes as the catalog grows; each page still boots a fresh context
 // per def (about:blank teardown), which keeps GL context pile-up away.
 test("every catalog anomaly activates when forced", async ({ page, context }) => {
-  test.setTimeout(20 * 60_000);
+  test.setTimeout(30 * 60_000);
   const LANES = 4;
   const failed: string[] = [];
   const runOne = async (pg: typeof page, id: string) => {
