@@ -843,7 +843,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **247 implemented**. Dangerous class
+Slice count: **251 implemented**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -859,3 +859,8 @@ moderate / unmistakable — enforced by weights, not catalog counts (the
 catalog is quiet-first by design: 15 subtle / 12 moderate / 4
 unmistakable at 31 defs). ≤2 major shocks per first run. Every
 sound-led anomaly carries a visual cue path.
+
+| 248 | `vents.crawl` | In the Duct | Something long travels the ceiling duct on a slow patrol — slat-sliced body through the grates, dry scrape pacing you overhead. | moderate | 2 | figure |
+| 249 | `lobby.voices` | Voices in the Shaft | Muffled sigh/rustle back-and-forth behind the sealed lift doors — the shaft should be empty. | subtle | 2 | sound |
+| 250 | `archives.dark` | Dark Stacks | The stacks room's lamp is out — the lit mouth in the records bank drains to a black doorway. | subtle | 2 | lighting |
+| 251 | `duct.mouth` | Open Duct | The mid-duct grate is gone — an open black throat in the ceiling line. | subtle | 1 | object |

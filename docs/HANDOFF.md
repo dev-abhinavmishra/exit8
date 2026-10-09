@@ -980,3 +980,14 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   under a 60s suite cap.
 - **`.tmp-*` probe files leak into commits** — now gitignored; keep
   probes in .tmp-* or tests/, never at root.
+
+## Arc 11 (arc11 branch) — the ceiling plane
+- `dress.duct.run`: galvanized trunk under the slab, east tee edge x1.02
+  y2.78 z5-51, seams every 5.75m, straps at 9/28/47, three down grates
+  `duct.grate.{0,1,2}` at z 12/27/42 (slats `duct.grate.{i}.slat.{0-2}`).
+  Grates registered — anomalies own them (duct.mouth hides, vents.crawl
+  reads through).
+- vents.crawl patrols INSIDE the duct: dark box at y2.66 visible only
+  through grate slits; biases its course away from the player's z.
+- gallery.lit existed already (arc-era def) — check `git log` on a file
+  before writing a new def with a similar id; the catalog is the index.

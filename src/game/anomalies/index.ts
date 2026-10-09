@@ -79,6 +79,10 @@ import { staffroomAjar } from "./staffroomAjar";
 import { staffroomOccupied } from "./staffroomOccupied";
 import { lockerBanging } from "./lockerBanging";
 import { corridorNarrow } from "./corridorNarrow";
+import { ventsCrawl } from "./ventsCrawl";
+import { ductMouth } from "./ductMouth";
+import { lobbyVoices } from "./lobbyVoices";
+import { archivesDark } from "./archivesDark";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -328,6 +332,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   staffroomOccupied,
   lockerBanging,
   corridorNarrow,
+  ventsCrawl,
+  ductMouth,
+  lobbyVoices,
+  archivesDark,
   liftArrives,
   gazeShift,
   paceDissolves,
