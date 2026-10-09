@@ -164,6 +164,7 @@ import { paneFace } from "./paneFace";
 import { galleryOccupied } from "./galleryOccupied";
 import { galleryMirror } from "./galleryMirror";
 import { liftCalls } from "./liftCalls";
+import { liftCar } from "./liftCar";
 import { benchSit } from "./benchSit";
 import { stainSpread } from "./stainSpread";
 import { signGhost } from "./signGhost";
@@ -379,6 +380,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   galleryOccupied,
   galleryMirror,
   liftCalls,
+  liftCar,
   benchSit,
   stainSpread,
   signGhost,
