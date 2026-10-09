@@ -633,15 +633,17 @@ export function buildConcourse(
   }
   // lit cove at the back — inside the glass band (y 0.5–2.5), the line
   // that makes the room read as occupied space, not void
-  const gcove = kit.box("dress.gal.cove", 0.06, 0.05, 11.4, mats.trofferLit, scene, root);
+  // NOTE: named dress.gal* (no dot) — dress.gal. is a merge prefix and these
+  // stay anomaly-reachable via the wall.gallery.* registrations
+  const gcove = kit.box("dress.galcove", 0.06, 0.05, 11.4, mats.trofferLit, scene, root);
   gcove.position = new Vector3(C.xHalf + 1.3, 2.36, 26);
   // one desk carries a lit monitor face toward the glass — the
   // occupied-room cue at walking distance
-  const gmon = kit.box("dress.gal.monitor", 0.02, 0.26, 0.38, mats.trofferLit, scene, root);
+  const gmon = kit.box("dress.galmonitor", 0.02, 0.26, 0.38, mats.trofferLit, scene, root);
   gmon.position = new Vector3(C.xHalf + 0.46, 0.88, 26.5);
   // a warm desk lamp left on — a point of light deeper in the room
   // than the monitor, reads through the dark panes as depth
-  const glamp = kit.box("dress.gal.lamp", 0.05, 0.06, 0.05, mats.trofferLit, scene, root);
+  const glamp = kit.box("dress.gallamp", 0.05, 0.06, 0.05, mats.trofferLit, scene, root);
   glamp.position = new Vector3(C.xHalf + 0.52, 0.82, 24.2);
   // the near screen carries live terminal text — mat.terminal rewrites
   // with the airlock screens, so terminal.advisory leaks into the room
@@ -1740,8 +1742,10 @@ export function buildConcourse(
     const el = kit.box(`dress.emlight.${pz}`, 0.07, 0.11, 0.3, mats.steel, scene, root);
     el.position = new Vector3(sx * (C.xHalf - 0.05), 2.62, pz);
     for (const dz of [-0.09, 0.09]) {
+      // dress.emlamp (no dot after eml) — dress.emlight. is a merge prefix;
+      // anomalies swap these lamp materials so they must stay live meshes
       const lamp = kit.box(
-        `dress.emlight.${pz}.lamp${dz < 0 ? "a" : "b"}`,
+        `dress.emlamp.${pz}.lamp${dz < 0 ? "a" : "b"}`,
         0.04,
         0.06,
         0.06,

@@ -486,7 +486,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      −5; the right play is turning back, not inspecting the dark.
      (slice)
 
-### Generated index (all 213)
+### Generated index (all 222)
 
 1. `clock.reverse` — Counterclockwise Clock · CH I · moderate
 2. `doorway.extra` — Unmapped Doorway · CH I · unmistakable
@@ -708,8 +708,10 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 218. `shaft.occupied` — Someone In The Shaft · CH III · moderate
 219. `bay.valve` — The Wheel Turns · CH II · subtle
 220. `egress.reversed` — Wrong Way Out · CH I · subtle
+221. `egress.gone` — Missing Egress Strip · CH II · subtle
+222. `walker.drop` — Dropped Case File · CH II · unmistakable
 
-Slice count: **220 implemented — the full catalog**. Dangerous class
+Slice count: **222 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).

@@ -65,6 +65,50 @@ for (const m of modules) {
 }
 notes.push(`${modules.length} anomaly module(s) validated`);
 
+// 4. merge-prefix silent-death guard: meshes whose names match a
+//    STATIC_PREFIXES entry fold into merged.static.* batches, so a
+//    registry.register on one leaves anomalies animating a dead object.
+//    Check both directions: registered meshes named inside a prefix, and
+//    requires/registry lookups whose literal matches a prefix directly.
+const mergeSrc = readFileSync(join(root, "src/world/merge.ts"), "utf8");
+const prefixes = [...mergeSrc.matchAll(/^\s*"([^"]+)",\s*$/gm)].map((m) => m[1]);
+check(prefixes.length > 10, "could not read STATIC_PREFIXES from merge.ts");
+const worldDirs = ["src/world", "src/world/generation"];
+const varNames = new Map(); // var -> mesh name literal
+const registered = []; // [registryName, var, file]
+for (const d of worldDirs) {
+  const dir = join(root, d);
+  for (const f of readdirSync(dir).filter((f) => f.endsWith(".ts"))) {
+    const p = join(dir, f);
+    for (const line of readFileSync(p, "utf8").split("\n")) {
+      const c = line.match(/(\w+)\s*=\s*kit\.\w+\(`?"([^"`]+)"`?/);
+      if (c) varNames.set(c[1], c[2]);
+      const r = line.match(/registry\.register\("([^"]+)",\s*(\w+)/);
+      if (r) registered.push([r[1], r[2], `${d}/${f}`]);
+    }
+  }
+}
+for (const [reg, v, file] of registered) {
+  const mesh = varNames.get(v);
+  if (mesh && prefixes.some((p) => mesh.startsWith(p)))
+    failures.push(`${file}: registered "${reg}" wraps mesh "${mesh}" which matches a merge prefix`);
+}
+// literals: requires entries and registry.get/mesh lookups that are mesh names
+for (const m of modules) {
+  const src = readFileSync(join(anomalyDir, m), "utf8");
+  for (const r of src.matchAll(/requires:\s*\[([^\]]*)\]/gs)) {
+    for (const lit of r[1].matchAll(/"([^"]+)"/g)) {
+      if (prefixes.some((p) => lit[1].startsWith(p)))
+        failures.push(`${m}: requires "${lit[1]}" matches a merge prefix`);
+    }
+  }
+  for (const g of src.matchAll(/registry\.(?:get|mesh)\(`([^`$]+)`/g)) {
+    if (prefixes.some((p) => g[1].startsWith(p)))
+      failures.push(`${m}: registry lookup "${g[1]}" matches a merge prefix`);
+  }
+}
+notes.push("merge-prefix guard: no anomaly-reachable mesh folds into a batch");
+
 if (failures.length > 0) {
   console.error("validate:assets FAILED");
   for (const f of failures) console.error(`  ✗ ${f}`);

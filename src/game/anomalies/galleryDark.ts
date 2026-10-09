@@ -26,11 +26,14 @@ export const galleryDark: AnomalyDef = {
       world.registry.mesh("wall.gallery.monitor"),
       world.registry.mesh("wall.gallery.lamp"),
     ];
+    // capture per-mesh materials — the monitor carries mats.terminal, so
+    // a blanket trofferLit restore would kill its live text for good
+    const restore = lamps.map((m) => m.material ?? null);
     lamps.forEach((m) => (m.material = world.materials.trofferDim));
     return {
       update() {},
       cleanup() {
-        lamps.forEach((m) => (m.material = world.materials.trofferLit));
+        lamps.forEach((m, i) => (m.material = restore[i] ?? null));
       },
     };
   },
