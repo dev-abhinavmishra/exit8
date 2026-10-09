@@ -828,3 +828,14 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
   rail + coat, waste bin, red mug on desk.
 - Verified: closed leaf reads as another bay; open swing + walk-in;
   inside-out corridor view through the glass is the payoff frame.
+
+## arc5 — interactive lost ending
+- Lost ending is now a walk, not a cut: `beginLostEnding` parts the
+  commit-side inner door (`doors.{side}Inner.target01 = 1`), so the
+  drowned vestibule opens and the figure at the cap becomes reachable.
+  `updateEnding` re-enables the player at endingT>1.4, head-tracks the
+  figure (`headPivot`, s-sign flips the atan2 for north vs south), and
+  contact <1.35m → jolt + groan + dark fade → onEnd. 16s sim fallback.
+- Figure type import: `buildFigure` returns `Figure` (headPivot field).
+- No spec reaches ROUTE LOST — verified live via probe (stability 5 →
+  wrong retreat → walk north → contact → ROUTE LOST report).
