@@ -74,10 +74,18 @@ test.describe("field notes", () => {
     await boot(page, "&anomaly=clock.reverse");
     // one correct retreat at 95 secures the route — and the dossier renames the ending
     await page.evaluate(`${NA}.setStability(95)`);
-    await page.evaluate(`${NA}.teleport(0, 0, -2.95)`);
-    // the secured ending walks-out path takes ~17s of sim before the
-    // 14s no-walk fallback fires — needs headroom under suite load
-    await page.waitForFunction(`${NA}.state() === "results"`, null, { timeout: 35_000 });
+    await page.evaluate(`${NA}.teleport(0, 0, -2.95, ${Math.PI})`);
+    // drive the interactive walk-out: the cap drops ~2.9s of sim after
+    // judgment, then stepping through the doorway ends the route. Under
+    // SwiftShader sim time runs far slower than wall-clock, so waiting
+    // on the 14s no-walk fallback can take ~80s — walking is both the
+    // real path and the fast one. Timeout still covers the fallback.
+    await page.waitForFunction(`${NA}.meshInfo('al.north.cap').pos[1] < 1`, null, {
+      timeout: 90_000,
+    });
+    await page.keyboard.down("w");
+    await page.waitForFunction(`${NA}.state() === "results"`, null, { timeout: 90_000 });
+    await page.keyboard.up("w");
     await expect(page.locator(".na-stamp")).toContainText("DOSSIER COMPLETE");
     const endings = (await page.evaluate(
       `JSON.parse(localStorage.getItem('nightaudit.save')).progression.endings`,
