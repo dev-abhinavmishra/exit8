@@ -643,6 +643,40 @@ export function buildConcourse(
   // than the monitor, reads through the dark panes as depth
   const glamp = kit.box("dress.gal.lamp", 0.05, 0.06, 0.05, mats.trofferLit, scene, root);
   glamp.position = new Vector3(C.xHalf + 0.52, 0.82, 24.2);
+  // the near screen carries live terminal text — mat.terminal rewrites
+  // with the airlock screens, so terminal.advisory leaks into the room
+  gmon.material = mats.terminal;
+  // a second workstation's dim screen + a dead third — the occupied-room
+  // reads through the smoked panes as a row of screens, not one blob
+  const dimMonMat = new StandardMaterial("mat.gal.dimmon", scene);
+  dimMonMat.diffuseColor = new Color3(0.1, 0.11, 0.12);
+  dimMonMat.emissiveColor = new Color3(0.3, 0.34, 0.34);
+  const gd2 = kit.box("dress.gal.monitor.dim", 0.02, 0.24, 0.34, dimMonMat, scene, root);
+  gd2.position = new Vector3(C.xHalf + 0.46, 0.88, 22.5);
+  const gd3 = kit.box("dress.gal.monitor.off", 0.02, 0.24, 0.34, mats.rubber, scene, root);
+  gd3.position = new Vector3(C.xHalf + 0.46, 0.88, 30);
+  // keyboards + paper clutter on the desk tops
+  const galPaper = new StandardMaterial("mat.gal.paper", scene);
+  galPaper.diffuseColor = new Color3(0.72, 0.7, 0.64);
+  galPaper.emissiveColor = new Color3(0.07, 0.065, 0.05);
+  for (const dz of [22.5, 26.5, 30]) {
+    const kb = kit.box(`dress.gal.kb.${dz}`, 0.26, 0.02, 0.1, mats.steel, scene, root);
+    kb.position = new Vector3(C.xHalf + 0.56, 0.75, dz - 0.25);
+    const stk = kit.box(`dress.gal.paper.${dz}`, 0.12, 0.035, 0.16, galPaper, scene, root);
+    stk.position = new Vector3(C.xHalf + 0.62, 0.76, dz + 0.4);
+  }
+  // pinboard on the back wall — cork slab + pinned sheets in a loose grid
+  const gboard = kit.box("dress.gal.board", 0.04, 0.8, 1.3, mats.rubber, scene, root);
+  gboard.position = new Vector3(C.xHalf + 1.33, 1.7, 24.5);
+  for (const [by, bz] of [
+    [1.55, 24.05],
+    [1.78, 24.3],
+    [1.62, 24.85],
+    [1.85, 24.95],
+  ] as const) {
+    const pin = kit.box(`dress.gal.pin.${by}.${bz}`, 0.015, 0.2, 0.16, galPaper, scene, root);
+    pin.position = new Vector3(C.xHalf + 1.29, by, bz);
+  }
   registry.register("wall.gallery.cove", gcove);
   registry.register("wall.gallery.monitor", gmon);
   registry.register("wall.gallery.lamp", glamp);
