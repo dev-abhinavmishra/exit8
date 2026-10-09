@@ -58,6 +58,7 @@ import { sightlineImpossible } from "./sightlineImpossible";
 import { depthMismatch } from "./depthMismatch";
 import { clinicStaffed } from "./clinicStaffed";
 import { corridorMirror } from "./corridorMirror";
+import { figureThreshold } from "./figureThreshold";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -285,6 +286,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   depthMismatch,
   clinicStaffed,
   corridorMirror,
+  figureThreshold,
   liftArrives,
   gazeShift,
   paceDissolves,

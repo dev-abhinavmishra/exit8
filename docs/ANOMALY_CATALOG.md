@@ -732,7 +732,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walker's lane mirrors with the world. Audio anchors negate to the
      mirrored side.
 
-Slice count: **225 implemented — the full catalog**. Dangerous class
+226. `figure.threshold` — Standing in the Way · CH III · unmistakable — a
+     silhouette stands in the south mouth itself, head tracking you the
+     whole walk; inside arm's reach it steps aside ("it makes room") —
+     filing means walking through where it stood. Dread not damage.
+
+Slice count: **226 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
