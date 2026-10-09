@@ -6,6 +6,7 @@
  */
 import type { AnomalyDef, AnomalyInstance } from "./types";
 import type { LightZone } from "../../world/generation/concourse";
+import type { PointLight } from "@babylonjs/core/Lights/pointLight";
 
 const LAG_S = 1.5;
 const DARK_S = 1.0;
@@ -28,9 +29,16 @@ export const lightDelay: AnomalyDef = {
     let prevZone: LightZone | undefined;
     let pending: { zone: LightZone; at: number } | null = null;
     let dimmed: { zone: LightZone; base: number; restoreAt: number } | null = null;
+    // extras dim proportionally with their zone — snapshot bases once
+    const exBase = new Map<PointLight, number>();
+    for (const z of zones) for (const l of z.extraLights) exBase.set(l, l.intensity);
 
     const setLit = (zone: LightZone, lit: boolean, base: number) => {
       zone.point.intensity = lit ? base : base * 0.12;
+      for (const l of zone.extraLights) {
+        const eb = exBase.get(l) ?? 0;
+        l.intensity = lit ? eb : eb * 0.12;
+      }
       const mat = lit ? ctx.world.materials.trofferLit : ctx.world.materials.trofferDim;
       for (const tr of zone.troffers) tr.material = mat;
       for (const s of zone.shafts) s.setEnabled(lit);

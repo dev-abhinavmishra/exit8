@@ -36,7 +36,9 @@ export const chalkMarks: AnomalyDef = {
 
     // gates of five: |||| with a diagonal strike. 1-3 clusters, seeded
     const groups = rng.int(1, 3);
-    const baseZ = rng.range(34, 52);
+    // keep clusters off the S-2 bay mouth (z 46.2–49.4) — chalk must
+    // land on wall, not float over the opening
+    const baseZ = rng.draw() < 0.72 ? rng.range(34, 45.3) : rng.range(49.6, 51.6);
     const baseY = rng.range(1.15, 1.7);
     const wx = -1.74 + 0.008; // west wall inner face + a skin of air
     let g = 0;

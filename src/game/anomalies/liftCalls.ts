@@ -25,7 +25,7 @@ export const liftCalls: AnomalyDef = {
     const home = lamp.material;
     lamp.material = ctx.world.materials.trofferLit;
     let t = 4; // first chime comes early so the cue lands
-    const pos = new Vector3(1.6, 1.7, 49.5);
+    const pos = new Vector3(2.1, 1.7, 49.5);
     return {
       update(dt) {
         t += dt;

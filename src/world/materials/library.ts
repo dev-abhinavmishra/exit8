@@ -34,6 +34,8 @@ export interface MaterialSet {
   lightShaft: StandardMaterial;
   /** truncated-dome tactile warning pads at the airlock thresholds */
   domePad: StandardMaterial;
+  /** dark terrazzo border band — shares the floor's polish so it reads as stone, not void */
+  fborder: PBRMaterial;
   blinds: StandardMaterial;
   puddle: StandardMaterial;
 }
@@ -72,6 +74,16 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   terrazzo.bumpTexture = tex.terrazzoBump;
   tex.terrazzoBump.uScale = 4;
   tex.terrazzoBump.vScale = 20;
+
+  // the wall-base border band: same polished-terrazzo recipe, tinted
+  // down — at grazing angles it must still read as stone (mats.rubber
+  // here collapsed to void)
+  const fborder = new PBRMaterial("mat.fborder", scene);
+  fborder.albedoTexture = tex.terrazzo;
+  fborder.albedoColor = new Color3(0.16, 0.16, 0.175);
+  fborder.roughness = 0.3;
+  fborder.metallic = 0.05;
+  fborder.environmentIntensity = 0.8;
 
   const ceiling = new PBRMaterial("mat.ceiling", scene);
   ceiling.albedoTexture = tex.ceilingTile;
@@ -247,6 +259,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   return {
     wallPanel,
     terrazzo,
+    fborder,
     ceiling,
     steel,
     shutter,

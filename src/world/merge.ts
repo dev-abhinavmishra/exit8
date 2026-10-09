@@ -63,6 +63,7 @@ const STATIC_PREFIXES = [
   "conduit.",
   "baseboard.",
   "junction.pipe.",
+  "junction.bay.",
 ];
 
 export function mergeStaticDressing(root: TransformNode): void {

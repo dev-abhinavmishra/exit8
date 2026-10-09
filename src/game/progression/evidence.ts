@@ -87,8 +87,10 @@ export const EVIDENCE_NOTES: EvidenceNote[] = [
       "weather. Dress warm on the",
       "south stretch.",
     ],
-    pos: new Vector3(WALL_R, 1.6, 49.5), // right wall approaching south airlock
-    rot: new Vector3(0, ROT_R, 0),
+    // pinned on the lift lobby's north cheek — the advisory lives inside
+    // the recess it warns about
+    pos: new Vector3(2.05, 1.6, 48.47),
+    rot: new Vector3(0, Math.PI, 0),
   },
   {
     id: "note.machine",

@@ -93,7 +93,7 @@ export class LoopManager {
   private brown01 = 0;
   private brownTarget = 0;
   private brownBase: {
-    zones: [LightZone, number][];
+    zones: [LightZone, number, number[]][];
     emissive: Color3;
     shaftAlpha: number;
   } | null = null;
@@ -417,7 +417,10 @@ export class LoopManager {
       const tl = this.world.materials.trofferLit;
       const sh = this.world.materials.lightShaft;
       this.brownBase = {
-        zones: this.world.zones.map((z) => [z, z.point.intensity] as [LightZone, number]),
+        zones: this.world.zones.map(
+          (z) =>
+            [z, z.point.intensity, z.extraLights.map((l) => l.intensity)] as [LightZone, number, number[]],
+        ),
         emissive: tl.emissiveColor.clone(),
         shaftAlpha: sh.alpha,
       };
@@ -430,7 +433,10 @@ export class LoopManager {
     const b = this.brownBase;
     if (!b) return;
     const f = 1 - 0.66 * this.brown01;
-    for (const [z, v] of b.zones) z.point.intensity = v * f;
+    for (const [z, v, ex] of b.zones) {
+      z.point.intensity = v * f;
+      z.extraLights.forEach((l, i) => (l.intensity = (ex[i] ?? 0) * f));
+    }
     this.world.materials.trofferLit.emissiveColor = b.emissive.scale(1 - 0.72 * this.brown01);
     this.world.materials.lightShaft.alpha = b.shaftAlpha * (1 - 0.7 * this.brown01);
     if (this.brown01 === 0 && this.brownTarget === 0) this.brownBase = null;
@@ -529,7 +535,10 @@ export class LoopManager {
    * a person facing you. ~2.6s, then the shift report.
    */
   private beginLostEnding(side: "north" | "south"): void {
-    for (const z of this.world.zones) z.point.intensity = z.point.intensity * 0.05;
+    for (const z of this.world.zones) {
+      z.point.intensity = z.point.intensity * 0.05;
+      for (const l of z.extraLights) l.intensity = l.intensity * 0.05;
+    }
     const endZ = side === "south" ? LAYOUT.southAirlock.z1 : LAYOUT.northAirlock.z0;
     const dir = side === "south" ? -1 : 1;
     // barely-seen silhouette: a whisper of cold emissive, no light

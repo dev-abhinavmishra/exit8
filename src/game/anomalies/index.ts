@@ -98,6 +98,9 @@ import { terminalAdvisory } from "./terminalAdvisory";
 import { phoneGone } from "./phoneGone";
 import { hatchScratched } from "./hatchScratched";
 import { shadowFigure } from "./shadowFigure";
+import { bayOccupied } from "./bayOccupied";
+import { bayValve } from "./bayValve";
+import { egressReversed } from "./egressReversed";
 import { figureCorridor } from "./figureCorridor";
 import { figureRush } from "./figureRush";
 import { figureWall } from "./figureWall";
@@ -163,6 +166,8 @@ import { paneFace } from "./paneFace";
 import { galleryOccupied } from "./galleryOccupied";
 import { galleryMirror } from "./galleryMirror";
 import { liftCalls } from "./liftCalls";
+import { liftCar } from "./liftCar";
+import { shaftOccupied } from "./shaftOccupied";
 import { benchSit } from "./benchSit";
 import { stainSpread } from "./stainSpread";
 import { signGhost } from "./signGhost";
@@ -312,6 +317,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   phoneGone,
   hatchScratched,
   shadowFigure,
+  bayOccupied,
+  bayValve,
+  egressReversed,
   figureCorridor,
   figureRush,
   figureWall,
@@ -377,6 +385,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   galleryOccupied,
   galleryMirror,
   liftCalls,
+  liftCar,
+  shaftOccupied,
   benchSit,
   stainSpread,
   signGhost,

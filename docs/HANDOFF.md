@@ -701,3 +701,43 @@ PointsCloudSystem(name, size, scene)` feeds gl_PointSize; sizes like
 - Zone light tints live in `zoneDefs` (`clinic` runs cool) —
   `baseDiffuse` snapshots feed anomaly restore, so keep the base color
   in the def, not patched after creation.
+
+## S-2 machinery bay (2026-10, PR #2)
+
+- Walkable recess in the WEST wall, mouth z46.2–49.4, `BAY_DEPTH=1.15`
+  (back-face x −2.95). Constants `BAY_Z0/BAY_Z1/BAY_DEPTH/BAY_ZC` at the
+  top of `buildConcourse`. Shell = `junction.bay.*` (merges); colliders
+  `headerCol/cheekCol/backCol/floorCol`.
+- **`LightZone.extraLights: PointLight[]`** — non-troffer lights inside a
+  zone's footprint join EVERY dim path via it (brown-out snapshot tuple,
+  blackout setLit, light.delay setLit, lost-ending ×0.05). Adding a light
+  inside a zone: push it to `<zone>.extraLights`; emissive fixture →
+  `<zone>.troffers` (material swap) — and keep that mesh OFF the
+  `junction.bay.` merge prefix (`junction.baylamp` is the pattern).
+- Wall/collider/AO/baseboard/rail/tray/conduit/cove/hangers all split
+  around the mouth via `${i?".s":""}` spans; `wall.left.4` is the run
+  south of the mouth (corridor.breathes reaches it). `dress.fborder`
+  intentionally continuous through the opening.
+- The machine + pipe run live INSIDE the bay now (anchors.junctionMachine
+  = −xHalf−BAY_DEPTH+0.38). Lockers at z≈51 south of the mouth.
+- Pallets/pole vignette east z≈53.4-54 (dress.pallet.*/dress.pole/
+  dress.mophead) — floor dressing, no surgery.
+- Footstep surface hook: `inBay` (x<−1.75, z 46-49.6) → concrete timbre.
+- `bay.occupied` — the bay's own anomaly (silhouette at the machine).
+- **File-clobber lesson**: a stray paste overwrote concourse.ts with
+  fixtures.ts content; recovered by splicing HEAD's head/tail around a
+  dumped `cat -n` span from the overflow dir
+  (`~/.devin-files/devin-remote-overflows-*`). When a file dies
+  uncommitted, grep those dumps before retyping.
+
+### follow-on dressing (same PR)
+
+- Soffit beam bands `dress.soffit.{clinic,gallery}` at z32/z14 —
+  `C.xHalf*2 × 0.3 × 0.6` wallPanel + rubber lip; marks zone thresholds.
+- Vestibule staff doors `dress.sdoor.{north|south}.*` — frame/panel/
+  handle/plaque on alternating side walls (north = west, south = east).
+- Conduit branch `junction.bay.cond.{drop,jbox,run}` — feeds the bay so
+  the gapped tray reads plumbed-in.
+- `mat.baylamp` — dimmer dedicated emissive for `junction.baylamp`
+  (trofferLit blows white at arm's length).
+- Pause kicker shows live context: `ui.setPauseContext()` in app.pause().

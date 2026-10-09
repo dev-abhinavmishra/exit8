@@ -48,8 +48,11 @@ export const lightsBlackout: AnomalyDef = {
     for (const z of zones) bases.set(z, z.point.intensity);
     const hemiBase = world.hemi.intensity;
 
+    const exBase = new Map<PointLight, number>();
+    for (const z of zones) for (const l of z.extraLights) exBase.set(l, l.intensity);
     const setLit = (zone: LightZone, on: boolean) => {
       zone.point.intensity = on ? bases.get(zone)! : bases.get(zone)! * 0.05;
+      for (const l of zone.extraLights) l.intensity = (exBase.get(l) ?? 0) * (on ? 1 : 0.05);
       const mat = on ? world.materials.trofferLit : world.materials.trofferDim;
       for (const tr of zone.troffers) tr.material = mat;
       for (const s of zone.shafts) s.setEnabled(on);

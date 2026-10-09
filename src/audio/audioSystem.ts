@@ -211,17 +211,20 @@ export class AudioSystem {
     // terrazzo — lower, duller, a touch longer. Anomalous footsteps keep
     // the terrazzo timbre (they are never yours).
     const onStrip = !anomalous && Math.abs(pos.x - 0.72) < 0.2 && pos.z > 3.0 && pos.z < 54.2;
-    src.playbackRate.value = (onStrip ? 0.7 : 0.9) + this.rng.draw() * 0.3;
+    // inside the S-2 bay: bare concrete answers hollow + hard — a lower
+    // fundamental with a tighter ring and a longer tail than terrazzo
+    const inBay = !anomalous && pos.x < -1.75 && pos.z > 46.0 && pos.z < 49.6;
+    src.playbackRate.value = (inBay ? 0.62 : onStrip ? 0.7 : 0.9) + this.rng.draw() * 0.3;
     const bp = this.ctx.createBiquadFilter();
     bp.type = "bandpass";
-    bp.frequency.value = (onStrip ? 205 : 320) + this.rng.draw() * (onStrip ? 60 : 120);
-    bp.Q.value = onStrip ? 1.5 : 1.1;
+    bp.frequency.value = (inBay ? 175 : onStrip ? 205 : 320) + this.rng.draw() * (onStrip ? 60 : 120);
+    bp.Q.value = inBay ? 2.2 : onStrip ? 1.5 : 1.1;
     const g = this.ctx.createGain();
     const sp = this.spatialParams(pos);
-    const peak = 0.5 * intensity * sp.gain * (onStrip ? 0.85 : 1);
+    const peak = 0.5 * intensity * sp.gain * (inBay ? 1.1 : onStrip ? 0.85 : 1);
     g.gain.setValueAtTime(0, t0);
     g.gain.linearRampToValueAtTime(peak, t0 + 0.012);
-    g.gain.exponentialRampToValueAtTime(0.001, t0 + (onStrip ? 0.17 : 0.13));
+    g.gain.exponentialRampToValueAtTime(0.001, t0 + (inBay ? 0.21 : onStrip ? 0.17 : 0.13));
     const pan = this.ctx.createStereoPanner();
     pan.pan.value = sp.pan;
     src
