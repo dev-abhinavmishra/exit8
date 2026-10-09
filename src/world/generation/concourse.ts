@@ -535,6 +535,8 @@ export function buildConcourse(
   // cross this stretch splits around the mouth.
   const BAY_Z0 = 46.2;
   const BAY_Z1 = 49.4;
+  const ARCH_Z0 = 21.4; // archives door bay in the records bank
+  const ARCH_Z1 = 22.8;
   const BAY_DEPTH = 1.15;
   const BAY_ZC = (BAY_Z0 + BAY_Z1) / 2;
   // S-2 lift lobby — east-wall alcove around the sealed lift (z≈49.5);
@@ -593,7 +595,17 @@ export function buildConcourse(
   // Skirting + wall caps — left wall has feature bands, right wall carries
   // the gallery glass z 20–32.
   kit.wallRun("wall.left.0", -C.xHalf, 0, 12, C.height, mats.wallPanel, scene, root, registry);
-  kit.wallRun("wall.left.1", -C.xHalf, 12, 32, C.height, mats.wallPanel, scene, root, registry); // records wall face
+  // records wall face — split around the archives doorway (z 21.4–22.8)
+  // so the glazed door recesses into a real room, not a plane on the bank
+  kit.wallRun("wall.left.1a", -C.xHalf, 12, 21.4, C.height, mats.wallPanel, scene, root, registry);
+  kit.wallRun("wall.left.1b", -C.xHalf, 22.8, 32, C.height, mats.wallPanel, scene, root, registry);
+  {
+    const aHead = kit.box("dress.archives.header", 0.12, C.height - 2.02, 1.46, mats.wallPanel, scene, root);
+    aHead.position = new Vector3(-C.xHalf, 2.02 + (C.height - 2.02) / 2, 22.1);
+    colliders.push(
+      kit.collider("archives.headerCol", 0.14, C.height - 1.98, 1.5, aHead.position.clone(), scene, root),
+    );
+  }
   kit.wallRun("wall.left.2", -C.xHalf, 32, 42, C.height, mats.wallPanel, scene, root, registry);
   // wall.left.3 ends at the S-2 machinery bay mouth (z 46.2–49.4, a real
   // recess — see the bay block below); wall.left.4 resumes past it
@@ -844,7 +856,8 @@ export function buildConcourse(
     const spans: [number, number][] =
       sx < 0
         ? [
-            [C.z0, BAY_Z0],
+            [C.z0, ARCH_Z0],
+            [ARCH_Z1, BAY_Z0],
             [BAY_Z1, C.z1],
           ]
         : [
@@ -1497,14 +1510,29 @@ export function buildConcourse(
   // Records wall: cabinet fronts on left z 12–32
   // pale panel reads as enamelled steel; true steel rendered the
   // eighteen-metre bank as a near-black void in this light
-  const cab = kit.box("records.cabinets", 0.18, 2.1, 18, mats.wallPanel, scene, root);
-  cab.position = new Vector3(-C.xHalf + 0.16, 1.15, 22);
-  registry.register("records.cabinets", cab);
+  // bank is split around the archives doorway (z 21.3–22.9) — a real
+  // glazed door recesses there; `records.cabinets` stays the registered
+  // name as a parent node so cabinet.* / records.* / figure.records
+  // anomalies keep addressing the whole bank
+  const cabNode = new TransformNode("records.cabinets", scene);
+  cabNode.parent = root;
+  registry.register("records.cabinets", cabNode);
+  const cabA = kit.box("records.cabinets.a", 0.18, 2.1, 8.3, mats.wallPanel, scene, root);
+  cabA.position = new Vector3(-C.xHalf + 0.16, 1.15, 17.15);
+  cabA.parent = cabNode;
+  const cabB = kit.box("records.cabinets.b", 0.18, 2.1, 8.1, mats.wallPanel, scene, root);
+  cabB.position = new Vector3(-C.xHalf + 0.16, 1.15, 26.95);
+  cabB.parent = cabNode;
   // drawer grid on the bank face — the close-up read was one flat slab.
   // Merges into the static batches; anomalies overlay their own geometry.
   for (const y of [0.55, 0.95, 1.35, 1.75]) {
-    const hs = kit.box(`dress.cabseam.h.${y}`, 0.014, 0.016, 17.6, mats.rubber, scene, root);
-    hs.position = new Vector3(-C.xHalf + 0.255, y, 22);
+    for (const [zc, len] of [
+      [17.15, 8.0],
+      [26.95, 7.8],
+    ] as const) {
+      const hs = kit.box(`dress.cabseam.h.${y}.${zc}`, 0.014, 0.016, len, mats.rubber, scene, root);
+      hs.position = new Vector3(-C.xHalf + 0.255, y, zc);
+    }
   }
   for (const z of [14.6, 17.6, 20.6, 23.6, 26.6, 29.6]) {
     const vs = kit.box(`dress.cabseam.v.${z}`, 0.014, 1.5, 0.02, mats.rubber, scene, root);
@@ -1516,7 +1544,7 @@ export function buildConcourse(
   cardMat.diffuseColor = new Color3(0.78, 0.74, 0.64);
   cardMat.specularColor = new Color3(0.06, 0.06, 0.06);
   for (const py of [0.24, 0.66, 1.06, 1.46]) {
-    for (const z of [15.5, 18.5, 21.5, 24.5, 27.5, 30.5]) {
+    for (const z of [15.5, 18.5, 24.5, 27.5, 30.5]) {
       const pull = kit.box(`dress.cabpull.${py}.${z}`, 0.04, 0.055, 0.24, mats.steel, scene, root);
       pull.position = new Vector3(-C.xHalf + 0.275, py, z);
       const lbl = kit.box(`dress.cablabel.${py}.${z}`, 0.018, 0.09, 0.18, cardMat, scene, root);
@@ -1530,12 +1558,184 @@ export function buildConcourse(
   fasciaMat.diffuseTexture = fasciaTex;
   fasciaMat.emissiveColor = new Color3(0.12, 0.11, 0.08);
   fasciaMat.specularColor = new Color3(0.15, 0.15, 0.15);
-  const fascia = kit.plane("dress.cabfascia", 17.6, 0.17, fasciaMat, scene, root);
-  fascia.position = new Vector3(-C.xHalf + 0.262, 2.0, 22);
-  fascia.rotation.y = -Math.PI / 2;
+  for (const [fc, flen] of [
+    [17.15, 8.1],
+    [26.95, 7.9],
+  ] as const) {
+    const fascia = kit.plane(`dress.cabfascia.${fc}`, flen, 0.17, fasciaMat, scene, root);
+    fascia.position = new Vector3(-C.xHalf + 0.262, 2.0, fc);
+    fascia.rotation.y = -Math.PI / 2;
+  }
   colliders.push(
-    kit.collider("records.col", 0.3, 2.2, 18, new Vector3(-C.xHalf + 0.18, 1.1, 22), scene, root),
+    kit.collider("records.col.a", 0.3, 2.2, 8.3, new Vector3(-C.xHalf + 0.18, 1.1, 17.15), scene, root),
+    kit.collider("records.col.b", 0.3, 2.2, 8.1, new Vector3(-C.xHalf + 0.18, 1.1, 26.95), scene, root),
   );
+
+  // ─── archives door + stacks room — the ARCHIVES fascia's promise ────
+  // A glazed staff door recessed into the bank face (z 21.4–22.8 gap in
+  // wall.left.1a/b + the bank split); behind it a real stacks room runs
+  // west to x -4.4 — shelf run, archive boxes, a desk with a gooseneck
+  // lamp. Sealed leaf by default; archives.open / archives.staffed work
+  // it. The leaf's collider is parented to it so it swings with the leaf.
+  {
+    const DOOR_Z = 22.1;
+    // header rail over the leaf; side jambs are built below with the
+    // colliders — no solid frame box or the doorway is a steel slab
+    const aframe = kit.box("archives.door.frame", 0.16, 0.12, 1.4, mats.steel, scene, root);
+    aframe.position = new Vector3(-C.xHalf + 0.08, 2.06, DOOR_Z);
+    registry.register("archives.door.frame", aframe);
+    // no rubber slit insert — the room behind is real geometry; the
+    // leaf + glazed pane alone close the gap when sealed
+    // glazed leaf — steel frame slab + wired pane, like the gallery door
+    const aleaf = kit.box("archives.door.leaf", 0.06, 2.02, 1.06, mats.door, scene, root);
+    aleaf.position = new Vector3(-C.xHalf + 0.15, 1.01, DOOR_Z);
+    registry.register("archives.door.leaf", aleaf);
+    const apane = kit.plane("archives.door.pane", 0.5, 0.62, doorGlassMaterial(scene), scene);
+    apane.parent = aleaf;
+    apane.position = new Vector3(-0.032, 0.52, 0);
+    apane.rotation.y = -Math.PI / 2;
+    const apull = kit.box("archives.door.pull", 0.045, 0.34, 0.04, mats.steel, scene);
+    apull.parent = aleaf;
+    apull.position = new Vector3(-0.055, -0.02, 0.38);
+    const aPlaque = kit.plane("archives.door.plaque", 0.3, 0.1, paperMaterial(scene), scene);
+    aPlaque.parent = aleaf;
+    aPlaque.position = new Vector3(-0.033, 0.28, 0);
+    aPlaque.rotation.y = -Math.PI / 2;
+    // leaf collider rides the leaf's swing
+    kit.collider("archives.door.col", 0.08, 2.02, 1.06, new Vector3(0, 0, 0), scene, aleaf);
+    // interior shell — concrete like the service spaces, always real
+    const roomX0 = -C.xHalf; // -1.8 wall face
+    const roomX1 = roomX0 - 2.55; // back face -4.35
+    const roomZ0 = 21.42;
+    const roomZ1 = 22.78;
+    const roomC = { x: (roomX0 + roomX1) / 2, z: (roomZ0 + roomZ1) / 2 };
+    const afloor = kit.box(
+      "dress.archives.floor",
+      roomX0 - roomX1 + 0.2,
+      0.06,
+      roomZ1 - roomZ0 + 0.24,
+      mats.concrete,
+      scene,
+      root,
+    );
+    afloor.position = new Vector3(roomC.x, -0.02, roomC.z);
+    const aceil = kit.box(
+      "dress.archives.ceil",
+      roomX0 - roomX1 + 0.2,
+      0.08,
+      roomZ1 - roomZ0 + 0.24,
+      mats.concrete,
+      scene,
+      root,
+    );
+    aceil.position = new Vector3(roomC.x, 2.42, roomC.z);
+    for (const [rz, tag] of [
+      [roomZ0, "n"],
+      [roomZ1, "s"],
+    ] as const) {
+      const rwall = kit.box(
+        `dress.archives.wall.${tag}`,
+        roomX0 - roomX1 + 0.2,
+        2.5,
+        0.1,
+        mats.concrete,
+        scene,
+        root,
+      );
+      rwall.position = new Vector3(roomC.x, 1.22, rz);
+      colliders.push(
+        kit.collider(
+          `archives.wallCol.${tag}`,
+          roomX0 - roomX1 + 0.2,
+          2.5,
+          0.1,
+          rwall.position.clone(),
+          scene,
+          root,
+        ),
+      );
+    }
+    const rback = kit.box("dress.archives.back", 0.1, 2.5, roomZ1 - roomZ0 + 0.2, mats.concrete, scene, root);
+    rback.position = new Vector3(roomX1 - 0.02, 1.22, roomC.z);
+    colliders.push(
+      kit.collider(
+        "archives.backCol",
+        0.12,
+        2.5,
+        roomZ1 - roomZ0 + 0.24,
+        rback.position.clone(),
+        scene,
+        root,
+      ),
+    );
+    // shelf run along the south wall — two bays of archive shelving with
+    // box stacks; a desk + gooseneck lamp against the back
+    for (const sz of [roomZ1 - 0.22, roomZ0 + 0.22]) {
+      const shelf = kit.box(`dress.archives.shelf.${sz}`, 1.9, 1.9, 0.34, mats.steel, scene, root);
+      shelf.position = new Vector3(roomX0 - 1.15, 0.95, sz);
+      colliders.push(
+        kit.collider(`archives.shelfCol.${sz}`, 1.9, 1.95, 0.36, shelf.position.clone(), scene, root),
+      );
+      for (const sy of [0.35, 0.95, 1.55]) {
+        const sboard = kit.box(`dress.archives.shelfB.${sz}.${sy}`, 1.84, 0.05, 0.3, cardMat, scene, root);
+        sboard.position = new Vector3(roomX0 - 1.15, sy, sz);
+      }
+      for (let bi = 0; bi < 4; bi++) {
+        const box = kit.box(
+          `dress.archives.box.${sz}.${bi}`,
+          0.3,
+          0.26 + (bi % 2) * 0.08,
+          0.24,
+          bi % 2 ? cardMat : mats.wallPanel,
+          scene,
+          root,
+        );
+        box.position = new Vector3(roomX0 - 0.55 - bi * 0.42, 0.13 + (bi % 3) * 0.6, sz);
+      }
+    }
+    const desk = kit.box("dress.archives.desk", 0.7, 0.74, 0.5, mats.rubber, scene, root);
+    desk.position = new Vector3(roomX1 + 0.5, 0.37, roomZ0 + 0.32);
+    colliders.push(kit.collider("archives.deskCol", 0.7, 0.78, 0.5, desk.position.clone(), scene, root));
+    const lampArm = kit.box("dress.archives.lampArm", 0.05, 0.3, 0.05, mats.steel, scene, root);
+    lampArm.position = new Vector3(roomX1 + 0.42, 0.95, roomZ0 + 0.26);
+    const lampHeadMat = new StandardMaterial("mat.archives.lampHead", scene);
+    lampHeadMat.diffuseColor = new Color3(0.1, 0.09, 0.07);
+    lampHeadMat.emissiveColor = new Color3(0.16, 0.11, 0.05);
+    lampHeadMat.specularColor = new Color3(0.02, 0.02, 0.02);
+    const lampHead = kit.box("dress.archives.lampHead", 0.16, 0.07, 0.1, lampHeadMat, scene, root);
+    lampHead.position = new Vector3(roomX1 + 0.48, 1.08, roomZ0 + 0.3);
+    // faint warm wash on the back wall — the lit-room read the doorway
+    // needs even in baseline (a lamp left burning inside); unlit mat so
+    // it survives zone kills looking like real spill, not a light bug
+    const awash = new StandardMaterial("mat.archives.wash", scene);
+    awash.diffuseColor = new Color3(0.32, 0.24, 0.13);
+    awash.emissiveColor = new Color3(0.2, 0.14, 0.06);
+    awash.specularColor = new Color3(0, 0, 0);
+    const awashP = kit.plane("dress.archives.wash", roomZ1 - roomZ0 - 0.1, 1.9, awash, scene, root);
+    awashP.position = new Vector3(roomX1 + 0.045, 1.15, roomC.z);
+    awashP.rotation.y = Math.PI / 2;
+    // lit floor pad just inside the mouth — through the door gap the
+    // room reads as a lit interior instead of a painted back wall
+    const apadMat = new StandardMaterial("mat.archives.pad", scene);
+    apadMat.diffuseColor = new Color3(0.4, 0.3, 0.16);
+    apadMat.emissiveColor = new Color3(0.24, 0.17, 0.07);
+    apadMat.specularColor = new Color3(0, 0, 0);
+    const apad = kit.plane("dress.archives.pad", 1.5, roomZ1 - roomZ0 - 0.08, apadMat, scene, root);
+    apad.position = new Vector3(roomX0 - 0.85, 0.015, roomC.z);
+    apad.rotation.x = -Math.PI / 2;
+    apad.rotation.z = Math.PI / 2;
+    // doorway jamb colliders — the gap's edges so the mouth is real
+    for (const [jz, tag] of [
+      [21.4, "n"],
+      [22.8, "s"],
+    ] as const) {
+      const jamb = kit.box(`dress.archives.jamb.${tag}`, 0.2, 2.1, 0.14, mats.steel, scene, root);
+      jamb.position = new Vector3(-C.xHalf + 0.08, 1.05, jz);
+      colliders.push(
+        kit.collider(`archives.jambCol.${tag}`, 0.22, 2.1, 0.14, jamb.position.clone(), scene, root),
+      );
+    }
+  }
 
   // Notice board + posters right wall z 6–9
   const board = kit.box("notice.board", 0.05, 1.1, 1.6, mats.rubber, scene, root);
