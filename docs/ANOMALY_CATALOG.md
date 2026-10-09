@@ -725,7 +725,14 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      figure working at the desk, back to the window. `clinicAlcove` is a
      prebuilt disabled room like `depthRoom`; `clinicLamp` does the light.
 
-Slice count: **224 implemented — the full catalog**. Dangerous class
+225. `corridor.mirror` — The Wrong Side · CH III · unmistakable — the
+     whole loop flips east-for-west (`world.root.scaling.x = -1`, every
+     material's sideOrientation flips winding): records bank on the
+     right, gallery on the left, every sign reads backwards, the
+     walker's lane mirrors with the world. Audio anchors negate to the
+     mirrored side.
+
+Slice count: **225 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
