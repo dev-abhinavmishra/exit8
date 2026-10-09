@@ -56,6 +56,7 @@ import { lightDelay } from "./lightDelay";
 import { routeReacts } from "./routeReacts";
 import { sightlineImpossible } from "./sightlineImpossible";
 import { depthMismatch } from "./depthMismatch";
+import { clinicStaffed } from "./clinicStaffed";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -281,6 +282,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   routeReacts,
   sightlineImpossible,
   depthMismatch,
+  clinicStaffed,
   liftArrives,
   gazeShift,
   paceDissolves,

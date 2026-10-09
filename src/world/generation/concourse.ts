@@ -19,6 +19,7 @@ import { Constants } from "@babylonjs/core/Engines/constants";
 import type { CloudPoint } from "@babylonjs/core/Particles/cloudPoint";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
+import type { Material } from "@babylonjs/core/Materials/material";
 import { CreateCylinder } from "@babylonjs/core/Meshes/Builders/cylinderBuilder";
 import { CreateSphere } from "@babylonjs/core/Meshes/Builders/sphereBuilder";
 import { Color4 } from "@babylonjs/core/Maths/math.color";
@@ -97,6 +98,9 @@ export interface ConcourseWorld {
   /** depth.mismatch prebuilt room — a gallery deeper than the wall allows */
   depthRoom: TransformNode;
   depthSpill: PointLight;
+  /** clinic.staffed prebuilt intake room behind the shuttered counter */
+  clinicAlcove: TransformNode;
+  clinicLamp: PointLight;
   condensationPatch: AbstractMesh;
   /** clock hands for the clock anomalies */
   clock: { hourPivot: TransformNode; minutePivot: TransformNode; face: AbstractMesh };
@@ -2552,6 +2556,102 @@ export function buildConcourse(
   depthSpill.intensity = 0.0;
   depthSpill.range = 9;
 
+  // ─── clinic intake room — a lit alcove BEHIND the shuttered counter,
+  // kept disabled until clinic.staffed swaps wall.left.2 for stubs and
+  // rolls the shutter up. The room cannot exist; that is the anomaly. ─
+  const clinicRoom = new TransformNode("anomaly.clinic.room", scene);
+  clinicRoom.parent = root;
+  {
+    // interior reuses the corridor's own textured PBRs — same institution
+    // inside and out, and proven under the zone lighting that spills
+    // through the window (flat pale StandardMaterials bloom to white here)
+    const clinicWall = mats.wallPanel;
+    const clinicFloor = mats.concrete;
+    const cx0 = -3.32;
+    const cx1 = -1.78;
+    const cz0 = 34.9;
+    const cz1 = 39.1;
+    const cm = (
+      name: string,
+      w: number,
+      h: number,
+      d: number,
+      x: number,
+      y: number,
+      z: number,
+      m: Material = clinicWall,
+    ) => {
+      const b = kit.box(name, w, h, d, m, scene, clinicRoom);
+      b.position = new Vector3(x, y, z);
+      return b;
+    };
+    cm(
+      "anomaly.clinic.floor",
+      cx1 - cx0 + 0.12,
+      0.08,
+      cz1 - cz0 + 0.12,
+      (cx0 + cx1) / 2,
+      -0.02,
+      37,
+      clinicFloor,
+    );
+    cm(
+      "anomaly.clinic.ceil",
+      cx1 - cx0 + 0.12,
+      0.08,
+      cz1 - cz0 + 0.12,
+      (cx0 + cx1) / 2,
+      2.94,
+      37,
+      clinicFloor,
+    );
+    cm("anomaly.clinic.back", 0.08, 3.0, cz1 - cz0 + 0.12, cx0 - 0.02, 1.5, 37);
+    cm("anomaly.clinic.side.0", cx1 - cx0 + 0.12, 3.0, 0.08, (cx0 + cx1) / 2, 1.5, cz0 - 0.02);
+    cm("anomaly.clinic.side.1", cx1 - cx0 + 0.12, 3.0, 0.08, (cx0 + cx1) / 2, 1.5, cz1 + 0.02);
+    // desk against the back wall — the workstation the figure faces
+    cm("anomaly.clinic.desk", 0.5, 0.78, 1.7, cx0 + 0.35, 0.39, 37, galEnamel);
+    cm("anomaly.clinic.desklamp", 0.06, 0.28, 0.06, cx0 + 0.3, 0.92, 37.55, mats.steel);
+    cm("anomaly.clinic.lampshade", 0.18, 0.07, 0.12, cx0 + 0.3, 1.08, 37.55, mats.trofferDim);
+    // shelving + boxed stores on the south side
+    cm("anomaly.clinic.shelf", 0.28, 0.04, 1.4, cx0 + 0.8, 1.8, cz1 - 0.45, galEnamel);
+    for (let i = 0; i < 3; i++) {
+      cm(
+        `anomaly.clinic.box.${i}`,
+        0.2,
+        0.16 + i * 0.02,
+        0.3,
+        cx0 + 0.8,
+        1.9 + i * 0.02,
+        cz1 - 0.85 + i * 0.4,
+        clinicFloor,
+      );
+    }
+    // half-drawn screen partition near the north corner
+    cm("anomaly.clinic.screen", 0.05, 1.7, 0.9, cx0 + 1.05, 0.85, cz0 + 0.55, galEnamel);
+    // ceiling troffer shell — clinicLamp does the real work
+    const ct = cm("anomaly.clinic.troffer", 0.5, 0.04, 1.2, -2.5, 2.9, 37);
+    ct.material = mats.trofferLit;
+    // the seated figure — same primitive anatomy as the gallery sitter,
+    // facing the desk (-x): its back to the shuttered window
+    const fm = mats.rubber;
+    cm("anomaly.clinic.torso", 0.2, 0.62, 0.32, -2.72, 0.78, 37, fm);
+    cm("anomaly.clinic.shoulders", 0.22, 0.11, 0.42, -2.72, 1.06, 37, fm);
+    cm("anomaly.clinic.thighs", 0.5, 0.14, 0.2, -2.95, 0.5, 37, fm);
+    cm("anomaly.clinic.shins", 0.12, 0.45, 0.18, -3.1, 0.22, 37, fm);
+    cm("anomaly.clinic.arm.0", 0.34, 0.09, 0.1, -2.85, 0.86, 36.83, fm);
+    cm("anomaly.clinic.arm.1", 0.34, 0.09, 0.1, -2.85, 0.86, 37.17, fm);
+    const cskull = CreateSphere("anomaly.clinic.head", { diameter: 0.19, segments: 10 }, scene);
+    cskull.material = fm;
+    cskull.scaling = new Vector3(0.95, 1.35, 1);
+    cskull.position = new Vector3(-2.72, 1.26, 37);
+    cskull.parent = clinicRoom;
+  }
+  clinicRoom.setEnabled(false);
+  const clinicLamp = new PointLight("anomaly.clinic.lamp", new Vector3(-2.15, 1.95, 37.2), scene);
+  clinicLamp.diffuse = new Color3(0.95, 0.9, 0.72);
+  clinicLamp.intensity = 0.0;
+  clinicLamp.range = 3.4;
+
   // dust motes drifting through the troffer light — one additive
   // particle system filling the corridor volume; skipped entirely when
   // the player asks for reduced motion
@@ -2624,6 +2724,8 @@ export function buildConcourse(
     extraRoomSpill: spill,
     depthRoom,
     depthSpill,
+    clinicAlcove: clinicRoom,
+    clinicLamp,
     condensationPatch: condensation,
     scatter,
     ambientWalker,

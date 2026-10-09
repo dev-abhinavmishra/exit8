@@ -718,7 +718,14 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      (face.glass, glass.hands, glass.writing, depth.mismatch) are excluded
      — they'd hang in the open gap.
 
-Slice count: **223 implemented — the full catalog**. Dangerous class
+224. `clinic.staffed` — Someone Is Working Late · CH III · unmistakable —
+     the shuttered counter's blind rolls up into the header by itself and
+     `wall.left.2` swaps for stubs: behind it is a lit intake alcove that
+     was never there (pale green walls, desk, shelf, screen) with a seated
+     figure working at the desk, back to the window. `clinicAlcove` is a
+     prebuilt disabled room like `depthRoom`; `clinicLamp` does the light.
+
+Slice count: **224 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
