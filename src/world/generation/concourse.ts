@@ -738,6 +738,35 @@ export function buildConcourse(
     const pin = kit.box(`dress.gal.pin.${by}.${bz}`, 0.015, 0.2, 0.16, galPaper, scene, root);
     pin.position = new Vector3(C.xHalf + 1.29, by, bz);
   }
+  // room dressing — the inspection reward for stepping inside: binder
+  // shelf over the south desks, a coat left on the rail, waste bin, a
+  // mug on the near desk. dress.gal. names fold into the static merge
+  for (const sy of [1.9, 2.25]) {
+    const shelf = kit.box(`dress.gal.shelf.${sy}`, 0.28, 0.04, 3.4, galEnamel, scene, root);
+    shelf.position = new Vector3(C.xHalf + 1.16, sy, 29.9);
+  }
+  for (let i = 0; i < 7; i++) {
+    const binder = kit.box(
+      `dress.gal.binder.${i}`,
+      0.2,
+      0.28,
+      0.09,
+      i % 3 === 0 ? mats.cabinetRed : i % 3 === 1 ? galPaper : mats.rubber,
+      scene,
+      root,
+    );
+    binder.position = new Vector3(C.xHalf + 1.18, 2.08, 28.6 + i * 0.34 + (i % 2) * 0.05);
+  }
+  // coat rail + one coat left hanging on the north side wall
+  const rail = kit.box("dress.gal.rail", 0.03, 0.03, 0.5, mats.steel, scene, root);
+  rail.position = new Vector3(C.xHalf + 0.4, 1.78, 20.14);
+  const coat = kit.box("dress.gal.coat", 0.42, 0.85, 0.06, mats.rubber, scene, root);
+  coat.position = new Vector3(C.xHalf + 0.4, 1.32, 20.18);
+  // waste bin + a mug on the desk by the door
+  const bin = kit.box("dress.gal.bin", 0.24, 0.34, 0.24, mats.rubber, scene, root);
+  bin.position = new Vector3(C.xHalf + 0.35, 0.17, 31.2);
+  const mug = kit.box("dress.gal.mug", 0.07, 0.1, 0.07, mats.cabinetRed, scene, root);
+  mug.position = new Vector3(C.xHalf + 0.6, 0.79, 26.3);
   registry.register("wall.gallery.cove", gcove);
   registry.register("wall.gallery.monitor", gmon);
   registry.register("wall.gallery.lamp", glamp);
