@@ -1566,6 +1566,86 @@ export function buildConcourse(
     });
   }
 
+  // photoluminescent egress markers along the wall bases — green
+  // running-man + chevron pointing at the nearest airlock, alternating
+  // walls like a real tunnel strip. Registered per marker: a reversed
+  // arrow is a ready-made divergence.
+  const egressTex = (dir: 1 | -1): DynamicTexture => {
+    const t = new DynamicTexture(`tex.egress.${dir}`, { width: 256, height: 96 }, scene, true);
+    const c = t.getContext() as unknown as CanvasRenderingContext2D;
+    c.fillStyle = "#1d7a48";
+    c.fillRect(0, 0, 256, 96);
+    c.strokeStyle = "rgba(235,255,240,0.9)";
+    c.lineWidth = 5;
+    c.strokeRect(7, 7, 242, 82);
+    c.fillStyle = "#eafae9";
+    c.strokeStyle = "#eafae9";
+    c.lineWidth = 9;
+    c.lineCap = "round";
+    const mx = dir > 0 ? 84 : 172;
+    c.beginPath();
+    c.arc(mx, 32, 11, 0, Math.PI * 2);
+    c.fill();
+    c.beginPath();
+    c.moveTo(mx, 47);
+    c.lineTo(mx + dir * 12, 70);
+    c.stroke();
+    c.beginPath();
+    c.moveTo(mx + dir * 12, 70);
+    c.lineTo(mx + dir * 28, 90);
+    c.moveTo(mx + dir * 12, 70);
+    c.lineTo(mx - dir * 8, 88);
+    c.moveTo(mx, 51);
+    c.lineTo(mx + dir * 20, 62);
+    c.moveTo(mx, 51);
+    c.lineTo(mx - dir * 12, 66);
+    c.stroke();
+    const ax = dir > 0 ? 176 : 80;
+    c.beginPath();
+    c.moveTo(ax - dir * 30, 48);
+    c.lineTo(ax + dir * 30, 48);
+    c.moveTo(ax + dir * 30, 48);
+    c.lineTo(ax + dir * 12, 32);
+    c.moveTo(ax + dir * 30, 48);
+    c.lineTo(ax + dir * 12, 64);
+    c.stroke();
+    t.update();
+    return t;
+  };
+  const egressMats = new Map<number, StandardMaterial>();
+  for (const dir of [1, -1] as const) {
+    const em = new StandardMaterial(`mat.egress.${dir}`, scene);
+    const et = egressTex(dir);
+    em.diffuseTexture = et;
+    em.emissiveTexture = et;
+    em.emissiveColor = new Color3(0.58, 0.74, 0.58);
+    em.disableLighting = true;
+    egressMats.set(dir, em);
+  }
+  // one continuous strip on the west wall like a real tunnel run —
+  // mounted on the gallery sill band where the glass runs, and broken
+  // only by the bay mouth. Texture-right is -z on the west wall, so the
+  // printed arrow direction is dir = -targetDirection.
+  const egressSpots: [number, number][] = [
+    [10, -0.02],
+    [15.5, -0.02],
+    [19, -0.02],
+    [24, -0.08],
+    [31, -0.08],
+    [32.6, -0.02],
+    [36, -0.02],
+    [41, -0.02],
+    [45.5, -0.02],
+    [52, -0.02],
+  ];
+  egressSpots.forEach(([ez, ox], i) => {
+    const dir = ez < 28 ? 1 : -1; // point at the nearer airlock
+    const p = kit.plane(`dress.egress.${i}`, 0.5, 0.19, egressMats.get(dir)!, scene, root);
+    p.rotation.y = Math.PI / 2; // faces +x, into the corridor
+    p.position = new Vector3(-C.xHalf - ox, ez > 20 && ez < 32 ? 0.45 : 0.4, ez);
+    registry.register(`dress.egress.${i}`, p);
+  });
+
   // pilaster pair at the service-junction mouth (z≈46) — the corridor's
   // only structural marker before the south airlock
   for (const sx of [-1, 1]) {
