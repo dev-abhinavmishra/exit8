@@ -562,15 +562,16 @@ function buildLiftLobby(scene: Scene, root: TransformNode, mats: MaterialSet, re
   node.position = new Vector3(0, 0, Z);
   registry.register("lift.lobby", node);
 
-  // recessed dark shaft reveal BEHIND the door leaves, leaves proud in
-  // front — the seam between them is the only darkness a lift has
-  const reveal = kit.box("lift.reveal", 0.04, 2.4, 1.5, mats.rubber, scene, node);
-  reveal.position = new Vector3(WALL_X - 0.01, 1.2, 0);
+  // the shaft's back plate, deep inside the recess cut into the east
+  // wall (dress.lobby.* shell in concourse.ts) — the leaves part onto
+  // real throat depth under lift.arrives, not a flat plane
+  const reveal = kit.box("lift.reveal", 0.06, 2.5, 1.64, mats.rubber, scene, node);
+  reveal.position = new Vector3(WALL_X + 1.02, 1.25, 0);
   for (const sx of [-1, 1]) {
-    // pale leaves inside the dark shaft reveal — metals go near-black in
+    // pale leaves inside the alcove's back wall — metals go near-black in
     // the junction's weak reflections; wall paneling reads as a door set
     const leaf = kit.box(`lift.door.${sx}`, 0.035, 2.3, 0.66, mats.wallPanel, scene, node);
-    leaf.position = new Vector3(WALL_X - 0.05, 1.15, sx * 0.36);
+    leaf.position = new Vector3(WALL_X + 0.5, 1.15, sx * 0.36);
     registry.register(`lift.door.${sx}`, leaf);
     // dark hinge edge on the leaf's outer side — children ride lift.door
     const edge = kit.box(`lift.door.${sx}.edge`, 0.008, 2.3, 0.025, mats.rubber, scene);
@@ -578,15 +579,16 @@ function buildLiftLobby(scene: Scene, root: TransformNode, mats: MaterialSet, re
     edge.position = new Vector3(0, 0, -sx * 0.32);
   }
   const lintel = kit.box("lift.lintel", 0.09, 0.3, 1.56, mats.steel, scene, node);
-  lintel.position = new Vector3(WALL_X - 0.04, 2.48, 0);
+  lintel.position = new Vector3(WALL_X + 0.51, 2.48, 0);
   const sill = kit.box("lift.sill", 0.11, 0.04, 1.56, mats.steel, scene, node);
-  sill.position = new Vector3(WALL_X - 0.055, 0.02, 0);
+  sill.position = new Vector3(WALL_X + 0.5, 0.02, 0);
 
-  // call panel: dead lamp + a single worn button on a beveled face
+  // call panel: dead lamp + a single worn button on a beveled face —
+  // on the alcove's back wall beside the doors
   const panel = kit.box("lift.panel", 0.05, 0.22, 0.12, mats.steel, scene, node);
-  panel.position = new Vector3(WALL_X - 0.05, 1.35, 0.95);
+  panel.position = new Vector3(WALL_X + 0.5, 1.35, 0.95);
   const lamp = kit.box("lift.panel.lamp", 0.03, 0.05, 0.05, mats.trofferDim, scene, node);
-  lamp.position = new Vector3(WALL_X - 0.08, 1.42, 0.95);
+  lamp.position = new Vector3(WALL_X + 0.47, 1.42, 0.95);
   registry.register("lift.panel.lamp", lamp);
   registry.register("lift.panel", panel);
   // button + key slot — children of the panel, ride lift.* anomalies
@@ -610,7 +612,7 @@ function buildLiftLobby(scene: Scene, root: TransformNode, mats: MaterialSet, re
 
   // OUT OF SERVICE plaque above the doors
   const plaque = kit.wallSign("sign.lift", mats, scene, node, registry, 0.9, 0.3);
-  plaque.position = new Vector3(WALL_X - 0.06, 2.78, 0);
+  plaque.position = new Vector3(WALL_X - 0.075, 2.78, 0);
   plaque.rotation.y = Math.PI / 2;
 }
 

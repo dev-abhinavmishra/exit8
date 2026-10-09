@@ -529,6 +529,14 @@ export function buildConcourse(
   const BAY_Z1 = 49.4;
   const BAY_DEPTH = 1.15;
   const BAY_ZC = (BAY_Z0 + BAY_Z1) / 2;
+  // S-2 lift lobby — east-wall alcove around the sealed lift (z≈49.5);
+  // the doors sit recessed behind a lit lobby face, a real shaft throat
+  // behind them for lift.arrives to open onto
+  const LOB_Z0 = 48.4;
+  const LOB_Z1 = 50.6;
+  const LOB_DEPTH = 0.55;
+  const LOB_ZC = (LOB_Z0 + LOB_Z1) / 2;
+  const SHAFT_DEPTH = 0.5;
 
   // ─── shell ───────────────────────────────────────────────────────
   const floor = kit.box("floor", C.xHalf * 2 + 0.3, 0.1, len, mats.terrazzo, scene, root);
@@ -639,7 +647,8 @@ export function buildConcourse(
   registry.register("wall.gallery.monitor", gmon);
   registry.register("wall.gallery.lamp", glamp);
   registry.register("wall.gallery.back", galleryBack);
-  kit.wallRun("wall.right.2", C.xHalf, 32, 55, C.height, mats.wallPanel, scene, root, registry);
+  kit.wallRun("wall.right.2", C.xHalf, 32, LOB_Z0, C.height, mats.wallPanel, scene, root, registry);
+  kit.wallRun("wall.right.2.s", C.xHalf, LOB_Z1, 55, C.height, mats.wallPanel, scene, root, registry);
 
   // continuous colliders per wall (glass section collides too); the west
   // wall splits around the S-2 bay mouth (z 46.2–49.4) so you can walk in
@@ -650,7 +659,10 @@ export function buildConcourse(
             [C.z0, BAY_Z0],
             [BAY_Z1, C.z1],
           ]
-        : [[C.z0, C.z1]];
+        : [
+            [C.z0, LOB_Z0],
+            [LOB_Z1, C.z1],
+          ];
     spans.forEach(([s0, s1], i) => {
       colliders.push(
         kit.collider(
@@ -948,6 +960,189 @@ export function buildConcourse(
     moteAnchors.push({ x: -C.xHalf - BAY_DEPTH / 2, z: BAY_Z0 + 0.7, zi: 3 });
   }
 
+  // ─── S-2 lift lobby — a lit alcove cut into the east wall z 48.4–50.6.
+  //    The sealed doors recess behind a framed lobby face; a real shaft
+  //    throat sits behind them so lift.arrives opens onto depth, not a
+  //    flat plane. Shell meshes merge under dress.*; colliders make the
+  //    mouth a second real doorway off the corridor. ───────────────────
+  {
+    const lobW = LOB_Z1 - LOB_Z0;
+    const lback = C.xHalf + LOB_DEPTH; // interior back face x=2.35
+    const sback = lback + SHAFT_DEPTH; // shaft back plate x=2.85
+    // header + steel lintel over the mouth
+    const lobHeader = kit.box("dress.lobby.header", 0.12, 0.5, lobW + 0.24, mats.wallPanel, scene, root);
+    lobHeader.position = new Vector3(C.xHalf, C.height - 0.25, LOB_ZC);
+    const lobLintel = kit.box("dress.lobby.lintel", 0.06, 0.08, lobW + 0.26, mats.steel, scene, root);
+    lobLintel.position = new Vector3(C.xHalf - 0.06, 2.48, LOB_ZC);
+    colliders.push(
+      kit.collider(
+        "dress.lobby.headerCol",
+        0.14,
+        0.52,
+        lobW + 0.24,
+        new Vector3(C.xHalf, C.height - 0.26, LOB_ZC),
+        scene,
+        root,
+      ),
+    );
+    // side cheeks — the recess jambs
+    for (const [i, cz] of [LOB_Z0, LOB_Z1].entries()) {
+      const cheek = kit.box(
+        `dress.lobby.cheek.${i}`,
+        LOB_DEPTH + 0.06,
+        2.5,
+        0.12,
+        mats.wallPanel,
+        scene,
+        root,
+      );
+      cheek.position = new Vector3(C.xHalf + LOB_DEPTH / 2, 1.25, cz);
+      colliders.push(
+        kit.collider(
+          `dress.lobby.cheekCol.${i}`,
+          LOB_DEPTH + 0.06,
+          2.5,
+          0.14,
+          new Vector3(C.xHalf + LOB_DEPTH / 2, 1.25, cz),
+          scene,
+          root,
+        ),
+      );
+    }
+    // back wall around a real door opening (1.6 wide × 2.4 tall)
+    const doorHW = 0.8;
+    const backSpans: [number, number][] = [
+      [LOB_Z0, LOB_ZC - doorHW],
+      [LOB_ZC + doorHW, LOB_Z1],
+    ];
+    for (const [i, [b0, b1]] of backSpans.entries()) {
+      const slab = kit.box(`dress.lobby.back.${i}`, 0.1, 2.5, b1 - b0, mats.wallPanel, scene, root);
+      slab.position = new Vector3(lback + 0.05, 1.25, (b0 + b1) / 2);
+      colliders.push(
+        kit.collider(
+          `dress.lobby.backCol.${i}`,
+          0.14,
+          2.6,
+          b1 - b0,
+          new Vector3(lback + 0.06, 1.3, (b0 + b1) / 2),
+          scene,
+          root,
+        ),
+      );
+    }
+    const lobBackH = kit.box("dress.lobby.back.h", 0.1, 0.12, doorHW * 2, mats.wallPanel, scene, root);
+    lobBackH.position = new Vector3(lback + 0.05, 2.44, LOB_ZC);
+    // recessed lobby ceiling + terrazzo floor continuing into the alcove
+    const lobCeil = kit.box(
+      "dress.lobby.ceil",
+      LOB_DEPTH + 0.14,
+      0.55,
+      lobW + 0.1,
+      mats.ceiling,
+      scene,
+      root,
+    );
+    lobCeil.position = new Vector3(C.xHalf + LOB_DEPTH / 2 - 0.02, 2.78, LOB_ZC);
+    const lobFloor = kit.box(
+      "dress.lobby.floor",
+      LOB_DEPTH + 0.05,
+      0.05,
+      lobW + 0.04,
+      mats.terrazzo,
+      scene,
+      root,
+    );
+    lobFloor.position = new Vector3(C.xHalf + LOB_DEPTH / 2 - 0.01, -0.025, LOB_ZC);
+    colliders.push(
+      kit.collider(
+        "dress.lobby.floorCol",
+        LOB_DEPTH + 0.1,
+        0.1,
+        lobW + 0.04,
+        new Vector3(C.xHalf + LOB_DEPTH / 2 - 0.01, -0.05, LOB_ZC),
+        scene,
+        root,
+      ),
+    );
+    // steel architrave outlining the mouth on the corridor face
+    const lobFtop = kit.box("dress.lobby.frame.top", 0.05, 0.09, lobW + 0.3, mats.steel, scene, root);
+    lobFtop.position = new Vector3(C.xHalf - 0.02, 2.55, LOB_ZC);
+    for (const [i, fz] of [LOB_Z0 - 0.05, LOB_Z1 + 0.05].entries()) {
+      const jamb = kit.box(`dress.lobby.jamb.${i}`, 0.05, 2.55, 0.08, mats.steel, scene, root);
+      jamb.position = new Vector3(C.xHalf - 0.02, 1.275, fz);
+    }
+    // shaft throat behind the door opening — the darkness the leaves part onto
+    for (const [i, sz] of [LOB_ZC - doorHW, LOB_ZC + doorHW].entries()) {
+      const scheek = kit.box(`lift.shaft.cheek.${i}`, SHAFT_DEPTH, 2.5, 0.1, mats.rubber, scene, root);
+      scheek.position = new Vector3(lback + SHAFT_DEPTH / 2, 1.25, sz);
+      colliders.push(
+        kit.collider(
+          `lift.shaft.cheekCol.${i}`,
+          SHAFT_DEPTH,
+          2.5,
+          0.14,
+          new Vector3(lback + SHAFT_DEPTH / 2, 1.25, sz),
+          scene,
+          root,
+        ),
+      );
+    }
+    const shaftTop = kit.box("lift.shaft.top", SHAFT_DEPTH, 0.3, doorHW * 2 + 0.1, mats.rubber, scene, root);
+    shaftTop.position = new Vector3(lback + SHAFT_DEPTH / 2, 2.62, LOB_ZC);
+    const shaftBot = kit.box("lift.shaft.bot", SHAFT_DEPTH, 0.06, doorHW * 2 + 0.1, mats.rubber, scene, root);
+    shaftBot.position = new Vector3(lback + SHAFT_DEPTH / 2, 0.03, LOB_ZC);
+    colliders.push(
+      kit.collider(
+        "lift.shaft.floorCol",
+        SHAFT_DEPTH + 0.2,
+        0.1,
+        doorHW * 2 + 0.2,
+        new Vector3(lback + SHAFT_DEPTH / 2 - 0.02, -0.02, LOB_ZC),
+        scene,
+        root,
+      ),
+    );
+    colliders.push(
+      kit.collider(
+        "lift.shaft.backCol",
+        0.14,
+        2.5,
+        doorHW * 2 + 0.1,
+        new Vector3(sback - 0.04, 1.25, LOB_ZC),
+        scene,
+        root,
+      ),
+    );
+    // a hairline of light leaking from the floor above — the shaft goes on
+    const seam = kit.box("lift.shaft.seam", 0.02, 0.03, 1.1, mats.trofferDim, scene, root);
+    seam.position = new Vector3(sback - 0.1, 2.44, LOB_ZC);
+    // lobby ceiling light — joins the junction zone's kill paths
+    const lobLampMat = new StandardMaterial("mat.lobbylamp", scene);
+    lobLampMat.diffuseColor = new Color3(0.3, 0.29, 0.26);
+    lobLampMat.emissiveColor = new Color3(0.48, 0.42, 0.32);
+    const lobLamp = kit.box("dress.lobbylamp", 0.16, 0.05, 0.5, lobLampMat, scene, root);
+    lobLamp.position = new Vector3(C.xHalf + LOB_DEPTH / 2, 2.5, LOB_ZC);
+    const lobLight = new PointLight(
+      "light.lobby",
+      new Vector3(C.xHalf + LOB_DEPTH - 0.2, 2.2, LOB_ZC),
+      scene,
+    );
+    lobLight.intensity = 2.6;
+    lobLight.range = 5.5;
+    lobLight.diffuse = new Color3(1.0, 0.9, 0.74);
+    const jz = zones.find((z) => z.name === "junction");
+    if (jz) {
+      jz.extraLights.push(lobLight);
+      jz.troffers.push(lobLamp);
+    }
+    registry.register("light.lobby", lobLight as unknown as AbstractMesh);
+    registry.register("dress.lobbylamp", lobLamp);
+    // directory plaque beside the mouth — LIFT S-2 territory marker
+    const lobPlaque = kit.box("dress.lobby.plaque", 0.03, 0.14, 0.36, mats.steel, scene, root);
+    lobPlaque.position = new Vector3(C.xHalf - 0.035, 1.7, LOB_Z1 + 0.18);
+    moteAnchors.push({ x: C.xHalf + LOB_DEPTH / 2, z: LOB_ZC, zi: 3 });
+  }
+
   // ─── dust motes hanging in the light shafts ───────────────────────
   // one PointsCloudSystem for the whole corridor — a single draw call.
   // groupID carries the zone index so a killed or browned-out zone's
@@ -1028,7 +1223,10 @@ export function buildConcourse(
             [C.z0, BAY_Z0],
             [BAY_Z1, C.z1],
           ]
-        : [[C.z0, C.z1]];
+        : [
+            [C.z0, LOB_Z0],
+            [LOB_Z1, C.z1],
+          ];
     spans.forEach(([s0, s1], i) => {
       const strip = kit.plane(`dress.ao.${sx}${i ? ".s" : ""}`, s1 - s0, 0.55, mats.aoStrip, scene, root);
       strip.position = new Vector3(sx * (C.xHalf - 0.065), 0.28, (s0 + s1) / 2);
@@ -1304,7 +1502,10 @@ export function buildConcourse(
             [C.z0, BAY_Z0],
             [BAY_Z1, C.z1],
           ]
-        : [[C.z0, C.z1]];
+        : [
+            [C.z0, LOB_Z0],
+            [LOB_Z1, C.z1],
+          ];
     spans.forEach(([s0, s1], i) => {
       const base = kit.box(`baseboard.${sx}${i ? ".s" : ""}`, 0.06, 0.14, s1 - s0, mats.rubber, scene, root);
       base.position = new Vector3(sx * (C.xHalf - 0.03), 0.07, (s0 + s1) / 2);
@@ -1321,7 +1522,10 @@ export function buildConcourse(
             [C.z0, BAY_Z0],
             [BAY_Z1, C.z1],
           ]
-        : [[C.z0, C.z1]];
+        : [
+            [C.z0, LOB_Z0],
+            [LOB_Z1, C.z1],
+          ];
     spans.forEach(([s0, s1], i) => {
       const rail = kit.box(`dress.rail.${sx}${i ? ".s" : ""}`, 0.035, 0.09, s1 - s0, mats.steel, scene, root);
       rail.position = new Vector3(sx * (C.xHalf - 0.018), 1.04, (s0 + s1) / 2);
@@ -1581,7 +1785,10 @@ export function buildConcourse(
             [C.z0, BAY_Z0],
             [BAY_Z1, C.z1],
           ]
-        : [[C.z0, C.z1]];
+        : [
+            [C.z0, LOB_Z0],
+            [LOB_Z1, C.z1],
+          ];
     spans.forEach(([s0, s1], i) => {
       const tray = kit.box(`dress.tray.${sx}${i ? ".s" : ""}`, 0.12, 0.07, s1 - s0, mats.steel, scene, root);
       tray.position = new Vector3(sx * (C.xHalf - 0.28), C.height - 0.09, (s0 + s1) / 2);
@@ -1598,6 +1805,7 @@ export function buildConcourse(
     });
     for (let z = 4; z < C.z1; z += 6) {
       if (sx < 0 && z > BAY_Z0 - 0.5 && z < BAY_Z1 + 0.5) continue; // no hanger floats over the mouth
+      if (sx > 0 && z > LOB_Z0 - 0.5 && z < LOB_Z1 + 0.5) continue; // same over the lift lobby
       const h = kit.box(`dress.hanger.${sx}.${z}`, 0.03, 0.09, 0.16, mats.steel, scene, root);
       h.position = new Vector3(sx * (C.xHalf - 0.28), C.height - 0.02, z);
     }
@@ -1701,7 +1909,10 @@ export function buildConcourse(
             [C.z0, BAY_Z0],
             [BAY_Z1, C.z1],
           ]
-        : [[C.z0, C.z1]];
+        : [
+            [C.z0, LOB_Z0],
+            [LOB_Z1, C.z1],
+          ];
     spans.forEach(([s0, s1], i) => {
       const cove = kit.plane(`dress.cove.${sx}${i ? ".s" : ""}`, s1 - s0, 0.14, mats.aoStrip, scene, root);
       cove.position = new Vector3(sx * (C.xHalf - 0.03), 2.93, (s0 + s1) / 2);

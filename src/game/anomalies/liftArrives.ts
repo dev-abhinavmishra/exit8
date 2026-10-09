@@ -36,12 +36,12 @@ export const liftArrives: AnomalyDef = {
     });
 
     // a shaft light that isn't on any switch — spills warm into the junction
-    const glow = new PointLight("anomaly.lift.glow", new Vector3(1.5, 2.0, DOOR_Z), ctx.scene);
+    const glow = new PointLight("anomaly.lift.glow", new Vector3(2.05, 2.0, DOOR_Z), ctx.scene);
     glow.intensity = 1.6;
     glow.diffuse = new Color3(1.0, 0.72, 0.42);
     glow.range = 7;
 
-    ctx.audio.playChime(new Vector3(1.6, 1.7, DOOR_Z));
+    ctx.audio.playChime(new Vector3(2.1, 1.7, DOOR_Z));
 
     return {
       update() {},
