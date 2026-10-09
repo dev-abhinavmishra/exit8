@@ -911,3 +911,20 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
 - rng API: `rng.chance(p)` / `rng.int` / `rng.range` / `rng.draw` — there is no `rng.bool` (src/game/state/rng.ts).
 - Vestibule staff-door panels are `sdoor.north.panel` / `sdoor.south.panel` (registered, off the `dress.` merge prefix). To swing them ajar: `leaf.rotation.y = sx*π/2 - θ` and re-center to `x0 - sx·sin(θ)·half, z0 - half + cos(θ)·half` — the hinge pins at z0−0.42 for both walls.
 - corridor.long: scene-level audio anchors must be rescaled manually (like lights in corridor.mirror) — `world.anchors.{clock,vend,troffers,vents,paHorns}` are NOT under world.root.
+
+## Arc 9 notes (2026-10-10)
+
+- **West-wall collider is segmented** (`wall.col.{sx}.{i}`): recess mouths need
+  a gap in the spans list — the archives doorway got `[C.z0, ARCH_Z0] /
+  [ARCH_Z1, BAY_Z0] / [BAY_Z1, C.z1]`. Missing this silently bricks entry even
+  when every other collider is right (player corks at the wall plane).
+- **Door frame must be rails, never a solid box** — a frame box filling the
+  opening reads as a steel slab at glancing angle and makes the "room" a void.
+  Header rail + two jamb boxes; the leaf collider (parented to the leaf) owns
+  the doorway when shut.
+- **Inward swing beats outward**: leaf `rotation.y = -OPEN_TH` with hinge at
+  the north end (`pos.x = LEAF_X - sin(TH)*0.53`, `pos.z = LEAF_Z - 0.53 +
+  cos(TH)*0.53`) sweeps the leaf into the room and leaves the mouth open.
+  Swinging out corks the mouth diagonally at ~60°.
+- `teleport` resets yaw — pass the 4th arg or look() AFTER teleporting,
+  always (re-bitten this arc).

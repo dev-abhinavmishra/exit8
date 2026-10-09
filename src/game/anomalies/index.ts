@@ -72,6 +72,8 @@ import { walkerPapers } from "./walkerPapers";
 import { corridorLong } from "./corridorLong";
 import { stairFigure } from "./stairFigure";
 import { staffDoorAjar } from "./staffDoorAjar";
+import { archivesOpen } from "./archivesOpen";
+import { archivesStaffed } from "./archivesStaffed";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -313,6 +315,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   corridorLong,
   stairFigure,
   staffDoorAjar,
+  archivesOpen,
+  archivesStaffed,
   liftArrives,
   gazeShift,
   paceDissolves,
