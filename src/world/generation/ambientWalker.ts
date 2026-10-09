@@ -25,7 +25,17 @@ const PAUSE_S = 5;
 const HOME_Z = 16; // loop-rebaseline spot — always mid-corridor on loop 1
 
 export type WalkerMode =
-  "normal" | "backwards" | "stare" | "absent" | "crawl" | "fast" | "charge" | "midstep" | "offlane" | "notes";
+  | "normal"
+  | "backwards"
+  | "stare"
+  | "absent"
+  | "crawl"
+  | "fast"
+  | "charge"
+  | "midstep"
+  | "offlane"
+  | "notes"
+  | "follow";
 
 export interface AmbientWalker {
   update(dt: number, playerPos?: Vector3): void;
@@ -111,6 +121,7 @@ export function buildAmbientWalker(
   let lastStepPh = 0;
   let mode: WalkerMode = "normal";
   let chargeZ: number | null = null;
+  let lastPz: number | undefined;
   const stepIfLanded = (stepping: boolean) => {
     const ph = Math.floor((bobT * 3.4) / Math.PI);
     if (ph !== lastStepPh) {
@@ -221,6 +232,31 @@ export function buildAmbientWalker(
         legPivots[1]!.rotation.x = -swing * 0.62;
         armPivots[0]!.rotation.x = -swing * 0.4;
         armPivots[1]!.rotation.x = swing * 0.4;
+        stepIfLanded(closing);
+        return;
+      }
+      if (mode === "follow" && playerPos) {
+        // he falls in behind you — holds ~2.7 m off whichever end you're
+        // walking away from, matching your pace; when you stand still he
+        // just stands there. Turn around: mid-stride or already waiting.
+        const behind = lastPz !== undefined && playerPos.z < lastPz ? 2.7 : -2.7;
+        lastPz = playerPos.z;
+        const target = Math.min(Math.max(playerPos.z + behind, 3), 52);
+        const dz = target - z;
+        const closing = Math.abs(dz) > 0.04;
+        if (closing) {
+          z += Math.sign(dz) * Math.min(Math.abs(dz), 1.55 * dt * (Math.abs(dz) > 1 ? 1.8 : 1));
+          bobT += dt * 1.7;
+          g.rotation.y = dz > 0 ? 0 : Math.PI;
+        }
+        const bob = closing ? Math.abs(Math.sin(bobT * 3.4)) * 0.04 : 0;
+        g.position.set(lane, bob, z);
+        const swing = closing ? Math.sin(bobT * 3.4) : 0;
+        legPivots[0]!.rotation.x = swing * 0.55;
+        legPivots[1]!.rotation.x = -swing * 0.55;
+        armPivots[0]!.rotation.x = -swing * 0.35;
+        armPivots[1]!.rotation.x = swing * 0.35;
+        fig.headPivot.rotation.x = 0;
         stepIfLanded(closing);
         return;
       }

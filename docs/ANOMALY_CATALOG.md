@@ -752,7 +752,11 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      midpoint they all turn to face the corridor at once (groan +
      "they are watching now"), heads tracking you the rest of the way.
 
-Slice count: **229 implemented — the full catalog**. Dangerous class
+230. `walker.follow` — In Step Behind You · CH III · moderate — the
+     inspector quits his route and trails ~3 m behind your direction of
+     travel; stop and he just stands there. New walker mode `follow`.
+
+Slice count: **230 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
