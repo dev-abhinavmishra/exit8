@@ -996,6 +996,36 @@ export function buildConcourse(
     // motes drifting in the bay lamp's pool — junction zone index
     moteAnchors.push({ x: -C.xHalf - BAY_DEPTH / 2, z: BAY_Z0 + 0.7, zi: 3 });
     moteAnchors.push({ x: -C.xHalf - BAY_DEPTH / 2, z: BAY_Z0 + 0.7, zi: 3 });
+    // the bay's glow spills into the corridor — a crossed-plane shaft in
+    // the mouth plus a warm pool on the terrazzo. Both ride the junction
+    // zone's shafts[] so kills/dips/blackout douse them with the lamps.
+    // Names stay OFF junction.bay. — that prefix merges, and these must
+    // stay live meshes the zone can toggle.
+    const bayShaft = new TransformNode("junction.bayshaft", scene);
+    bayShaft.parent = root;
+    bayShaft.position = new Vector3(-C.xHalf + 0.08, 1.45, BAY_ZC);
+    registry.register("junction.bayshaft", bayShaft);
+    for (const ry of [0, Math.PI / 2]) {
+      const p = kit.plane(
+        `junction.bayshaft.${ry === 0 ? "z" : "x"}`,
+        0.72,
+        2.35,
+        mats.lightShaft,
+        scene,
+        bayShaft,
+      );
+      p.rotation.y = ry;
+      p.billboardMode = 0;
+    }
+    const baySpill = kit.plane("junction.bayspill", 1.5, 2.9, mats.lightShaft, scene, root);
+    baySpill.rotation.x = -Math.PI / 2; // flat, face-up on the floor
+    baySpill.rotation.z = Math.PI / 2; // long axis across the mouth
+    baySpill.position = new Vector3(-C.xHalf + 0.78, 0.015, BAY_ZC);
+    registry.register("junction.bayspill", baySpill);
+    if (junctionZone) {
+      junctionZone.shafts.push(bayShaft);
+      junctionZone.shafts.push(baySpill);
+    }
   }
 
   // ─── S-2 lift lobby — a lit alcove cut into the east wall z 48.4–50.6.
