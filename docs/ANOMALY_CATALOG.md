@@ -814,7 +814,17 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      standing inside the lit mouth, back to you. The room's glow
      flickers on its own rhythm ("someone is working in there").
 
-Slice count: **241 implemented**. Dangerous class
+242. `archives.slam` — It Shut Behind You · CH III · unmistakable —
+     the open door again; step inside the stacks and the leaf slams
+     shut with you in the dark for a beat, then creaks back open.
+     The walkable room is the trap.
+
+243. `records.filed` — A Drawer Stands Open · CH II · moderate —
+     one drawer in the bank's shut face stands pulled out, papers
+     fanned over its lip. Nothing moves, nothing sounds — you have
+     to know the bank.
+
+Slice count: **243 implemented**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).

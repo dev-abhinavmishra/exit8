@@ -74,6 +74,7 @@ import { stairFigure } from "./stairFigure";
 import { staffDoorAjar } from "./staffDoorAjar";
 import { archivesOpen } from "./archivesOpen";
 import { archivesStaffed } from "./archivesStaffed";
+import { archivesSlam } from "./archivesSlam";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -94,6 +95,7 @@ import { cctvAll } from "./cctvAll";
 import { guideCross } from "./guideCross";
 import { shutterAjar } from "./shutterAjar";
 import { recordsBreach } from "./recordsBreach";
+import { recordsFiled } from "./recordsFiled";
 import { galleryFrost } from "./galleryFrost";
 import { vendDead } from "./vendDead";
 import { vendEmpty } from "./vendEmpty";
@@ -317,6 +319,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   staffDoorAjar,
   archivesOpen,
   archivesStaffed,
+  archivesSlam,
   liftArrives,
   gazeShift,
   paceDissolves,
@@ -337,6 +340,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   guideCross,
   shutterAjar,
   recordsBreach,
+  recordsFiled,
   galleryFrost,
   doorStuck,
   doorsOpen,
