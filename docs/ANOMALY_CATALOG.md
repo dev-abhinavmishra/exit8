@@ -737,7 +737,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      whole walk; inside arm's reach it steps aside ("it makes room") —
      filing means walking through where it stood. Dread not damage.
 
-Slice count: **226 implemented — the full catalog**. Dangerous class
+227. `corridor.flicker` — The Corridor Chokes · CH III · unmistakable — a
+     rolling fluorescent failure: zone brightness beats on offset sines
+     so the dark travels down the passage ahead of you (zones keep
+     fighting, never die).
+
+Slice count: **227 implemented — the full catalog**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
