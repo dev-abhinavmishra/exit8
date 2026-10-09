@@ -22,7 +22,15 @@ export const shaftOccupied: AnomalyDef = {
   weight: 0.65,
   progressionRange: [30, 100],
   requires: ["lift.door.-1", "lift.door.1", "lift.panel.lamp"],
-  excludes: ["lift.arrives", "lift.car", "figure", "shadow.figure", "lights.blackout", "watcher.follows", "bay.occupied"],
+  excludes: [
+    "lift.arrives",
+    "lift.car",
+    "figure",
+    "shadow.figure",
+    "lights.blackout",
+    "watcher.follows",
+    "bay.occupied",
+  ],
   testSeed: "test.shaft.occupied",
   dangerous: false,
   activate(ctx): AnomalyInstance {
