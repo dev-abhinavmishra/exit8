@@ -786,7 +786,24 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      moderate — the inspector sheds a pale audit sheet every ~2.7 m
      of patrol; the trail behind him should not exist.
 
-Slice count: **236 implemented**. Dangerous class
+237. `corridor.long` — It Is Longer Today · CH III · unmistakable —
+     the whole corridor stretches ~12% around its midpoint: geometry,
+     colliders, signage, light pools and audio anchors all scale —
+     the far doors recede like the original's long-hall shot.
+     Mirrors corridor.mirror's transform pattern in z.
+
+238. `stair.figure` — It Never Reached the Top · CH III ·
+     unmistakable — the service door stands open on the stairwell
+     and someone is already on the flight, back to you. Approach and
+     it climbs; get too close or let it reach step eight and the
+     door slams ("it never reached the top").
+
+239. `staff.door.ajar` — The Staff Door Stands Ajar · CH II ·
+     moderate — a sealed vestibule staff door stands open a crack
+     with a warm sliver bleeding out; there is no room behind that
+     wall — the vestibule sides are the corridor's shell.
+
+Slice count: **239 implemented**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).

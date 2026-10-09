@@ -905,3 +905,9 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
 - **Stoppable loop-audio pattern**: `startDialTone(pos)` pushes an
   updater into `ventUpdaters` and returns a stop fn that splices +
   ramps + stops oscillators — reuse for future sustained tones.
+
+## Arc 8 notes (2026-10-09)
+
+- rng API: `rng.chance(p)` / `rng.int` / `rng.range` / `rng.draw` — there is no `rng.bool` (src/game/state/rng.ts).
+- Vestibule staff-door panels are `sdoor.north.panel` / `sdoor.south.panel` (registered, off the `dress.` merge prefix). To swing them ajar: `leaf.rotation.y = sx*π/2 - θ` and re-center to `x0 - sx·sin(θ)·half, z0 - half + cos(θ)·half` — the hinge pins at z0−0.42 for both walls.
+- corridor.long: scene-level audio anchors must be rescaled manually (like lights in corridor.mirror) — `world.anchors.{clock,vend,troffers,vents,paHorns}` are NOT under world.root.

@@ -69,6 +69,9 @@ import { phoneDialtone } from "./phoneDialtone";
 import { ventLoose } from "./ventLoose";
 import { capLit } from "./capLit";
 import { walkerPapers } from "./walkerPapers";
+import { corridorLong } from "./corridorLong";
+import { stairFigure } from "./stairFigure";
+import { staffDoorAjar } from "./staffDoorAjar";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -307,6 +310,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   ventLoose,
   capLit,
   walkerPapers,
+  corridorLong,
+  stairFigure,
+  staffDoorAjar,
   liftArrives,
   gazeShift,
   paceDissolves,

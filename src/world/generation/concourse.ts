@@ -471,10 +471,11 @@ function buildAirlock(
   const dsx = side === "north" ? -1 : 1;
   const dframe = kit.box(`dress.sdoor.${side}.frame`, 0.05, 2.14, 0.94, mats.steel, scene, al);
   dframe.position = new Vector3((dsx * (w - 0.1)) / 2, 1.07, zc + 0.7);
-  const dpanel = kit.plane(`dress.sdoor.${side}.panel`, 0.84, 2.04, mats.wallPanel, scene);
+  const dpanel = kit.plane(`sdoor.${side}.panel`, 0.84, 2.04, mats.wallPanel, scene);
   dpanel.parent = al;
   dpanel.position = new Vector3((dsx * (w - 0.18)) / 2, 1.05, zc + 0.7);
   dpanel.rotation.y = dsx < 0 ? -Math.PI / 2 : Math.PI / 2;
+  registry.register(`sdoor.${side}.panel`, dpanel);
   const dhandle = kit.box(`dress.sdoor.${side}.handle`, 0.03, 0.03, 0.14, mats.steel, scene, al);
   dhandle.position = new Vector3((dsx * (w - 0.24)) / 2, 1.02, zc + 1.02);
   const dplaque = kit.box(`dress.sdoor.${side}.plaque`, 0.02, 0.12, 0.34, mats.steel, scene, al);
