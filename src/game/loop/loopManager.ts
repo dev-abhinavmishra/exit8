@@ -16,7 +16,7 @@ import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
 import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
-import { buildFigure } from "../../world/figures";
+import { buildFigure, type Figure } from "../../world/figures";
 import type { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import type { ConcourseWorld } from "../../world/generation/concourse";
 import { LAYOUT, type DoorRig, type LightZone } from "../../world/generation/concourse";
@@ -83,6 +83,7 @@ export class LoopManager {
   /** secure-ending walk-out: which cap opened, and the z threshold
    *  past it that counts as stepping into the light */
   private endingSide: "north" | "south" = "south";
+  private endingFigure: Figure | null = null;
   private endingCrossZ = 0;
   private endingOpenFired = false;
   private endingWalked = false;
@@ -553,6 +554,13 @@ export class LoopManager {
     });
     fig.root.position = new Vector3(0, 0, endZ + dir * 0.35);
     fig.root.rotation.y = side === "south" ? Math.PI : 0;
+    this.endingFigure = fig;
+    this.endingSide = side;
+    this.endingOpenFired = false;
+    this.endingWalked = false;
+    // the doors you just filed at part on their own — the drowned
+    // vestibule opens and the way to it is the walk you have to make
+    this.world.doors[side === "south" ? "southInner" : "northInner"].target01 = 1;
 
     this.endingOutcome = "lost";
     this.endingT = 0;
@@ -566,7 +574,35 @@ export class LoopManager {
   private updateEnding(dt: number): void {
     this.endingT += dt;
     if (this.endingOutcome === "lost") {
-      if (this.endingT > 2.6) {
+      // the drowned corridor stays playable — reaching the figure IS
+      // the ending (the mirror of stepping into the light on secure)
+      if (!this.endingOpenFired && this.endingT > 1.4) {
+        this.endingOpenFired = true;
+        this.player.enabled = true;
+      }
+      const fig = this.endingFigure;
+      if (fig) {
+        const dx = this.player.position.x - fig.root.position.x;
+        const dz = this.player.position.z - fig.root.position.z;
+        // its head keeps finding you on the walk in — the only thing
+        // that moves in the drowned corridor
+        const s = this.endingSide === "south" ? -1 : 1;
+        fig.headPivot.rotation.y = Math.min(Math.max(Math.atan2(s * dx, s * dz), -1.3), 1.3);
+        if (this.endingOpenFired && !this.endingWalked && dx * dx + dz * dz < 1.35 * 1.35) {
+          this.endingWalked = true;
+          this.endingT = 0;
+          this.player.enabled = false;
+          this.player.jolt(0.7);
+          const at = fig.root.position.clone().add(new Vector3(0, 1.6, 0));
+          this.audio.playGroan(at);
+          this.audio.caption("it was waiting for you", at);
+          this.events.onFade?.(1, null);
+        }
+      }
+      if (!this.endingWalked && this.endingT > 16) {
+        this.endingT = -1;
+        this.events.onEnd?.("lost");
+      } else if (this.endingWalked && this.endingT > 0.9) {
         this.endingT = -1;
         this.events.onEnd?.("lost");
       }
