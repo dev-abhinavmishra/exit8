@@ -945,17 +945,19 @@ export function buildConcourse(
     // valve wheel + pressure gauge cluster on the back wall beside the
     // machine — the bay reads as a working service space
     const valve = CreateCylinder(
-      "junction.bay.valve",
+      "junction.bayvalve",
       { height: 0.03, diameter: 0.16, tessellation: 12 },
       scene,
     );
     valve.material = mats.cabinetRed;
     valve.rotation.z = Math.PI / 2;
     valve.position = new Vector3(backFace + 0.08, 1.5, BAY_Z0 + 0.5);
+    registry.register("junction.bayvalve", valve);
     for (let sp = 0; sp < 4; sp++) {
-      const spoke = kit.box(`junction.bay.valvespoke.${sp}`, 0.012, 0.14, 0.012, mats.rubber, scene, root);
+      const spoke = kit.box(`junction.bayvalvespoke.${sp}`, 0.012, 0.14, 0.012, mats.rubber, scene, root);
       spoke.position = new Vector3(backFace + 0.09, 1.5, BAY_Z0 + 0.5);
       spoke.rotation.x = (sp * Math.PI) / 4;
+      registry.register(`junction.bayvalvespoke.${sp}`, spoke);
     }
     const bayGauge = CreateCylinder(
       "junction.bay.gauge",
