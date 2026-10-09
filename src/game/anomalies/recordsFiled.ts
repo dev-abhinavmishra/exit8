@@ -26,7 +26,7 @@ export const recordsFiled: AnomalyDef = {
   weight: 0.9,
   progressionRange: [18, 100],
   requires: ["records.cabinets"],
-  excludes: ["corridor.mirror", "corridor.long", "records.breach", "figure.records"],
+  excludes: ["corridor.mirror", "corridor.long", "corridor.narrow", "records.breach", "figure.records"],
   testSeed: "test.records.filed",
   dangerous: false,
   activate(ctx): AnomalyInstance {

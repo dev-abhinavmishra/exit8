@@ -38,6 +38,7 @@ export const stairFigure: AnomalyDef = {
     "depth.mismatch",
     "corridor.mirror",
     "corridor.long",
+    "corridor.narrow",
     "corridor.breathes",
     "figure.rush",
     "gauntlet.watch",

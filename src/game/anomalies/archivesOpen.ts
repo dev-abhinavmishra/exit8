@@ -22,7 +22,7 @@ export const archivesOpen: AnomalyDef = {
   weight: 0.85,
   progressionRange: [16, 100],
   requires: ["archives.door.leaf"],
-  excludes: ["corridor.mirror", "corridor.long", "archives.staffed"],
+  excludes: ["corridor.mirror", "corridor.long", "corridor.narrow", "archives.staffed"],
   testSeed: "test.archives.open",
   dangerous: false,
   activate(ctx): AnomalyInstance {

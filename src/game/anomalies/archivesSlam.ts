@@ -24,7 +24,7 @@ export const archivesSlam: AnomalyDef = {
   weight: 0.7,
   progressionRange: [40, 100],
   requires: ["archives.door.leaf"],
-  excludes: ["corridor.mirror", "corridor.long", "archives.open", "archives.staffed"],
+  excludes: ["corridor.mirror", "corridor.long", "corridor.narrow", "archives.open", "archives.staffed"],
   testSeed: "test.archives.slam",
   dangerous: false,
   activate(ctx): AnomalyInstance {

@@ -24,7 +24,7 @@ export const lockerBanging: AnomalyDef = {
   weight: 0.85,
   progressionRange: [22, 100],
   requires: ["staffroom.door.leaf"],
-  excludes: ["corridor.mirror", "corridor.long", "staffroom.ajar", "staffroom.occupied"],
+  excludes: ["corridor.mirror", "corridor.long", "corridor.narrow", "staffroom.ajar", "staffroom.occupied"],
   testSeed: "test.locker.banging",
   dangerous: false,
   activate(ctx): AnomalyInstance {

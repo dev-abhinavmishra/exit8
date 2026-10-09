@@ -20,7 +20,14 @@ export const corridorLong: AnomalyDef = {
   weight: 0.5,
   progressionRange: [12, 100],
   requires: ["wall.left.0"],
-  excludes: ["corridor.mirror", "corridor.breathes", "depth.mismatch", "clinic.staffed", "service.stairwell"],
+  excludes: [
+    "corridor.mirror",
+    "corridor.narrow",
+    "corridor.breathes",
+    "depth.mismatch",
+    "clinic.staffed",
+    "service.stairwell",
+  ],
   testSeed: "test.corridor.long",
   dangerous: false,
   activate(ctx) {

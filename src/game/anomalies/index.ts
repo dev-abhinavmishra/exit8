@@ -78,6 +78,7 @@ import { archivesSlam } from "./archivesSlam";
 import { staffroomAjar } from "./staffroomAjar";
 import { staffroomOccupied } from "./staffroomOccupied";
 import { lockerBanging } from "./lockerBanging";
+import { corridorNarrow } from "./corridorNarrow";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -326,6 +327,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   staffroomAjar,
   staffroomOccupied,
   lockerBanging,
+  corridorNarrow,
   liftArrives,
   gazeShift,
   paceDissolves,

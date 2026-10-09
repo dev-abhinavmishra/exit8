@@ -21,7 +21,7 @@ export const staffroomAjar: AnomalyDef = {
   weight: 0.85,
   progressionRange: [16, 100],
   requires: ["staffroom.door.leaf"],
-  excludes: ["corridor.mirror", "corridor.long", "staffroom.occupied", "locker.banging"],
+  excludes: ["corridor.mirror", "corridor.long", "corridor.narrow", "staffroom.occupied", "locker.banging"],
   testSeed: "test.staffroom.ajar",
   dangerous: false,
   activate(ctx): AnomalyInstance {

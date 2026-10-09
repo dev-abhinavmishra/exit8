@@ -838,7 +838,12 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      its own and clangs shut every few seconds — you hear it from the
      corridor before you see the open door.
 
-Slice count: **246 implemented**. Dangerous class
+247. `corridor.narrow` — A Narrower Corridor · CH III · unmistakable —
+     the whole passage pinches ~15% along x around the centre line:
+     walls close in, door mouths shrink, the ceiling bars crowd. Your
+     shoulders remember the width.
+
+Slice count: **247 implemented**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
