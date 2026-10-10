@@ -2753,9 +2753,12 @@ export function buildConcourse(
       const gate = new TransformNode("platform.gate", scene);
       gate.parent = root;
       registry.register("platform.gate", gate);
-      // void face — matte black, flush to the wall
-      const pv = kit.box("platform.void", 0.03, 2.45, 1.2, mats.domePad, scene, gate);
-      pv.position = new Vector3(px + 0.015, 1.28, pz);
+      // void face — true matte black (no emissive; domePad self-lights)
+      const voidMat = new StandardMaterial("mat.platform.void", scene);
+      voidMat.diffuseColor = new Color3(0.005, 0.005, 0.006);
+      voidMat.specularColor = Color3.Black();
+      const pv = kit.box("platform.void", 0.03, 2.45, 1.2, voidMat, scene, gate);
+      pv.position = new Vector3(px + 0.055, 1.28, pz);
       registry.register("platform.void", pv);
       // sill + header + posts
       const sill = kit.box("platform.sill", 0.16, 0.1, 1.28, mats.steel, scene, gate);
@@ -2788,7 +2791,7 @@ export function buildConcourse(
       const sig = CreateSphere("platform.signal", { diameter: 0.03, segments: 6 }, scene);
       sig.material = sigMat;
       sig.parent = gate;
-      sig.position = new Vector3(px + 0.04, 1.38, pz + 0.18);
+      sig.position = new Vector3(px + 0.08, 1.38, pz + 0.18);
       registry.register("platform.signal", sig);
     }
 

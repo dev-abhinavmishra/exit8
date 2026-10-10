@@ -27,7 +27,7 @@ export const platformTrain: AnomalyDef = {
     const lit = CreateBox("anomaly.platform.trainlit", { width: 0.02, height: 1.7, depth: 0.9 }, ctx.scene);
     lit.material = streak;
     lit.parent = gate;
-    lit.position.set(-1.93, 1.3, 39.1);
+    lit.position.set(-1.74, 1.3, 39.1);
     let t = 0;
     let heard = false;
     return {

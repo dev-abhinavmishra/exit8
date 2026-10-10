@@ -27,7 +27,7 @@ export const platformSignal: AnomalyDef = {
     const twin = CreateSphere("anomaly.platform.signal2", { diameter: 0.03, segments: 6 }, ctx.scene);
     twin.material = mat2;
     twin.parent = sig.parent;
-    twin.position.set(-1.96, 1.15, 39.88 + 0.42);
+    twin.position.set(-1.74, 1.15, 39.88 + 0.42);
     return {
       update() {},
       cleanup() {

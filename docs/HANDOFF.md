@@ -1230,3 +1230,6 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   rename locals (phead etc.) to avoid silent mis-binding.
 - 5 anomalies: train streak, signal twin, figure-in-the-gap (despawn
   d2<1.35), sprung bar, water under the sill.
+- xHalf=1.8 is wall CENTER not face: wall face ~-1.76. Anything meant
+  in front of the wall needs x > -1.76 (void face at -1.745); fixture
+  coords must be probed live, not assumed from xHalf.

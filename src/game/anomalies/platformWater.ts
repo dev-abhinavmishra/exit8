@@ -28,11 +28,11 @@ export const platformWater: AnomalyDef = {
     const pool = CreateBox("anomaly.platform.pool", { width: 0.05, height: 0.006, depth: 1.05 }, scene);
     pool.material = wet;
     pool.parent = world.root;
-    pool.position.set(-1.95, 0.012, 39.7);
+    pool.position.set(-1.74, 0.012, 39.7);
     const run = CreateBox("anomaly.platform.run", { width: 0.02, height: 0.7, depth: 0.04 }, scene);
     run.material = wet;
     run.parent = world.root;
-    run.position.set(-1.99, 0.4, 39.85);
+    run.position.set(-1.68, 0.4, 39.85);
     let t = 0;
     return {
       update(_dt: number) {

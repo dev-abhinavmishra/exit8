@@ -24,7 +24,7 @@ export const platformGate: AnomalyDef = {
     const saved = bar.rotation.clone();
     const savedPos = bar.position.clone();
     bar.rotation.z = -0.22;
-    bar.position.x += 0.16;
+    bar.position.x += 0.2;
     // and a glint of pale flesh/edge at the sprung foot — something used it
     const scratch = new StandardMaterial("mat.platform.glint", ctx.scene);
     scratch.diffuseColor = new Color3(0.6, 0.62, 0.6);
@@ -32,7 +32,7 @@ export const platformGate: AnomalyDef = {
     const glint = CreateBox("anomaly.platform.glint", { width: 0.02, height: 0.22, depth: 0.05 }, ctx.scene);
     glint.material = scratch;
     glint.parent = bar.parent;
-    glint.position.set(-1.9, 0.28, 39.7);
+    glint.position.set(-1.7, 0.28, 39.7);
     return {
       update() {},
       cleanup() {
