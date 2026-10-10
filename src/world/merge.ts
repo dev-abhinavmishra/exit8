@@ -61,6 +61,7 @@ const STATIC_PREFIXES = [
   "dress.wpipes.",
   "dress.gate.",
   "dress.wicket.",
+  "dress.supply.",
   "dress.floorwear",
   "conduit.",
   "baseboard.",

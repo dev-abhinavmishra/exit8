@@ -2517,6 +2517,101 @@ export function buildConcourse(
     );
   }
 
+  // ─── the supply cage — a recessed SUPPLY ISSUE service window in the
+  //    east clinic stretch (mouth z 33.8–36.2). Solid lower wall +
+  //    counter ledge, a bar grille above it, and a dim stock shelf
+  //    inside that reads through the bars. Like the lift lobby's void:
+  //    the grille never opens for the player — the mouth is always
+  //    sealed — so anomalies animate the grille, not the space. ──────
+  {
+    const SUP_Z0 = 33.8;
+    const SUP_Z1 = 36.2;
+    const SUP_ZC = (SUP_Z0 + SUP_Z1) / 2;
+    const SUP_D = 1.55; // recess depth
+    const sback = C.xHalf + SUP_D; // interior back face x≈3.35
+    // header + lintel over the mouth
+    const supHeader = kit.box("dress.supply.header", 0.12, 0.5, 2.66, mats.wallPanel, scene, root);
+    supHeader.position = new Vector3(C.xHalf, C.height - 0.25, SUP_ZC);
+    const supLintel = kit.box("dress.supply.lintel", 0.06, 0.08, 2.68, mats.steel, scene, root);
+    supLintel.position = new Vector3(C.xHalf - 0.06, 2.48, SUP_ZC);
+    // recess cheeks
+    for (const [i, cz] of [SUP_Z0, SUP_Z1].entries()) {
+      const cheek = kit.box(`dress.supply.cheek.${i}`, SUP_D + 0.06, 2.5, 0.12, mats.wallPanel, scene, root);
+      cheek.position = new Vector3(C.xHalf + SUP_D / 2, 1.25, cz);
+    }
+    // interior back wall + low recess ceiling + terrazzo continuing in
+    const supBack = kit.box("dress.supply.back", 0.1, 2.5, 2.4, mats.wallPanel, scene, root);
+    supBack.position = new Vector3(sback + 0.05, 1.25, SUP_ZC);
+    const supCeil = kit.box("dress.supply.ceil", SUP_D, 0.08, 2.4, mats.wallPanel, scene, root);
+    supCeil.position = new Vector3(C.xHalf + SUP_D / 2, 2.54, SUP_ZC);
+    const supFloor = kit.box("dress.supply.floor", SUP_D + 0.04, 0.1, 2.4, mats.concrete, scene, root);
+    supFloor.position = new Vector3(C.xHalf + SUP_D / 2, -0.05, SUP_ZC);
+    // solid lower wall + counter ledge — the window sill reads as a
+    // served hatch, not a doorway
+    const sillWall = kit.box("dress.supply.sillwall", 0.1, 0.95, 2.4, mats.wallPanel, scene, root);
+    sillWall.position = new Vector3(C.xHalf + 0.03, 0.475, SUP_ZC);
+    const ledge = kit.box("dress.supply.ledge", 0.24, 0.05, 2.46, mats.rubber, scene, root);
+    ledge.position = new Vector3(C.xHalf - 0.04, 0.98, SUP_ZC);
+    // stock shelf inside the cage — three crates registered so the
+    // anomalies can strip the shelf
+    const shelf = kit.box("dress.supply.shelf", 0.5, 0.06, 2.0, mats.steel, scene, root);
+    shelf.position = new Vector3(sback - 0.3, 1.15, SUP_ZC);
+    const shelfLow = kit.box("dress.supply.shelf.low", 0.5, 0.06, 2.0, mats.steel, scene, root);
+    shelfLow.position = new Vector3(sback - 0.3, 0.55, SUP_ZC);
+    const crateMat = new StandardMaterial("mat.supply.crate", scene);
+    crateMat.diffuseColor = new Color3(0.32, 0.24, 0.15);
+    crateMat.specularColor = new Color3(0.06, 0.06, 0.06);
+    for (const [ci, cz, cy, cw] of [
+      [0, SUP_Z0 + 0.55, 0.75, 0.5],
+      [1, SUP_Z0 + 1.3, 0.75, 0.44],
+      [2, SUP_Z0 + 0.9, 1.32, 0.46],
+    ] as const) {
+      const crate = kit.box(`supply.crate.${ci}`, 0.4, 0.36, cw, crateMat, scene, root);
+      crate.position = new Vector3(sback - 0.32, cy, cz);
+      registry.register(`supply.crate.${ci}`, crate);
+    }
+    // the grille — vertical bars across the opening, registered node so
+    // anomalies can slide it up; bars are children, NOT dress.* (merge
+    // prefix would fold them into the static batch and kill animation)
+    const grille = new TransformNode("supply.grille", scene);
+    grille.parent = root;
+    grille.position = new Vector3(C.xHalf - 0.02, 0, SUP_ZC);
+    for (let b = 0; b < 23; b++) {
+      const bar = kit.box(`supply.grille.bar.${b}`, 0.024, 1.5, 0.03, mats.steel, scene, grille);
+      bar.position = new Vector3(0, 1.73, -1.15 + b * 0.105);
+    }
+    for (const ry of [1.1, 1.73, 2.36]) {
+      const rail = kit.box(`supply.grille.rail.${ry}`, 0.05, 0.05, 2.34, mats.rubber, scene, grille);
+      rail.position = new Vector3(0, ry, 0);
+    }
+    registry.register("supply.grille", grille);
+    // mouth stays sealed forever — one collider across the opening
+    colliders.push(
+      kit.collider("supply.cage.col", 0.5, 2.6, 2.45, new Vector3(C.xHalf + 0.08, 1.3, SUP_ZC), scene, root),
+    );
+    // amber pilot lamp over the grille + SUPPLY ISSUE plate on the header
+    const pilotMat = new StandardMaterial("mat.supply.pilot", scene);
+    pilotMat.diffuseColor = new Color3(0.02, 0.02, 0.02);
+    pilotMat.specularColor = Color3.Black();
+    pilotMat.emissiveColor = new Color3(0.4, 0.28, 0.08);
+    const pilot = kit.box("supply.pilot", 0.1, 0.06, 0.16, pilotMat, scene, root);
+    pilot.position = new Vector3(C.xHalf - 0.1, 2.62, SUP_ZC - 1.05);
+    registry.register("supply.pilot", pilot);
+    const ssign = kit.plane("sign.supply", 1.4, 0.3, mats.sign.get("sign.supply")!, scene, root);
+    ssign.position = new Vector3(C.xHalf - 0.065, 2.74, SUP_ZC + 0.5);
+    ssign.rotation.y = Math.PI / 2;
+    registry.register("sign.supply", ssign);
+    // caged dome lamp inside the recess — unlit by default, the lit
+    // anomalies wake it and pool light across the stock
+    const cageLampMat = new StandardMaterial("mat.supply.lamp", scene);
+    cageLampMat.diffuseColor = new Color3(0.02, 0.02, 0.02);
+    cageLampMat.specularColor = Color3.Black();
+    cageLampMat.emissiveColor = new Color3(0.015, 0.015, 0.015);
+    const clamp = kit.box("supply.lamp", 0.16, 0.06, 0.16, cageLampMat, scene, root);
+    clamp.position = new Vector3(sback - 0.12, 2.32, SUP_ZC);
+    registry.register("supply.lamp", clamp);
+  }
+
   // ─── ceiling duct run — galvanized trunk line suspended under the
   // slab along the east tee edge, feeding three down-facing grates.
   // The corridor's air plant made visible; grate meshes register so

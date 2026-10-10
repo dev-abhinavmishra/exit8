@@ -1,4 +1,4 @@
-# NIGHT AUDIT — Implementation Plan
+# EXIT 8 — Implementation Plan
 
 Status: M0–M4 complete on PR #1 (89 anomalies — the full catalog); M5 in
 flight — static merge, benchmark route, a11y audit, cross-browser QA

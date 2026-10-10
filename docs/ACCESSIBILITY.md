@@ -1,6 +1,6 @@
 # Accessibility audit
 
-What NIGHT AUDIT ships for accessibility, verified against the code —
+What EXIT 8 ships for accessibility, verified against the code —
 not aspirational.
 
 ## Controls & input

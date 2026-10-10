@@ -122,7 +122,7 @@ export class GameUi {
 
   // ── screens ────────────────────────────────────────────────────
   private buildStart(): HTMLDivElement {
-    const { panel, body } = this.panel(FICTION_SUB(), "NIGHT AUDIT");
+    const { panel, body } = this.panel(FICTION_SUB(), "EXIT 8");
     const brief = document.createElement("p");
     brief.className = "na-brief";
     brief.textContent = COPY.startScreen.brief.join("\n");
@@ -602,7 +602,7 @@ export class GameUi {
       "RESET ALL DATA",
       "settings, records and discoveries are wiped",
       () => {
-        if (confirm("Reset all NIGHT AUDIT data on this device?")) this.cb.onResetData();
+        if (confirm("Reset all EXIT 8 data on this device?")) this.cb.onResetData();
       },
       "danger",
     );

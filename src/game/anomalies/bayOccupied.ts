@@ -1,7 +1,7 @@
 /**
  * bay.occupied — from loop start, a figure stands inside the S-2 bay at
  * the machine, back squared to the corridor, mid-task. Nobody works the
- * bay on a night audit; the corridor knows its fixtures, and this is
+ * bay on a late audit; the corridor knows its fixtures, and this is
  * not one of them. Moderate — the recess is dim and the shape is
  * half-sheltered by the machine, so you catch it at the mouth.
  */

@@ -52,7 +52,10 @@ if (existsSync(pubDir)) {
 const { readFileSync } = await import("node:fs");
 const signage = readFileSync(join(root, "src/data/signage.ts"), "utf8");
 check(signage.includes("CIVIC WORKS AUTHORITY"), "signage.ts missing authority fiction");
-check(!/exit\s*8/i.test(signage), "signage.ts must not reference the inspiring title");
+// in-world sign plates (SIGNS) must stay original fiction — the game's
+// own branding lives in COPY and is allowed to carry the title.
+const signBlock = signage.slice(0, signage.indexOf("export const COPY"));
+check(!/exit\s*8/i.test(signBlock), "signage.ts SIGNS must not reference the inspiring title");
 const anomalyDir = join(root, "src/game/anomalies");
 const modules = readdirSync(anomalyDir).filter(
   (f) => f.endsWith(".ts") && !["types.ts", "registry.ts", "index.ts"].includes(f),
