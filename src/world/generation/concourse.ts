@@ -2469,6 +2469,10 @@ export function buildConcourse(
       colliders.push(
         kit.collider(`gate.lane.col.${li}`, 1.0, 0.95, 1.3, new Vector3(GATE_X, PED_H / 2, lz), scene, root),
       );
+      // tactile queue pad on the corridor side of each lane — thin box,
+      // floor planes do not render in the corridor (arc16 trap)
+      const queue = kit.box(`dress.wicket.queue.${li}`, 0.5, 0.012, 0.4, mats.domePad, scene, root);
+      queue.position = new Vector3(0.55, 0.008, lz);
     }
     const wicketSignAnchor = new TransformNode("wicket.sign.anchor", scene);
     wicketSignAnchor.parent = root;

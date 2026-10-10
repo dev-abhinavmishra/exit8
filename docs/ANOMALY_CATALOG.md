@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **269 implemented** — 223 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **270 implemented** — 224 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -886,3 +886,4 @@ sound-led anomaly carries a visual cue path.
 | 267 | `wicket.lit` | The Desk Is Lit | The ROUTE 7 clerk desk burns its interior lamp — shutter up a hand's width, amber light bleeding under it, hood lamp lit, sagging. | moderate | 2 | lighting |
 | 268 | `gate.keeper` | The Fare-Keeper | A fare-keeper stands inside the shut middle lane, back to you, facing the paddles — his head finds you inside ~9m; press close and there is nobody there. | unmistakable | 3 | character |
 | 269 | `wicket.closed` | The Wicket Is Closed | The fare line is condemned — portable stanchions mid-corridor with a sagging chain and a LANE CLOSED plate; you squeeze past on the west side. | unmistakable | 2 | spatial |
+| 270 | `shutter.breach` | The Shutter Is Forced | The clerk desk's roller shutter is wrenched half up and racked off level — one slat dropped on the counter below; the desk is dark, just open. | moderate | 2 | object |
