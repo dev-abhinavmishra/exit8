@@ -991,3 +991,21 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   through grate slits; biases its course away from the player's z.
 - gallery.lit existed already (arc-era def) — check `git log` on a file
   before writing a new def with a similar id; the catalog is the index.
+
+## Arc 12 (in flight) — figure relief + leftover review fixes
+- `buildFigure` grows `*.feat.*` relief: nose/nosetip/cheeks/ears on the
+  head, finger/thumb blocks + wrist cuffs on the arms, shoulder end
+  caps. FRONT-FACING relief only — brow/chin boxes were tried and
+  dropped: their top faces catch the troffers directly and blow out
+  under bloom. `walker.faceless` hides every `ambient.walker.feat.*`
+  mesh (smooth egg-head, verified).
+- Relief material: clone of skin at ~55% luminance
+  (`*.skin.relief`, Color3 0.21/0.18/0.16) — full skin brightness on
+  protruding faces reads as white patches next to the darker plate.
+- `drawFace` variant "grin" for `walker.smile` (#252); brow-ridge and
+  jaw shading are PAINTED (gradients), not geometry.
+- `walker.papers` sheets get `backFaceCulling=false` — plane sign
+  conventions made the printed side's facing ambiguous; culling-off is
+  the certain fix (same as blob shadows).
+- `beginLostEnding` now `ambientWalker.setMode("absent")` — inspector
+  was still patrolling in the drowned corridor (review finding).

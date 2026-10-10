@@ -51,7 +51,10 @@ export interface FigureOpts {
  * the skin gradient and cap-shadow band — the faceless-erasure anomaly
  * needs exactly the smooth leftover.
  */
-export function drawFace(t: DynamicTexture, variant: "normal" | "blank" | "eyeless" = "normal"): void {
+export function drawFace(
+  t: DynamicTexture,
+  variant: "normal" | "blank" | "eyeless" | "grin" = "normal",
+): void {
   const blank = variant === "blank";
   const c = t.getContext();
   (c as unknown as CanvasRenderingContext2D).setTransform(1, 0, 0, 1, 0, 0);
@@ -97,6 +100,16 @@ export function drawFace(t: DynamicTexture, variant: "normal" | "blank" | "eyele
     c.closePath();
     c.fill();
     // brows — thin, level, slightly down at the inner ends: tired
+    // brow ridge — shadow above each brow, thin highlight below the
+    // ridge: the forehead reads as a plane catching light
+    const ridge = c.createLinearGradient(0, 48, 0, 62);
+    ridge.addColorStop(0, "rgba(52,38,30,0)");
+    ridge.addColorStop(1, "rgba(52,38,30,0.35)");
+    c.fillStyle = ridge;
+    c.fillRect(26, 48, 76, 14);
+    c.fillStyle = "rgba(210,190,168,0.28)";
+    c.fillRect(30, 62, 28, 3);
+    c.fillRect(70, 62, 28, 3);
     c.strokeStyle = "#2b211c";
     c.lineWidth = 3;
     c.beginPath();
@@ -179,20 +192,51 @@ export function drawFace(t: DynamicTexture, variant: "normal" | "blank" | "eyele
     c.moveTo(56, 98);
     c.quadraticCurveTo(64, 103, 72, 98);
     c.stroke();
-    // mouth — dead level, slightly downturned at the corners
-    c.strokeStyle = "#3a2b21";
-    c.lineWidth = 3;
-    c.beginPath();
-    c.moveTo(46, 117);
-    c.lineTo(82, 117);
-    c.stroke();
-    c.lineWidth = 2;
-    c.beginPath();
-    c.moveTo(46, 117);
-    c.lineTo(44, 119);
-    c.moveTo(82, 117);
-    c.lineTo(84, 119);
-    c.stroke();
+    if (variant === "grin") {
+      // the smile that shouldn't be on his face — corners climbing past
+      // where a mouth ends, a pale teeth band inside
+      c.fillStyle = "#cfc4b4";
+      c2d.beginPath();
+      c2d.moveTo(42, 112);
+      c2d.quadraticCurveTo(64, 127, 86, 112);
+      c2d.quadraticCurveTo(64, 121, 42, 112);
+      c2d.fill();
+      c.strokeStyle = "#241812";
+      c.lineWidth = 3;
+      c.beginPath();
+      c.moveTo(40, 111);
+      c.quadraticCurveTo(64, 128, 88, 111);
+      c.stroke();
+      c.lineWidth = 2;
+      c.beginPath();
+      c.moveTo(40, 111);
+      c.lineTo(38, 108);
+      c.moveTo(88, 111);
+      c.lineTo(90, 108);
+      c.stroke();
+    } else {
+      // mouth — dead level, slightly downturned at the corners
+      c.strokeStyle = "#3a2b21";
+      c.lineWidth = 3;
+      c.beginPath();
+      c.moveTo(46, 117);
+      c.lineTo(82, 117);
+      c.stroke();
+      c.lineWidth = 2;
+      c.beginPath();
+      c.moveTo(46, 117);
+      c.lineTo(44, 119);
+      c.moveTo(82, 117);
+      c.lineTo(84, 119);
+      c.stroke();
+    }
+    // jaw wraps under — shade the oval's bottom edge so the face ends
+    // at a chin, not a fade
+    const jaw = c.createLinearGradient(0, 128, 0, 158);
+    jaw.addColorStop(0, "rgba(46,32,24,0)");
+    jaw.addColorStop(1, "rgba(46,32,24,0.4)");
+    c.fillStyle = jaw;
+    c.fillRect(14, 128, 100, 32);
     // faint nasolabial folds
     c.strokeStyle = "#5f4a3d";
     c.lineWidth = 2;
@@ -273,6 +317,11 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
   const skin = new StandardMaterial(`${name}.skin`, scene);
   skin.diffuseColor = sil ? coat.diffuseColor.clone() : new Color3(0.4, 0.34, 0.3);
   skin.specularColor = new Color3(0.03, 0.03, 0.03);
+  // relief skin runs dimmer — small protruding faces catch the troffers
+  // directly and blow out at full skin brightness
+  const skinRelief = new StandardMaterial(`${name}.skin.relief`, scene);
+  skinRelief.diffuseColor = sil ? coat.diffuseColor.clone() : new Color3(0.21, 0.18, 0.16);
+  skinRelief.specularColor = new Color3(0.02, 0.02, 0.02);
   const card = new StandardMaterial(`${name}.card`, scene);
   card.diffuseColor = new Color3(0.8, 0.79, 0.74);
   card.emissiveColor = new Color3(0.18, 0.18, 0.16);
@@ -401,6 +450,64 @@ export function buildFigure(scene: Scene, parent: TransformNode, name: string, o
     face.position = new Vector3(0, 0.17, 0.112);
     face.rotation.y = Math.PI;
     face.parent = headPivot;
+    // dimensional relief — the painted plate reads at a glance, but up
+    // close a real nose / cheekbones / jaw edges make him a person
+    // instead of a sticker on a sphere. Only front-facing relief: top
+    // faces catch the troffers directly and blow out under bloom.
+    // Shared `*.feat.*` prefix: walker.faceless hides them all.
+    box(`${name}.feat.nose`, 0.018, 0.045, 0.02, use(skinRelief), scene, headPivot, 0, 0.163, 0.114);
+    box(`${name}.feat.nosetip`, 0.026, 0.012, 0.022, use(skinRelief), scene, headPivot, 0, 0.136, 0.114);
+    for (const sx of [-1, 1]) {
+      const cheek = box(
+        `${name}.feat.cheek.${sx}`,
+        0.024,
+        0.05,
+        0.018,
+        use(skinRelief),
+        scene,
+        headPivot,
+        sx * 0.054,
+        0.16,
+        0.098,
+      );
+      cheek.rotation.y = -sx * 0.3;
+      box(
+        `${name}.feat.ear.${sx}`,
+        0.018,
+        0.048,
+        0.026,
+        use(skin),
+        scene,
+        headPivot,
+        sx * 0.104,
+        0.185,
+        -0.005,
+      );
+    }
+  }
+  if (!sil) {
+    // real hands at the sleeve ends — a finger block + thumb stub where
+    // the mitten slab was, wrist cuff band closing the sleeve, and soft
+    // caps on the shoulder slab's hard ends
+    for (const sx of [-1, 1]) {
+      const arm = arms[sx < 0 ? 0 : 1]!;
+      box(`${name}.feat.fingers.${sx}`, 0.068, 0.07, 0.02, use(skinRelief), scene, arm, 0, -0.715, 0.022);
+      box(
+        `${name}.feat.thumb.${sx}`,
+        0.018,
+        0.046,
+        0.02,
+        use(skinRelief),
+        scene,
+        arm,
+        -sx * 0.03,
+        -0.655,
+        0.028,
+      );
+      box(`${name}.feat.cuff.${sx}`, 0.1, 0.032, 0.112, use(coat), scene, arm, 0, -0.575, 0.006);
+      const cap = box(`${name}.feat.shcap.${sx}`, 0.14, 0.1, 0.28, use(coat), scene, g, sx * 0.3, 1.5, 0);
+      cap.rotation.z = sx * 0.24;
+    }
   }
 
   // contact shadow — rides the root so it follows patrols and freezes

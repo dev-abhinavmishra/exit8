@@ -223,6 +223,7 @@ import { radLeaks } from "./radLeaks";
 import { lockerAjar } from "./lockerAjar";
 import { exitWrongway } from "./exitWrongway";
 import { walkerFaceless } from "./walkerFaceless";
+import { walkerSmile } from "./walkerSmile";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -473,6 +474,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   lockerAjar,
   exitWrongway,
   walkerFaceless,
+  walkerSmile,
   walkerEyeless,
   walkerCrawl,
   signLoop8,

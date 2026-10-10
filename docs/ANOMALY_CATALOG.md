@@ -271,6 +271,9 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 63. ★ `walker.faceless` — the other inspector walks his usual route,
     but his face is smooth skin. No eyes, no mouth — only the cap's
     shadow where a face should be. Moderate. (slice)
+★ `walker.smile` — the other inspector walks his route, but his face
+  has learned to smile: a grin that climbs past where a mouth ends,
+  teeth showing. (CH III, spatial, moderate)
 64. ★ `walker.crawl` — he still walks his route, but at a fifth of his
     pace with a slowed, heavy stride. He will not reach the end of the
     corridor this shift. Moderate. (slice)
@@ -661,6 +664,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 171. `locker.ajar` — Open Locker · CH I · moderate
 172. `exit.wrongway` — Exit Sign Wrong Way · CH II · subtle
 173. `walker.faceless` — Faceless Inspector · CH III · moderate
+252. `walker.smile` — The Grin · CH III · moderate
 174. `walker.eyeless` — Hollow Eyes · CH III · subtle
 175. `walker.crawl` — He Walks Too Slowly · CH III · moderate
 176. `sign.loop8` — Wrong Loop Number · CH III · subtle
@@ -843,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **251 implemented**. Dangerous class
+Slice count: **252 implemented**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -864,3 +868,4 @@ sound-led anomaly carries a visual cue path.
 | 249 | `lobby.voices` | Voices in the Shaft | Muffled sigh/rustle back-and-forth behind the sealed lift doors — the shaft should be empty. | subtle | 2 | sound |
 | 250 | `archives.dark` | Dark Stacks | The stacks room's lamp is out — the lit mouth in the records bank drains to a black doorway. | subtle | 2 | lighting |
 | 251 | `duct.mouth` | Open Duct | The mid-duct grate is gone — an open black throat in the ceiling line. | subtle | 1 | object |
+| 252 | `walker.smile` | The Grin | The other inspector walks his route with a smile that climbs past where a mouth ends, teeth showing. | moderate | 3 | figure |
