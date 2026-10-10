@@ -1168,6 +1168,7 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   light hits them through the bars (gate.keeper trap all over again).
 
 ## arc19 — the colonnade (in flight)
+
 - Four half-column pairs on both walls at z16.5/33/43.5/52.5 — the
   colonnade rhythm that was missing from the flat tube. Registered
   `col.{e|w}.{0-3}` TransformNodes (shaft+plinth+cap children) so
@@ -1182,6 +1183,7 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   (41.5) and svc door (46).
 
 ## arc20 — the clock (in flight)
+
 - Double-faced station clock on the centerline at z30 (x0, y2.42), stem
   from the ceiling, registered `clock.head` TransformNode: housing,
   face.n/s, 4 ticks/face, hand.{n|s}.{h|m} with pivot bases for

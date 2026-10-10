@@ -2701,11 +2701,27 @@ export function buildConcourse(
     const housing = kit.box("clock.housing", 0.92, 0.92, 0.14, mats.steel, scene, clock);
     housing.position = new Vector3(0, 0, 0);
     for (const fz of [1, -1]) {
-      const face = kit.box(`clock.face.${fz > 0 ? "n" : "s"}`, 0.8, 0.8, 0.012, mats.trofferLit, scene, clock);
+      const face = kit.box(
+        `clock.face.${fz > 0 ? "n" : "s"}`,
+        0.8,
+        0.8,
+        0.012,
+        mats.trofferLit,
+        scene,
+        clock,
+      );
       face.position = new Vector3(0, 0, fz * 0.076);
       // tick ring — 4 marker stubs per face
       for (let ti = 0; ti < 4; ti++) {
-        const tick = kit.box(`clock.tick.${fz > 0 ? "n" : "s"}.${ti}`, 0.03, 0.08, 0.014, mats.rubber, scene, clock);
+        const tick = kit.box(
+          `clock.tick.${fz > 0 ? "n" : "s"}.${ti}`,
+          0.03,
+          0.08,
+          0.014,
+          mats.rubber,
+          scene,
+          clock,
+        );
         const a = (ti * Math.PI) / 2;
         tick.position = new Vector3(Math.sin(a) * 0.31, Math.cos(a) * 0.31, fz * 0.082);
         tick.rotation.z = -a;
