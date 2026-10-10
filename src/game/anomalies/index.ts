@@ -252,6 +252,11 @@ import { corridorBreath } from "./corridorBreath";
 import { corridorMark } from "./corridorMark";
 import { corridorNest } from "./corridorNest";
 import { corridorSpill } from "./corridorSpill";
+import { patinaCrack } from "./patinaCrack";
+import { patinaPatch } from "./patinaPatch";
+import { patinaHalo } from "./patinaHalo";
+import { patinaRust } from "./patinaRust";
+import { patinaScratch } from "./patinaScratch";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -522,6 +527,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   corridorMark,
   corridorNest,
   corridorSpill,
+  patinaCrack,
+  patinaPatch,
+  patinaHalo,
+  patinaRust,
+  patinaScratch,
   walkerEyeless,
   walkerCrawl,
   signLoop8,
