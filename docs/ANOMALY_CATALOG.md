@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **296 implemented** — 250 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **301 implemented** — 255 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -913,3 +913,8 @@ sound-led anomaly carries a visual cue path.
 | 294 | `corridor.dust` | Dust In The Light | Slow grit-fall through the troffer shaft by the clock. | subtle | 1 | spatial |
 | 295 | `corridor.breeze` | A Draft Runs The Floor | Paper scraps skate up the corridor on a draft. | moderate | 2 | spatial |
 | 296 | `corridor.cold` | The Air Goes Cold | Every zone's light snaps pale blue at once. | moderate | 2 | systemic |
+| 297 | `platform.train` | A Train Goes By | Lit carriage sweeps the void behind the bars, twice, gone. | unmistakable | 3 | spatial |
+| 298 | `platform.signal` | Two Signals | The trackside pinprick doubles — two reds a body apart. | subtle | 1 | object |
+| 299 | `platform.figure` | Someone In The Gap | Pale face at gate height in the dark behind the bars; despawns close-up. | unmistakable | 3 | character |
+| 300 | `platform.gate` | A Bar Sprung | Middle bar bows out of its foot, glint of use at the base. | moderate | 2 | object |
+| 301 | `platform.water` | Water In The Gap | Black water sheens the recess floor and creeps under the sill. | moderate | 2 | spatial |
