@@ -1168,6 +1168,7 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   light hits them through the bars (gate.keeper trap all over again).
 
 ## arc19 — the colonnade (in flight)
+
 - Four half-column pairs on both walls at z16.5/33/43.5/52.5 — the
   colonnade rhythm that was missing from the flat tube. Registered
   `col.{e|w}.{0-3}` TransformNodes (shaft+plinth+cap children) so
@@ -1180,3 +1181,16 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   gallery 20-32, cage 33.8-36.2, staff 39.2-40.6, lobby 48.4-50.6,
   bay 46.2-49.4, archives 21.4-22.8). East z43.5 sits between vend
   (41.5) and svc door (46).
+
+## arc20 — the hanging clock (in flight)
+- NOTE: a wall-mounted master clock already lives at west z24 (kit.clock
+  w/ clock.reverse|wrong-face|spins|missing|stopped). arc20 adds a
+  SECOND, distinct fixture: a hanging double-faced clock on the
+  centerline — anomaly ids chosen to NOT dupe existing semantics
+  (gone/wrong/spin cut for low/sway/dark/fallen/drip).
+
+- Double-faced station clock on the centerline at z30 (x0, y2.42), stem
+  from the ceiling, registered `clock.head` TransformNode: housing,
+  face.n/s, 4 ticks/face, hand.{n|s}.{h|m} with pivot bases for
+  rotation.z spins. Centerline x=0 is free (troffers run x±0.9, duct
+  x1.02 east). Hands baseline ~10:05, mirrored per face (fz*angle).

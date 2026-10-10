@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **281 implemented** — 235 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **286 implemented** — 240 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -898,3 +898,8 @@ sound-led anomaly carries a visual cue path.
 | 279 | `pilaster.scar` | The Column Is Raked | Deep gouges down the east z43.5 column + rubble at its base. | moderate | 2 | object |
 | 280 | `pilaster.face` | Face To The Wall | Figure nose-to-wall at the west z52.5 column; gone at the lobby. | unmistakable | 3 | character |
 | 281 | `pilaster.grime` | The Column Is Filmed | East z16.5 column filmed in oily grime, steel cap band gone. | subtle | 1 | object |
+| 282 | `clock.gone` | The Clock Is Gone | Clock head missing; empty stem + ceiling scar. | moderate | 2 | object |
+| 283 | `clock.fallen` | The Clock Is Down | Clock head on the floor, face-up, still ticking. | unmistakable | 3 | object |
+| 284 | `clock.spin` | The Hands Are Racing | Minute hands spin at an impossible rate on both faces. | unmistakable | 3 | object |
+| 285 | `clock.wrong` | The Time Is Off | Reads 3:47, not 10:05 — on both faces. | subtle | 1 | object |
+| 286 | `clock.drip` | The Clock Is Bleeding | Dark leak from the housing, pool on the terrazzo. | unmistakable | 3 | object |

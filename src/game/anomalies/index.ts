@@ -216,6 +216,11 @@ import { pilasterExtra } from "./pilasterExtra";
 import { pilasterScar } from "./pilasterScar";
 import { pilasterFace } from "./pilasterFace";
 import { pilasterGrime } from "./pilasterGrime";
+import { clockLow } from "./clockLow";
+import { clockSway } from "./clockSway";
+import { clockFallen } from "./clockFallen";
+import { clockDark } from "./clockDark";
+import { clockDrip } from "./clockDrip";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -450,6 +455,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   pilasterScar,
   pilasterFace,
   pilasterGrime,
+  clockLow,
+  clockSway,
+  clockFallen,
+  clockDark,
+  clockDrip,
   walkerEyeless,
   walkerCrawl,
   signLoop8,
