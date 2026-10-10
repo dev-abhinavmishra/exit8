@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **317 implemented** — 271 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **322 implemented** — 276 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -934,3 +934,8 @@ sound-led anomaly carries a visual cue path.
 | 315 | `corridor.mark` | Someone's Survey Marks | Chalk arrow + circled check near the south bench. | subtle | 1 | object |
 | 316 | `corridor.nest` | Something Nests Here | Shredded-paper nest behind the bench + chewed-leg tilt. Ch II+. | moderate | 2 | object |
 | 317 | `corridor.spill` | It Leaks And Fogs | Spill under the vending machine + fogged front glass. | moderate | 1 | object |
+| 318 | `patina.crack` | The Wall Cracks Open | A hairline crack grows down the east wall z33 over the loop. Ch II+. | moderate | 2 | spatial |
+| 319 | `patina.patch.gone` | The Repair Fell Out | The mismatched repair tile at z28 is on the floor, bare substrate behind. | subtle | 1 | object |
+| 320 | `patina.halo.spread` | The Stain Is Growing | The ceiling halo at z41 darkens + spreads through the loop. Ch II+. | subtle | 2 | spatial |
+| 321 | `patina.rust.fresh` | A Fresh Rust Run | A bright wet rust weep on the west wall z48 — unlike every aged weep. | subtle | 1 | object |
+| 322 | `patina.scratch` | Scored Across The Floor | Three fresh parallel gouges across the walkway at z30. | subtle | 1 | object |

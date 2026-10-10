@@ -1270,3 +1270,15 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
 - Anchors proven live: wall.left.0, platform.bar.2, light.zone.entry,
   bench.south, prop.vending — registry.get for fixture-tell mutation,
   always clone+restore in cleanup.
+
+## arc27 — the patina layer + new-damage anomalies
+
+- CH I corridor was sterile: added permanent wear — dress.pat.crack
+  hairlines, dress.pat.rust weeps, dress.pat.gum coins, heel scuffs at
+  thresholds + 3 REGISTERED patina.* anchors (patch plane, crack
+  TransformNode, halo plane) for the new-damage set.
+- New-damage anomalies animate BASELINE objects: crack grows via
+  scaling.y, halo spreads/darkens (restore cloned scaling+diffuse+
+  alpha), patch falls out (setEnabled toggle + bare substrate + dropped
+  tile reusing patchMesh.material). registry.get returns
+  TransformNode|AbstractMesh — cast for .material.

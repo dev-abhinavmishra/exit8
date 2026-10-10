@@ -3508,6 +3508,91 @@ export function buildConcourse(
     st.rotation.y = sx < 0 ? -Math.PI / 2 : Math.PI / 2;
   }
 
+  // ─── the patina — permanent wear the CH I corridor should already
+  // carry: hairline tile cracks, rust weeps under steelwork, gum spots,
+  // a mismatched repair tile, one faint ceiling halo. Baseline decals
+  // fold as dress.pat.*; the four registered patina.* nodes are anomaly
+  // anchors for the "new damage" set below.
+  {
+    const crackMat = new StandardMaterial("mat.pat.crack", scene);
+    crackMat.diffuseColor = new Color3(0.05, 0.045, 0.04);
+    crackMat.specularColor = Color3.Black();
+    const rustMat = new StandardMaterial("mat.pat.rust", scene);
+    rustMat.diffuseColor = new Color3(0.32, 0.16, 0.06);
+    rustMat.specularColor = new Color3(0.04, 0.03, 0.02);
+    const gumMat = new StandardMaterial("mat.pat.gum", scene);
+    gumMat.diffuseColor = new Color3(0.11, 0.1, 0.09);
+    gumMat.specularColor = Color3.Black();
+    const haloMat = new StandardMaterial("mat.pat.halo", scene);
+    haloMat.diffuseColor = new Color3(0.3, 0.26, 0.18);
+    haloMat.alpha = 0.34;
+    haloMat.specularColor = Color3.Black();
+
+    // hairline cracks wandering down the tiles — thin angled seams
+    for (const [sx, cz, cy, ang, len] of [
+      [-1, 10.5, 1.9, 0.35, 0.7],
+      [-1, 31.8, 1.2, -0.5, 0.55],
+      [1, 8.2, 2.1, -0.3, 0.6],
+      [1, 36.4, 1.6, 0.45, 0.75],
+      [1, 48.9, 0.9, -0.6, 0.5],
+    ] as const) {
+      const c = kit.box(`dress.pat.crack.${sx}.${cz}`, 0.014, len, 0.01, crackMat, scene, root);
+      c.position = new Vector3(sx * (C.xHalf - 0.048), cy, cz);
+      c.rotation.x = ang;
+    }
+    // rust weeps — under the jboxes and the pipe straps, short brown runs
+    for (const [sx, wz, wy] of [
+      [-1, 7, 1.62],
+      [-1, 26, 1.62],
+      [1, 19, 1.62],
+      [1, 41, 1.62],
+    ] as const) {
+      const w = kit.box(`dress.pat.rust.${sx}.${wz}`, 0.012, 0.34, 0.09, rustMat, scene, root);
+      w.position = new Vector3(sx * (C.xHalf - 0.05), wy - 0.2, wz);
+    }
+    // gum spots — dark coins on the walkway near the furniture
+    for (const [gx, gz] of [
+      [-1.0, 16.8],
+      [0.6, 29.4],
+      [-0.5, 44.6],
+      [0.9, 51.8],
+      [-1.2, 33.2],
+    ] as const) {
+      const g = kit.box(`dress.pat.gum.${gx}.${gz}`, 0.045, 0.005, 0.04, gumMat, scene, root);
+      g.position = new Vector3(gx, 0.013, gz);
+      g.rotation.y = gx * 2.7;
+    }
+    // heel scuffs at the airlock thresholds
+    for (const [sx2, sz] of [
+      [-0.4, 1.4],
+      [0.5, 53.6],
+    ] as const) {
+      const sc = kit.box(`dress.pat.scuff.${sx2}.${sz}`, 0.16, 0.004, 0.03, gumMat, scene, root);
+      sc.position = new Vector3(sx2, 0.012, sz);
+      sc.rotation.y = 0.4 + sx2;
+    }
+
+    // REGISTERED anchors for the new-damage anomalies:
+    // a mismatched repair tile (paler than the field) on the west wall
+    const patchMat = new StandardMaterial("mat.pat.patch", scene);
+    patchMat.diffuseColor = new Color3(0.5, 0.48, 0.44); // paler than the tile field
+    patchMat.specularColor = new Color3(0.04, 0.04, 0.04);
+    const patch = kit.plane("patina.patch", 0.5, 0.42, patchMat, scene, root);
+    patch.position = new Vector3(-(C.xHalf - 0.052), 1.35, 28.4);
+    patch.rotation.y = -Math.PI / 2;
+    registry.register("patina.patch", patch);
+    // empty anchor where a crack can GROW (east wall, eye height, z 33)
+    const crackAnchor = new TransformNode("patina.crack", scene);
+    crackAnchor.parent = root;
+    crackAnchor.position = new Vector3(C.xHalf - 0.05, 1.5, 33.2);
+    registry.register("patina.crack", crackAnchor);
+    // a faint ceiling halo that can SPREAD (over z 41, near a grille)
+    const halo = kit.plane("patina.halo", 0.9, 0.7, haloMat, scene, root);
+    halo.position = new Vector3(0.6, C.height - 0.004, 41.2);
+    halo.rotation.x = Math.PI / 2;
+    registry.register("patina.halo", halo);
+  }
+
   // ─── maintenance workbench — the west wall hugging the bay mouth
   // (z≈44.5–46.1) reads as the bay's working bench: fold-down bench,
   // pegboard with painted tool shadows (one hook empty), cable spool,
