@@ -1,5 +1,5 @@
 /**
- * pilaster.extra — a fifth column stands on the west wall at z≈38,
+ * pilaster.extra — a fifth column stands on the west wall at z≈42.5,
  * off-rhythm between the z 33 and z 43.5 pair. The colonnade's spacing
  * never varies. Moderate object-class.
  */
@@ -25,7 +25,7 @@ export const pilasterExtra: AnomalyDef = {
     const dupe = src.clone("anomaly.pilaster.dupe", null)!;
     dupe.parent = world.root;
     dupe.position = src.position.clone();
-    dupe.position.z = 38.0;
+    dupe.position.z = 42.5;
     dupe.setEnabled(true);
     return {
       update() {},

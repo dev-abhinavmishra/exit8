@@ -52,7 +52,7 @@ export const pilasterFace: AnomalyDef = {
         const dz = p.z - node.position.z;
         const d2 = dx * dx + dz * dz;
         // never turns — that is the point — but vanishes at the lobby
-        if (d2 < 2.4) {
+        if (d2 < 1.35) {
           gone = true;
           node.setEnabled(false);
           ctx.audio.caption("nobody at the column", null);
