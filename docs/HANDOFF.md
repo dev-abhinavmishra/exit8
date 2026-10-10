@@ -1257,3 +1257,16 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
 - 5 deep-shift ids gated ch3/ch2+: slump, growl, scrawl, mud,
   exit.sign.burn (red film OVER the sign — don't material-swap
   textured signs).
+
+## arc26 — composite "tell" anomalies (merged-ward)
+
+- His combo directive ("in combo with other tiny changes") needs no
+  loop surgery: a composite def IS one anomaly doing two things. Each
+  pairs a subtle primary with a fixture tell: sweep(bits+mop streak),
+  drag(floor gash+platform.bar.2 rotation — restore clone()), breath
+  (zone0 diffuse cool + frost film + fog caption), mark(chalk arrow),
+  nest(shred mound + bench.south tilt), spill(pools + fog film on
+  prop.vending).
+- Anchors proven live: wall.left.0, platform.bar.2, light.zone.entry,
+  bench.south, prop.vending — registry.get for fixture-tell mutation,
+  always clone+restore in cleanup.

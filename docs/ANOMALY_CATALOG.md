@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **311 implemented** — 265 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **317 implemented** — 271 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -928,3 +928,9 @@ sound-led anomaly carries a visual cue path.
 | 309 | `corridor.scrawl` | Written On The Floor | Chalk scrawl across the walkway at z44. Ch III. | moderate | 3 | object |
 | 310 | `corridor.mud` | A Muddy Trail | Muddy boot prints from the platform gate east. Ch II+. | moderate | 2 | object |
 | 311 | `exit.sign.burn` | The Sign Burns Red | A red film over the south EXIT sign — ember-lit south end. Ch III. | moderate | 3 | lighting |
+| 312 | `corridor.sweep` | Half-Swept Floor | Debris crescent + one mop streak at z20 — cleaning stopped mid-pass. | subtle | 1 | object |
+| 313 | `corridor.drag` | Dragged To The Gate | Floor drag-scar to the gate + lowest bar bent. Ch II+. | moderate | 2 | spatial |
+| 314 | `corridor.breath` | A Cold Patch | Frost film on the east wall, zone light cools, breath fogs. Ch II+. | moderate | 2 | lighting |
+| 315 | `corridor.mark` | Someone's Survey Marks | Chalk arrow + circled check near the south bench. | subtle | 1 | object |
+| 316 | `corridor.nest` | Something Nests Here | Shredded-paper nest behind the bench + chewed-leg tilt. Ch II+. | moderate | 2 | object |
+| 317 | `corridor.spill` | It Leaks And Fogs | Spill under the vending machine + fogged front glass. | moderate | 1 | object |
