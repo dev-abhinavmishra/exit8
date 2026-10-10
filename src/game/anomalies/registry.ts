@@ -47,9 +47,13 @@ export class AnomalyRegistry {
         opts.stability >= d.progressionRange[0] &&
         opts.stability <= d.progressionRange[1],
     );
+    // tier multiplier — the loop favors reads you can actually make:
+    // subtle rolls at roughly half rate, unmistakable slightly boosted.
+    // within a tier the def's own weight still applies
+    const tierMult = { subtle: 0.55, moderate: 0.9, unmistakable: 1.15 } as const;
     const id = this.bag.draw(
       roll,
-      eligible.map((d) => ({ id: d.id, weight: d.weight })),
+      eligible.map((d) => ({ id: d.id, weight: d.weight * tierMult[d.detectability] })),
     );
     return id ? this.get(id) : null;
   }

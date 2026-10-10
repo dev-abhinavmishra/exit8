@@ -23,9 +23,13 @@ export const guideRed: AnomalyDef = {
     const dc = mat.diffuseColor.clone();
     // bars go from amber to arterial red — texture pattern intact
     mat.diffuseColor = new Color3(1.0, 0.22, 0.18);
+    // second tell — one mid-run segment goes dead entirely
+    const seg = ctx.world.registry.mesh("guide.seg.3");
+    seg.setEnabled(false);
     return {
       update() {},
       cleanup() {
+        seg.setEnabled(true);
         mat.diffuseColor = dc;
       },
     };

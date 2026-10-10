@@ -21,6 +21,10 @@ export const clockStopped: AnomalyDef = {
   activate(ctx): AnomalyInstance {
     const hour = ctx.world.clock.hourPivot;
     const minute = ctx.world.clock.minutePivot;
+    // second tell — the whole face hangs crooked on its screws
+    const faceMesh = ctx.world.registry.get("clock.face");
+    const faceRz = faceMesh.rotation.z;
+    faceMesh.rotation.z = faceRz + 0.045;
     // hands are drawn pointing at 12 with rotation.z sweeping clockwise;
     // 04:12 → minute hand 12/60 of a turn, hour hand (4 + 12/60)/12
     const minuteZ = -(12 / 60) * Math.PI * 2;
@@ -31,6 +35,7 @@ export const clockStopped: AnomalyDef = {
         hour.rotation.z = hourZ;
       },
       cleanup() {
+        faceMesh.rotation.z = faceRz;
         minute.rotation.z = 0;
         hour.rotation.z = 0;
       },

@@ -4,6 +4,7 @@
  * object-class anomaly.
  */
 import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { AnomalyDef, AnomalyInstance } from "./types";
 
@@ -25,10 +26,9 @@ export const radLeaks: AnomalyDef = {
     const spawned: { dispose(): void }[] = [];
 
     // water pooled under the valve end of the radiator
-    const puddle = CreatePlane("anomaly.rad.puddle", { width: 0.8, height: 1.0 }, scene);
+    const puddle = CreateBox("anomaly.rad.puddle", { width: 0.8, height: 0.006, depth: 1.0 }, scene);
     puddle.material = world.materials.puddle;
     puddle.parent = node;
-    puddle.rotation.x = -Math.PI / 2;
     puddle.position = new Vector3(-0.25, 0.013, 0.95);
     spawned.push(puddle);
 

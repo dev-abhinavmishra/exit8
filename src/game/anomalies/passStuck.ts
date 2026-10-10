@@ -29,9 +29,14 @@ export const passStuck: AnomalyDef = {
     // correct plate reads PASS {streak+1}; the stuck counter shows the
     // pass you just finished — the number didn't tick
     drawSign(t, { ...spec, title: `PASS ${String(Math.min(99, streak)).padStart(2, "0")}` });
+    // second tell — the plate itself sits crooked in its bezel
+    const plate = ctx.world.registry.get("sign.attempt.face");
+    const rz = plate.rotation.z;
+    plate.rotation.z = rz - 0.055;
     return {
       update() {},
       cleanup() {
+        plate.rotation.z = rz;
         drawSign(t, {
           ...spec,
           title: `PASS ${String(Math.min(99, streak + 1)).padStart(2, "0")}`,

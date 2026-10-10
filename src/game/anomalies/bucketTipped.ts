@@ -3,7 +3,7 @@
  * flat across the floor, water pooled. Nobody heard it go over.
  * Moderate object-class anomaly.
  */
-import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { AnomalyDef, AnomalyInstance } from "./types";
 
@@ -66,10 +66,9 @@ export const bucketTipped: AnomalyDef = {
       });
     }
 
-    const puddle = CreatePlane("anomaly.bucket.puddle", { width: 0.9, height: 1.1 }, scene);
+    const puddle = CreateBox("anomaly.bucket.puddle", { width: 0.9, height: 0.006, depth: 1.1 }, scene);
     puddle.material = world.materials.puddle;
     puddle.parent = node;
-    puddle.rotation.x = -Math.PI / 2;
     puddle.position = new Vector3(0.3, 0.013, 0.3);
     spawned.push(puddle);
 

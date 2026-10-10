@@ -5,7 +5,6 @@
  * object-class anomaly.
  */
 import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
-import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { AnomalyDef, AnomalyInstance } from "./types";
 
@@ -42,17 +41,19 @@ export const fountainRuns: AnomalyDef = {
     jet.position = new Vector3(-0.02, 0.16, -0.12);
     spawned.push(jet);
 
-    const pool = CreatePlane("anomaly.fountain.pool", { width: 0.18, height: 0.26 }, scene);
+    const pool = CreateBox("anomaly.fountain.pool", { width: 0.18, height: 0.006, depth: 0.26 }, scene);
     pool.material = world.materials.puddle;
     pool.parent = fountain;
-    pool.rotation.x = -Math.PI / 2;
     pool.position = new Vector3(-0.14, 0.1, 0.02);
     spawned.push(pool);
 
-    const floorPool = CreatePlane("anomaly.fountain.floorpool", { width: 0.7, height: 0.85 }, scene);
+    const floorPool = CreateBox(
+      "anomaly.fountain.floorpool",
+      { width: 0.7, height: 0.006, depth: 0.85 },
+      scene,
+    );
     floorPool.material = world.materials.puddle;
     floorPool.parent = fountain;
-    floorPool.rotation.x = -Math.PI / 2;
     floorPool.position = new Vector3(-0.28, -0.84, 0.1);
     spawned.push(floorPool);
 
