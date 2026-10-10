@@ -1010,3 +1010,8 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   the certain fix (same as blob shadows).
 - `beginLostEnding` now `ambientWalker.setMode("absent")` — inspector
   was still patrolling in the drowned corridor (review finding).
+
+## Arc 13 — camera.tracks + lights.surge (#253-254)
+- CCTV domes `cctv.{0..3}` are registered TransformNodes at (±1.6, z3/20/40/52); `cctv.{i}.dome`/`.lens` are scene meshes (meshInfo-visible, root is not). Baseline yaw 0 for z<27 else π.
+- Tracking verification without framing: compare `meshInfo('cctv.N.lens').pos` vs `.dome` — the offset direction IS the aim.
+- `lights.surge` = inverse lighting fault: zone point ×1.55 + whiter diffuse + extraLights ×1.5 (per-zone: trofferLit/shaft mats are global, can't split).

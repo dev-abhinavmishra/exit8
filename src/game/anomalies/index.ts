@@ -224,6 +224,8 @@ import { lockerAjar } from "./lockerAjar";
 import { exitWrongway } from "./exitWrongway";
 import { walkerFaceless } from "./walkerFaceless";
 import { walkerSmile } from "./walkerSmile";
+import { cameraTracks } from "./cameraTracks";
+import { lightsSurge } from "./lightsSurge";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -475,6 +477,8 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   exitWrongway,
   walkerFaceless,
   walkerSmile,
+  cameraTracks,
+  lightsSurge,
   walkerEyeless,
   walkerCrawl,
   signLoop8,

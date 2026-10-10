@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **252 implemented**. Dangerous class
+Slice count: **254 implemented**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -869,3 +869,5 @@ sound-led anomaly carries a visual cue path.
 | 250 | `archives.dark` | Dark Stacks | The stacks room's lamp is out — the lit mouth in the records bank drains to a black doorway. | subtle | 2 | lighting |
 | 251 | `duct.mouth` | Open Duct | The mid-duct grate is gone — an open black throat in the ceiling line. | subtle | 1 | object |
 | 252 | `walker.smile` | The Grin | The other inspector walks his route with a smile that climbs past where a mouth ends, teeth showing. | moderate | 3 | figure |
+| 253 | `camera.tracks` | The Cameras Watch | Every CCTV dome within sight pans to keep its lens on you as you walk — a slow motorized sweep, not a snap. | moderate | 2 | figure |
+| 254 | `lights.surge` | Over-fed Circuit | One stretch burns too bright and too white — the zone feed over-volts while the troffer panels read normal. | moderate | 2 | lighting |
