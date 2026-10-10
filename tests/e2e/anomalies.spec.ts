@@ -4,12 +4,19 @@ import { join } from "node:path";
 
 const NA = "window.__nightaudit";
 
-// Ids are scraped from the def files rather than importing ALL_ANOMALIES —
-// the index pulls Babylon's extension-less ESM paths into the Playwright
-// node process, which cannot resolve them (Vite-only resolution).
+// Ids are scraped from REGISTERED defs — the registry is what the game
+// loads, and playability cuts intentionally leave dead def files on disk.
+// index.ts itself can't be imported (it pulls Babylon's extension-less
+// ESM paths into the Playwright node process), so the import list is
+// parsed and only imported files are scraped for ids.
 const ANOMALY_DIR = join(process.cwd(), "src/game/anomalies");
+const IMPORTED = new Set(
+  [...readFileSync(join(ANOMALY_DIR, "index.ts"), "utf8").matchAll(/from\s+["']\.\/([\w-]+)["']/g)].map(
+    (m) => m[1],
+  ),
+);
 const IDS = readdirSync(ANOMALY_DIR)
-  .filter((f) => f.endsWith(".ts") && f !== "index.ts" && f !== "types.ts")
+  .filter((f) => f.endsWith(".ts") && f !== "index.ts" && f !== "types.ts" && IMPORTED.has(f.slice(0, -3)))
   .flatMap((f) => {
     const s = readFileSync(join(ANOMALY_DIR, f), "utf8");
     const m = s.match(/export const \w+:\s*AnomalyDef\s*=\s*\{[\s\S]*?id:\s*"([^"]+)"/);
