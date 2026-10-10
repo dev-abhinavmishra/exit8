@@ -2624,6 +2624,70 @@ export function buildConcourse(
     zones.find((z) => z.name === "clinic")?.extraLights.push(cageFill);
   }
 
+  // ─── the colonnade — structural half-columns hugging both walls at a
+  //    steady rhythm (z 16.5 / 33 / 43.5 / 52.5). Real concourses carry
+  //    columns; without them the corridor reads as one flat tube. The
+  //    columns are registered TransformNodes (col.{e|w}.{i}) so anomaly
+  //    classes can delete, add, or scar them; caps/bases/plinths merge
+  //    under dress.col.*. Mouth stretches (wicket, washroom, gallery,
+  //    staff door, cage, lobby, bay) are all skipped by the z picks. ──
+  {
+    const COL_ZS = [16.5, 33, 43.5, 52.5];
+    const COL_W = 0.6; // z width of the column face
+    const COL_D = 0.3; // x protrusion from the wall
+    for (const sx of [-1, 1]) {
+      for (const [i, cz] of COL_ZS.entries()) {
+        const col = new TransformNode(`col.${sx < 0 ? "w" : "e"}.${i}`, scene);
+        col.parent = root;
+        col.position = new Vector3(sx * (C.xHalf - COL_D / 2), 0, cz);
+        const shaft = kit.box(
+          `col.${sx < 0 ? "w" : "e"}.${i}.shaft`,
+          COL_D,
+          C.height,
+          COL_W,
+          mats.wallPanel,
+          scene,
+          col,
+        );
+        shaft.position = new Vector3(0, C.height / 2, 0);
+        // darker plinth base + steel cap band — the column reads built,
+        // not extruded
+        const plinth = kit.box(
+          `col.${sx < 0 ? "w" : "e"}.${i}.plinth`,
+          COL_D + 0.04,
+          0.16,
+          COL_W + 0.04,
+          mats.rubber,
+          scene,
+          col,
+        );
+        plinth.position = new Vector3(0, 0.08, 0);
+        const cap = kit.box(
+          `col.${sx < 0 ? "w" : "e"}.${i}.cap`,
+          COL_D + 0.02,
+          0.2,
+          COL_W + 0.02,
+          mats.steel,
+          scene,
+          col,
+        );
+        cap.position = new Vector3(0, C.height - 0.6, 0);
+        registry.register(`col.${sx < 0 ? "w" : "e"}.${i}`, col);
+        colliders.push(
+          kit.collider(
+            `col.${sx < 0 ? "w" : "e"}.${i}.col`,
+            COL_D + 0.06,
+            C.height,
+            COL_W + 0.06,
+            new Vector3(sx * (C.xHalf - COL_D / 2), C.height / 2, cz),
+            scene,
+            root,
+          ),
+        );
+      }
+    }
+  }
+
   // ─── ceiling duct run — galvanized trunk line suspended under the
   // slab along the east tee edge, feeding three down-facing grates.
   // The corridor's air plant made visible; grate meshes register so

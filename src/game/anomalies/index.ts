@@ -211,6 +211,11 @@ import { supplyOpen } from "./supplyOpen";
 import { supplyFigure } from "./supplyFigure";
 import { supplyBare } from "./supplyBare";
 import { supplyPlate } from "./supplyPlate";
+import { pilasterGone } from "./pilasterGone";
+import { pilasterExtra } from "./pilasterExtra";
+import { pilasterScar } from "./pilasterScar";
+import { pilasterFace } from "./pilasterFace";
+import { pilasterGrime } from "./pilasterGrime";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -440,6 +445,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   supplyFigure,
   supplyBare,
   supplyPlate,
+  pilasterGone,
+  pilasterExtra,
+  pilasterScar,
+  pilasterFace,
+  pilasterGrime,
   walkerEyeless,
   walkerCrawl,
   signLoop8,
