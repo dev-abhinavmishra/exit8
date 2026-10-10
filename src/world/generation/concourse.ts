@@ -1462,13 +1462,33 @@ export function buildConcourse(
     washDoorMat.diffuseColor = new Color3(0.19, 0.22, 0.2);
     washDoorMat.specularColor = new Color3(0.03, 0.03, 0.03);
     // doorway header + jambs on the corridor face
-    const washHeader = kit.box("wash.header", 0.12, C.height - 2.1, WASH_Z1 - WASH_Z0 + 0.2, mats.wallPanel, scene, root);
+    const washHeader = kit.box(
+      "wash.header",
+      0.12,
+      C.height - 2.1,
+      WASH_Z1 - WASH_Z0 + 0.2,
+      mats.wallPanel,
+      scene,
+      root,
+    );
     washHeader.position = new Vector3(C.xHalf, 2.1 + (C.height - 2.1) / 2, WASH_ZC);
-    colliders.push(kit.collider("wash.headerCol", 0.14, C.height - 2.1, WASH_Z1 - WASH_Z0 + 0.2, new Vector3(C.xHalf, 2.1 + (C.height - 2.1) / 2, WASH_ZC), scene, root));
+    colliders.push(
+      kit.collider(
+        "wash.headerCol",
+        0.14,
+        C.height - 2.1,
+        WASH_Z1 - WASH_Z0 + 0.2,
+        new Vector3(C.xHalf, 2.1 + (C.height - 2.1) / 2, WASH_ZC),
+        scene,
+        root,
+      ),
+    );
     for (const [i, jz] of [WASH_Z0, WASH_Z1].entries()) {
       const jamb = kit.box(`wash.jamb.${i}`, 0.05, 2.1, 0.07, mats.steel, scene, root);
       jamb.position = new Vector3(C.xHalf - 0.01, 1.05, jz);
-      colliders.push(kit.collider(`wash.jambCol.${i}`, 0.14, 2.1, 0.1, new Vector3(C.xHalf, 1.05, jz), scene, root));
+      colliders.push(
+        kit.collider(`wash.jambCol.${i}`, 0.14, 2.1, 0.1, new Vector3(C.xHalf, 1.05, jz), scene, root),
+      );
     }
     // reveal liners inside the cut wall's raw edges
     for (const [i, rz] of [WASH_Z0 + 0.03, WASH_Z1 - 0.03].entries()) {
@@ -1503,16 +1523,46 @@ export function buildConcourse(
     wceil.position = new Vector3(C.xHalf + WASH_DEPTH / 2 - 0.02, 2.66, 18.22);
     const wbackMesh = kit.box("wash.wall.back", 0.1, 2.7, 3.5, washTile, scene, root);
     wbackMesh.position = new Vector3(washBackX + 0.05, 1.35, 18.25);
-    colliders.push(kit.collider("wash.wall.backCol", 0.14, 2.7, 3.55, new Vector3(washBackX + 0.06, 1.35, 18.25), scene, root));
+    colliders.push(
+      kit.collider(
+        "wash.wall.backCol",
+        0.14,
+        2.7,
+        3.55,
+        new Vector3(washBackX + 0.06, 1.35, 18.25),
+        scene,
+        root,
+      ),
+    );
     for (const [i, wz] of [16.5, 19.95].entries()) {
       const swall = kit.box(`wash.wall.${i}`, WASH_DEPTH + 0.06, 2.7, 0.1, washTile, scene, root);
       swall.position = new Vector3(C.xHalf + WASH_DEPTH / 2, 1.35, wz);
-      colliders.push(kit.collider(`wash.wall.col.${i}`, WASH_DEPTH + 0.1, 2.7, 0.14, new Vector3(C.xHalf + WASH_DEPTH / 2, 1.35, wz), scene, root));
+      colliders.push(
+        kit.collider(
+          `wash.wall.col.${i}`,
+          WASH_DEPTH + 0.1,
+          2.7,
+          0.14,
+          new Vector3(C.xHalf + WASH_DEPTH / 2, 1.35, wz),
+          scene,
+          root,
+        ),
+      );
     }
     // vanity slab along the back wall — two inset basin wells + taps
     const vanity = kit.box("wash.vanity", 0.42, 0.5, 2.1, washPorcelain, scene, root);
     vanity.position = new Vector3(washBackX - 0.23, 0.62, 18.35);
-    colliders.push(kit.collider("wash.vanity.col", 0.45, 0.55, 2.15, new Vector3(washBackX - 0.24, 0.62, 18.35), scene, root));
+    colliders.push(
+      kit.collider(
+        "wash.vanity.col",
+        0.45,
+        0.55,
+        2.15,
+        new Vector3(washBackX - 0.24, 0.62, 18.35),
+        scene,
+        root,
+      ),
+    );
     for (const [i, bz] of [17.8, 18.9].entries()) {
       const basin = kit.box(`wash.basin.${i}`, 0.3, 0.05, 0.44, mats.rubber, scene, root);
       basin.position = new Vector3(washBackX - 0.24, 0.885, bz);
@@ -1591,7 +1641,9 @@ export function buildConcourse(
     for (const [i, px] of [2.77, 3.5].entries()) {
       const part = kit.box(`wash.stall.part.${i}`, 0.04, 1.85, 0.62, stallMat, scene, root);
       part.position = new Vector3(px, 0.925, 16.83);
-      colliders.push(kit.collider(`wash.stall.partCol.${i}`, 0.06, 1.9, 0.66, new Vector3(px, 0.95, 16.83), scene, root));
+      colliders.push(
+        kit.collider(`wash.stall.partCol.${i}`, 0.06, 1.9, 0.66, new Vector3(px, 0.95, 16.83), scene, root),
+      );
       const post = kit.box(`wash.stall.post.${i}`, 0.05, 1.85, 0.05, mats.steel, scene, root);
       post.position = new Vector3(px, 0.925, 17.15);
     }
@@ -1611,7 +1663,9 @@ export function buildConcourse(
     const dryer = kit.box("wash.dryer", 0.16, 0.3, 0.24, washPorcelain, scene, root);
     dryer.position = new Vector3(3.7, 1.15, 16.56);
     registry.register("wash.dryer", dryer);
-    colliders.push(kit.collider("wash.dryer.col", 0.2, 0.34, 0.28, new Vector3(3.7, 1.15, 16.6), scene, root));
+    colliders.push(
+      kit.collider("wash.dryer.col", 0.2, 0.34, 0.28, new Vector3(3.7, 1.15, 16.6), scene, root),
+    );
     const dryNoz = kit.box("wash.dryer.noz", 0.12, 0.04, 0.1, mats.steel, scene, root);
     dryNoz.position = new Vector3(3.7, 0.99, 16.62);
     const dryLed = kit.box("wash.dryer.led", 0.03, 0.03, 0.03, mats.trofferDim, scene, root);
@@ -2871,6 +2925,119 @@ export function buildConcourse(
   const puddle = kit.plane("dress.puddle.0", 0.95, 0.7, mats.puddle, scene, root);
   puddle.position = new Vector3(1.35, 0.007, 52.6);
   puddle.rotation.x = Math.PI / 2;
+
+  // fire standpipe — the red pipe every Japanese station service
+  // corridor runs along the ceiling; east side below the cable tray,
+  // same doorway splits as the tray, flanged joints, two hose-valve
+  // drops the anomalies can work
+  const pipeMat = new StandardMaterial("mat.pipe.red", scene);
+  pipeMat.diffuseColor = new Color3(0.34, 0.055, 0.04);
+  pipeMat.specularColor = new Color3(0.14, 0.07, 0.06);
+  pipeMat.specularPower = 30;
+  const pipeX = C.xHalf - 0.42;
+  const pipeY = 2.56;
+  const pipeSpans: [number, number][] = [
+    [C.z0 + 0.4, 15.0],
+    [16.0, WASH_Z0],
+    [WASH_Z1, LOB_Z0],
+    [LOB_Z1, C.z1 - 0.4],
+  ];
+  pipeSpans.forEach(([s0, s1], i) => {
+    const seg = CreateCylinder(
+      `pipe.stand.${i}`,
+      { height: s1 - s0, diameter: 0.09, tessellation: 14 },
+      scene,
+    );
+    seg.material = pipeMat;
+    seg.parent = root;
+    seg.position = new Vector3(pipeX, pipeY, (s0 + s1) / 2);
+    seg.rotation.x = Math.PI / 2;
+    registry.register(`pipe.stand.${i}`, seg);
+    // flange collar at the span's north joint face
+    const fl = CreateCylinder(`pipe.flange.${i}`, { height: 0.055, diameter: 0.13, tessellation: 14 }, scene);
+    fl.material = pipeMat;
+    fl.parent = root;
+    fl.position = new Vector3(pipeX, pipeY, s0 + 0.03);
+    fl.rotation.x = Math.PI / 2;
+    registry.register(`pipe.flange.${i}`, fl);
+  });
+  // mid-run flanges where a long span would really joint
+  for (const fz of [27.2, 40.8]) {
+    const fl = CreateCylinder(
+      `pipe.flange.m${Math.round(fz)}`,
+      { height: 0.055, diameter: 0.13, tessellation: 14 },
+      scene,
+    );
+    fl.material = pipeMat;
+    fl.parent = root;
+    fl.position = new Vector3(pipeX, pipeY, fz);
+    fl.rotation.x = Math.PI / 2;
+    registry.register(`pipe.flange.m${Math.round(fz)}`, fl);
+  }
+  // pipe hanger straps up to the tray line
+  for (let z = 5; z < C.z1 - 1; z += 5.5) {
+    const hp = kit.box(`dress.pipehang.${z.toFixed(1)}`, 0.025, 0.3, 0.11, mats.steel, scene, root);
+    hp.position = new Vector3(pipeX, pipeY + 0.19, z);
+  }
+  // two hose-valve drops — a short down-leg to a wheel at reach height
+  for (const [vi, vz] of [22.6, 44.2].entries()) {
+    const drop = CreateCylinder(
+      `pipe.vdrop.${vi}`,
+      { height: 1.3, diameter: 0.055, tessellation: 10 },
+      scene,
+    );
+    drop.material = pipeMat;
+    drop.parent = root;
+    drop.position = new Vector3(pipeX + 0.02, pipeY - 0.65, vz);
+    const valve = new TransformNode(`pipe.valve.${vi}`, scene);
+    valve.parent = root;
+    valve.position = new Vector3(pipeX + 0.02, pipeY - 1.32, vz);
+    registry.register(`pipe.valve.${vi}`, valve);
+    const wheel = CreateCylinder(
+      `pipe.valve.${vi}.wheel`,
+      { height: 0.022, diameter: 0.17, tessellation: 12 },
+      scene,
+    );
+    wheel.material = pipeMat;
+    wheel.parent = valve;
+    wheel.rotation.x = Math.PI / 2; // wheel face out toward the corridor
+    for (let s = 0; s < 3; s++) {
+      const spoke = kit.box(`pipe.valve.${vi}.spoke.${s}`, 0.012, 0.012, 0.16, mats.steel, scene, valve);
+      spoke.rotation.y = (s * Math.PI) / 3;
+    }
+    const hub = CreateCylinder(
+      `pipe.valve.${vi}.hub`,
+      { height: 0.05, diameter: 0.04, tessellation: 8 },
+      scene,
+    );
+    hub.material = mats.steel;
+    hub.parent = valve;
+    hub.rotation.x = Math.PI / 2;
+  }
+
+  // trench drain — a continuous grated channel along the west wall
+  // base (trench drains cross thresholds; the bay mouth keeps it too)
+  const drainTex = new DynamicTexture("tex.drain.channel", { width: 1024, height: 64 }, scene, false);
+  {
+    const dctx = drainTex.getContext();
+    dctx.fillStyle = "#14161a";
+    dctx.fillRect(0, 0, 1024, 64);
+    dctx.fillStyle = "#1d2024";
+    dctx.fillRect(0, 8, 1024, 48);
+    dctx.fillStyle = "#0a0b0d";
+    for (let x = 6; x < 1024; x += 22) dctx.fillRect(x, 10, 7, 44);
+    dctx.fillStyle = "rgba(96,88,72,0.28)";
+    dctx.fillRect(0, 0, 1024, 6);
+    dctx.fillRect(0, 58, 1024, 6);
+    drainTex.update();
+  }
+  const drainMat = new StandardMaterial("mat.drain.channel", scene);
+  drainMat.diffuseTexture = drainTex;
+  drainMat.specularColor = new Color3(0.03, 0.03, 0.03);
+  const drainCh = kit.plane("drain.channel", 0.24, C.z1 - C.z0 - 0.8, drainMat, scene, root);
+  drainCh.position = new Vector3(-(C.xHalf - 0.17), 0.009, (C.z0 + C.z1) / 2);
+  drainCh.rotation.x = -Math.PI / 2;
+  registry.register("drain.channel", drainCh);
 
   // pilot lamps beside each airlock mouth — the amber "route open"
   // indicator you learn to glance at before committing
