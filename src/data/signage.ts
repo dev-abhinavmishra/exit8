@@ -108,6 +108,28 @@ export const SIGNS: SignSpec[] = [
     tone: "dark",
   },
   {
+    id: "sign.wicket",
+    title: "FARE LINE",
+    sub: "GATES HOLD 22:00–06:00",
+    arrow: "none",
+    tone: "cyan",
+  },
+  {
+    id: "sign.wicket.booth",
+    title: "ROUTE 7 DESK",
+    sub: "PASSES · INSPECTION PERMITS",
+    arrow: "none",
+    tone: "dark",
+  },
+  {
+    // hung off the chain when the fare line is condemned — anomaly plate
+    id: "sign.wicket.closed",
+    title: "LANE CLOSED",
+    sub: "USE WEST WALK",
+    arrow: "left",
+    tone: "amber",
+  },
+  {
     // repainted every loop by the loop manager — the in-world pass
     // counter on the south cap (the exit-number equivalent)
     id: "sign.attempt",

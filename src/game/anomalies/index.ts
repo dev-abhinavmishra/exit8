@@ -200,6 +200,10 @@ import { creatureTall } from "./creatureTall";
 import { floorBlood } from "./floorBlood";
 import { washroomGore } from "./washroomGore";
 import { walkerLong } from "./walkerLong";
+import { gateOpen } from "./gateOpen";
+import { wicketLit } from "./wicketLit";
+import { gateKeeper } from "./gateKeeper";
+import { wicketClosed } from "./wicketClosed";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -418,6 +422,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   floorBlood,
   washroomGore,
   walkerLong,
+  gateOpen,
+  wicketLit,
+  gateKeeper,
+  wicketClosed,
   walkerEyeless,
   walkerCrawl,
   signLoop8,

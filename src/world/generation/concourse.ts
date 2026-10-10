@@ -2417,6 +2417,102 @@ export function buildConcourse(
     registry.register(`vent.grille.${i}`, g);
   });
 
+  // ─── the wicket — a sealed fare line on the east entry stretch.
+  // Four pedestals make three gate lanes against the wall, smoked
+  // paddles shut for the night, lane lamps dark. A shuttered ROUTE 7
+  // clerk desk mounts proud of the wall just past the row. Leaves,
+  // lane lamps, and the booth's window/shutter/lamp register so
+  // anomalies can own them; every static part is dress.* for the merge.
+  {
+    const gateGlassMat = new StandardMaterial("mat.gate.glass", scene);
+    gateGlassMat.diffuseColor = new Color3(0.16, 0.12, 0.07);
+    gateGlassMat.specularColor = new Color3(0.04, 0.04, 0.04);
+    gateGlassMat.alpha = 0.55;
+    const GATE_X = 1.26; // pedestal line centre — row spans x0.77→1.75
+    const PED_H = 0.95;
+    for (const [pi, pz] of [5.0, 6.6, 8.2, 9.8].entries()) {
+      const body = kit.box(`dress.gate.ped.${pi}`, 0.98, PED_H, 0.26, mats.wallPanel, scene, root);
+      body.position = new Vector3(GATE_X, PED_H / 2, pz);
+      const kick = kit.box(`dress.gate.kick.${pi}`, 0.98, 0.07, 0.28, mats.rubber, scene, root);
+      kick.position = new Vector3(GATE_X, 0.035, pz);
+      const pedCap = kit.box(`dress.gate.cap.${pi}`, 1.0, 0.04, 0.28, mats.rubber, scene, root);
+      pedCap.position = new Vector3(GATE_X, PED_H + 0.02, pz);
+      const pad = kit.box(`dress.gate.pad.${pi}`, 0.2, 0.015, 0.16, mats.rubber, scene, root);
+      pad.position = new Vector3(GATE_X + 0.28, PED_H + 0.045, pz - 0.03);
+    }
+    for (const [li, lz] of [5.8, 7.4, 9.0].entries()) {
+      // lane lamp on the south pedestal's top at the lane mouth — dark
+      // tonight; per-lane material so an anomaly can light ONE only
+      const lampMat = new StandardMaterial(`mat.gate.lamp.${li}`, scene);
+      lampMat.diffuseColor = new Color3(0.02, 0.02, 0.02);
+      lampMat.specularColor = Color3.Black();
+      lampMat.emissiveColor = new Color3(0.015, 0.015, 0.015);
+      const lamp = kit.box(`gate.lamp.${li}`, 0.16, 0.015, 0.07, lampMat, scene, root);
+      lamp.position = new Vector3(GATE_X + 0.3, PED_H + 0.048, lz + 0.72);
+      registry.register(`gate.lamp.${li}`, lamp);
+      // shut paddles: north leaf hinges off the north pedestal's face,
+      // south off the south — they meet a hand's width shy of mid-lane
+      for (const [side, hingeZ, sgn] of [
+        ["n", lz - 0.67, 1],
+        ["s", lz + 0.67, -1],
+      ] as const) {
+        const leaf = new TransformNode(`gate.leaf.${li}.${side}`, scene);
+        leaf.parent = root;
+        leaf.position = new Vector3(GATE_X, 0.62, hingeZ);
+        const paddle = kit.box(`gate.leaf.${li}.${side}.paddle`, 0.025, 0.55, 0.6, gateGlassMat, scene, leaf);
+        paddle.position = new Vector3(0, 0, sgn * 0.33);
+        const rail = kit.box(`gate.leaf.${li}.${side}.rail`, 0.03, 0.035, 0.62, mats.rubber, scene, leaf);
+        rail.position = new Vector3(0, 0.29, sgn * 0.33);
+        registry.register(`gate.leaf.${li}.${side}`, leaf);
+      }
+      // one collider per lane — the wicket is shut tonight, nobody passes
+      colliders.push(
+        kit.collider(`gate.lane.col.${li}`, 1.0, 0.95, 1.3, new Vector3(GATE_X, PED_H / 2, lz), scene, root),
+      );
+    }
+    const wicketSignAnchor = new TransformNode("wicket.sign.anchor", scene);
+    wicketSignAnchor.parent = root;
+    wicketSignAnchor.position = new Vector3(1.0, 0, 7.4);
+    kit.hangingSign("sign.wicket", mats, scene, wicketSignAnchor, registry, C.height);
+
+    // ROUTE 7 clerk desk — a shallow booth mounted proud of the wall
+    // north of the gates, its window down behind a roller shutter
+    const booth = kit.box("dress.wicket.booth", 0.38, 2.3, 1.6, mats.wallPanel, scene, root);
+    booth.position = new Vector3(1.61, 1.15, 12.5);
+    const counter = kit.box("dress.wicket.counter", 0.16, 0.05, 1.0, mats.rubber, scene, root);
+    counter.position = new Vector3(1.38, 1.02, 12.5);
+    const winMat = new StandardMaterial("mat.wicket.win", scene);
+    winMat.diffuseColor = new Color3(0.012, 0.012, 0.014);
+    winMat.specularColor = new Color3(0.05, 0.05, 0.05);
+    const win = kit.plane("wicket.win", 0.9, 0.75, winMat, scene, root);
+    win.position = new Vector3(1.415, 1.52, 12.5);
+    win.rotation.y = Math.PI / 2; // faces −x down the corridor
+    registry.register("wicket.win", win);
+    const shutterMat = new StandardMaterial("mat.wicket.shutter", scene);
+    shutterMat.diffuseColor = new Color3(0.07, 0.075, 0.09);
+    shutterMat.specularColor = new Color3(0.03, 0.03, 0.03);
+    const shutter = kit.box("wicket.shutter", 0.02, 0.78, 0.94, shutterMat, scene, root);
+    shutter.position = new Vector3(1.4, 1.52, 12.5);
+    for (const sy of [-0.28, -0.14, 0, 0.14, 0.28]) {
+      const slat = kit.box(`wicket.shutter.slat.${sy}`, 0.012, 0.035, 0.94, mats.rubber, scene, shutter);
+      slat.position = new Vector3(-0.014, sy, 0);
+    }
+    registry.register("wicket.shutter", shutter);
+    const boothLampMat = new StandardMaterial("mat.wicket.lamp", scene);
+    boothLampMat.diffuseColor = new Color3(0.02, 0.02, 0.02);
+    boothLampMat.specularColor = Color3.Black();
+    boothLampMat.emissiveColor = new Color3(0.015, 0.015, 0.015);
+    const blamp = kit.box("wicket.lamp", 0.12, 0.07, 0.5, boothLampMat, scene, root);
+    blamp.position = new Vector3(1.37, 2.02, 12.5);
+    registry.register("wicket.lamp", blamp);
+    const bsign = kit.plane("sign.wicket.booth", 1.1, 0.28, mats.sign.get("sign.wicket.booth")!, scene, root);
+    bsign.position = new Vector3(1.415, 2.28, 12.5);
+    bsign.rotation.y = Math.PI / 2;
+    colliders.push(
+      kit.collider("wicket.booth.col", 0.4, 2.3, 1.62, new Vector3(1.61, 1.15, 12.5), scene, root),
+    );
+  }
+
   // ─── ceiling duct run — galvanized trunk line suspended under the
   // slab along the east tee edge, feeding three down-facing grates.
   // The corridor's air plant made visible; grate meshes register so
