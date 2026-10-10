@@ -23,7 +23,9 @@ export const corridorSpill: AnomalyDef = {
   dangerous: false,
   activate(ctx): AnomalyInstance {
     const vend = ctx.world.registry.get("prop.vending");
-    const p = vend ? vend.getAbsolutePosition() : { x: 1.4, z: 44 };
+    const p = vend ? vend.getAbsolutePosition() : { x: -1.4, z: 44 };
+    // spill spreads inward from the vend's wall side toward mid-corridor
+    const dir = p.x > 0 ? -1 : 1;
     const spill = new StandardMaterial("mat.spill.dark", ctx.scene);
     spill.diffuseColor = new Color3(0.05, 0.04, 0.03);
     spill.specularColor = new Color3(0.55, 0.5, 0.45);
@@ -37,7 +39,7 @@ export const corridorSpill: AnomalyDef = {
       );
       s.material = spill;
       s.parent = ctx.world.root;
-      s.position.set(p.x - 0.5 - i * 0.16, 0.012, p.z + i * 0.1 - 0.05);
+      s.position.set(p.x + dir * (0.5 + i * 0.16), 0.012, p.z + i * 0.1 - 0.05);
       s.rotation.y = i * 0.3;
       made.push(s);
     }
@@ -49,8 +51,8 @@ export const corridorSpill: AnomalyDef = {
     const film = CreatePlane("anomaly.spill.fog", { width: 0.6, height: 1.1, sideOrientation: 2 }, ctx.scene);
     film.material = fog;
     film.parent = ctx.world.root;
-    film.position.set(p.x - 0.21, 1.35, p.z);
-    film.rotation.y = -Math.PI / 2;
+    film.position.set(p.x + dir * 0.21, 1.35, p.z);
+    film.rotation.y = p.x > 0 ? Math.PI / 2 : -Math.PI / 2;
     made.push(film);
     return {
       update() {},
