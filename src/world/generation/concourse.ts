@@ -2688,6 +2688,69 @@ export function buildConcourse(
     }
   }
 
+  // ─── the service layer — access panels, floor vents, junction boxes
+  // and their grime streaks surface-mounted on the flat wall fields.
+  // Panels/vents register as nodes for anomalies; stains + conduit are
+  // static dress.* (static children are allowed to fold). ────────────
+  {
+    const mkPanel = (id: string, sx: number, pz: number) => {
+      const pn = new TransformNode(id, scene);
+      pn.parent = root;
+      pn.position = new Vector3(sx * 1.68, 0, pz);
+      const face = kit.box(`${id}.face`, 0.03, 0.7, 0.55, mats.steel, scene, pn);
+      face.position = new Vector3(0, 1.35, 0);
+      const seam = kit.box(`${id}.seam`, 0.034, 0.74, 0.59, mats.rubber, scene, pn);
+      seam.position = new Vector3(-sx * 0.005, 1.35, 0);
+      seam.scaling.set(0.4, 1, 1);
+      const latch = kit.box(`${id}.latch`, 0.04, 0.07, 0.05, mats.rubber, scene, pn);
+      latch.position = new Vector3(-sx * 0.02, 1.35, -0.2);
+      registry.register(id, pn);
+    };
+    mkPanel("svc.panel.0", 1, 44.5);
+    mkPanel("svc.panel.1", -1, 10.5);
+    mkPanel("svc.panel.2", 1, 30.5);
+    const mkVent = (id: string, sx: number, pz: number) => {
+      const vn = new TransformNode(id, scene);
+      vn.parent = root;
+      vn.position = new Vector3(sx * 1.7, 0, pz);
+      const frame = kit.box(`${id}.frame`, 0.04, 0.34, 0.6, mats.steel, scene, vn);
+      frame.position = new Vector3(0, 0.5, 0);
+      for (let si = 0; si < 4; si++) {
+        const slat = kit.box(`${id}.slat.${si}`, 0.045, 0.05, 0.52, mats.rubber, scene, vn);
+        slat.position = new Vector3(-sx * 0.008, 0.4 + si * 0.068, 0);
+        registry.register(`${id}.slat.${si}`, slat);
+      }
+      const streak = kit.box(`${id}.streak`, 0.012, 0.42, 0.14, mats.grime, scene, vn);
+      streak.position = new Vector3(-sx * 0.03, 0.22, 0.18);
+      registry.register(id, vn);
+    };
+    mkVent("svc.vent.0", 1, 37.0);
+    mkVent("svc.vent.1", -1, 20.5);
+    mkVent("svc.vent.2", 1, 50.5);
+    const mkJbox = (id: string, sx: number, pz: number) => {
+      const jn = new TransformNode(id, scene);
+      jn.parent = root;
+      jn.position = new Vector3(sx * 1.72, 0, pz);
+      const boxm = kit.box(`${id}.body`, 0.1, 0.34, 0.26, mats.steel, scene, jn);
+      boxm.position = new Vector3(0, 2.05, 0);
+      const lid = kit.box(`${id}.lid`, 0.02, 0.3, 0.22, mats.wallPanel, scene, jn);
+      lid.position = new Vector3(-sx * 0.055, 2.05, 0);
+      registry.register(`${id}.lid`, lid);
+      const stub = kit.box(`${id}.stub`, 0.04, 0.5, 0.04, mats.rubber, scene, jn);
+      stub.position = new Vector3(0, 2.45, 0);
+      registry.register(id, jn);
+    };
+    mkJbox("svc.jbox.0", 1, 26.0);
+    mkJbox("svc.jbox.1", -1, 44.8);
+    mkJbox("svc.jbox.2", 1, 52.0);
+    const conduit = kit.box("dress.svc.conduit.w", 0.045, 0.045, 12.0, mats.steel, scene, root);
+    conduit.position = new Vector3(-1.74, 2.55, 26.0);
+    for (let ci = 0; ci < 4; ci++) {
+      const clip = kit.box(`dress.svc.clip.${ci}`, 0.05, 0.08, 0.03, mats.rubber, scene, root);
+      clip.position = new Vector3(-1.74, 2.55, 21.5 + ci * 3);
+    }
+  }
+
   // ─── the clock — a double-faced station clock hung on the corridor
   // centerline over the gallery bend. Exit-8 staple: everyone reads the
   // clock, everyone remembers it. Registered parts so anomalies can drop
