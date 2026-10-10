@@ -14,6 +14,7 @@ import { GlowLayer } from "@babylonjs/core/Layers/glowLayer";
 import type { Engine } from "@babylonjs/core/Engines/engine";
 import type { WebGPUEngine } from "@babylonjs/core/Engines/webgpuEngine";
 import { buildConcourse, LAYOUT, type ConcourseWorld } from "../world/generation/concourse";
+import { applyChapterSkin } from "../world/chapterSkin";
 import { RngStream } from "../game/state/rng";
 import { PlayerController } from "../player/controller";
 import { AudioSystem } from "../audio/audioSystem";
@@ -492,6 +493,7 @@ export class App {
       this.audio.playAdvance();
     }
     this.ui.setChapter(s.chapter);
+    applyChapterSkin(this.world, s.chapter);
   }
 
   private onEnd(outcome: "secure" | "lost" | "practice"): void {

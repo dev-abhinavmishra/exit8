@@ -1242,3 +1242,18 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   tag with drips. requires anchors must be REAL registered names —
   validate:assets resolves them (dress.tactile.mid and supply.frame
   were NOT registered → swapped to clock.head / supply.grille).
+
+## arc25 — chapter reskin + deep-shift anomalies (in flight)
+
+- chapters only relabelled the HUD — the corridor never reskinned.
+  Added world/chapterSkin.ts: applyChapterSkin(world, chapter) shifts
+  zone baseDiffuse+intensity (I clean / II amber-thin+grime /
+  III red-dusk+burned-out last troffer+litter), persistent dress.ch.*
+  grime meshes, hooked at app.ts setChapter. Composes with anomalies:
+  cleanups restore the RESKINNED bases (we shift baseDiffuse itself).
+  Restart reloads the page so skin state resets for free.
+- platformFigure upgraded to buildFigure silhouette (was primitives —
+  every other figure anomaly already used buildFigure).
+- 5 deep-shift ids gated ch3/ch2+: slump, growl, scrawl, mud,
+  exit.sign.burn (red film OVER the sign — don't material-swap
+  textured signs).

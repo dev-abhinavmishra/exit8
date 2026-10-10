@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **306 implemented** — 260 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **311 implemented** — 265 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -923,3 +923,8 @@ sound-led anomaly carries a visual cue path.
 | 304 | `corridor.hiss` | The Pipe Spits Steam | Steam jet spits from a joint in the red ceiling pipe, mists down. | moderate | 2 | spatial |
 | 305 | `corridor.butt` | Still Burning | A lit cigarette on the floor — ember aglow, a hair of smoke. | moderate | 2 | object |
 | 306 | `corridor.tag` | Fresh Paint | A looping spray tag scrawls across the west wall, still wet. | moderate | 2 | object |
+| 307 | `corridor.slump` | Slumped Against The Wall | Figure slumped at the east wall z22, chin to chest. Ch III. | unmistakable | 3 | character |
+| 308 | `corridor.growl` | The Walls Groan | Held groan caption + zones rock once, slow. Ch III. | moderate | 3 | systemic |
+| 309 | `corridor.scrawl` | Written On The Floor | Chalk scrawl across the walkway at z44. Ch III. | moderate | 3 | object |
+| 310 | `corridor.mud` | A Muddy Trail | Muddy boot prints from the platform gate east. Ch II+. | moderate | 2 | object |
+| 311 | `exit.sign.burn` | The Sign Burns Red | A red film over the south EXIT sign — ember-lit south end. Ch III. | moderate | 3 | lighting |
