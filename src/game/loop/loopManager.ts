@@ -110,6 +110,9 @@ export class LoopManager {
   private trainT = 0;
   /** Condensation plinks off the vent grilles — rare, the corridor sweats */
   private dripRng: RngStream;
+  /** the commuter's presence roll — one draw per loop, keeps his
+   *  mostly-there rhythm deterministic per seed */
+  private commuterRng: RngStream;
   private dripT = 0;
   readonly stability = new StabilityIndex();
   /** last announced door targets — fires playDoorSlide on flips */
@@ -146,6 +149,7 @@ export class LoopManager {
     this.anomalyRolls = new RngStream("loop.roll", runSeed);
     this.anomalyRuntime = new RngStream("anomaly.runtime", runSeed);
     this.paRng = new RngStream("audio.pa", runSeed);
+    this.commuterRng = new RngStream("loop.commuter", runSeed);
     this.paT = 10 + this.paRng.range(0, 12);
     this.trainRng = new RngStream("audio.train", runSeed);
     this.trainT = 26 + this.trainRng.range(0, 30);
@@ -252,6 +256,9 @@ export class LoopManager {
     // the other inspector returns to his mid-corridor post — his
     // constancy is what makes him part of normal
     this.world.ambientWalker.reset();
+    // the commuter keeps his own baseroll: present most loops, absent
+    // sometimes — a learnable rhythm, not a divergence either way
+    this.world.commuter.reset(this.commuterRng.chance(0.65));
     // loop 1 is always clean — the first corridor teaches the baseline
     // the way Exit 8's does; anomalies start rolling on loop 2.
     // the odds lean wrong as the route deepens — late loops are rarely
