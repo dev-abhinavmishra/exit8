@@ -1,14 +1,17 @@
 /**
- * gate.keeper — a fare-keeper stands inside the middle lane of the
- * shut wicket, back to the corridor, facing the paddles like he's
- * holding the line open for someone. Nobody works the desk tonight.
+ * gate.keeper — a fare-keeper stands between you and the middle lane
+ * of the shut wicket, back to the corridor, facing the paddles like
+ * he's holding the line open for someone. Nobody works the desk tonight.
  * Inside ~9m his head finds you; press close and there is nobody
  * there. Unmistakable figure-class.
  */
 import { buildFigure } from "../../world/figures";
 import type { AnomalyDef } from "./types";
 
-const KEEPER_X = 1.26;
+// corridor side of lane 1 — inside the lane he is dark rubber on the
+// dark notices board and reads as nothing; in the open between the
+// player and the paddles his silhouette cuts against the pale wall
+const KEEPER_X = 0.72;
 const KEEPER_Z = 7.4; // lane 1
 
 export const gateKeeper: AnomalyDef = {
