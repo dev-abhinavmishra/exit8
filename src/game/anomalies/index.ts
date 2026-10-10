@@ -236,6 +236,11 @@ import { platformSignal } from "./platformSignal";
 import { platformFigure } from "./platformFigure";
 import { platformGate } from "./platformGate";
 import { platformWater } from "./platformWater";
+import { corridorRat } from "./corridorRat";
+import { corridorPuddle } from "./corridorPuddle";
+import { corridorHiss } from "./corridorHiss";
+import { corridorButt } from "./corridorButt";
+import { corridorTag } from "./corridorTag";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -490,6 +495,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   platformFigure,
   platformGate,
   platformWater,
+  corridorRat,
+  corridorPuddle,
+  corridorHiss,
+  corridorButt,
+  corridorTag,
   walkerEyeless,
   walkerCrawl,
   signLoop8,
