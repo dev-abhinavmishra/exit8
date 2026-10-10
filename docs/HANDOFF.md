@@ -926,8 +926,9 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   the north end (`pos.x = LEAF_X - sin(TH)*0.53`, `pos.z = LEAF_Z - 0.53 +
   cos(TH)*0.53`) sweeps the leaf into the room and leaves the mouth open.
   Swinging out corks the mouth diagonally at ~60°.
-- `teleport` resets yaw — pass the 4th arg or look() AFTER teleporting,
-  always (re-bitten this arc).
+- `window.__nightaudit.teleport(x, y, z, yaw)` resets yaw — the debug
+  handle takes all 4 args (PlayerController.teleport is a different,
+  2-arg API); pass yaw or look() AFTER teleporting, always.
 
 ## Arc 10 notes (2026-10-10)
 

@@ -5,7 +5,7 @@
  * room that had a light now reads as a hole in the records bank.
  */
 import type { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
-import { Color3 } from "@babylonjs/core/Maths/math.color";
+import type { Color3 } from "@babylonjs/core/Maths/math.color";
 import type { AnomalyDef, AnomalyInstance } from "./types";
 
 const DARK_MATS = ["mat.archives.wash", "mat.archives.pad"];
