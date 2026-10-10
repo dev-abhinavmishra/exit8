@@ -1130,6 +1130,7 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   direct, not via colliders[]). Catalog 269 modules / 223 registered.
 
 ### arc17 additions (queue pads + shutter.breach)
+
 - `dress.wicket.queue.{0,1,2}` — tactile queue pads (domePad mat) as THIN BOXES
   at (0.55, 0.008, laneZ); floor planes still don't render in the corridor.
 - `shutter.breach` (#270, moderate, ch2): wicket shutter wrenched half up +
