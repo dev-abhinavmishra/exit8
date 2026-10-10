@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **291 implemented** — 245 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **296 implemented** — 250 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -908,3 +908,8 @@ sound-led anomaly carries a visual cue path.
 | 289 | `svc.stain.grown` | The Stain Has Grown | East z37 vent streak swells to a floor-reaching drip. | moderate | 2 | object |
 | 290 | `svc.hatch.hand` | A Hand In The Panel | West z10.5 panel ajar; pale hand gripping the edge. | unmistakable | 3 | character |
 | 291 | `svc.jbox.severed` | The Junction Box Is Torn | West z44.8 jbox lid off on the floor, live end sparking. | moderate | 2 | object |
+| 292 | `corridor.shudder` | The Passage Trembles | All zones' light dips in unison ~9 s — something heavy below. | unmistakable | 3 | systemic |
+| 293 | `corridor.steam` | Steam Off The Grate | Wisps lift out of the east z37 floor vent, thinning as they climb. | moderate | 2 | spatial |
+| 294 | `corridor.dust` | Dust In The Light | Slow grit-fall through the troffer shaft by the clock. | subtle | 1 | spatial |
+| 295 | `corridor.breeze` | A Draft Runs The Floor | Paper scraps skate up the corridor on a draft. | moderate | 2 | spatial |
+| 296 | `corridor.cold` | The Air Goes Cold | Every zone's light snaps pale blue at once. | moderate | 2 | systemic |

@@ -226,6 +226,11 @@ import { ventBreath } from "./ventBreath";
 import { stainGrown } from "./stainGrown";
 import { hatchHand } from "./hatchHand";
 import { jboxSevered } from "./jboxSevered";
+import { corridorShudder } from "./corridorShudder";
+import { corridorSteam } from "./corridorSteam";
+import { corridorDust } from "./corridorDust";
+import { corridorBreeze } from "./corridorBreeze";
+import { corridorCold } from "./corridorCold";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -470,6 +475,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   stainGrown,
   hatchHand,
   jboxSevered,
+  corridorShudder,
+  corridorSteam,
+  corridorDust,
+  corridorBreeze,
+  corridorCold,
   walkerEyeless,
   walkerCrawl,
   signLoop8,
