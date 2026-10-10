@@ -1233,3 +1233,12 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
 - xHalf=1.8 is wall CENTER not face: wall face ~-1.76. Anything meant
   in front of the wall needs x > -1.76 (void face at -1.745); fixture
   coords must be probed live, not assumed from xHalf.
+
+## arc24 — subway life (in flight)
+
+- No new fixtures: 5 corridor.* anomalies of the urban-transit kind —
+  rat darting wall-to-wall, spreading puddle (specular material +
+  alpha), pipe steam jet, lit cigarette (ember + wisp), fresh spray
+  tag with drips. requires anchors must be REAL registered names —
+  validate:assets resolves them (dress.tactile.mid and supply.frame
+  were NOT registered → swapped to clock.head / supply.grille).

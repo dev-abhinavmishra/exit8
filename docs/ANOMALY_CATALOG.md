@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **301 implemented** — 255 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **306 implemented** — 260 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -918,3 +918,8 @@ sound-led anomaly carries a visual cue path.
 | 299 | `platform.figure` | Someone In The Gap | Pale face at gate height in the dark behind the bars; despawns close-up. | unmistakable | 3 | character |
 | 300 | `platform.gate` | A Bar Sprung | Middle bar bows out of its foot, glint of use at the base. | moderate | 2 | object |
 | 301 | `platform.water` | Water In The Gap | Black water sheens the recess floor and creeps under the sill. | moderate | 2 | spatial |
+| 302 | `corridor.rat` | Something Crosses The Floor | A small dark shape darts wall-to-wall across the walkway. | unmistakable | 2 | character |
+| 303 | `corridor.puddle` | Standing Water | A sheen of standing water spreads across the terrazzo mid-run. | moderate | 2 | spatial |
+| 304 | `corridor.hiss` | The Pipe Spits Steam | Steam jet spits from a joint in the red ceiling pipe, mists down. | moderate | 2 | spatial |
+| 305 | `corridor.butt` | Still Burning | A lit cigarette on the floor — ember aglow, a hair of smoke. | moderate | 2 | object |
+| 306 | `corridor.tag` | Fresh Paint | A looping spray tag scrawls across the west wall, still wet. | moderate | 2 | object |
