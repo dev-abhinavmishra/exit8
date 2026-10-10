@@ -54,7 +54,12 @@ export const stallOccupied: AnomalyDef = {
     return {
       update() {
         // standing very still — until you lean in, then the weight shifts
-        if (!shifted && ctx.player.position.x > 2.2 && ctx.player.position.z > 16.6 && ctx.player.position.z < 19.9) {
+        if (
+          !shifted &&
+          ctx.player.position.x > 2.2 &&
+          ctx.player.position.z > 16.6 &&
+          ctx.player.position.z < 19.9
+        ) {
           const d = Math.hypot(ctx.player.position.x - 3.16, ctx.player.position.z - 17.0);
           if (d < 1.9) {
             shifted = true;

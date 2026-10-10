@@ -44,9 +44,11 @@ describe("anomaly catalog", () => {
     for (const d of ALL_ANOMALIES) counts[d.detectability] += 1;
     // every class non-trivially represented
     for (const v of Object.values(counts)) expect(v).toBeGreaterThanOrEqual(4);
-    // subtle must be the largest share — the catalog is quiet-first
-    expect(counts.subtle).toBeGreaterThanOrEqual(counts.moderate);
-    expect(counts.subtle).toBeGreaterThanOrEqual(counts.unmistakable);
+    // obvious-first law (user directive): moderate+unmistakable must
+    // outweigh subtle — tiny single-tell changes were cut from the
+    // roster and the rest combo'd so nothing is one-word hard
+    expect(counts.moderate + counts.unmistakable).toBeGreaterThanOrEqual(counts.subtle);
+    expect(counts.unmistakable).toBeGreaterThanOrEqual(20);
   });
 
   it("gates content by chapter — each tier has entries", () => {

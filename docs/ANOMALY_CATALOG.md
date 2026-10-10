@@ -878,3 +878,7 @@ sound-led anomaly carries a visual cue path.
 | 259 | `pipe.leaks` | The Standpipe Weeps | A standpipe flange weeps a thin cold column — fresh puddle on the terrazzo below, occasional plink. | subtle | 1 | object |
 | 260 | `valve.open` | The Valve Is Open | A standpipe hose valve sits a quarter-turn open — wheel angled, faint hiss when you stand under it. | moderate | 2 | object |
 | 261 | `drain.backed` | The Drain Backs Up | A stretch of the wall-base trench drain backs up — a long shallow film of water where the channel should be dry. | subtle | 1 | spatial |
+| 262 | `creature.tall` | The Tall One | A gaunt pale thing stands mid-corridor — too tall, limbs segmented wrong, small head; it sways and its head finds you inside ~9m. | unmistakable | 3 | character |
+| 263 | `floor.blood` | Blood on the Floor | A drag smear runs the walk lane — darker pools where it sat, veering toward the washroom mouth. | unmistakable | 2 | spatial |
+| 264 | `washroom.gore` | The Washroom Is Wrong | The staff washroom is disfigured — walls bled dark rust, floor in bloodwater, mirror dead black, light burning low red and sagging. | unmistakable | 3 | spatial |
+| 265 | `walker.long` | Stretched Inspector | The other inspector still patrols but his proportions went wrong — arms past the knees, stilted legs, head carried low and forward. | unmistakable | 3 | character |

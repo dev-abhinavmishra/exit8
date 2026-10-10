@@ -30,8 +30,10 @@ export const dryerRuns: AnomalyDef = {
     return {
       update(dt) {
         cooldown -= dt;
-        const inRoom = ctx.player.position.x > 1.9 && ctx.player.position.z > 16.4 && ctx.player.position.z < 20.1;
-        const near = inRoom && Math.hypot(ctx.player.position.x - DRYER.x, ctx.player.position.z - DRYER.z) < 2.1;
+        const inRoom =
+          ctx.player.position.x > 1.9 && ctx.player.position.z > 16.4 && ctx.player.position.z < 20.1;
+        const near =
+          inRoom && Math.hypot(ctx.player.position.x - DRYER.x, ctx.player.position.z - DRYER.z) < 2.1;
         if (near && !running) {
           running = true;
           led.material = world.materials.trofferLit;

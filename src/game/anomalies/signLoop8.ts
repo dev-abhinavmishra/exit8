@@ -28,9 +28,14 @@ export const signLoop8: AnomalyDef = {
     const t = mat?.diffuseTexture as DynamicTexture | undefined;
     if (!spec || !t) return { update() {}, cleanup() {} };
     drawSign(t, { ...spec, title: "INSPECTION LOOP 8" });
+    // second tell — the totem itself hangs crooked
+    const totem = ctx.world.registry.get(`sign.${SPEC_ID}`);
+    const rz = totem.rotation.z;
+    totem.rotation.z = rz + 0.07;
     return {
       update() {},
       cleanup() {
+        totem.rotation.z = rz;
         drawSign(t, spec);
       },
     };

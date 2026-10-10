@@ -34,7 +34,11 @@ export const tapRuns: AnomalyDef = {
     waterMat.emissiveColor = new Color3(0.22, 0.3, 0.32);
     waterMat.alpha = 0.55;
     waterMat.specularColor = new Color3(0.5, 0.6, 0.62);
-    const stream = CreateCylinder("anomaly.tap.stream", { height: 0.12, diameter: 0.024, tessellation: 8 }, scene);
+    const stream = CreateCylinder(
+      "anomaly.tap.stream",
+      { height: 0.12, diameter: 0.024, tessellation: 8 },
+      scene,
+    );
     stream.material = waterMat;
     stream.position.set(p.x - 0.15, 0.95, p.z);
     const spill = CreatePlane("anomaly.tap.spill", { width: 0.34, height: 0.3 }, scene);

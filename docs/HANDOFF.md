@@ -1065,3 +1065,41 @@ Anomalies: `wash.mirror` (#255), `tap.runs` (#256), `stall.occupied` (#257),
   loop), drain.backed #261 (channel film z35-38). Catalog 261.
 - AnomalyDef fields: displayName/detectability/progressionRange/testSeed/
   dangerous — NOT title/subtlety (those are catalog-table words).
+
+## Arc 16 — playability rebalance (detectability law change)
+
+User directive: tiny single-tell anomalies are frustrating — keep only
+some, combo the kept ones with a second tell, make the rest REALLY
+OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
+(test updated in catalog.spec).
+
+- **Cut 46 defs** from ALL_ANOMALIES registration (files remain, still
+  validate): word-swaps, single-glyph/text-drift, audio-only, and
+  unverifiable-material changes went out. 219 registered (215 + 4 new).
+- **Tier multiplier** in `registry.pick`: subtle×0.55 / moderate×0.9 /
+  unmistakable×1.15 on top of per-def weight.
+- **Combo-buff pattern** — kept-tiny anomalies get a second same-fixture
+  tell so they read as a scene not a pixel-hunt: crooked mount
+  (sign.loop8, pass.stuck, clock.stopped), scratch + frame + fallen
+  shard (poster.tilted/missing), dropped sheet (sheets.cleared), ghost
+  outline + scrap/screws/cord/stubs (notice.gone, aid.gone, phone.gone,
+  rad.gone), dead segment (guide.red).
+- **New unmistakables** #262-265: creature.tall (gaunt pale figure,
+  head-tracks + groans <9m), floor.blood (drag smear → washroom),
+  washroom.gore (room retinted rust + black mirror + sagging red lamp +
+  floor bloodwater), walker.long (walker limbs stretched via descendant
+  TransformNode scaling — filter `\.(hip\.|arm\.|headPivot$)`).
+- **FLOOR-PLANE TRAP**: `CreatePlane` floor decals inside the corridor
+  do NOT render reliably — they exist/enabled/visible but never draw
+  (the drain.backed film + these blood smears were invisible live).
+  Use thin `CreateBox` (height ~0.008) like guide.seg instead — those
+  render. Verify VISUALLY, not via meshInfo — meshInfo confirmed the
+  planes while they drew nothing.
+- Also fix verify: drain.backed film + lip are planes — probably
+  invisible since arc15; convert to boxes when next touched.
+- yaw convention in probes: teleport yaw π = looking north (toward z0),
+  yaw 0 = south. `look(yaw,pitch)` — positive pitch looks DOWN.
+- `?e2e=1&engine=webgl&anomaly=<id>` + BEGIN SHIFT click + wait for
+  `__nightaudit.ready` — handle is `window.__nightaudit` not `__e2e`.
+- Detectability census after arc16: 58 subtle / 93 moderate / 64
+  unmistakable + 4 new unmistakable.
