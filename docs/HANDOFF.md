@@ -1105,3 +1105,39 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   `__nightaudit.ready` — handle is `window.__nightaudit` not `__e2e`.
 - Detectability census after arc16: 58 subtle / 93 moderate / 64
   unmistakable + 4 new unmistakable.
+
+## arc17 — the wicket (in flight)
+
+- Fare-gate line on the east entry stretch: 4 pedestals z5.0/6.6/8.2/9.8
+  (x0.77→1.75, `dress.gate.*` merges) make 3 lanes at z5.8/7.4/9.0.
+  Shut smoked paddles `gate.leaf.{i}.{n|s}` (n = north ped's face),
+  per-lane lamp mats `mat.gate.lamp.{i}` on the south ped top, one
+  collider per lane — the wicket is closed tonight, nobody passes.
+- Clerk desk `dress.wicket.booth` proud of the wall z11.7–13.3:
+  `wicket.win` glass (rot.y=+π/2 faces −x), `wicket.shutter` + slat
+  children, `wicket.lamp` hood, `sign.wicket.booth` plate. Hanging
+  `sign.sign.wicket` over the row (hangingSign prepends "sign.").
+- New merge prefixes: `dress.gate.`, `dress.wicket.` — statics ONLY.
+  Trap: var-name collisions defeat the validator's per-file map — the
+  airlock `cap`/`counter`/`shutter`/`win`/`lamp`/`slat`/`leaf` names
+  were already taken; name wicket vars uniquely (`pedCap` etc.) or a
+  `registered X wraps mesh Y` false-flag fires.
+- Anomalies: gate.open 266 (leaf.n rotation.y=+π/2.2 retracts the
+  paddle INTO its pedestal — the real-gate read; leaf.s −π/2.2),
+  wicket.lit 267 (dedicated PointLight in activate, not extraLights),
+  gate.keeper 268 (silhouette in lane 1, head-track <9m, vanish <1.45m),
+  wicket.closed 269 (anomaly-side collider box — checkCollisions=true
+  direct, not via colliders[]). Catalog 269 modules / 223 registered.
+
+### arc17 additions (queue pads + shutter.breach)
+
+- `dress.wicket.queue.{0,1,2}` — tactile queue pads (domePad mat) as THIN BOXES
+  at (0.55, 0.008, laneZ); floor planes still don't render in the corridor.
+- `shutter.breach` (#270, moderate, ch2): wicket shutter wrenched half up +
+  racked −0.07 rad, dropped slat on the counter (world.root child, flips
+  correctly under corridor.mirror). Requires wicket.shutter + wicket.win.
+- `wicket.lit` excludes `corridor.mirror` AND `shutter.breach` — the PointLight
+  is scene-space and can't follow the mirror flip; breach+lit both move the
+  shutter and read contradictory.
+- `excludes` is advisory — no engine code consumes it (grep-verified); the
+  catalog documents co-run intent, keep it symmetric anyway.
