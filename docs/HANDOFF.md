@@ -1194,3 +1194,15 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   face.n/s, 4 ticks/face, hand.{n|s}.{h|m} with pivot bases for
   rotation.z spins. Centerline x=0 is free (troffers run x±0.9, duct
   x1.02 east). Hands baseline ~10:05, mirrored per face (fz*angle).
+
+## arc21 — the service layer (in flight)
+- NOTE: fixture space is saturated — payphone bank and janitor trolley
+  BOTH duped existing fixtures (phone niche z13.2, mop/bucket kit).
+  Service-layer pass instead: 3 access panels `svc.panel.{0-2}` (e44.5,
+  w10.5, e30.5), 3 floor vents `svc.vent.{0-2}` (e37, w20.5, e50.5),
+  3 junction boxes `svc.jbox.{0-2}` (e26, w44.8, e52) + grime streaks +
+  a west conduit run z20-32. All SURFACE-mounted: no wall splits.
+- ID-space is dense too: hatch.*/vent.*/panel.*/stain.*/clock.*/phone.*
+  families all taken — anomaly ids must be grepped against catalog +
+  index before writing; mv-ing a file onto an existing basename CLOBBERS
+  the original tracked file (learned with panelAjar).

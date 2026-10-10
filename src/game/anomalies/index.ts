@@ -221,6 +221,11 @@ import { clockSway } from "./clockSway";
 import { clockFallen } from "./clockFallen";
 import { clockDark } from "./clockDark";
 import { clockDrip } from "./clockDrip";
+import { svcPanelOpen } from "./svcPanelOpen";
+import { ventBreath } from "./ventBreath";
+import { stainGrown } from "./stainGrown";
+import { hatchHand } from "./hatchHand";
+import { jboxSevered } from "./jboxSevered";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -460,6 +465,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   clockFallen,
   clockDark,
   clockDrip,
+  svcPanelOpen,
+  ventBreath,
+  stainGrown,
+  hatchHand,
+  jboxSevered,
   walkerEyeless,
   walkerCrawl,
   signLoop8,
