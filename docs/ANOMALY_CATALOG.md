@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **276 implemented** — 230 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **281 implemented** — 235 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -893,3 +893,8 @@ sound-led anomaly carries a visual cue path.
 | 274 | `supply.figure` | The Stockman | A silhouette stands inside the cage behind the bars, face to the grille; head tracks you, gone at the ledge. | unmistakable | 3 | character |
 | 275 | `supply.bare` | The Cage Is Bare | Stock shelf stripped — two crates gone, the last tipped on its face. | moderate | 2 | object |
 | 276 | `supply.plate` | Receipts Closed | SUPPLY ISSUE plate reads RECEIPTS CLOSED and the pilot lamp over the grille is dead. | subtle | 1 | sign |
+| 277 | `pilaster.gone` | A Column Is Missing | East column z33 absent; pale plinth scar on the terrazzo. | moderate | 1 | object |
+| 278 | `pilaster.extra` | A Column Too Many | Fifth column on the west wall at z38, off-rhythm. | moderate | 2 | object |
+| 279 | `pilaster.scar` | The Column Is Raked | Deep gouges down the east z43.5 column + rubble at its base. | moderate | 2 | object |
+| 280 | `pilaster.face` | Face To The Wall | Figure nose-to-wall at the west z52.5 column; gone at the lobby. | unmistakable | 3 | character |
+| 281 | `pilaster.grime` | The Column Is Filmed | East z16.5 column filmed in oily grime, steel cap band gone. | subtle | 1 | object |

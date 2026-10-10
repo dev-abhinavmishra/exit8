@@ -1166,3 +1166,17 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
 - Recess interiors need a baseline fill light in <zone>.extraLights or
   they read as black holes; figures inside must stand ~x2.0 so corridor
   light hits them through the bars (gate.keeper trap all over again).
+
+## arc19 — the colonnade (in flight)
+- Four half-column pairs on both walls at z16.5/33/43.5/52.5 — the
+  colonnade rhythm that was missing from the flat tube. Registered
+  `col.{e|w}.{0-3}` TransformNodes (shaft+plinth+cap children) so
+  anomalies can disable/clone/reskin them. Each has its own collider
+  (corridor narrows to ~3.0m at column rows — ambient walker's x0.55
+  patrol is unaffected). Baseboard/wainscot pass INTO the column volume
+  and are occluded by the plinth — no extra splits needed.
+- Column faces: east x1.52, west x-1.52. Figure stand-off at x-1.32.
+- Z picks skip every mouth (wicket 5-15, svc 15-16, wash 18.2-19.2,
+  gallery 20-32, cage 33.8-36.2, staff 39.2-40.6, lobby 48.4-50.6,
+  bay 46.2-49.4, archives 21.4-22.8). East z43.5 sits between vend
+  (41.5) and svc door (46).
