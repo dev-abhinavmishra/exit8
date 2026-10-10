@@ -1,5 +1,5 @@
 /**
- * All signage copy is original fiction for NIGHT AUDIT. Never paste real
+ * All signage copy is original fiction for the game. Never paste real
  * transit/agency copy or brand pictograms. Keep text short enough to read
  * at render distance — it doubles as a memorization aid (and anomaly bait).
  */
@@ -130,6 +130,21 @@ export const SIGNS: SignSpec[] = [
     tone: "amber",
   },
   {
+    id: "sign.supply",
+    title: "SUPPLY ISSUE",
+    sub: "CAGE 3 · ESCORTED ACCESS",
+    arrow: "none",
+    tone: "cyan",
+  },
+  {
+    // the plate the cage swaps in when the window is condemned — anomaly
+    id: "sign.supply.closed",
+    title: "RECEIPTS CLOSED",
+    sub: "SERVICE SUSPENDED",
+    arrow: "none",
+    tone: "amber",
+  },
+  {
     // repainted every loop by the loop manager — the in-world pass
     // counter on the south cap (the exit-number equivalent)
     id: "sign.attempt",
@@ -184,7 +199,7 @@ export const COPY = {
     divergenceLabel: "FILE: DIVERGENCE LOGGED",
   },
   startScreen: {
-    title: "NIGHT AUDIT",
+    title: "EXIT 8",
     sub: "Civic Works Authority · Route Integrity Division",
     brief: [
       "SHIFT BRIEFING — INSPECTOR N-117",
@@ -210,7 +225,7 @@ export const COPY = {
   credits: {
     title: "CREDITS",
     lines: [
-      "NIGHT AUDIT — a looping-corridor inspection",
+      "EXIT 8 — a looping-corridor inspection",
       "Concept, code, world, audio: Cognition Devin",
       "Engine: Babylon.js (MIT)",
       "All textures and audio are generated in-browser — no external assets.",

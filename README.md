@@ -1,4 +1,4 @@
-# NIGHT AUDIT
+# EXIT 8
 
 An original first-person **anomaly-detection psychological-horror game** for
 the browser. You are the night-shift Route Integrity Inspector for the Alder

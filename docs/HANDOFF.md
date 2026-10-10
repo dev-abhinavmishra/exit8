@@ -1,4 +1,4 @@
-# HANDOFF — NIGHT AUDIT
+# HANDOFF — EXIT 8
 
 Read this first in a new session. Then docs/IMPLEMENTATION_PLAN.md.
 
@@ -1141,3 +1141,28 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   shutter and read contradictory.
 - `excludes` is advisory — no engine code consumes it (grep-verified); the
   catalog documents co-run intent, keep it symmetric anyway.
+
+## arc18 — the supply cage (in flight)
+
+- Recessed SUPPLY ISSUE service window, EAST wall z33.8–36.2 (clinic
+  zone, between the gallery end and the staff-room door z39.2). Mouth
+  is ALWAYS sealed — `supply.cage.col` collider; recess is a viewing
+  pocket like the lift lobby's void plate, not a doorway.
+- Registered: `supply.grille` (TransformNode, bars+rails as children —
+  NOT dress.* or merge folds them), `supply.crate.{0,1,2}`,
+  `supply.pilot` (amber, x1.7 y2.62 z33.95), `supply.lamp` (unlit dome
+  inside at x3.23 y2.32 z35), `sign.supply` (plate on header).
+- Bars are children of the grille node so `grille.position.y` slides
+  them: +0.38 ajar / +1.32 fully retracted into the facade.
+- `supply.lit`/`supply.open` own scene-space PointLights → both exclude
+  `corridor.mirror` (scene-light trap); `supply.figure` is parented to
+  world.root at local coords so it flips correctly with the recess.
+- New merge prefix `dress.supply.`; signage `sign.supply` +
+  `sign.supply.closed` (anomaly plate for supply.plate).
+- TRAP: recess mouths must split the wall face AND the baseboard/wainscot
+  spans (east spans were [WASH_Z1,LOB_Z0]) or the wall occludes the
+  recess; first arc18 build had the cage hidden behind wall.right.2a.
+  Route map moved z35.8→z32.9 to clear the mouth.
+- Recess interiors need a baseline fill light in <zone>.extraLights or
+  they read as black holes; figures inside must stand ~x2.0 so corridor
+  light hits them through the bars (gate.keeper trap all over again).

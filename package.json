@@ -1,8 +1,8 @@
 {
-  "name": "night-audit",
+  "name": "exit8",
   "version": "0.1.0",
   "private": true,
-  "description": "NIGHT AUDIT \u2014 an original first-person anomaly-detection psychological-horror game for the web (Babylon.js + TypeScript + Vite).",
+  "description": "EXIT 8 \u2014 a first-person anomaly-detection horror game for the web; an Exit 8 replica with additions (Babylon.js + TypeScript + Vite).",
   "type": "module",
   "scripts": {
     "dev": "vite",

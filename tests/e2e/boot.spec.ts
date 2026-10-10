@@ -16,7 +16,7 @@ test.describe("boot", () => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(String(e)));
     await ready(page);
-    await expect(page.getByRole("heading", { name: "NIGHT AUDIT" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "EXIT 8" })).toBeVisible();
     await expect(page.getByRole("button", { name: /BEGIN SHIFT/ })).toBeVisible();
     const kind = await page.evaluate(() =>
       (window as unknown as { __nightaudit: { engine(): string } }).__nightaudit.engine(),

@@ -320,7 +320,7 @@ export class App {
     this.state = "playing";
     this.lastChapter = 1;
     this.ui.titleCard(
-      "NIGHT AUDIT",
+      "EXIT 8",
       this.params.practice ? "PRACTICE ROUTE" : "INSPECTION LOOP 7",
       "file the divergence or walk on — judgment settles at the far end",
     );

@@ -1,4 +1,4 @@
-# NIGHT AUDIT — Art Bible
+# EXIT 8 — Art Bible
 
 ## Identity
 

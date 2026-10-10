@@ -9,7 +9,7 @@ async function main(): Promise<void> {
 
   const canvas = document.createElement("canvas");
   canvas.id = "render";
-  canvas.setAttribute("aria-label", "NIGHT AUDIT — Inspection Loop 7");
+  canvas.setAttribute("aria-label", "EXIT 8 — Inspection Loop 7");
   host.appendChild(canvas);
   const uiHost = document.createElement("div");
   uiHost.id = "ui";

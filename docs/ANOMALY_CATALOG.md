@@ -1,4 +1,4 @@
-# NIGHT AUDIT — Anomaly Catalog
+# EXIT 8 — Anomaly Catalog
 
 Registry lives in `src/game/anomalies/` (definitions + modules). Selection:
 seeded weighted bag, recent-history suppression, exclusion tags, chapter +
@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **270 implemented** — 224 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **276 implemented** — 230 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -887,3 +887,9 @@ sound-led anomaly carries a visual cue path.
 | 268 | `gate.keeper` | The Fare-Keeper | A fare-keeper stands inside the shut middle lane, back to you, facing the paddles — his head finds you inside ~9m; press close and there is nobody there. | unmistakable | 3 | character |
 | 269 | `wicket.closed` | The Wicket Is Closed | The fare line is condemned — portable stanchions mid-corridor with a sagging chain and a LANE CLOSED plate; you squeeze past on the west side. | unmistakable | 2 | spatial |
 | 270 | `shutter.breach` | The Shutter Is Forced | The clerk desk's roller shutter is wrenched half up and racked off level — one slat dropped on the counter below; the desk is dark, just open. | moderate | 2 | object |
+| 271 | `supply.ajar` | The Cage Is Ajar | Cage grille rides up a hand's width; a parcel sits on the corridor floor by the ledge. | moderate | 1 | object |
+| 272 | `supply.lit` | The Cage Is Lit | Dome lamp inside the cage burns amber through the bars; pilot lamp runs hot. | moderate | 2 | lighting |
+| 273 | `supply.open` | The Cage Is Open | Grille rolled fully into the facade, cage lit, a steel cart stands half out of the mouth with parcels. | unmistakable | 3 | object |
+| 274 | `supply.figure` | The Stockman | A silhouette stands inside the cage behind the bars, face to the grille; head tracks you, gone at the ledge. | unmistakable | 3 | character |
+| 275 | `supply.bare` | The Cage Is Bare | Stock shelf stripped — two crates gone, the last tipped on its face. | moderate | 2 | object |
+| 276 | `supply.plate` | Receipts Closed | SUPPLY ISSUE plate reads RECEIPTS CLOSED and the pilot lamp over the grille is dead. | subtle | 1 | sign |

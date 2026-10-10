@@ -205,6 +205,12 @@ import { wicketLit } from "./wicketLit";
 import { gateKeeper } from "./gateKeeper";
 import { wicketClosed } from "./wicketClosed";
 import { shutterBreach } from "./shutterBreach";
+import { supplyAjar } from "./supplyAjar";
+import { supplyLit } from "./supplyLit";
+import { supplyOpen } from "./supplyOpen";
+import { supplyFigure } from "./supplyFigure";
+import { supplyBare } from "./supplyBare";
+import { supplyPlate } from "./supplyPlate";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -428,6 +434,12 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   gateKeeper,
   wicketClosed,
   shutterBreach,
+  supplyAjar,
+  supplyLit,
+  supplyOpen,
+  supplyFigure,
+  supplyBare,
+  supplyPlate,
   walkerEyeless,
   walkerCrawl,
   signLoop8,

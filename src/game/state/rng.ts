@@ -1,5 +1,5 @@
 /**
- * Deterministic RNG for NIGHT AUDIT.
+ * Deterministic RNG for EXIT 8.
  *
  * Everything random flows through named streams derived from the run seed so
  * a run is fully reproducible from (seed, loopIndex). Rule: add new consumers
