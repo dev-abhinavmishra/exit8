@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **322 implemented** — 276 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **327 implemented** — 281 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -939,3 +939,8 @@ sound-led anomaly carries a visual cue path.
 | 320 | `patina.halo.spread` | The Stain Is Growing | The ceiling halo at z41 darkens + spreads through the loop. Ch II+. | subtle | 2 | spatial |
 | 321 | `patina.rust.fresh` | A Fresh Rust Run | A bright wet rust weep on the west wall z48 — unlike every aged weep. | subtle | 1 | object |
 | 322 | `patina.scratch` | Scored Across The Floor | Three fresh parallel gouges across the walkway at z30. | subtle | 1 | object |
+| 323 | `commuter.upright` | He Is Standing | The commuter stands mid-corridor facing up-route, arms slack. Ch II+. | unmistakable | 2 | character |
+| 324 | `commuter.stare` | He Watches You Work | Seated, paper down — head tracks you all loop, even far. Ch II+. | moderate | 2 | character |
+| 325 | `commuter.gone.paper` | He Left Mid-Read | No commuter; his folded paper still on the seat. | subtle | 1 | character |
+| 326 | `commuter.bench` | Wrong Bench Tonight | Same pose + paper on the NORTH bench. Ch II+. | moderate | 2 | character |
+| 327 | `commuter.down` | Slumped On The Bench | Slumped forward off the seat back, arm hanging. Ch III. | unmistakable | 3 | character |

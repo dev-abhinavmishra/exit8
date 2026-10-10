@@ -1282,3 +1282,15 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   alpha), patch falls out (setEnabled toggle + bare substrate + dropped
   tile reusing patchMesh.material). registry.get returns
   TransformNode|AbstractMesh — cast for .material.
+
+## arc28 — the commuter (second baseline presence)
+
+- world/generation/commuter.ts: civilian buildFigure (inspector minus
+  .stripe/.cap.*/.idcard children by name), seated pose on bench.south
+  (hips rotation.x ~-1.45), held paper prop + bag, baseline head-track
+  lift curve on proximity + page-turn timer. Presence varies per loop
+  via NEW RngStream "loop.commuter" (StreamName + STREAM_SALTS entry —
+  any new stream needs both). reset(present) restores the full baseline
+  so anomaly cleanups just call c.reset(wasPresent).
+- 5 anomalies manipulate the same node; all restore via reset(). Watch:
+  commuter.upright positions him WEST of the walker's x=0.55 lane.

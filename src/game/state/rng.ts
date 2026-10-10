@@ -39,6 +39,7 @@ export type StreamName =
   | "audio.drip" // condensation plink scheduling + vent pick
   | "audio.synth" // synthesized-source jitter (footsteps, noise buffer)
   | "evidence" // per-run field-note placement
+  | "loop.commuter" // the commuter's per-loop presence roll
   | "ui.feedback"
   | "e2e.stub";
 
@@ -52,6 +53,7 @@ const STREAM_SALTS: Record<StreamName, number> = {
   "audio.drip": 0x68c4f9a2,
   "audio.synth": 0x5bf03635,
   evidence: 0x4f1bbcdd,
+  "loop.commuter": 0x6b43a9d5,
   "ui.feedback": 0x165667b1,
   "e2e.stub": 0xd3a2646c,
 };

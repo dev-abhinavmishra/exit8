@@ -40,6 +40,7 @@ import { SIGNS } from "../../data/signage";
 import * as kit from "./kit";
 import { buildScatter, type ScatterPool } from "./scatter";
 import { buildAmbientWalker, type AmbientWalker } from "./ambientWalker";
+import { buildCommuter, type Commuter } from "./commuter";
 import { buildFixtures } from "./fixtures";
 import { mergeStaticDressing } from "../merge";
 
@@ -123,6 +124,9 @@ export interface ConcourseWorld {
   scatter: ScatterPool;
   /** the baseline inspector figure — reset every rebaseline */
   ambientWalker: AmbientWalker;
+  /** the baseline commuter on the mid-corridor bench — presence varies
+   *  by loop; his habits are the learnable normal */
+  commuter: Commuter;
   /** junction-machine extraction-fan speed (0..1+); anomalies throttle
    *  it — machine.silence ties it to observation, blackout kills it */
   fanSpeed: number;
@@ -4245,6 +4249,8 @@ export function buildConcourse(
   const scatter = buildScatter(scene, root, mats, runSeed, registry);
   const ambientWalker = buildAmbientWalker(scene, root, mats, registry);
   ambientWalker.reset();
+  const commuter = buildCommuter(scene, root, mats, registry);
+  commuter.reset(true);
   buildFixtures(scene, root, mats, registry);
   mergeStaticDressing(root);
 
@@ -4268,6 +4274,7 @@ export function buildConcourse(
     condensationPatch: condensation,
     scatter,
     ambientWalker,
+    commuter,
     dust,
     fanSpeed: 1,
     update(dt: number): void {

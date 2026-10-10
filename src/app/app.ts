@@ -303,6 +303,7 @@ export class App {
     this.loop.update(dt);
     this.rig?.update();
     this.world.ambientWalker.update(dt, this.player.position);
+    this.world.commuter.update(dt, this.player.position);
     this.world.update(dt);
     this.audio.setListener(this.player.position, this.player.forward());
     const fwd = this.player.camera.getForwardRay().direction;

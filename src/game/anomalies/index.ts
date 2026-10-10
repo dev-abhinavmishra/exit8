@@ -257,6 +257,11 @@ import { patinaPatch } from "./patinaPatch";
 import { patinaHalo } from "./patinaHalo";
 import { patinaRust } from "./patinaRust";
 import { patinaScratch } from "./patinaScratch";
+import { commuterUpright } from "./commuterUpright";
+import { commuterStare } from "./commuterStare";
+import { commuterGonePaper } from "./commuterGonePaper";
+import { commuterBench } from "./commuterBench";
+import { commuterDown } from "./commuterDown";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -532,6 +537,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   patinaHalo,
   patinaRust,
   patinaScratch,
+  commuterUpright,
+  commuterStare,
+  commuterGonePaper,
+  commuterBench,
+  commuterDown,
   walkerEyeless,
   walkerCrawl,
   signLoop8,
