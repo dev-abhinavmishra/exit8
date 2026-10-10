@@ -1180,3 +1180,10 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   gallery 20-32, cage 33.8-36.2, staff 39.2-40.6, lobby 48.4-50.6,
   bay 46.2-49.4, archives 21.4-22.8). East z43.5 sits between vend
   (41.5) and svc door (46).
+
+## arc20 — the clock (in flight)
+- Double-faced station clock on the centerline at z30 (x0, y2.42), stem
+  from the ceiling, registered `clock.head` TransformNode: housing,
+  face.n/s, 4 ticks/face, hand.{n|s}.{h|m} with pivot bases for
+  rotation.z spins. Centerline x=0 is free (troffers run x±0.9, duct
+  x1.02 east). Hands baseline ~10:05, mirrored per face (fz*angle).

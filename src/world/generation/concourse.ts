@@ -2688,6 +2688,40 @@ export function buildConcourse(
     }
   }
 
+  // ─── the clock — a double-faced station clock hung on the corridor
+  // centerline over the gallery bend. Exit-8 staple: everyone reads the
+  // clock, everyone remembers it. Registered parts so anomalies can drop
+  // it, stop it, or bleed from it. ───────────────────────────────────
+  {
+    const clock = new TransformNode("clock.head", scene);
+    clock.parent = root;
+    clock.position = new Vector3(0, 2.42, 30.0);
+    const stem = kit.box("clock.stem", 0.06, 0.42, 0.06, mats.steel, scene, clock);
+    stem.position = new Vector3(0, 0.56, 0);
+    const housing = kit.box("clock.housing", 0.92, 0.92, 0.14, mats.steel, scene, clock);
+    housing.position = new Vector3(0, 0, 0);
+    for (const fz of [1, -1]) {
+      const face = kit.box(`clock.face.${fz > 0 ? "n" : "s"}`, 0.8, 0.8, 0.012, mats.trofferLit, scene, clock);
+      face.position = new Vector3(0, 0, fz * 0.076);
+      // tick ring — 4 marker stubs per face
+      for (let ti = 0; ti < 4; ti++) {
+        const tick = kit.box(`clock.tick.${fz > 0 ? "n" : "s"}.${ti}`, 0.03, 0.08, 0.014, mats.rubber, scene, clock);
+        const a = (ti * Math.PI) / 2;
+        tick.position = new Vector3(Math.sin(a) * 0.31, Math.cos(a) * 0.31, fz * 0.082);
+        tick.rotation.z = -a;
+      }
+      const hour = kit.box(`clock.hand.${fz > 0 ? "n" : "s"}.h`, 0.03, 0.2, 0.016, mats.rubber, scene, clock);
+      hour.setPivotPoint(new Vector3(0, -0.07, 0));
+      hour.position = new Vector3(0, 0.07, fz * 0.088);
+      hour.rotation.z = fz * -0.62; // ~10:05 both faces
+      const min = kit.box(`clock.hand.${fz > 0 ? "n" : "s"}.m`, 0.02, 0.32, 0.016, mats.rubber, scene, clock);
+      min.setPivotPoint(new Vector3(0, -0.13, 0));
+      min.position = new Vector3(0, 0.13, fz * 0.088);
+      min.rotation.z = fz * -0.42;
+    }
+    registry.register("clock.head", clock);
+  }
+
   // ─── ceiling duct run — galvanized trunk line suspended under the
   // slab along the east tee edge, feeding three down-facing grates.
   // The corridor's air plant made visible; grate meshes register so
