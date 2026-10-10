@@ -1183,6 +1183,7 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   (41.5) and svc door (46).
 
 ## arc20 — the hanging clock (in flight)
+
 - NOTE: a wall-mounted master clock already lives at west z24 (kit.clock
   w/ clock.reverse|wrong-face|spins|missing|stopped). arc20 adds a
   SECOND, distinct fixture: a hanging double-faced clock on the
@@ -1196,21 +1197,36 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   x1.02 east). Hands baseline ~10:05, mirrored per face (fz*angle).
 
 ## arc21 — the service layer (in flight)
+
 - NOTE: fixture space is saturated — payphone bank and janitor trolley
   BOTH duped existing fixtures (phone niche z13.2, mop/bucket kit).
   Service-layer pass instead: 3 access panels `svc.panel.{0-2}` (e44.5,
   w10.5, e30.5), 3 floor vents `svc.vent.{0-2}` (e37, w20.5, e50.5),
   3 junction boxes `svc.jbox.{0-2}` (e26, w44.8, e52) + grime streaks +
   a west conduit run z20-32. All SURFACE-mounted: no wall splits.
-- ID-space is dense too: hatch.*/vent.*/panel.*/stain.*/clock.*/phone.*
+- ID-space is dense too: hatch._/vent._/panel._/stain._/clock._/phone._
   families all taken — anomaly ids must be grepped against catalog +
   index before writing; mv-ing a file onto an existing basename CLOBBERS
   the original tracked file (learned with panelAjar).
 
 ## arc22 — the atmosphere arc (in flight)
+
 - Fixture space exhausted → went systemic: 5 whole-corridor event
   anomalies (no new geometry). Zone API: ctx.world.zones[*] gives
   point(PointLight,diffuse,intensity)/extraLights/troffers/name;
   corridor.flicker already does the dark-wave, ambient playRumble
   exists — shudder/cold picked disjoint (unison dip / all-zone blue).
 - Animatable anomaly meshes can animate material alpha for fade wisps.
+
+## arc23 — the platform edge (in flight)
+
+- West z39.1–40.3: surface-mounted barred "trackside opening" —
+  steel frame protrudes ~0.14, matte-black void face, 5 bars, far red
+  signal pinprick. No wall splits needed (gate reads as a recess via
+  the black face). platform.* registry: gate/void/sill/head/post.{0,1}/
+  bar.{0-4}/signal.
+- VALIDATOR TRAP: registry resolution matches VARIABLE names file-wide —
+  `const head` collided with the existing dress.dframe head at ~3034;
+  rename locals (phead etc.) to avoid silent mis-binding.
+- 5 anomalies: train streak, signal twin, figure-in-the-gap (despawn
+  d2<1.35), sprung bar, water under the sill.

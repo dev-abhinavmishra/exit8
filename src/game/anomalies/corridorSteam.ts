@@ -27,7 +27,11 @@ export const corridorSteam: AnomalyDef = {
     steam.alpha = 0.16;
     const wisps: { m: ReturnType<typeof CreateBox>; ph: number }[] = [];
     for (let i = 0; i < 5; i++) {
-      const w = CreateBox(`anomaly.corridor.wisp.${i}`, { width: 0.05, height: 0.9 + i * 0.1, depth: 0.05 }, scene);
+      const w = CreateBox(
+        `anomaly.corridor.wisp.${i}`,
+        { width: 0.05, height: 0.9 + i * 0.1, depth: 0.05 },
+        scene,
+      );
       w.material = steam;
       w.parent = world.root;
       w.position.set(1.55 - i * 0.09, 0.6, 36.9 + (i % 3) * 0.16);

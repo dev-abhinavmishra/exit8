@@ -2744,6 +2744,54 @@ export function buildConcourse(
     mkJbox("svc.jbox.1", -1, 44.8);
     mkJbox("svc.jbox.2", 1, 52.0);
     const conduit = kit.box("dress.svc.conduit.w", 0.045, 0.045, 12.0, mats.steel, scene, root);
+    // ─── the platform edge — a barred trackside opening, west z 39.1–40.3.
+    // Surface-mounted (frame protrudes ~0.14 into the corridor): no wall
+    // splits needed. The black void face + pinprick signal sell the gap.
+    {
+      const pz = 39.7;
+      const px = -C.xHalf;
+      const gate = new TransformNode("platform.gate", scene);
+      gate.parent = root;
+      registry.register("platform.gate", gate);
+      // void face — matte black, flush to the wall
+      const pv = kit.box("platform.void", 0.03, 2.45, 1.2, mats.domePad, scene, gate);
+      pv.position = new Vector3(px + 0.015, 1.28, pz);
+      registry.register("platform.void", pv);
+      // sill + header + posts
+      const sill = kit.box("platform.sill", 0.16, 0.1, 1.28, mats.steel, scene, gate);
+      sill.position = new Vector3(px + 0.09, 0.05, pz);
+      registry.register("platform.sill", sill);
+      const phead = kit.box("platform.head", 0.16, 0.1, 1.28, mats.steel, scene, gate);
+      phead.position = new Vector3(px + 0.09, 2.5, pz);
+      registry.register("platform.head", phead);
+      for (const [i, dz] of [-0.64, 0.64].entries()) {
+        const post = kit.box(`platform.post.${i}`, 0.14, 2.56, 0.08, mats.steel, scene, gate);
+        post.position = new Vector3(px + 0.09, 1.28, pz + dz);
+        registry.register(`platform.post.${i}`, post);
+      }
+      // bars — five verticals across the mouth
+      for (let i = 0; i < 5; i++) {
+        const bar = CreateCylinder(
+          `platform.bar.${i}`,
+          { height: 2.32, diameter: 0.036, tessellation: 10 },
+          scene,
+        );
+        bar.material = mats.steel;
+        bar.parent = gate;
+        bar.position = new Vector3(px + 0.1, 1.28, pz - 0.48 + i * 0.24);
+        registry.register(`platform.bar.${i}`, bar);
+      }
+      // the far red signal — a pinprick inside the dark
+      const sigMat = new StandardMaterial("mat.platform.signal", scene);
+      sigMat.diffuseColor = Color3.Black();
+      sigMat.emissiveColor = new Color3(0.9, 0.1, 0.08);
+      const sig = CreateSphere("platform.signal", { diameter: 0.03, segments: 6 }, scene);
+      sig.material = sigMat;
+      sig.parent = gate;
+      sig.position = new Vector3(px + 0.04, 1.38, pz + 0.18);
+      registry.register("platform.signal", sig);
+    }
+
     conduit.position = new Vector3(-1.74, 2.55, 26.0);
     for (let ci = 0; ci < 4; ci++) {
       const clip = kit.box(`dress.svc.clip.${ci}`, 0.05, 0.08, 0.03, mats.rubber, scene, root);
