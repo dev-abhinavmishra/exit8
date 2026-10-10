@@ -1128,3 +1128,15 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   gate.keeper 268 (silhouette in lane 1, head-track <9m, vanish <1.45m),
   wicket.closed 269 (anomaly-side collider box — checkCollisions=true
   direct, not via colliders[]). Catalog 269 modules / 223 registered.
+
+### arc17 additions (queue pads + shutter.breach)
+- `dress.wicket.queue.{0,1,2}` — tactile queue pads (domePad mat) as THIN BOXES
+  at (0.55, 0.008, laneZ); floor planes still don't render in the corridor.
+- `shutter.breach` (#270, moderate, ch2): wicket shutter wrenched half up +
+  racked −0.07 rad, dropped slat on the counter (world.root child, flips
+  correctly under corridor.mirror). Requires wicket.shutter + wicket.win.
+- `wicket.lit` excludes `corridor.mirror` AND `shutter.breach` — the PointLight
+  is scene-space and can't follow the mirror flip; breach+lit both move the
+  shutter and read contradictory.
+- `excludes` is advisory — no engine code consumes it (grep-verified); the
+  catalog documents co-run intent, keep it symmetric anyway.
