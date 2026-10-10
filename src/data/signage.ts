@@ -101,6 +101,13 @@ export const SIGNS: SignSpec[] = [
     tone: "dark",
   },
   {
+    id: "sign.washroom",
+    title: "WASHROOM",
+    sub: "STAFF · PUBLIC",
+    arrow: "none",
+    tone: "dark",
+  },
+  {
     // repainted every loop by the loop manager — the in-world pass
     // counter on the south cap (the exit-number equivalent)
     id: "sign.attempt",

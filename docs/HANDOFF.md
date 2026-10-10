@@ -916,7 +916,7 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
 
 - **West-wall collider is segmented** (`wall.col.{sx}.{i}`): recess mouths need
   a gap in the spans list — the archives doorway got `[C.z0, ARCH_Z0] /
-  [ARCH_Z1, BAY_Z0] / [BAY_Z1, C.z1]`. Missing this silently bricks entry even
+[ARCH_Z1, BAY_Z0] / [BAY_Z1, C.z1]`. Missing this silently bricks entry even
   when every other collider is right (player corks at the wall plane).
 - **Door frame must be rails, never a solid box** — a frame box filling the
   opening reads as a steel slab at glancing angle and makes the "room" a void.
@@ -924,7 +924,7 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   the doorway when shut.
 - **Inward swing beats outward**: leaf `rotation.y = -OPEN_TH` with hinge at
   the north end (`pos.x = LEAF_X - sin(TH)*0.53`, `pos.z = LEAF_Z - 0.53 +
-  cos(TH)*0.53`) sweeps the leaf into the room and leaves the mouth open.
+cos(TH)*0.53`) sweeps the leaf into the room and leaves the mouth open.
   Swinging out corks the mouth diagonally at ~60°.
 - `window.__nightaudit.teleport(x, y, z, yaw)` resets yaw — the debug
   handle takes all 4 args (PlayerController.teleport is a different,
@@ -983,6 +983,7 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   probes in .tmp-* or tests/, never at root.
 
 ## Arc 11 (arc11 branch) — the ceiling plane
+
 - `dress.duct.run`: galvanized trunk under the slab, east tee edge x1.02
   y2.78 z5-51, seams every 5.75m, straps at 9/28/47, three down grates
   `duct.grate.{0,1,2}` at z 12/27/42 (slats `duct.grate.{i}.slat.{0-2}`).
@@ -994,6 +995,7 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   before writing a new def with a similar id; the catalog is the index.
 
 ## Arc 12 (in flight) — figure relief + leftover review fixes
+
 - `buildFigure` grows `*.feat.*` relief: nose/nosetip/cheeks/ears on the
   head, finger/thumb blocks + wrist cuffs on the arms, shoulder end
   caps. FRONT-FACING relief only — brow/chin boxes were tried and
@@ -1012,6 +1014,41 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   was still patrolling in the drowned corridor (review finding).
 
 ## Arc 13 — camera.tracks + lights.surge (#253-254)
+
 - CCTV domes `cctv.{0..3}` are registered TransformNodes at (±1.6, z3/20/40/52); `cctv.{i}.dome`/`.lens` are scene meshes (meshInfo-visible, root is not). Baseline yaw 0 for z<27 else π.
 - Tracking verification without framing: compare `meshInfo('cctv.N.lens').pos` vs `.dome` — the offset direction IS the aim.
 - `lights.surge` = inverse lighting fault: zone point ×1.55 + whiter diffuse + extraLights ×1.5 (per-zone: trofferLit/shaft mats are global, can't split).
+
+## arc14 — the staff washroom (this PR)
+
+Walk-in staff washroom behind the east wall: doorway z18.2–19.2 (WASH_Z0/
+WASH_Z1 consts), interior z16.5–19.95 × depth 2.25 to x4.3. The room block
+lives AFTER the lobby block in concourse.ts (needs `zones` + `moteAnchors`
+already declared — a TDZ trap if moved earlier).
+
+Registered names: `wash.door` (TransformNode hinge — leaf/kick/pulls are its
+children), `wash.tap.0/1` (TransformNodes at washBackX-0.06, y0.9),
+`wash.stall.door.0/1` (TransformNodes, hinged at the west jamb, in-swing
+ajar -0.55/-1.3), `wash.dryer`, `wash.dryer.led`, `wash.lamp`, `light.wash`
+(PointLight wired into the gallery zone's `extraLights` + `troffers` so it
+dies with zone kills). Footstep `inWashroom` region added in audioSystem.
+
+**East-wall runs must split at the washroom mouth** — AO strips, baseboards,
+wall rails, conduit, ceiling cove all now break at svc door (z15–16),
+washroom (18.2–19.2), and lobby (48.4–50.6); any NEW east run added later
+must keep those splits or it floats visibly across open mouths (same rule
+as the west side's bay split).
+
+**Interior-room material rule (hard-won)**: lit StandardMaterials under a
+close point light blow out white at corridor-pale diffuse values. Working
+washroom set: tile 0.14/0.16/0.175, floor 0.09/0.1/0.105, porcelain
+0.20/0.215/0.22, stall 0.095, door 0.19; specular ≤0.07, specularPower ≥48.
+Verify by screenshot — room light + zone lights + hemisphere stack, no
+single number predicts the read.
+
+`meshInfo(name)` only resolves AbstractMesh — TransformNodes (wash doors,
+taps, cctv roots, headPivot) return null. Use `.leaf`/child-mesh info, or
+`registry.get` + rotation checks.
+
+Anomalies: `wash.mirror` (#255), `tap.runs` (#256), `stall.occupied` (#257),
+`dryer.runs` (#258). Catalog: 258.

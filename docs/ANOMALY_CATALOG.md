@@ -271,9 +271,9 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 63. ★ `walker.faceless` — the other inspector walks his usual route,
     but his face is smooth skin. No eyes, no mouth — only the cap's
     shadow where a face should be. Moderate. (slice)
-★ `walker.smile` — the other inspector walks his route, but his face
-  has learned to smile: a grin that climbs past where a mouth ends,
-  teeth showing. (CH III, spatial, moderate)
+    ★ `walker.smile` — the other inspector walks his route, but his face
+    has learned to smile: a grin that climbs past where a mouth ends,
+    teeth showing. (CH III, spatial, moderate)
 64. ★ `walker.crawl` — he still walks his route, but at a fifth of his
     pace with a slowed, heavy stride. He will not reach the end of the
     corridor this shift. Moderate. (slice)
@@ -664,57 +664,57 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
 171. `locker.ajar` — Open Locker · CH I · moderate
 172. `exit.wrongway` — Exit Sign Wrong Way · CH II · subtle
 173. `walker.faceless` — Faceless Inspector · CH III · moderate
-252. `walker.smile` — The Grin · CH III · moderate
-174. `walker.eyeless` — Hollow Eyes · CH III · subtle
-175. `walker.crawl` — He Walks Too Slowly · CH III · moderate
-176. `sign.loop8` — Wrong Loop Number · CH III · subtle
-177. `sign.mirror` — Totem Reads Backwards · CH II · moderate
-178. `guide.short` — Guide Strip Ends Early · CH II · moderate
-179. `rad.gone` — Missing Radiator · CH II · subtle
-180. `lockers.all` — Every Locker Open · CH III · moderate
-181. `mop.gone` — Mop Bucket Missing · CH II · subtle
-182. `poster.dup` — Poster Printed Twice · CH II · subtle
-183. `exit.dark` — Exit Sign Unlit · CH III · subtle
-184. `fountain.gone` — Fountain Missing · CH II · subtle
-185. `poster.tilted` — Poster Hangs Crooked · CH I · subtle
-186. `hatch.gone` — Hatch Sealed Over · CH II · subtle
-187. `guide.red` — Guide Strip Runs Red · CH III · subtle
-188. `dir.gone` — Directory Sign Missing · CH II · subtle
-189. `machine.dead` — Machine Lamp Out · CH II · subtle
-190. `bench.gone` — Bench Missing · CH II · moderate
-191. `totem.gone` — Totem Sign Missing · CH II · moderate
-192. `arrows.gone` — Route Decals Missing · CH II · subtle
-193. `cctv.drooped` — Camera Dead Drop · CH II · subtle
-194. `phone.lit` — Phone Line Lamp Lit · CH II · subtle
-195. `exit.sign.gone` — Airlock Overhead Sign Missing · CH II · moderate
-196. `intake.gone` — Intake Sign Missing · CH II · subtle
-197. `bell.gone` — Counter Bell Missing · CH II · subtle
-198. `notice.gone` — North Vestibule Sign Missing · CH II · subtle
-199. `walker.fast` — Inspector Moving Fast · CH III · subtle
-200. `walker.charge` — The Inspector Runs At You · CH III · unmistakable · **dangerous**
-201. `walker.wait` — The Inspector Waits At The Door · CH III · unmistakable
-202. `ceiling.crack` — Ceiling Fracture · CH III · subtle
-203. `ceiling.weeps` — The Ceiling Weeps · CH II · moderate
-204. `floor.flood` — Flooded Floor · CH III · unmistakable · **dangerous**
-205. `vend.dead` — Dead Vending Unit · CH I · unmistakable
-206. `vend.empty` — Vending Shelves Bare · CH II · moderate
-207. `sheets.cleared` — Stripped Notice Board · CH II · subtle
-208. `lights.blackout` — Someone Is In The Dark · CH III · unmistakable · **dangerous**
-209. `fan.dead` — Extraction Fan Stopped · CH II · subtle
-210. `fan.racing` — Extraction Fan Racing · CH II · subtle
-211. `gallery.dark` — Gallery Gone Dark · CH I · moderate
-212. `pane.face` — Face at the Glass · CH III · subtle
-213. `gallery.mirror` — Mirrored Occupant · CH III · subtle
-214. `poster.backs` — Posters Face-In · CH I · subtle
-215. `pass.stuck` — Counter Didn't Advance · CH II · subtle
-216. `bay.occupied` — Someone In The Bay · CH II · moderate
-217. `lift.car` — The Car Is Waiting · CH II · moderate
-218. `shaft.occupied` — Someone In The Shaft · CH III · moderate
-219. `bay.valve` — The Wheel Turns · CH II · subtle
-220. `egress.reversed` — Wrong Way Out · CH I · subtle
-221. `egress.gone` — Missing Egress Strip · CH II · subtle
-222. `walker.drop` — Dropped Case File · CH II · unmistakable
-223. `gallery.door` — Gallery Door Ajar · CH II · unmistakable — the
+174. `walker.smile` — The Grin · CH III · moderate
+175. `walker.eyeless` — Hollow Eyes · CH III · subtle
+176. `walker.crawl` — He Walks Too Slowly · CH III · moderate
+177. `sign.loop8` — Wrong Loop Number · CH III · subtle
+178. `sign.mirror` — Totem Reads Backwards · CH II · moderate
+179. `guide.short` — Guide Strip Ends Early · CH II · moderate
+180. `rad.gone` — Missing Radiator · CH II · subtle
+181. `lockers.all` — Every Locker Open · CH III · moderate
+182. `mop.gone` — Mop Bucket Missing · CH II · subtle
+183. `poster.dup` — Poster Printed Twice · CH II · subtle
+184. `exit.dark` — Exit Sign Unlit · CH III · subtle
+185. `fountain.gone` — Fountain Missing · CH II · subtle
+186. `poster.tilted` — Poster Hangs Crooked · CH I · subtle
+187. `hatch.gone` — Hatch Sealed Over · CH II · subtle
+188. `guide.red` — Guide Strip Runs Red · CH III · subtle
+189. `dir.gone` — Directory Sign Missing · CH II · subtle
+190. `machine.dead` — Machine Lamp Out · CH II · subtle
+191. `bench.gone` — Bench Missing · CH II · moderate
+192. `totem.gone` — Totem Sign Missing · CH II · moderate
+193. `arrows.gone` — Route Decals Missing · CH II · subtle
+194. `cctv.drooped` — Camera Dead Drop · CH II · subtle
+195. `phone.lit` — Phone Line Lamp Lit · CH II · subtle
+196. `exit.sign.gone` — Airlock Overhead Sign Missing · CH II · moderate
+197. `intake.gone` — Intake Sign Missing · CH II · subtle
+198. `bell.gone` — Counter Bell Missing · CH II · subtle
+199. `notice.gone` — North Vestibule Sign Missing · CH II · subtle
+200. `walker.fast` — Inspector Moving Fast · CH III · subtle
+201. `walker.charge` — The Inspector Runs At You · CH III · unmistakable · **dangerous**
+202. `walker.wait` — The Inspector Waits At The Door · CH III · unmistakable
+203. `ceiling.crack` — Ceiling Fracture · CH III · subtle
+204. `ceiling.weeps` — The Ceiling Weeps · CH II · moderate
+205. `floor.flood` — Flooded Floor · CH III · unmistakable · **dangerous**
+206. `vend.dead` — Dead Vending Unit · CH I · unmistakable
+207. `vend.empty` — Vending Shelves Bare · CH II · moderate
+208. `sheets.cleared` — Stripped Notice Board · CH II · subtle
+209. `lights.blackout` — Someone Is In The Dark · CH III · unmistakable · **dangerous**
+210. `fan.dead` — Extraction Fan Stopped · CH II · subtle
+211. `fan.racing` — Extraction Fan Racing · CH II · subtle
+212. `gallery.dark` — Gallery Gone Dark · CH I · moderate
+213. `pane.face` — Face at the Glass · CH III · subtle
+214. `gallery.mirror` — Mirrored Occupant · CH III · subtle
+215. `poster.backs` — Posters Face-In · CH I · subtle
+216. `pass.stuck` — Counter Didn't Advance · CH II · subtle
+217. `bay.occupied` — Someone In The Bay · CH II · moderate
+218. `lift.car` — The Car Is Waiting · CH II · moderate
+219. `shaft.occupied` — Someone In The Shaft · CH III · moderate
+220. `bay.valve` — The Wheel Turns · CH II · subtle
+221. `egress.reversed` — Wrong Way Out · CH I · subtle
+222. `egress.gone` — Missing Egress Strip · CH II · subtle
+223. `walker.drop` — Dropped Case File · CH II · unmistakable
+224. `gallery.door` — Gallery Door Ajar · CH II · unmistakable — the
      glazed staff door in the observation glass stands open on its north
      hinge; a lit wedge spills into the corridor and the room's pocket
      between the desk rows is genuinely walkable (the only gallery
@@ -722,132 +722,132 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      (face.glass, glass.hands, glass.writing, depth.mismatch) are excluded
      — they'd hang in the open gap.
 
-224. `clinic.staffed` — Someone Is Working Late · CH III · unmistakable —
+225. `clinic.staffed` — Someone Is Working Late · CH III · unmistakable —
      the shuttered counter's blind rolls up into the header by itself and
      `wall.left.2` swaps for stubs: behind it is a lit intake alcove that
      was never there (pale green walls, desk, shelf, screen) with a seated
      figure working at the desk, back to the window. `clinicAlcove` is a
      prebuilt disabled room like `depthRoom`; `clinicLamp` does the light.
 
-225. `corridor.mirror` — The Wrong Side · CH III · unmistakable — the
+226. `corridor.mirror` — The Wrong Side · CH III · unmistakable — the
      whole loop flips east-for-west (`world.root.scaling.x = -1`, every
      material's sideOrientation flips winding): records bank on the
      right, gallery on the left, every sign reads backwards, the
      walker's lane mirrors with the world. Audio anchors negate to the
      mirrored side.
 
-226. `figure.threshold` — Standing in the Way · CH III · unmistakable — a
+227. `figure.threshold` — Standing in the Way · CH III · unmistakable — a
      silhouette stands in the south mouth itself, head tracking you the
      whole walk; inside arm's reach it steps aside ("it makes room") —
      filing means walking through where it stood. Dread not damage.
 
-227. `corridor.flicker` — The Corridor Chokes · CH III · unmistakable — a
+228. `corridor.flicker` — The Corridor Chokes · CH III · unmistakable — a
      rolling fluorescent failure: zone brightness beats on offset sines
      so the dark travels down the passage ahead of you (zones keep
      fighting, never die).
 
-228. `walker.notes` — Wrote You Up · CH II · moderate — stand still ~6 s
+229. `walker.notes` — Wrote You Up · CH II · moderate — stand still ~6 s
      and the inspector halts mid-route, clipboard up, head over the page,
      pen working ("he is writing") — then back to patrol. Once per loop;
      new walker mode `notes` in ambientWalker.
 
-229. `gauntlet.watch` — The Queue · CH III · unmistakable — ten dark
+230. `gauntlet.watch` — The Queue · CH III · unmistakable — ten dark
      figures stand along both walls facing the wall; crossing the
      midpoint they all turn to face the corridor at once (groan +
      "they are watching now"), heads tracking you the rest of the way.
 
-230. `walker.follow` — In Step Behind You · CH III · moderate — the
+231. `walker.follow` — In Step Behind You · CH III · moderate — the
      inspector quits his route and trails ~3 m behind your direction of
      travel; stop and he just stands there. New walker mode `follow`.
 
-231. `light.cold` — Wrong Light · CH III · unmistakable — every lamp
+232. `light.cold` — Wrong Light · CH III · unmistakable — every lamp
      runs surgical blue-white (zone diffuses + troffer emissive swap);
      the same corridor in the wrong light. Restores on cleanup.
 
-232. `service.stairwell` — It Was Open a Moment Ago · CH III ·
+233. `service.stairwell` — It Was Open a Moment Ago · CH III ·
      unmistakable — the sealed service door stands wide on a lit
      stairwell descending east (real prebuilt room: landing, nine
      steps, rail, caged bulb, far door). Close inside ~4 m and it
      slams itself shut on you; open it again and the corridor wall is
      solid.
 
-233. `phone.dialtone` — Dead Line · CH I · subtle — the internal
+234. `phone.dialtone` — Dead Line · CH I · subtle — the internal
      handset by the gallery rings a steady 350+440 Hz dial tone; a
      dead line is only audible inside ~2 m. New `startDialTone(pos)`
      stoppable loop on the anomaly bus.
 
-234. `vent.loose` — One Grille Down · CH I · moderate — the east
+235. `vent.loose` — One Grille Down · CH I · moderate — the east
      grille at z30 hangs by its top screws, tilted into the corridor;
      behind it, open duct black.
 
-235. `cap.lit` — Light Under the Door · CH I · subtle — warm
+236. `cap.lit` — Light Under the Door · CH I · subtle — warm
      daylight bleeds under the sealed south cap — only readable in
      the commit walk's last metres, where the original's promise
      ("light at the far door means your call was right") should hold
      silence.
 
-236. `walker.papers` — He Is Losing the Paperwork · CH II ·
+237. `walker.papers` — He Is Losing the Paperwork · CH II ·
      moderate — the inspector sheds a pale audit sheet every ~2.7 m
      of patrol; the trail behind him should not exist.
 
-237. `corridor.long` — It Is Longer Today · CH III · unmistakable —
+238. `corridor.long` — It Is Longer Today · CH III · unmistakable —
      the whole corridor stretches ~12% around its midpoint: geometry,
      colliders, signage, light pools and audio anchors all scale —
      the far doors recede like the original's long-hall shot.
      Mirrors corridor.mirror's transform pattern in z.
 
-238. `stair.figure` — It Never Reached the Top · CH III ·
+239. `stair.figure` — It Never Reached the Top · CH III ·
      unmistakable — the service door stands open on the stairwell
      and someone is already on the flight, back to you. Approach and
      it climbs; get too close or let it reach step eight and the
      door slams ("it never reached the top").
 
-239. `staff.door.ajar` — The Staff Door Stands Ajar · CH II ·
+240. `staff.door.ajar` — The Staff Door Stands Ajar · CH II ·
      moderate — a sealed vestibule staff door stands open a crack
      with a warm sliver bleeding out; there is no room behind that
      wall — the vestibule sides are the corridor's shell.
 
-240. `archives.open` — The Archives Are Open · CH II · moderate —
+241. `archives.open` — The Archives Are Open · CH II · moderate —
      the records bank's sealed ARCHIVES door stands swung into a lit
      stacks room that can be walked into: shelves, boxes, a desk lamp,
      warm light spilling into the corridor. Baseline leaf is sealed;
      the room exists behind it in every loop but is unreachable.
 
-241. `archives.staffed` — Someone Is Working In There · CH III ·
+242. `archives.staffed` — Someone Is Working In There · CH III ·
      unmistakable — the same open archives door, plus a silhouette
      standing inside the lit mouth, back to you. The room's glow
      flickers on its own rhythm ("someone is working in there").
 
-242. `archives.slam` — It Shut Behind You · CH III · unmistakable —
+243. `archives.slam` — It Shut Behind You · CH III · unmistakable —
      the open door again; step inside the stacks and the leaf slams
      shut with you in the dark for a beat, then creaks back open.
      The walkable room is the trap.
 
-243. `records.filed` — A Drawer Stands Open · CH II · moderate —
+244. `records.filed` — A Drawer Stands Open · CH II · moderate —
      one drawer in the bank's shut face stands pulled out, papers
      fanned over its lip. Nothing moves, nothing sounds — you have
      to know the bank.
 
-244. `staffroom.ajar` — The Staff Room Is Open · CH II · moderate —
+245. `staffroom.ajar` — The Staff Room Is Open · CH II · moderate —
      the east clinic stretch's sealed STAFF door stands swung into a
      lit locker room (lockers, bench, hooks, caged lamp) that can be
      walked into.
 
-245. `staffroom.occupied` — Someone Is Changing In There · CH III ·
+246. `staffroom.occupied` — Someone Is Changing In There · CH III ·
      unmistakable — the open staff room plus a silhouette at the
      locker bank, back to the corridor; glow breathes on its own.
 
-246. `locker.banging` — A Locker Keeps Swinging · CH II · moderate —
+247. `locker.banging` — A Locker Keeps Swinging · CH II · moderate —
      the staff door ajar; deep in the room one locker door swings on
      its own and clangs shut every few seconds — you hear it from the
      corridor before you see the open door.
 
-247. `corridor.narrow` — A Narrower Corridor · CH III · unmistakable —
+248. `corridor.narrow` — A Narrower Corridor · CH III · unmistakable —
      the whole passage pinches ~15% along x around the centre line:
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **254 implemented**. Dangerous class
+Slice count: **258 implemented**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -871,3 +871,7 @@ sound-led anomaly carries a visual cue path.
 | 252 | `walker.smile` | The Grin | The other inspector walks his route with a smile that climbs past where a mouth ends, teeth showing. | moderate | 3 | figure |
 | 253 | `camera.tracks` | The Cameras Watch | Every CCTV dome within sight pans to keep its lens on you as you walk — a slow motorized sweep, not a snap. | moderate | 2 | figure |
 | 254 | `lights.surge` | Over-fed Circuit | One stretch burns too bright and too white — the zone feed over-volts while the troffer panels read normal. | moderate | 2 | lighting |
+| 255 | `wash.mirror` | Mirror Occupant | The washroom mirror holds a dark-coated figure dead-center, pale blank face washed out like it caught the strip light. | moderate | 2 | figure |
+| 256 | `tap.runs` | Running Tap | A basin tap runs a thin cold column into the bowl — occasional plinks, a small spill pooling on the vanity. | subtle | 1 | object |
+| 257 | `stall.occupied` | Occupied Stall | The far stall door sits shut where it stood ajar — shoe toes and cuffs show under the gap, and something shifts when you near. | moderate | 2 | figure |
+| 258 | `dryer.runs` | Dryer Alive | The hand dryer's lamp wakes as you near it — rattle, then a thin motor whine that holds while you stand there. | subtle | 1 | sound |

@@ -553,6 +553,12 @@ export function buildConcourse(
   const LOB_DEPTH = 0.55;
   const LOB_ZC = (LOB_Z0 + LOB_Z1) / 2;
   const SHAFT_DEPTH = 0.5;
+  // staff washroom — a third real doorway on the east wall, z 18.2–19.2;
+  // the leaf stands ajar so the room is enterable every loop
+  const WASH_Z0 = 18.2;
+  const WASH_Z1 = 19.2;
+  const WASH_ZC = (WASH_Z0 + WASH_Z1) / 2;
+  const WASH_DEPTH = 2.25; // interior back wall at xHalf + WASH_DEPTH
 
   // ─── shell ───────────────────────────────────────────────────────
   const floor = kit.box("floor", C.xHalf * 2 + 0.3, 0.1, len, mats.terrazzo, scene, root);
@@ -616,10 +622,14 @@ export function buildConcourse(
   // wall.right.0 splits at the service doorway (z 15.0–16.0) — a real
   // opening behind the leaf so service.stairwell can reveal a throat
   kit.wallRun("wall.right.0", C.xHalf, 0, 15.0, C.height, mats.wallPanel, scene, root, registry);
-  kit.wallRun("wall.right.0b", C.xHalf, 16.0, 20, C.height, mats.wallPanel, scene, root, registry);
+  // wall.right.0b splits again at the washroom doorway (z 18.2–19.2, a
+  // real opening into the staff washroom built behind the wall below)
+  kit.wallRun("wall.right.0b", C.xHalf, 16.0, 18.2, C.height, mats.wallPanel, scene, root, registry);
+  kit.wallRun("wall.right.0c", C.xHalf, 19.2, 20, C.height, mats.wallPanel, scene, root, registry);
   const svcHeader = kit.box("service.door.header", 0.12, C.height - 2.2, 1.0, mats.wallPanel, scene, root);
   svcHeader.position = new Vector3(C.xHalf, 2.2 + (C.height - 2.2) / 2, 15.5);
   registry.register("service.door.header", svcHeader);
+
   // right wall 20–32: glass gallery — split around a glazed staff door
   // (z 27.5–28.7, in the gap between desk rows): two fixed panes + a
   // leaf, so the reading room can actually be entered when an anomaly
@@ -890,7 +900,8 @@ export function buildConcourse(
           ]
         : [
             [C.z0, 15.0],
-            [16.0, GDOOR_Z0],
+            [16.0, WASH_Z0],
+            [WASH_Z1, GDOOR_Z0],
             [GDOOR_Z1, SR_Z0],
             [SR_Z1, LOB_Z0],
             [LOB_Z1, C.z1],
@@ -1425,6 +1436,227 @@ export function buildConcourse(
     moteAnchors.push({ x: C.xHalf + LOB_DEPTH / 2, z: LOB_ZC, zi: 3 });
   }
 
+  // ─── staff washroom — a real tiled room behind wall.right.0b/c,
+  //    z 16.5–19.95 × depth 2.25. The leaf stands ajar every loop: a
+  //    public-room door, not a sealed one. Porcelain interiors get their
+  //    own materials (galWall/galEnamel would read office-warm; washrooms
+  //    run cold). Wired to the GALLERY zone's kill paths (z≈18.7). ─────
+  {
+    const washBackX = C.xHalf + WASH_DEPTH; // interior back face x=4.3
+    // pale lit StandardMaterials blow out under the room's own point
+    // light (the records-bank trap) — diffuse stays low; the tile reads
+    // pale because the light is pale, not because the albedo is
+    const washTile = new StandardMaterial("mat.wash.tile", scene);
+    washTile.diffuseColor = new Color3(0.14, 0.16, 0.175);
+    washTile.specularColor = new Color3(0.04, 0.045, 0.05);
+    washTile.specularPower = 48;
+    const washFloor = new StandardMaterial("mat.wash.floor", scene);
+    washFloor.diffuseColor = new Color3(0.09, 0.1, 0.105);
+    washFloor.specularColor = new Color3(0.05, 0.055, 0.06);
+    washFloor.specularPower = 64;
+    const washPorcelain = new StandardMaterial("mat.wash.porcelain", scene);
+    washPorcelain.diffuseColor = new Color3(0.2, 0.215, 0.22);
+    washPorcelain.specularColor = new Color3(0.06, 0.07, 0.07);
+    washPorcelain.specularPower = 72;
+    const washDoorMat = new StandardMaterial("mat.wash.door", scene);
+    washDoorMat.diffuseColor = new Color3(0.19, 0.22, 0.2);
+    washDoorMat.specularColor = new Color3(0.03, 0.03, 0.03);
+    // doorway header + jambs on the corridor face
+    const washHeader = kit.box("wash.header", 0.12, C.height - 2.1, WASH_Z1 - WASH_Z0 + 0.2, mats.wallPanel, scene, root);
+    washHeader.position = new Vector3(C.xHalf, 2.1 + (C.height - 2.1) / 2, WASH_ZC);
+    colliders.push(kit.collider("wash.headerCol", 0.14, C.height - 2.1, WASH_Z1 - WASH_Z0 + 0.2, new Vector3(C.xHalf, 2.1 + (C.height - 2.1) / 2, WASH_ZC), scene, root));
+    for (const [i, jz] of [WASH_Z0, WASH_Z1].entries()) {
+      const jamb = kit.box(`wash.jamb.${i}`, 0.05, 2.1, 0.07, mats.steel, scene, root);
+      jamb.position = new Vector3(C.xHalf - 0.01, 1.05, jz);
+      colliders.push(kit.collider(`wash.jambCol.${i}`, 0.14, 2.1, 0.1, new Vector3(C.xHalf, 1.05, jz), scene, root));
+    }
+    // reveal liners inside the cut wall's raw edges
+    for (const [i, rz] of [WASH_Z0 + 0.03, WASH_Z1 - 0.03].entries()) {
+      const rev = kit.box(`wash.reveal.${i}`, 0.22, 2.1, 0.05, washTile, scene, root);
+      rev.position = new Vector3(C.xHalf + 0.11, 1.05, rz);
+    }
+    // the leaf — hinged on the north jamb (z=WASH_Z0), standing ajar
+    // into the room so the tile + mirror read from the corridor
+    const washDoor = new TransformNode("wash.door", scene);
+    washDoor.parent = root;
+    washDoor.position = new Vector3(C.xHalf, 0, WASH_Z0 + 0.02);
+    washDoor.rotation.y = -1.05;
+    registry.register("wash.door", washDoor);
+    const wleaf = kit.box("wash.door.leaf", 0.045, 2.05, 0.94, washDoorMat, scene, washDoor);
+    wleaf.position = new Vector3(0, 1.025, 0.49);
+    const wkick = kit.box("wash.door.kick", 0.05, 0.24, 0.9, mats.steel, scene, washDoor);
+    wkick.position = new Vector3(0, 0.14, 0.49);
+    for (const side of [-1, 1]) {
+      const pull = kit.box(`wash.door.pull.${side}`, 0.02, 0.16, 0.06, mats.steel, scene, washDoor);
+      pull.position = new Vector3(side * 0.035, 1.0, 0.88);
+    }
+    kit.collider("wash.door.col", 0.05, 2.05, 0.96, new Vector3(0, 1.02, 0.49), scene, washDoor);
+    // WASHROOM plaque on the corridor face above the door
+    const washPlaque = kit.plane("wash.plaque", 0.46, 0.14, mats.sign.get("sign.washroom")!, scene);
+    washPlaque.parent = root;
+    washPlaque.position = new Vector3(C.xHalf - 0.035, 2.28, WASH_ZC);
+    washPlaque.rotation.y = Math.PI / 2; // east-wall plane faces the corridor (-x)
+    // interior shell — porcelain walls/floor, dropped ceiling at 2.62
+    const wfloor = kit.box("wash.floor", WASH_DEPTH + 0.1, 0.06, 3.5, washFloor, scene, root);
+    wfloor.position = new Vector3(C.xHalf + WASH_DEPTH / 2 - 0.01, -0.03, 18.25);
+    const wceil = kit.box("wash.ceil", WASH_DEPTH + 0.14, 0.08, 3.55, washTile, scene, root);
+    wceil.position = new Vector3(C.xHalf + WASH_DEPTH / 2 - 0.02, 2.66, 18.22);
+    const wbackMesh = kit.box("wash.wall.back", 0.1, 2.7, 3.5, washTile, scene, root);
+    wbackMesh.position = new Vector3(washBackX + 0.05, 1.35, 18.25);
+    colliders.push(kit.collider("wash.wall.backCol", 0.14, 2.7, 3.55, new Vector3(washBackX + 0.06, 1.35, 18.25), scene, root));
+    for (const [i, wz] of [16.5, 19.95].entries()) {
+      const swall = kit.box(`wash.wall.${i}`, WASH_DEPTH + 0.06, 2.7, 0.1, washTile, scene, root);
+      swall.position = new Vector3(C.xHalf + WASH_DEPTH / 2, 1.35, wz);
+      colliders.push(kit.collider(`wash.wall.col.${i}`, WASH_DEPTH + 0.1, 2.7, 0.14, new Vector3(C.xHalf + WASH_DEPTH / 2, 1.35, wz), scene, root));
+    }
+    // vanity slab along the back wall — two inset basin wells + taps
+    const vanity = kit.box("wash.vanity", 0.42, 0.5, 2.1, washPorcelain, scene, root);
+    vanity.position = new Vector3(washBackX - 0.23, 0.62, 18.35);
+    colliders.push(kit.collider("wash.vanity.col", 0.45, 0.55, 2.15, new Vector3(washBackX - 0.24, 0.62, 18.35), scene, root));
+    for (const [i, bz] of [17.8, 18.9].entries()) {
+      const basin = kit.box(`wash.basin.${i}`, 0.3, 0.05, 0.44, mats.rubber, scene, root);
+      basin.position = new Vector3(washBackX - 0.24, 0.885, bz);
+      const rim = kit.box(`wash.basin.rim.${i}`, 0.34, 0.02, 0.5, washPorcelain, scene, root);
+      rim.position = new Vector3(washBackX - 0.24, 0.9, bz);
+      // tap: column + downturned nozzle over the well
+      const tap = new TransformNode(`wash.tap.${i}`, scene);
+      tap.parent = root;
+      tap.position = new Vector3(washBackX - 0.06, 0.9, bz);
+      registry.register(`wash.tap.${i}`, tap);
+      const col = kit.box(`wash.tap.col.${i}`, 0.035, 0.16, 0.035, mats.steel, scene, tap);
+      col.position = new Vector3(0, 0.08, 0);
+      const arm = kit.box(`wash.tap.arm.${i}`, 0.16, 0.03, 0.035, mats.steel, scene, tap);
+      arm.position = new Vector3(-0.08, 0.16, 0);
+      const noz = kit.box(`wash.tap.noz.${i}`, 0.03, 0.05, 0.03, mats.steel, scene, tap);
+      noz.position = new Vector3(-0.15, 0.135, 0);
+    }
+    // the mirror — plane over the vanity facing the door. Its material
+    // paints a dim smear of the room (no RTT); wash.mirror repaints it
+    // with a figure that shouldn't be there
+    const mirrorTex = new DynamicTexture("tex.wash.mirror", { width: 128, height: 160 }, scene, false);
+    {
+      const mc = mirrorTex.getContext() as unknown as CanvasRenderingContext2D;
+      const g = mc.createLinearGradient(0, 0, 0, 160);
+      g.addColorStop(0, "#1c2226");
+      g.addColorStop(0.55, "#171d21");
+      g.addColorStop(1, "#10151a");
+      mc.fillStyle = g;
+      mc.fillRect(0, 0, 128, 160);
+      // soft vertical fluoro smears — the room's strip light bouncing
+      for (const sx of [30, 88]) {
+        const f = mc.createLinearGradient(sx - 6, 0, sx + 6, 0);
+        f.addColorStop(0, "rgba(190,215,220,0)");
+        f.addColorStop(0.5, "rgba(190,215,220,0.14)");
+        f.addColorStop(1, "rgba(190,215,220,0)");
+        mc.fillStyle = f;
+        mc.fillRect(sx - 6, 8, 12, 120);
+      }
+      // pale band of the opposite wall + basin sheen at the bottom edge
+      mc.fillStyle = "rgba(150,160,158,0.09)";
+      mc.fillRect(0, 96, 128, 10);
+      mc.fillStyle = "rgba(200,215,215,0.12)";
+      mc.fillRect(14, 140, 100, 7);
+    }
+    mirrorTex.update();
+    const mirrorMat = new StandardMaterial("mat.wash.mirror", scene);
+    mirrorMat.diffuseTexture = mirrorTex;
+    mirrorMat.emissiveTexture = mirrorTex;
+    mirrorMat.emissiveColor = new Color3(0.78, 0.84, 0.88);
+    mirrorMat.specularColor = new Color3(0.5, 0.55, 0.6);
+    mirrorMat.specularPower = 96;
+    mirrorMat.backFaceCulling = false;
+    const mirror = kit.plane("wash.mirror", 1.9, 0.95, mirrorMat, scene);
+    mirror.parent = root;
+    mirror.position = new Vector3(washBackX - 0.015, 1.52, 18.35);
+    mirror.rotation.y = Math.PI / 2; // faces -x back across the room
+    registry.register("wash.mirror", mirror);
+    // steel frame strips make the mirror read as mounted, not a hole
+    const mframe = kit.box("wash.mirror.frame", 0.03, 1.03, 2.0, mats.steel, scene, root);
+    mframe.position = new Vector3(washBackX - 0.005, 1.52, 18.35);
+    // towel dispenser beside the mirror + waste bin below
+    const disp = kit.box("wash.dispenser", 0.14, 0.3, 0.26, washDoorMat, scene, root);
+    disp.position = new Vector3(washBackX - 0.09, 1.4, 17.05);
+    const displit = kit.box("wash.dispenser.slit", 0.02, 0.03, 0.18, mats.rubber, scene, root);
+    displit.position = new Vector3(washBackX - 0.17, 1.31, 17.05);
+    const bin = kit.box("wash.bin", 0.26, 0.4, 0.3, mats.steel, scene, root);
+    bin.position = new Vector3(washBackX - 0.32, 0.2, 17.0);
+    // two stalls on the north wall — partitions + doors with a real
+    // under-gap; the doors are pivots so stall.occupied can shut one
+    const stallMat = new StandardMaterial("mat.wash.stall", scene);
+    stallMat.diffuseColor = new Color3(0.095, 0.11, 0.105);
+    stallMat.specularColor = new Color3(0.02, 0.02, 0.02);
+    // stalls x2.05→3.5, two of them split at x2.77, fronts at z17.15;
+    // doors pivot on their west jambs and swing INTO the stalls (restroom
+    // in-swing) — ajar leaves sit folded inside, not into the floor space
+    for (const [i, px] of [2.77, 3.5].entries()) {
+      const part = kit.box(`wash.stall.part.${i}`, 0.04, 1.85, 0.62, stallMat, scene, root);
+      part.position = new Vector3(px, 0.925, 16.83);
+      colliders.push(kit.collider(`wash.stall.partCol.${i}`, 0.06, 1.9, 0.66, new Vector3(px, 0.95, 16.83), scene, root));
+      const post = kit.box(`wash.stall.post.${i}`, 0.05, 1.85, 0.05, mats.steel, scene, root);
+      post.position = new Vector3(px, 0.925, 17.15);
+    }
+    for (const [i, hx] of [2.15, 2.87].entries()) {
+      const sdoor = new TransformNode(`wash.stall.door.${i}`, scene);
+      sdoor.parent = root;
+      sdoor.position = new Vector3(hx, 0, 17.13);
+      sdoor.rotation.y = i === 0 ? -0.55 : -1.3; // both ajar, differently
+      registry.register(`wash.stall.door.${i}`, sdoor);
+      const sdl = kit.box(`wash.stall.leaf.${i}`, 0.62, 1.6, 0.03, stallMat, scene, sdoor);
+      sdl.position = new Vector3(0.31, 0.95, 0); // leaf spans the front along +x
+      kit.collider(`wash.stall.leafCol.${i}`, 0.66, 1.65, 0.05, new Vector3(0.31, 0.95, 0), scene, sdoor);
+      const knob = kit.box(`wash.stall.knob.${i}`, 0.03, 0.05, 0.05, mats.steel, scene, sdoor);
+      knob.position = new Vector3(0.56, 1.0, 0.03);
+    }
+    // hand dryer on the north wall past the stalls
+    const dryer = kit.box("wash.dryer", 0.16, 0.3, 0.24, washPorcelain, scene, root);
+    dryer.position = new Vector3(3.7, 1.15, 16.56);
+    registry.register("wash.dryer", dryer);
+    colliders.push(kit.collider("wash.dryer.col", 0.2, 0.34, 0.28, new Vector3(3.7, 1.15, 16.6), scene, root));
+    const dryNoz = kit.box("wash.dryer.noz", 0.12, 0.04, 0.1, mats.steel, scene, root);
+    dryNoz.position = new Vector3(3.7, 0.99, 16.62);
+    const dryLed = kit.box("wash.dryer.led", 0.03, 0.03, 0.03, mats.trofferDim, scene, root);
+    dryLed.position = new Vector3(3.7, 1.28, 16.68);
+    registry.register("wash.dryer.led", dryLed);
+    // floor drain + a permanent damp sheen beside the vanity
+    const drain = CreateCylinder("wash.drain", { height: 0.015, diameter: 0.14, tessellation: 12 }, scene);
+    drain.material = mats.rubber;
+    drain.parent = root;
+    drain.position = new Vector3(3.0, 0.008, 18.6);
+    const wet = kit.plane("wash.wet", 0.9, 0.7, mats.puddle, scene);
+    wet.parent = root;
+    wet.rotation.x = Math.PI / 2;
+    wet.position = new Vector3(3.6, 0.006, 18.3);
+    colliders.push(
+      kit.collider(
+        "wash.floorCol",
+        WASH_DEPTH + 0.1,
+        0.1,
+        3.5,
+        new Vector3(C.xHalf + WASH_DEPTH / 2 - 0.01, -0.05, 18.25),
+        scene,
+        root,
+      ),
+    );
+    // the strip light — cold fluoro on a porcelain room reads harsh
+    const washLampMat = new StandardMaterial("mat.wash.lamp", scene);
+    washLampMat.diffuseColor = new Color3(0.5, 0.55, 0.58);
+    washLampMat.emissiveColor = new Color3(0.62, 0.72, 0.78);
+    const wlamp = kit.box("wash.lamp", 0.16, 0.05, 1.1, washLampMat, scene, root);
+    wlamp.position = new Vector3(3.15, 2.6, 18.25);
+    registry.register("wash.lamp", wlamp);
+    const wlight = new PointLight("light.wash", new Vector3(3.1, 2.35, 18.3), scene);
+    wlight.diffuse = new Color3(0.86, 0.95, 1.0);
+    wlight.intensity = 1.9;
+    wlight.range = 4.6;
+    registry.register("light.wash", wlight as unknown as AbstractMesh);
+    const gz = zones.find((z) => z.name === "gallery");
+    if (gz) {
+      gz.extraLights.push(wlight);
+      gz.troffers.push(wlamp);
+    }
+    moteAnchors.push({ x: 3.1, z: 18.3, zi: 1 });
+  }
+
   // ─── dust motes hanging in the light shafts ───────────────────────
   // one PointsCloudSystem for the whole corridor — a single draw call.
   // groupID carries the zone index so a killed or browned-out zone's
@@ -1506,7 +1738,9 @@ export function buildConcourse(
             [BAY_Z1, C.z1],
           ]
         : [
-            [C.z0, LOB_Z0],
+            [C.z0, 15.0],
+            [16.0, WASH_Z0],
+            [WASH_Z1, LOB_Z0],
             [LOB_Z1, C.z1],
           ];
     spans.forEach(([s0, s1], i) => {
@@ -2164,7 +2398,9 @@ export function buildConcourse(
             [BAY_Z1, C.z1],
           ]
         : [
-            [C.z0, LOB_Z0],
+            [C.z0, 15.0],
+            [16.0, WASH_Z0],
+            [WASH_Z1, LOB_Z0],
             [LOB_Z1, C.z1],
           ];
     spans.forEach(([s0, s1], i) => {
@@ -2184,7 +2420,9 @@ export function buildConcourse(
             [BAY_Z1, C.z1],
           ]
         : [
-            [C.z0, LOB_Z0],
+            [C.z0, 15.0],
+            [16.0, WASH_Z0],
+            [WASH_Z1, LOB_Z0],
             [LOB_Z1, C.z1],
           ];
     spans.forEach(([s0, s1], i) => {
@@ -2568,7 +2806,9 @@ export function buildConcourse(
             [BAY_Z1, C.z1],
           ]
         : [
-            [C.z0, LOB_Z0],
+            [C.z0, 15.0],
+            [16.0, WASH_Z0],
+            [WASH_Z1, LOB_Z0],
             [LOB_Z1, C.z1],
           ];
     spans.forEach(([s0, s1], i) => {
@@ -2800,7 +3040,9 @@ export function buildConcourse(
             [BAY_Z1, C.z1],
           ]
         : [
-            [C.z0, LOB_Z0],
+            [C.z0, 15.0],
+            [16.0, WASH_Z0],
+            [WASH_Z1, LOB_Z0],
             [LOB_Z1, C.z1],
           ];
     spans.forEach(([s0, s1], i) => {
