@@ -241,6 +241,11 @@ import { corridorPuddle } from "./corridorPuddle";
 import { corridorHiss } from "./corridorHiss";
 import { corridorButt } from "./corridorButt";
 import { corridorTag } from "./corridorTag";
+import { corridorSlump } from "./corridorSlump";
+import { corridorGrowl } from "./corridorGrowl";
+import { corridorScrawl } from "./corridorScrawl";
+import { corridorMud } from "./corridorMud";
+import { exitSignBurn } from "./exitSignBurn";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -500,6 +505,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   corridorHiss,
   corridorButt,
   corridorTag,
+  corridorSlump,
+  corridorGrowl,
+  corridorScrawl,
+  corridorMud,
+  exitSignBurn,
   walkerEyeless,
   walkerCrawl,
   signLoop8,
