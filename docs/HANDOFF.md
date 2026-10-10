@@ -1206,3 +1206,11 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   families all taken — anomaly ids must be grepped against catalog +
   index before writing; mv-ing a file onto an existing basename CLOBBERS
   the original tracked file (learned with panelAjar).
+
+## arc22 — the atmosphere arc (in flight)
+- Fixture space exhausted → went systemic: 5 whole-corridor event
+  anomalies (no new geometry). Zone API: ctx.world.zones[*] gives
+  point(PointLight,diffuse,intensity)/extraLights/troffers/name;
+  corridor.flicker already does the dark-wave, ambient playRumble
+  exists — shudder/cold picked disjoint (unison dip / all-zone blue).
+- Animatable anomaly meshes can animate material alpha for fade wisps.
