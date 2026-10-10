@@ -39,7 +39,7 @@ export const supplyFigure: AnomalyDef = {
     });
     const node = fig.root;
     // inside the recess, face to the grille (−x), against the lit back wall
-    node.position.set(2.45 + rng.range(-0.15, 0.15), 0, 35.0 + rng.range(-0.4, 0.4));
+    node.position.set(1.98 + rng.range(-0.08, 0.08), 0, 35.0 + rng.range(-0.4, 0.4));
     node.rotation.y = -Math.PI / 2;
     let gone = false;
     return {

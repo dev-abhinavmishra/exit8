@@ -1159,3 +1159,10 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   world.root at local coords so it flips correctly with the recess.
 - New merge prefix `dress.supply.`; signage `sign.supply` +
   `sign.supply.closed` (anomaly plate for supply.plate).
+- TRAP: recess mouths must split the wall face AND the baseboard/wainscot
+  spans (east spans were [WASH_Z1,LOB_Z0]) or the wall occludes the
+  recess; first arc18 build had the cage hidden behind wall.right.2a.
+  Route map moved z35.8→z32.9 to clear the mouth.
+- Recess interiors need a baseline fill light in <zone>.extraLights or
+  they read as black holes; figures inside must stand ~x2.0 so corridor
+  light hits them through the bars (gate.keeper trap all over again).

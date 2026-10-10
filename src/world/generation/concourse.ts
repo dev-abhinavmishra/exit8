@@ -859,7 +859,10 @@ export function buildConcourse(
   }
   // wall.right.2 splits around the staff room doorway (z 39.2–40.6) —
   // same recipe as the archives cut on the west bank
-  kit.wallRun("wall.right.2a", C.xHalf, 32, SR_Z0, C.height, mats.wallPanel, scene, root, registry);
+  // wall.right.2a splits again at the supply cage mouth (z 33.8–36.2) —
+  // the recess is sealed by its own collider but the face must be open
+  kit.wallRun("wall.right.2a", C.xHalf, 32, 33.8, C.height, mats.wallPanel, scene, root, registry);
+  kit.wallRun("wall.right.2a2", C.xHalf, 36.2, SR_Z0, C.height, mats.wallPanel, scene, root, registry);
   kit.wallRun("wall.right.2b", C.xHalf, SR_Z1, LOB_Z0, C.height, mats.wallPanel, scene, root, registry);
   {
     const srHead = kit.box(
@@ -2610,6 +2613,15 @@ export function buildConcourse(
     const clamp = kit.box("supply.lamp", 0.16, 0.06, 0.16, cageLampMat, scene, root);
     clamp.position = new Vector3(sback - 0.12, 2.32, SUP_ZC);
     registry.register("supply.lamp", clamp);
+    // baseline fill inside the cage — a recessed mouth with no interior
+    // light reads as a black hole (the bars + stock vanish). Dim, and
+    // pushed to the clinic zone's extraLights so zone dim/kill paths
+    // carry it like every other fixture.
+    const cageFill = new PointLight("supply.cageFill", new Vector3(sback - 0.6, 2.0, SUP_ZC), scene);
+    cageFill.diffuse = new Color3(0.9, 0.78, 0.58);
+    cageFill.intensity = 0.16;
+    cageFill.range = 3.0;
+    zones.find((z) => z.name === "clinic")?.extraLights.push(cageFill);
   }
 
   // ─── ceiling duct run — galvanized trunk line suspended under the
@@ -2649,7 +2661,9 @@ export function buildConcourse(
         : [
             [C.z0, 15.0],
             [16.0, WASH_Z0],
-            [WASH_Z1, LOB_Z0],
+            // split at the supply cage mouth (z 33.8–36.2)
+            [WASH_Z1, 33.8],
+            [36.2, LOB_Z0],
             [LOB_Z1, C.z1],
           ];
     spans.forEach(([s0, s1], i) => {
@@ -2671,7 +2685,9 @@ export function buildConcourse(
         : [
             [C.z0, 15.0],
             [16.0, WASH_Z0],
-            [WASH_Z1, LOB_Z0],
+            // split at the supply cage mouth (z 33.8–36.2)
+            [WASH_Z1, 33.8],
+            [36.2, LOB_Z0],
             [LOB_Z1, C.z1],
           ];
     spans.forEach(([s0, s1], i) => {
