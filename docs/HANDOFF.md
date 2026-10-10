@@ -1095,8 +1095,10 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   Use thin `CreateBox` (height ~0.008) like guide.seg instead — those
   render. Verify VISUALLY, not via meshInfo — meshInfo confirmed the
   planes while they drew nothing.
-- Also fix verify: drain.backed film + lip are planes — probably
-  invisible since arc15; convert to boxes when next touched.
+- Also fix verify: ALL corridor floor planes were converted to thin
+  boxes in arc16 — drain.backed, floor.flood, bucket.puddle,
+  doorlit.spill, fountain pools, rad.puddle, totem face, and the new
+  scrap/shard/drop tells. floor.flood + drain.backed re-verified live.
 - yaw convention in probes: teleport yaw π = looking north (toward z0),
   yaw 0 = south. `look(yaw,pitch)` — positive pitch looks DOWN.
 - `?e2e=1&engine=webgl&anomaly=<id>` + BEGIN SHIFT click + wait for

@@ -8,7 +8,7 @@
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 import type { AnomalyDef } from "./types";
 
 const ZONES: [string, number, number][] = [
@@ -49,9 +49,8 @@ export const floorFlood: AnomalyDef = {
     water.specularColor = new Color3(0.85, 0.85, 0.85);
     water.specularPower = 24;
     water.alpha = 0.94;
-    const plane = CreatePlane("anomaly.floorFlood", { width: 3.56, height: z1 - z0 }, scene);
+    const plane = CreateBox("anomaly.floorFlood", { width: 3.56, height: 0.006, depth: z1 - z0 }, scene);
     plane.material = water;
-    plane.rotation.x = -Math.PI / 2;
     plane.position = new Vector3(0, 0.035, (z0 + z1) / 2);
     let waded = false;
     let soakT = 0;

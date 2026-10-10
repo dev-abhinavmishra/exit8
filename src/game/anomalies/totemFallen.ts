@@ -5,7 +5,7 @@
  * anomaly — the corridor's furniture has started coming down.
  */
 
-import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 import { CreateCylinder } from "@babylonjs/core/Meshes/Builders/cylinderBuilder";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
@@ -49,10 +49,9 @@ export const totemFallen: AnomalyDef = {
     mat.emissiveColor = new Color3(0.8, 0.8, 0.8);
     mat.specularColor = Color3.Black();
     mat.backFaceCulling = false; // flipped-x face would otherwise cull
-    const face = CreatePlane("anomaly.totem.fallen.face", { width: 1.3, height: 0.42 }, scene);
+    const face = CreateBox("anomaly.totem.fallen.face", { width: 1.3, height: 0.006, depth: 0.42 }, scene);
     face.material = mat;
     face.parent = parent;
-    face.rotation.x = -Math.PI / 2; // flat, face up
     // Babylon draws plane textures mirrored when viewed from +y — flip x
     face.scaling.x = -1;
 

@@ -1,5 +1,5 @@
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 import type { AnomalyDef, AnomalyContext } from "./types";
 
 // #261 drain.backed — a stretch of the trench drain backs up: a long
@@ -22,15 +22,14 @@ export const drainBacked: AnomalyDef = {
     const ch = ctx.world.registry.mesh("drain.channel");
     const p = ch.getAbsolutePosition();
     // a backed-up film across a three-metre clinic stretch
-    const film = CreatePlane("anomaly.drain.film", { width: 0.34, height: 3.2 }, scene);
+    // thin boxes — floor CreatePlanes don't render in the corridor
+    const film = CreateBox("anomaly.drain.film", { width: 0.34, height: 0.006, depth: 3.2 }, scene);
     film.material = ctx.world.materials.puddle;
-    film.position.set(p.x, 0.011, 36.4);
-    film.rotation.x = Math.PI / 2;
+    film.position.set(p.x, 0.012, 36.4);
     // small gloss pool pushing out into the walk path at one end
-    const lip = CreatePlane("anomaly.drain.lip", { width: 0.5, height: 0.7 }, scene);
+    const lip = CreateBox("anomaly.drain.lip", { width: 0.5, height: 0.005, depth: 0.7 }, scene);
     lip.material = ctx.world.materials.puddle;
-    lip.position.set(p.x + 0.25, 0.007, 37.6);
-    lip.rotation.x = Math.PI / 2;
+    lip.position.set(p.x + 0.25, 0.011, 37.6);
     let t = 0;
     let next = 2 + rng.draw() * 3;
     return {

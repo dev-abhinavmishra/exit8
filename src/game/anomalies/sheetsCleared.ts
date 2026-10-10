@@ -6,7 +6,7 @@
 import type { AnomalyDef, AnomalyInstance } from "./types";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
-import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 
 export const sheetsCleared: AnomalyDef = {
   id: "sheets.cleared",
@@ -28,10 +28,9 @@ export const sheetsCleared: AnomalyDef = {
     // second tell — one sheet lies dropped at the board's base
     const dropMat = new StandardMaterial("mat.anomaly.sheetdrop", ctx.scene);
     dropMat.diffuseColor = new Color3(0.55, 0.53, 0.48);
-    const drop = CreatePlane("anomaly.sheet.drop", { width: 0.2, height: 0.28 }, ctx.scene);
+    const drop = CreateBox("anomaly.sheet.drop", { width: 0.2, height: 0.006, depth: 0.28 }, ctx.scene);
     drop.material = dropMat;
     drop.position.set(1.62, 0.006, 7.35);
-    drop.rotation.x = -Math.PI / 2;
     drop.rotation.z = 0.4;
     return {
       update() {},

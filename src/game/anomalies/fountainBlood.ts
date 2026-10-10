@@ -4,7 +4,6 @@
  * rust-red, glossy like wet paint. Unmistakable object-class anomaly.
  */
 import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
-import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -60,17 +59,15 @@ export const fountainBlood: AnomalyDef = {
     jet.position = new Vector3(-0.02, 0.16, -0.12);
     spawned.push(jet);
 
-    const pool = CreatePlane("anomaly.fountain.bpool", { width: 0.19, height: 0.27 }, scene);
+    const pool = CreateBox("anomaly.fountain.bpool", { width: 0.19, height: 0.006, depth: 0.27 }, scene);
     pool.material = blood;
     pool.parent = fountain;
-    pool.rotation.x = -Math.PI / 2;
     pool.position = new Vector3(-0.14, 0.101, 0.02);
     spawned.push(pool);
 
-    const floorPool = CreatePlane("anomaly.fountain.bfloor", { width: 1.1, height: 1.2 }, scene);
+    const floorPool = CreateBox("anomaly.fountain.bfloor", { width: 1.1, height: 0.006, depth: 1.2 }, scene);
     floorPool.material = blood;
     floorPool.parent = fountain;
-    floorPool.rotation.x = -Math.PI / 2;
     floorPool.position = new Vector3(-0.32, -0.838, 0.1);
     spawned.push(floorPool);
 

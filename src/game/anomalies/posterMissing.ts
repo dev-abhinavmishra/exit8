@@ -6,6 +6,7 @@ import type { AnomalyDef } from "./types";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 
 export const posterMissing: AnomalyDef = {
   id: "poster.missing",
@@ -33,10 +34,9 @@ export const posterMissing: AnomalyDef = {
     frame.rotation.y = -Math.PI / 2; // west wall, face +x
     const shardMat = new StandardMaterial("mat.anomaly.pshard", ctx.scene);
     shardMat.diffuseColor = new Color3(0.6, 0.58, 0.52);
-    const shard = CreatePlane("anomaly.poster.shard", { width: 0.5, height: 0.7 }, ctx.scene);
+    const shard = CreateBox("anomaly.poster.shard", { width: 0.5, height: 0.006, depth: 0.7 }, ctx.scene);
     shard.material = shardMat;
     shard.position.set(pp.x + 0.45, 0.008, pp.z + 0.15);
-    shard.rotation.x = -Math.PI / 2;
     shard.rotation.z = 0.5;
     return {
       update() {},

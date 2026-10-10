@@ -6,6 +6,7 @@
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { AnomalyDef, AnomalyInstance } from "./types";
 
@@ -39,9 +40,8 @@ export const doorLit: AnomalyDef = {
     spawned.push(sliver);
 
     // warm wash spilling under the door onto the floor
-    const spill = CreatePlane("anomaly.doorlit.spill", { width: 0.9, height: 0.8 }, scene);
+    const spill = CreateBox("anomaly.doorlit.spill", { width: 0.9, height: 0.006, depth: 0.8 }, scene);
     spill.material = world.materials.lightShaft;
-    spill.rotation.x = -Math.PI / 2;
     spill.position = new Vector3(1.3, 0.015, 15.5);
     spill.parent = world.root;
     spawned.push(spill);

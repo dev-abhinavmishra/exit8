@@ -7,6 +7,7 @@ import type { AnomalyDef } from "./types";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
 
 export const noticeGone: AnomalyDef = {
   id: "notice.gone",
@@ -34,10 +35,9 @@ export const noticeGone: AnomalyDef = {
     ghostMat.backFaceCulling = false;
     ghost.position.set(pp.x, pp.y, pp.z - 0.02);
     ghost.rotation.y = Math.PI; // faces +z, the corridor approach
-    const scrap = CreatePlane("anomaly.notice.scrap", { width: 0.3, height: 0.12 }, ctx.scene);
+    const scrap = CreateBox("anomaly.notice.scrap", { width: 0.3, height: 0.006, depth: 0.12 }, ctx.scene);
     scrap.material = ghostMat;
     scrap.position.set(pp.x + 0.3, 0.007, pp.z + 0.9);
-    scrap.rotation.x = -Math.PI / 2;
     scrap.rotation.z = 0.7;
     return {
       update() {},
