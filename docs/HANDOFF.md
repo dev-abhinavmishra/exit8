@@ -926,8 +926,9 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   the north end (`pos.x = LEAF_X - sin(TH)*0.53`, `pos.z = LEAF_Z - 0.53 +
   cos(TH)*0.53`) sweeps the leaf into the room and leaves the mouth open.
   Swinging out corks the mouth diagonally at ~60°.
-- `teleport` resets yaw — pass the 4th arg or look() AFTER teleporting,
-  always (re-bitten this arc).
+- `window.__nightaudit.teleport(x, y, z, yaw)` resets yaw — the debug
+  handle takes all 4 args (PlayerController.teleport is a different,
+  2-arg API); pass yaw or look() AFTER teleporting, always.
 
 ## Arc 10 notes (2026-10-10)
 
@@ -980,3 +981,32 @@ gallamp`; `dress.emlight.` lamp heads → `dress.emlamp.*`.
   under a 60s suite cap.
 - **`.tmp-*` probe files leak into commits** — now gitignored; keep
   probes in .tmp-* or tests/, never at root.
+
+## Arc 11 (arc11 branch) — the ceiling plane
+- `dress.duct.run`: galvanized trunk under the slab, east tee edge x1.02
+  y2.78 z5-51, seams every 5.75m, straps at 9/28/47, three down grates
+  `duct.grate.{0,1,2}` at z 12/27/42 (slats `duct.grate.{i}.slat.{0-2}`).
+  Grates registered — anomalies own them (duct.mouth hides, vents.crawl
+  reads through).
+- vents.crawl patrols INSIDE the duct: dark box at y2.66 visible only
+  through grate slits; biases its course away from the player's z.
+- gallery.lit existed already (arc-era def) — check `git log` on a file
+  before writing a new def with a similar id; the catalog is the index.
+
+## Arc 12 (in flight) — figure relief + leftover review fixes
+- `buildFigure` grows `*.feat.*` relief: nose/nosetip/cheeks/ears on the
+  head, finger/thumb blocks + wrist cuffs on the arms, shoulder end
+  caps. FRONT-FACING relief only — brow/chin boxes were tried and
+  dropped: their top faces catch the troffers directly and blow out
+  under bloom. `walker.faceless` hides every `ambient.walker.feat.*`
+  mesh (smooth egg-head, verified).
+- Relief material: clone of skin at ~55% luminance
+  (`*.skin.relief`, Color3 0.21/0.18/0.16) — full skin brightness on
+  protruding faces reads as white patches next to the darker plate.
+- `drawFace` variant "grin" for `walker.smile` (#252); brow-ridge and
+  jaw shading are PAINTED (gradients), not geometry.
+- `walker.papers` sheets get `backFaceCulling=false` — plane sign
+  conventions made the printed side's facing ambiguous; culling-off is
+  the certain fix (same as blob shadows).
+- `beginLostEnding` now `ambientWalker.setMode("absent")` — inspector
+  was still patrolling in the drowned corridor (review finding).

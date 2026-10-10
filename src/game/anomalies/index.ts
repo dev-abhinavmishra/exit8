@@ -79,6 +79,10 @@ import { staffroomAjar } from "./staffroomAjar";
 import { staffroomOccupied } from "./staffroomOccupied";
 import { lockerBanging } from "./lockerBanging";
 import { corridorNarrow } from "./corridorNarrow";
+import { ventsCrawl } from "./ventsCrawl";
+import { ductMouth } from "./ductMouth";
+import { lobbyVoices } from "./lobbyVoices";
+import { archivesDark } from "./archivesDark";
 import { liftArrives } from "./liftArrives";
 import { gazeShift } from "./gazeShift";
 import { paceDissolves } from "./paceDissolves";
@@ -219,6 +223,7 @@ import { radLeaks } from "./radLeaks";
 import { lockerAjar } from "./lockerAjar";
 import { exitWrongway } from "./exitWrongway";
 import { walkerFaceless } from "./walkerFaceless";
+import { walkerSmile } from "./walkerSmile";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -328,6 +333,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   staffroomOccupied,
   lockerBanging,
   corridorNarrow,
+  ventsCrawl,
+  ductMouth,
+  lobbyVoices,
+  archivesDark,
   liftArrives,
   gazeShift,
   paceDissolves,
@@ -465,6 +474,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   lockerAjar,
   exitWrongway,
   walkerFaceless,
+  walkerSmile,
   walkerEyeless,
   walkerCrawl,
   signLoop8,

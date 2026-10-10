@@ -26,10 +26,15 @@ export const walkerFaceless: AnomalyDef = {
     const t = (plate?.material as { diffuseTexture?: DynamicTexture } | null)?.diffuseTexture;
     if (!t) return { update() {}, cleanup() {} };
     drawFace(t, "blank");
+    // and the relief goes too — brow, nose, jaw, ears all vanish so what
+    // remains is a smooth head under the cap, not features on blank skin
+    const feats = scene.meshes.filter((m) => m.name.startsWith("ambient.walker.feat."));
+    for (const m of feats) m.setEnabled(false);
     return {
       update() {},
       cleanup() {
         drawFace(t, "normal");
+        for (const m of feats) m.setEnabled(true);
       },
     };
   },

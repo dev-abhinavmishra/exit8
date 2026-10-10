@@ -569,6 +569,9 @@ export class LoopManager {
 
     this.endingOutcome = "lost";
     this.endingT = 0;
+    // the ambient inspector is gone with the light — the figure ahead
+    // is the only thing in the drowned corridor
+    this.world.ambientWalker.setMode("absent");
     // the corridor goes dead quiet as it drowns — silence is the scare
     this.audio.hushAmbience();
     const at = new Vector3(0, 1.6, endZ + dir);

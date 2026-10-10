@@ -54,6 +54,9 @@ export const walkerPapers: AnomalyDef = {
     mat.emissiveTexture = tex;
     mat.emissiveColor = new Color3(0.32, 0.32, 0.3);
     mat.specularColor = new Color3(0.02, 0.02, 0.02);
+    // the sheets lie face-up OR face-down depending on the plane's sign
+    // conventions — don't let culling hide the trail either way
+    mat.backFaceCulling = false;
     const sheets: AbstractMesh[] = [];
     return {
       update() {

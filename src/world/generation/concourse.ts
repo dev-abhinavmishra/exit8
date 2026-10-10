@@ -2129,6 +2129,32 @@ export function buildConcourse(
     registry.register(`vent.grille.${i}`, g);
   });
 
+  // ─── ceiling duct run — galvanized trunk line suspended under the
+  // slab along the east tee edge, feeding three down-facing grates.
+  // The corridor's air plant made visible; grate meshes register so
+  // anomalies can own them (vents.crawl reads through one).
+  {
+    const duct = kit.box("dress.duct.run", 0.52, 0.32, 46, mats.steel, scene, root);
+    duct.position = new Vector3(1.02, 2.78, 28);
+    for (let sz = 7; sz < 51; sz += 5.75) {
+      const seam = kit.box(`dress.duct.seam.${sz.toFixed(2)}`, 0.56, 0.34, 0.06, mats.steel, scene, root);
+      seam.position = new Vector3(1.02, 2.78, sz);
+    }
+    for (const hz of [9, 28, 47]) {
+      const strap = kit.box(`dress.duct.strap.${hz}`, 0.6, 0.06, 0.04, mats.steel, scene, root);
+      strap.position = new Vector3(1.02, 2.97, hz);
+    }
+    for (const [gi, gz] of [12, 27, 42].entries()) {
+      const gr = kit.box(`duct.grate.${gi}`, 0.3, 0.03, 0.68, mats.steel, scene, root);
+      gr.position = new Vector3(1.02, 2.61, gz);
+      for (let sl = 0; sl < 3; sl++) {
+        const slat = kit.box(`duct.grate.${gi}.slat.${sl}`, 0.26, 0.012, 0.08, mats.rubber, scene, root);
+        slat.position = new Vector3(1.02, 2.592, gz - 0.2 + sl * 0.2);
+      }
+      registry.register(`duct.grate.${gi}`, gr);
+    }
+  }
+
   // baseboard trim grounds the walls — west splits around the bay mouth
   for (const sx of [-1, 1]) {
     const spans: [number, number][] =
