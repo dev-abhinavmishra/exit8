@@ -230,6 +230,9 @@ import { washMirror } from "./washMirror";
 import { tapRuns } from "./tapRuns";
 import { stallOccupied } from "./stallOccupied";
 import { dryerRuns } from "./dryerRuns";
+import { pipeLeaks } from "./pipeLeaks";
+import { valveOpen } from "./valveOpen";
+import { drainBacked } from "./drainBacked";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -487,6 +490,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   tapRuns,
   stallOccupied,
   dryerRuns,
+  pipeLeaks,
+  valveOpen,
+  drainBacked,
   walkerEyeless,
   walkerCrawl,
   signLoop8,

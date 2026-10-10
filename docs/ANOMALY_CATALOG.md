@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **258 implemented**. Dangerous class
+Slice count: **261 implemented**. Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -875,3 +875,6 @@ sound-led anomaly carries a visual cue path.
 | 256 | `tap.runs` | Running Tap | A basin tap runs a thin cold column into the bowl — occasional plinks, a small spill pooling on the vanity. | subtle | 1 | object |
 | 257 | `stall.occupied` | Occupied Stall | The far stall door sits shut where it stood ajar — shoe toes and cuffs show under the gap, and something shifts when you near. | moderate | 2 | figure |
 | 258 | `dryer.runs` | Dryer Alive | The hand dryer's lamp wakes as you near it — rattle, then a thin motor whine that holds while you stand there. | subtle | 1 | sound |
+| 259 | `pipe.leaks` | The Standpipe Weeps | A standpipe flange weeps a thin cold column — fresh puddle on the terrazzo below, occasional plink. | subtle | 1 | object |
+| 260 | `valve.open` | The Valve Is Open | A standpipe hose valve sits a quarter-turn open — wheel angled, faint hiss when you stand under it. | moderate | 2 | object |
+| 261 | `drain.backed` | The Drain Backs Up | A stretch of the wall-base trench drain backs up — a long shallow film of water where the channel should be dry. | subtle | 1 | spatial |

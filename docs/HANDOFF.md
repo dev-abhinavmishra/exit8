@@ -1052,3 +1052,16 @@ taps, cctv roots, headPivot) return null. Use `.leaf`/child-mesh info, or
 
 Anomalies: `wash.mirror` (#255), `tap.runs` (#256), `stall.occupied` (#257),
 `dryer.runs` (#258). Catalog: 258.
+
+## arc15 — service spine (this PR)
+
+- Fire standpipe: `pipe.stand.0-3` cylinder segments (x1.63, y2.56) split at
+  svc/washroom/lobby like the east tray; `pipe.flange.{i}` + `pipe.flange.m{zz}`
+  collars; `pipe.valve.0/1` TransformNode hose valves (z22.6/44.2) with wheel/
+  spokes/hub children. mat.pipe.red diffuse 0.34/0.055/0.04.
+- `drain.channel` = one DynamicTexture plane (grate bars) along the west wall
+  base — trench drains cross thresholds, continuous incl. the bay mouth.
+- Anomalies: pipe.leaks #259 (flange.m27), valve.open #260 (valve.0, sigh
+  loop), drain.backed #261 (channel film z35-38). Catalog 261.
+- AnomalyDef fields: displayName/detectability/progressionRange/testSeed/
+  dangerous — NOT title/subtlety (those are catalog-table words).
