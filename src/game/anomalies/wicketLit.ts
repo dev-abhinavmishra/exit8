@@ -19,7 +19,9 @@ export const wicketLit: AnomalyDef = {
   weight: 0.8,
   progressionRange: [30, 100],
   requires: ["wicket.shutter", "wicket.win", "wicket.lamp"],
-  excludes: [],
+  // scene-space PointLight can't follow corridor.mirror's flip — the
+  // glow would pool off the flipped booth (scene-light trap)
+  excludes: ["corridor.mirror", "shutter.breach"],
   testSeed: "test.wicket.lit",
   dangerous: false,
   activate(ctx): AnomalyInstance {
