@@ -1685,3 +1685,33 @@ material swap needed, cleanup is `drawFace(t,"normal")`. The probe's
 `teleport(x,y,z,yaw)` yaw is real but the view drifts under intro/
 glance sway — for mechanical verification prefer `meshInfo` asserts and
 let screenshots be opportunistic.
+
+## arc 46 — the eye (corridor CCTV + 5 anomalies)
+
+The corridor had no camera — the replica's most-asked-about fixture.
+A bullet cam on the east wall upper corner z22: bracket arm, yaw-able
+`cctv.head` transform (fixed 0.42 down-aim at the mid-lane floor —
+learnable), body, dark lens, red recording pin. All registered.
+410 implemented / 329 registered.
+
+- `cctv.follows` — head yaw tracks player z across the pass
+  (`local = atan2(dx,dz) + π/2`, clamped ±1.15 — the mount's own −π/2
+  yaw is the offset). Unmistakable.
+- `cctv.shy` — tracks while unseen; when `player.forward()·dirToCam >
+0.62` it eases into a corner-stare pose over ~0.2s. The corridor's
+  coldest surveillance beat.
+- `cctv.dead` — led emissive to black, head slumped x=1.05, lens
+  specular killed. Cleanup restores saved colors.
+- `cctv.double` — clones the head's child meshes under a new
+  TransformNode at mount-local +1.4x (mount yaw −π/2 → local +x runs
+  along world +z).
+- `cctv.inward` — head swung to face the tile (y=π−0.35).
+
+Lessons: (1) anomaly `update()` only ticks while the run state is
+"playing" — `activate()` fires at world-rebaseline regardless. Probes
+that skip BEGIN SHIFT will see every activate-side effect but a
+completely silent update() — that was the follows/shy "dead" red
+herring this arc. Always `getByRole("button",{name:/BEGIN SHIFT/})`
+in probes before reading update-driven state. (2) TransformNode heads
+can't be read via meshInfo — probe a child mesh's ABSOLUTE position
+(the lens swings under yaw) or an attached mesh's local rot.
