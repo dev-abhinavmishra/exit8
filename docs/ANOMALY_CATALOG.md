@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **440 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **445 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1056,3 +1056,8 @@ sound-led anomaly carries a visual cue path.
 | 438 | `roach.dead` | On Its Back | Belly-up on the tile, legs curled toward the ceiling. | moderate | 1 | character |
 | 439 | `roach.swarm` | It Was Never One | A dozen siblings hold the wall base along four metres, all angled the same way. | unmistakable | 2 | character |
 | 440 | `roach.flees` | It Runs Ahead | Close within three metres and it skitters four metres further up the wall — never caught. | unmistakable | 2 | character |
+| 441 | `moth.circles` | It Picked You | The moth leaves its lamp and orbits over your head wherever you stand. | unmistakable | 3 | character |
+| 442 | `clock.watches` | It Knows Where You Stand | Both clock hands bear on you like a compass — it isn't telling time tonight. | unmistakable | 3 | character |
+| 443 | `well.rattles` | It Feels Your Weight | Stand over the well and the cover starts shivering on its seat; step off and it stills. | moderate | 2 | spatial |
+| 444 | `roach.stalks` | It Only Moves When You're Still | Stand anywhere and it creeps closer along the wall; move and it freezes dead. | unmistakable | 3 | character |
+| 445 | `alarm.lever.drops` | It Pulls Itself | Linger near the pull station and the lever eases down toward tripped, staying where you left it. | moderate | 2 | character |

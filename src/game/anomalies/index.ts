@@ -154,6 +154,11 @@ import { roachHuge } from "./roachHuge";
 import { roachDead } from "./roachDead";
 import { roachSwarm } from "./roachSwarm";
 import { roachFlees } from "./roachFlees";
+import { mothCircles } from "./mothCircles";
+import { clockWatches } from "./clockWatches";
+import { wellRattles } from "./wellRattles";
+import { roachStalks } from "./roachStalks";
+import { alarmLeverDrops } from "./alarmLeverDrops";
 import { figureDoubles } from "./figureDoubles";
 import { faceGlass } from "./faceGlass";
 import { airlockDark } from "./airlockDark";
@@ -795,4 +800,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   roachDead,
   roachSwarm,
   roachFlees,
+  mothCircles,
+  clockWatches,
+  wellRattles,
+  roachStalks,
+  alarmLeverDrops,
 ];

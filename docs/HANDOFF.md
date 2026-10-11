@@ -1842,3 +1842,42 @@ the moth's floor-level sibling. `roach`/`roach.body` registered.
 Lessons: ctx.player.position is live inside anomaly update() —
 reactive behavior needs no new plumbing. A flee reflex reads better
 as discrete quadratic darts than continuous creep.
+
+## arc 53 — it learns you (5 player-reactive anomalies)
+
+roach.flees opened ctx.player.position; this arc is the reactive
+set it proved — five fixtures that respond to where you stand.
+445 implemented / 329.
+
+- `moth.circles` — orbits YOUR head at wing height (position tracks
+  player.x/z + cos/sin t).
+- `clock.watches` — both hand pivots aimed at atan2(player) bearing.
+- `well.rattles` — cover jitter gated by an energy term that only
+  rises while the player stands inside the mouth's radius.
+- `roach.stalks` — creeps toward you only while you're still
+  (player-delta < 0.004/frame for >1.2s).
+- `alarm.lever.drops` — pull lever eases to tripped while you
+  linger in range, and does NOT spring back.
+
+Lessons: player-reactive reads: approach-with-freeze needs a still
+window (>1s no-move) so walking doesn't jitter it; proximity-driven
+jitter wants a ramp energy term so it swells and dies instead of
+toggling.
+
+## arc 54 — the lightboxes (planned)
+
+Wall-space audit: print posters + notice board + gallery art exist, but
+no BACKLIT ad frames — the real corridor's third light source. New
+`ads.*` family: 3 recessed lightboxes on the west wall field between
+pilasters (aluminum frame, opal backlit face, ad art from signage
+fiction — coffee/exhibit/lost-pet), wallwash pool.
+
+- `ads.face` — a face inside one ad where the product photo should be.
+- `ads.swap` — all three show the same ad.
+- `ads.dead` — every lightbox dark.
+- `ads.breath` — one's backlight breathes (~6s swell).
+- `ads.watch` — the person inside an ad turns to track you (head-track
+  grammar from cctv.gaze).
+
+Lessons pending. Check poster.* (print-only) stays distinct: backlit
+vs unlit stock, frames vs paper.
