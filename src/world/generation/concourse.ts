@@ -30,6 +30,7 @@ import {
   buildEnvironmentTexture,
   buildTextureSet,
   drawNote,
+  makeBoardFace,
   makeFasciaBand,
   makePhoneFace,
   makeVendingFace,
@@ -2854,6 +2855,33 @@ export function buildConcourse(
       min.rotation.z = fz * -0.42;
     }
     registry.register("clock.head", clock);
+  }
+
+  // ─── the departure board — a double-faced split-flap board hung on
+  // the centerline at z40 (troffer pairs ride x±0.9, the spine stays
+  // clear). It is the corridor's only "live" text — every other sign is
+  // print — so anomalies rewrite, kill, tilt, or take the whole board.
+  {
+    const board = new TransformNode("board.head", scene);
+    board.parent = root;
+    board.position = new Vector3(0, 2.36, 40.0);
+    const bstem = kit.box("board.stem", 0.06, 0.4, 0.06, mats.steel, scene, board);
+    bstem.position = new Vector3(0, 0.54, 0);
+    const bhousing = kit.box("board.housing", 1.9, 0.52, 0.12, mats.rubber, scene, board);
+    bhousing.position = new Vector3(0, 0, 0);
+    // one texture + one material drive both faces — the board shows the
+    // same departure on each side, so anomaly rewrites hit both at once
+    const boardTex = makeBoardFace(scene);
+    const boardMat = new StandardMaterial("mat.board.face", scene);
+    boardMat.diffuseTexture = boardTex;
+    boardMat.emissiveTexture = boardTex;
+    boardMat.disableLighting = true;
+    for (const fz of [1, -1]) {
+      const face = kit.box(`board.face.${fz > 0 ? "n" : "s"}`, 1.82, 0.44, 0.012, boardMat, scene, board);
+      face.position = new Vector3(0, 0, fz * 0.066);
+      registry.register(`board.face.${fz > 0 ? "n" : "s"}`, face);
+    }
+    registry.register("board.head", board);
   }
 
   // ─── ceiling duct run — galvanized trunk line suspended under the
