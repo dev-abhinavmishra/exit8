@@ -334,6 +334,11 @@ import { clockGone } from "./clockGone";
 
 import { corridorBreathes } from "./corridorBreathes";
 import { walkerGreets } from "./walkerGreets";
+import { trainOverdue } from "./trainOverdue";
+import { trainSurge } from "./trainSurge";
+import { trainNear } from "./trainNear";
+import { paOverdue } from "./paOverdue";
+import { dripSync } from "./dripSync";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -665,4 +670,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   sheetsAdded,
   noticeAmends,
   clockGone,
+  trainOverdue,
+  trainSurge,
+  trainNear,
+  paOverdue,
+  dripSync,
 ];

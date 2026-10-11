@@ -54,5 +54,8 @@ export interface AnomalyDef {
   testSeed: string;
   /** threat: can this anomaly cause a hard reset? */
   dangerous: boolean;
+  /** ambient loop timers this anomaly owns — pa/train/drip baselines
+   *  stay silent while it runs (the anomaly schedules its own beats) */
+  ambientMute?: readonly ("pa" | "train" | "drip")[];
   activate(ctx: AnomalyContext): AnomalyInstance;
 }
