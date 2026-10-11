@@ -264,6 +264,12 @@ export class LoopManager {
     // as divergence rather than absence
     const commuterMode = commuterPresent && this.commuterRng.chance(0.3) ? "board" : "seat";
     this.world.commuter.reset(commuterPresent, commuterMode);
+    // and on some seated loops he finishes his read and leaves — the
+    // commute's end, a third learnable habit; anomalies can retarget,
+    // hurry, hold, or suppress it entirely
+    if (commuterPresent && commuterMode === "seat" && this.commuterRng.chance(0.3)) {
+      this.world.commuter.setDepart({ at: 34 + this.commuterRng.range(0, 22) });
+    }
     // loop 1 is always clean — the first corridor teaches the baseline
     // the way Exit 8's does; anomalies start rolling on loop 2.
     // the odds lean wrong as the route deepens — late loops are rarely
@@ -720,7 +726,8 @@ export class LoopManager {
       else if (p.z >= LAYOUT.commitSouthZ) this.beginCycle("continue");
       // auto-open the south door when the player is near it (they still must
       // cross the commit plane to file)
-      if (p.z > LAYOUT.southAirlock.z0 - 1.2) this.world.doors.southInner.target01 = 1;
+      if (p.z > LAYOUT.southAirlock.z0 - 1.2 || this.world.commuter.wantsDoor)
+        this.world.doors.southInner.target01 = 1;
       // muffled PA — fires only while the corridor is open: endings
       // and judgments keep their own quiet, and anomalies that own the
       // horns (or kill the feed they run on) mute it entirely

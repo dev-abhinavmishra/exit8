@@ -26,6 +26,18 @@ export interface Commuter {
   update(dt: number, playerPos?: Vector3, walkerPos?: Vector3): void;
   /** anomalies may suppress the passing-greeting (commuter.ignores) */
   setGreetEnabled(on: boolean): void;
+  /** baseline departure — he finishes his read, gathers paper + bag,
+   *  and walks out through the south airlock (the door opens for him).
+   *  `at` = seconds of corridor-open time; `north` walks him to the
+   *  sealed north end instead (anomaly); `speed` multiplies stride.
+   *  null suppresses the scheduled beat (commuter.stays). */
+  setDepart(opts: { at: number; north?: boolean; speed?: number } | null): void;
+  /** freeze/unfreeze mid-departure — the walk, his stride, the clock */
+  setDepartHold(h: boolean): void;
+  /** departure phase for anomaly choreographers */
+  departState(): "none" | "gather" | "walk" | "wait" | "gone";
+  /** app pulses the south door while this reads true */
+  readonly wantsDoor: boolean;
   /** per-loop rebaseline: seat him (or not), or stand him at the
    * departure board checking times — a second learnable baseline */
   reset(present: boolean, mode?: "seat" | "board"): void;
@@ -98,6 +110,16 @@ export function buildCommuter(
   let greetT = 0;
   let lookT = 0;
   let pageT = 0;
+  // the commute's end — a timed baseline exit: gather, then walk the
+  // west lane to the airlock; anomalies retarget (north = the sealed
+  // end), hurry (speed), or hold him mid-stride
+  let depart: { at: number; north: boolean; speed: number } | null = null;
+  let departPhase: "none" | "gather" | "walk" | "wait" | "gone" = "none";
+  let departHold = false;
+  let departClock = 0;
+  let gatherT = 0;
+  let walkT = 0;
+  let doorWanted = false;
 
   const seat = () => {
     // seated on the bench end nearest the walkway, facing out — thighs
@@ -140,14 +162,110 @@ export function buildCommuter(
       mode = m;
       g.setEnabled(p);
       bag.setEnabled(p);
+      paper.setEnabled(p);
+      depart = null;
+      departPhase = "none";
+      departHold = false;
+      departClock = 0;
+      gatherT = 0;
+      walkT = 0;
+      doorWanted = false;
       if (m === "board") atBoard();
       else seat();
+    },
+    setDepart(opts) {
+      depart = opts ? { at: opts.at, north: opts.north === true, speed: opts.speed ?? 1 } : null;
+    },
+    setDepartHold(h: boolean) {
+      departHold = h;
+    },
+    departState: () => departPhase,
+    get wantsDoor() {
+      return doorWanted;
     },
     setGreetEnabled(on: boolean) {
       greetEnabled = on;
     },
     update(dt: number, playerPos?: Vector3, walkerPos?: Vector3) {
       if (!present || !playerPos) return;
+      // the departure takes the frame once it starts — a man leaving
+      // doesn't greet, glance, or turn pages
+      if (departPhase !== "none" && departPhase !== "gone") {
+        if (departHold) return;
+        if (departPhase === "gather") {
+          gatherT += dt;
+          const lift = Math.min(1, gatherT / 1.5);
+          // paper folds down to the lap, chin comes off the page —
+          // the read of a man winding up his sit
+          paper.rotation.x = -0.5 - lift * 0.5;
+          paper.position.y = 0.52 - lift * 0.24;
+          head.rotation.x = 0.42 - lift * 0.3;
+          if (gatherT >= 1.5) {
+            departPhase = "walk";
+            walkT = 0;
+            // to his feet
+            hips[0]!.rotation.x = 0;
+            hips[1]!.rotation.x = 0;
+            arms[0]!.rotation.x = -0.15;
+            arms[1]!.rotation.x = -0.15;
+            head.rotation.set(0.12, 0, 0);
+            g.position.y = 0;
+          }
+          return;
+        }
+        if (departPhase === "walk") {
+          walkT += dt;
+          const dir = depart!.north ? -1 : 1;
+          const speed = 1.05 * depart!.speed;
+          const p = g.position;
+          // cross to the west lane first, then straight down the route
+          p.x += (-0.55 - p.x) * Math.min(1, dt * 2.4);
+          p.z += dir * speed * dt;
+          const bob = Math.abs(Math.sin(walkT * 3.4)) * 0.028;
+          p.y = bob;
+          const swing = Math.sin(walkT * 3.4);
+          hips[0]!.rotation.x = swing * 0.5;
+          hips[1]!.rotation.x = -swing * 0.5;
+          arms[0]!.rotation.x = -swing * 0.28;
+          arms[1]!.rotation.x = swing * 0.28;
+          g.rotation.y = dir > 0 ? 0 : Math.PI;
+          // paper tucked under the near arm (local — it rides g),
+          // bag carried at his side (root-level, world coords)
+          paper.position.set(-0.16, 1.08, dir * 0.05);
+          paper.rotation.set(-1.2, 0, 0.3);
+          bag.position.set(p.x + 0.24, 0.52, p.z);
+          bag.rotation.y = g.rotation.y;
+          doorWanted = !depart!.north && p.z > 49;
+          if (!depart!.north && p.z > 56.5) {
+            // through the inner door and off the route
+            departPhase = "gone";
+            doorWanted = false;
+            g.setEnabled(false);
+            bag.setEnabled(false);
+            paper.setEnabled(false);
+          } else if (depart!.north && p.z < 6.5) {
+            // the north end never opens — he stands facing it
+            departPhase = "wait";
+            g.rotation.y = Math.PI;
+            hips[0]!.rotation.x = 0;
+            hips[1]!.rotation.x = 0;
+            arms[0]!.rotation.x = -0.12;
+            arms[1]!.rotation.x = -0.12;
+            head.rotation.x = -0.1;
+            paper.position.set(-0.16, 1.08, -0.05);
+            bag.position.set(p.x + 0.24, 0.52, p.z);
+          }
+          return;
+        }
+        if (departPhase === "wait") return; // stands at the sealed end
+      }
+      if (depart && mode === "seat") {
+        departClock += dt;
+        if (departClock >= depart.at && departPhase === "none") {
+          departPhase = "gather";
+          gatherT = 0;
+        }
+      }
       // the passing-greeting: the inspector crossing the bench z gets a
       // chin-lift and a dipped paper. Fires once per pass, re-arms when
       // he is clear of the bench again.
