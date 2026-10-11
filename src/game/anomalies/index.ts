@@ -259,7 +259,16 @@ import { patinaScratch } from "./patinaScratch";
 import { commuterUpright } from "./commuterUpright";
 import { commuterStare } from "./commuterStare";
 import { commuterGonePaper } from "./commuterGonePaper";
+import { commuterFollows } from "./commuterFollows";
+import { commuterGoneBag } from "./commuterGoneBag";
+import { commuterIgnores } from "./commuterIgnores";
+import { commuterOffers } from "./commuterOffers";
 import { commuterBench } from "./commuterBench";
+import { commuterBagGone } from "./commuterBagGone";
+import { commuterGates } from "./commuterGates";
+import { commuterMidboard } from "./commuterMidboard";
+import { commuterPaperBlank } from "./commuterPaperBlank";
+import { commuterTwin } from "./commuterTwin";
 import { commuterDown } from "./commuterDown";
 import { boardDark } from "./boardDark";
 import { boardNotin } from "./boardNotin";
@@ -307,6 +316,11 @@ import { chalkMarks } from "./chalkMarks";
 import { bayplateGone } from "./bayplateGone";
 import { extMissing } from "./extMissing";
 import { mopGone } from "./mopGone";
+import { nicheBare } from "./nicheBare";
+import { nicheBootsExtra } from "./nicheBootsExtra";
+import { nicheShelfBare } from "./nicheShelfBare";
+import { nicheStoolDown } from "./nicheStoolDown";
+import { nicheThermosSteam } from "./nicheThermosSteam";
 import { dirGone } from "./dirGone";
 import { intakeGone } from "./intakeGone";
 import { bellGone } from "./bellGone";
@@ -319,6 +333,7 @@ import { noticeAmends } from "./noticeAmends";
 import { clockGone } from "./clockGone";
 
 import { corridorBreathes } from "./corridorBreathes";
+import { walkerGreets } from "./walkerGreets";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -344,6 +359,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   posterBacks,
   counterWorker,
   walkerBackwards,
+  walkerGreets,
   walkerStare,
   walkerMidstep,
   walkerOfflane,
@@ -575,6 +591,15 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   commuterStare,
   commuterGonePaper,
   commuterBench,
+  commuterBagGone,
+  commuterFollows,
+  commuterGoneBag,
+  commuterIgnores,
+  commuterOffers,
+  commuterGates,
+  commuterMidboard,
+  commuterPaperBlank,
+  commuterTwin,
   commuterDown,
   boardDark,
   boardNotin,
@@ -625,6 +650,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   bayplateGone,
   extMissing,
   mopGone,
+  nicheBare,
+  nicheBootsExtra,
+  nicheShelfBare,
+  nicheStoolDown,
+  nicheThermosSteam,
   dirGone,
   intakeGone,
   bellGone,

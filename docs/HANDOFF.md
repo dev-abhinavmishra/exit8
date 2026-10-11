@@ -1428,3 +1428,83 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   '8 CIRCULAR SERVICE / NEXT TRAIN 23:47' reads correctly both ways.
   Lesson: ANY mesh meant to carry readable text should be a plane —
   box faces mirror textures on the far-side surface.
+  ||||||| parent of 959ada3 (arc 37: the niche — staff rest corner on the east wall + 5 anomalies (#361-365))
+
+## arc 37 — the niche (fixture + 5 anomalies)
+
+East wall z≈5.2 (between the intake sign and the report board): a
+staff rest corner surface-mounted on `wall.right.0` — peg rail with a
+hi-vis jacket, shelf with thermos + lunch parcel, low stool (own
+collider), boots beneath. Registered `niche.*`: rail, peg.0-2, jacket,
+shelf, thermos, lunch, stool, boot.0/1.
+
+Anomalies #361-365: niche.bare (jacket off the hooks),
+niche.stool.down (tipped + boots askew), niche.boots.extra (a second
+pair), niche.shelf.bare (thermos+lunch gone),
+niche.thermos.steam (fresh pour wisp). All probe-verified live.
+Catalog: 365 implemented / 319 registered.
+
+### lessons
+
+- MaterialSet in concourse.ts has NO coat/hiviz/paper/wood/cabinet
+  keys — `sign` is a Map and `poster` an array, not Materials.
+  Workwear red = `mats.cabinetRed`; bright stripe =
+  `mats.commitmentStripe`; dull parcel = `mats.grime`.
+- The merge-prefix validator maps kit.* var names → mesh names per
+  file; reusing common vars (rail, leg, foot, boot) collides with
+  earlier dress.* assignments and flags false positives. Prefix
+  block-local vars uniquely (nRail, nBoot...).
+- Probe gotcha: `meshInfo` only resolves Mesh names — TransformNode
+  roots (niche.jacket/stool/boot) return null; probe the child
+  meshes (jacket.body, stool.seat, boot.N.foot).
+- `?e2e=1` alone still tries WebGPU first and logs a fatal before
+  falling back — ready takes up to ~2min under SwiftShader; wait
+  150s like the specs do. Yaw convention: -π/2 faces west (-x);
+  positive yaw turns toward -z.
+
+## arc 38 — the round trip (commuter board-check + 5 anomalies)
+
+The commuter learned a second baseline habit: on ~30% of present loops
+he stands at the departure board (z40) checking times — standing pose,
+paper folded under his arm, bag left at the seat. `commuter.reset(now
+takes (present, "seat"|"board")`; loopManager draws the mode off the
+same commuterRng stream (0.65 present, then 0.3 board-if-present).
+Board-mode update keeps the passerby glance but skips the page-turn.
+
+Anomalies #366-370: commuter.midboard (board-pose 4.5m south, reading
+bare ceiling), commuter.paper.blank (DynamicTexture repainted blank —
+cleanup repaints the column spec), commuter.bag.gone, commuter.gates
+(waiting at the fare gates, square on), commuter.twin (buildFigure
+second civilian on the bench's far end; node disposed in cleanup).
+Catalog: 370 implemented / 324 registered.
+
+### lessons
+
+- `registry.get` returns TransformNode|AbstractMesh — use
+  `registry.mesh()` (or cast) for `.material`; then cast Material →
+  StandardMaterial → `.diffuseTexture` (DynamicTexture).
+- Live-texture anomalies repaint the spec in cleanup rather than
+  swapping meshes — same rule as the poster redraws.
+
+## arc 39 — the brief exchange (walker↔commuter courtesy + 5 anomalies)
+
+Baseline choreography: when the inspector crosses the bench z (33.3),
+the commuter lifts his chin and dips the paper — a learned greeting.
+`commuter.update(dt, playerPos, walkerPos)` fires it once per pass
+(`greetT` anim, re-arms >2.6m off the bench); `setGreetEnabled(false)`
+suppresses it for anomalies. AmbientWalker grew `root`, `fig`, and
+`setGreetAt(gz)` — an armed `greetZ` crossing plays a ~1.1s head-turn
+toward the bench in the neutral pose branch; baseline never arms it.
+
+Anomalies #371-375: commuter.ignores (no greeting), commuter.follows
+(on his feet, head tracking the whole pass), walker.greets (armed
+greetAt — he returns the nod), commuter.offers (paper held out to the
+lane), commuter.gone.bag (absent, satchel left on the seat — the wrong
+trace). Catalog: 375 implemented / 329 registered.
+
+### lessons
+
+- Cross-agent choreography: pass the counterpart's position through
+  update() args (app.ts wires walkerPos), never reach across worlds
+  inside a generation module. Anomalies can read counterpart state via
+  ctx.world.* handles — keep those read-only in defs.

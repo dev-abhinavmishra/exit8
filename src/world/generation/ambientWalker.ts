@@ -13,7 +13,7 @@ import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTextur
 import { Color3 } from "@babylonjs/core/Maths/math.color";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import type { Scene } from "@babylonjs/core/scene";
-import { buildFigure } from "../figures";
+import { buildFigure, type Figure } from "../figures";
 import type { MaterialSet } from "../materials/library";
 import type { WorldRegistry } from "../registry";
 
@@ -39,6 +39,13 @@ export type WalkerMode =
 
 export interface AmbientWalker {
   update(dt: number, playerPos?: Vector3): void;
+  /** the figure root — anomalies read his position/gait from it */
+  root: TransformNode;
+  /** figure pivots for anomaly posing */
+  fig: Figure;
+  /** baseline courtesy (he never does it): while armed, crossing z≈gz
+   *  turns his head toward the bench for ~1.1s. null disarms. */
+  setGreetAt(gz: number | null): void;
   reset(): void;
   /** anomaly hook — 'backwards' flips facing vs travel, 'stare' halts
    *  mid-corridor facing the player's approach. reset() restores normal. */
@@ -122,6 +129,9 @@ export function buildAmbientWalker(
   let watchArm = -1; // which direction the armed watch check fires on
   let resets = 0; // parity driving the alternating watch check
   let nodT = 0; // the small head dip he gives when he halts for you
+  let greetZ: number | null = null; // courtesy hook — see setGreetAt
+  let greetT = 0;
+  let greeted = false;
   let blockedT = 0;
   let bobT = 0;
   let lastStepPh = 0;
@@ -159,6 +169,13 @@ export function buildAmbientWalker(
     chargeAt(playerZ: number) {
       chargeZ = playerZ;
     },
+    root: g,
+    fig,
+    setGreetAt(gz: number | null) {
+      greetZ = gz;
+      greeted = false;
+      greetT = 0;
+    },
     holdAt(zHold: number) {
       z = zHold;
       mode = "stare";
@@ -187,6 +204,12 @@ export function buildAmbientWalker(
       // covers a fifth of the route with a slowed, heavy stride
       // fast: same route at nearly double pace — he breezes the loop
       // you know he takes a minute on, and the cadence reads urgent
+      if (greetZ !== null && !greeted && Math.abs(z - greetZ) < 1.4) {
+        greetT = 1.1;
+        greeted = true;
+      }
+      if (greetZ !== null && Math.abs(z - greetZ) > 2.6) greeted = false;
+      if (greetT > 0) greetT -= dt;
       const pace = mode === "crawl" ? 0.18 : mode === "fast" ? 1.9 : 1;
       bobT += dt * (mode === "crawl" ? 0.35 : mode === "fast" ? 1.7 : 1);
       if (mode === "absent") return;
@@ -377,6 +400,13 @@ export function buildAmbientWalker(
         armPivots[0]!.rotation.x = -0.8 * lift;
         armPivots[0]!.rotation.z = 0.35 * lift;
         fig.headPivot.rotation.x = 0.42 * lift;
+      } else if (greetT > 0) {
+        // the courtesy he never pays: a slow turn toward the bench as he
+        // passes. Sits inside the neutral branch — anomalies only ever
+        // arm it; baseline z never triggers it.
+        const lift = Math.min(1, (1.1 - greetT) * 3.5) * Math.min(1, greetT * 2.5);
+        fig.headPivot.rotation.x = 0.05 * lift;
+        fig.headPivot.rotation.y = -0.55 * lift; // bench rides his right
       } else {
         fig.headPivot.rotation.x = 0;
         fig.headPivot.rotation.y = 0;
