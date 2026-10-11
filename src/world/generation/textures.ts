@@ -1388,3 +1388,46 @@ export function makeHelpFace(scene: Scene): DynamicTexture {
   t.update();
   return finish(t);
 }
+
+/** Worn painted route arrow for the terrazzo decals — cream paint,
+ *  chipped through in places. Drawn pointing up (+y); the decal planes
+ *  orient it on the floor. Transparent everywhere else. */
+export function makeDecalFace(scene: Scene, rand: () => number): DynamicTexture {
+  const t = new DynamicTexture("tex.route.decal", { width: 128, height: 192 }, scene, true);
+  const c = t.getContext() as unknown as CanvasRenderingContext2D;
+  c.clearRect(0, 0, 128, 192);
+  c.fillStyle = "#d6cdb2";
+  // chevron head
+  c.beginPath();
+  c.moveTo(64, 18);
+  c.lineTo(104, 70);
+  c.lineTo(80, 70);
+  c.lineTo(80, 108);
+  c.lineTo(48, 108);
+  c.lineTo(48, 70);
+  c.lineTo(24, 70);
+  c.closePath();
+  c.fill();
+  // shaft
+  c.fillRect(52, 108, 24, 66);
+  // wear: punch scuffs + chipped edges back out
+  c.globalCompositeOperation = "destination-out";
+  for (const [x, y, w, h] of [
+    [20, 44, 26, 6],
+    [70, 88, 30, 5],
+    [40, 120, 20, 7],
+    [56, 150, 24, 5],
+    [30, 66, 8, 4],
+    [92, 58, 10, 5],
+  ] as const) {
+    c.fillRect(x, y, w, h);
+  }
+  for (let i = 0; i < 14; i++) {
+    const px = 24 + rand() * 80;
+    const py = 16 + rand() * 160;
+    c.fillRect(px, py, 2 + rand() * 5, 1 + rand() * 3);
+  }
+  c.globalCompositeOperation = "source-over";
+  t.update();
+  return t;
+}
