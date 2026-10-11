@@ -1398,3 +1398,16 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   drawNote; cleanup repaints the spec, never swaps meshes.
 - Spawned paper needs `sheet.parent = board` + `rotation.y = π/2`
   (board's local −x faces the corridor) and full disposal in cleanup.
+
+## arc35 — catalog closeout
+
+- `clock.gone` — the hanging station clock's housing/faces/hands all
+  vanish; stem stays, plus a bare bolt plate at its end. Excludes the
+  whole clock.* event family.
+- Catalog audit: 6 rows carried provisional ids for features that were
+  already implemented under better names — clock.spin→clock.spins,
+  clock.wrong→clock.wrong-face, svc.vent.breath→vent.breath,
+  svc.stain.grown→stain.grown, svc.hatch.hand→hatch.hand,
+  svc.jbox.severed→jbox.severed. Rows repointed. With clock.gone built
+  the catalog is 360 implemented / 314 registered — complete.
+- Next beats are quality, not coverage: backlog in this file above.
