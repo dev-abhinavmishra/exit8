@@ -118,6 +118,7 @@ function applyGrime(world: ConcourseWorld, chapter: number): void {
   grime.diffuseColor = new Color3(0.05, 0.05, 0.045);
   grime.specularColor = Color3.Black();
   grime.alpha = 0.55;
+  grime.zOffset = -2;
   const spots: [number, number, number, number][] =
     chapter >= 3
       ? [
