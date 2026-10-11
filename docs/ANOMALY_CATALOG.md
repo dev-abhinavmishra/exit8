@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **380 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **385 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -996,3 +996,8 @@ sound-led anomaly carries a visual cue path.
 | 378 | `train.near` | On the Wrong Side of the Wall | The pass sounds like it switched to the corridor side — louder, brighter, whistle cutting instead of trailing. | moderate | 3 | sound |
 | 379 | `pa.overdue` | No Announcements Tonight | The horns never key up at all — the feed simply never comes. | subtle | 2 | sound |
 | 380 | `drip.sync` | The Vents Keep Time | Every vent plinks at once on a slow regular beat — unison where baseline drips are scattered. | moderate | 2 | sound |
+| 381 | `commuter.stays` | He Missed His Stop | The loop schedules his departure and he never leaves — the read goes on past his stop. | subtle | 1 | character |
+| 382 | `commuter.returns` | Back On the Bench | He gathers, walks out the south door — and eight seconds later is seated reading, exactly as before. | unmistakable | 3 | character |
+| 383 | `commuter.north` | The Wrong Way Out | He departs toward the sealed north end and stands there, facing the door that never opens. | moderate | 2 | character |
+| 384 | `commuter.fled` | He Hurries Out | The departure plays at sprint pace — gather snaps, stride doubles, bag swinging; gone in seconds. | moderate | 3 | character |
+| 385 | `commuter.midflee` | Stopped Mid-Stride | Partway to the door he stops dead mid-route and turns to face you, bag at his side. | unmistakable | 3 | character |

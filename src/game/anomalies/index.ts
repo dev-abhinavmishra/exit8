@@ -339,6 +339,11 @@ import { trainSurge } from "./trainSurge";
 import { trainNear } from "./trainNear";
 import { paOverdue } from "./paOverdue";
 import { dripSync } from "./dripSync";
+import { commuterStays } from "./commuterStays";
+import { commuterReturns } from "./commuterReturns";
+import { commuterNorth } from "./commuterNorth";
+import { commuterFled } from "./commuterFled";
+import { commuterMidflee } from "./commuterMidflee";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -675,4 +680,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   trainNear,
   paOverdue,
   dripSync,
+  commuterStays,
+  commuterReturns,
+  commuterNorth,
+  commuterFled,
+  commuterMidflee,
 ];

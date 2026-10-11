@@ -1532,3 +1532,33 @@ Catalog: 380 implemented / 329 registered.
 - Audio-layer "absence" anomalies carry update():{} — the wrongness
   is a frozen timer; nothing exists to probe visually. Verify via the
   suite's forced activation + the caption/spec contract.
+
+## arc 41 — the commute's end (departure baseline + 5 anomalies)
+
+The commuter can now LEAVE: ~30% of seated loops (commuterRng) he
+finishes his read at ~34-56s — gather beat (paper folds to lap), to
+his feet, walks the west lane south at ~1.05 m/s (walker's stride
+recipe: bob + swing at 3.4 rad/s), paper tucked (LOCAL on g), bag
+carried (root-level world coords). `commuter.wantsDoor` pulses the
+south inner door from z>49; he despawns past z>56.5 and the door
+closes behind him. New API: `setDepart({at, north?, speed?}|null)`,
+`setDepartHold`, `departState`, `wantsDoor`; reset() re-enables
+paper/bag and clears all depart state.
+
+Anomalies #381-385: commuter.stays (suppressed departure),
+commuter.returns (re-seated 8s after walking out — impossible),
+commuter.north (walks to the sealed north end, stands facing it —
+"wait" phase), commuter.fled (2.6× sprint, head down),
+commuter.midflee (frozen mid-stride past z42, turned to face you).
+Catalog: 385 implemented / 329 registered.
+
+### lessons
+
+- `commuter.paper` is parented to `g` (LOCAL coords); `commuter.bag`
+  to `root` (world coords) — carry poses must use each mesh's own
+  frame or the figure double-transforms.
+- Anything the departure can disable (paper, bag, g itself) must be
+  re-enabled inside reset() — reset is the only guaranteed re-baseline.
+- Door ownership: loopManager ORs `commuter.wantsDoor` into the south
+  door pulse — the auto-open stays player-proximity; anomalies never
+  touch door targets directly.
