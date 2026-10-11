@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **400 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **405 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1016,3 +1016,8 @@ sound-led anomaly carries a visual cue path.
 | 398 | `commuter.brushes.past` | He Brushes Past | He doesn't halt — he threads past within inches of your shoulder. | subtle | 1 | character |
 | 399 | `commuter.waits.far` | He Stops Too Early | The give-way reads you from four metres out — he halts absurdly early and waits. | subtle | 2 | character |
 | 400 | `commuter.detour` | The Long Way Round | He doesn't stop for you — he swings to the far lane and never breaks stride. | moderate | 2 | character |
+| 401 | `commuter.face.blank` | Faceless Passenger | He waits with his paper and his face is smooth skin — features and relief gone. | moderate | 2 | character |
+| 402 | `commuter.face.eyes` | Hollow Eyes | The face keeps its shape; where the eyes should sit there are only sockets. | moderate | 2 | character |
+| 403 | `commuter.face.grin` | He Is Smiling | Corners climbing past where a smile stops, held while he reads. | unmistakable | 3 | character |
+| 404 | `commuter.uniform` | One Of Them Tonight | The civilian keeps his bench and his paper — in the Authority kit: hi-vis, peaked cap, ID card. | moderate | 2 | character |
+| 405 | `commuter.askew` | He Reads Crooked | Head cocked to the shoulder at an angle a neck shouldn't hold — it never corrects. | subtle | 2 | character |

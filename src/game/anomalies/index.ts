@@ -359,6 +359,11 @@ import { commuterWaitsForever } from "./commuterWaitsForever";
 import { commuterBrushesPast } from "./commuterBrushesPast";
 import { commuterWaitsFar } from "./commuterWaitsFar";
 import { commuterDetour } from "./commuterDetour";
+import { commuterFaceBlank } from "./commuterFaceBlank";
+import { commuterFaceEyes } from "./commuterFaceEyes";
+import { commuterFaceGrin } from "./commuterFaceGrin";
+import { commuterUniform } from "./commuterUniform";
+import { commuterAskew } from "./commuterAskew";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -715,4 +720,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   commuterBrushesPast,
   commuterWaitsFar,
   commuterDetour,
+  commuterFaceBlank,
+  commuterFaceEyes,
+  commuterFaceGrin,
+  commuterUniform,
+  commuterAskew,
 ];

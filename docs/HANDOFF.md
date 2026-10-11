@@ -1655,3 +1655,33 @@ to the east lane without breaking stride). Catalog: 400 implemented
 - Player-blocking habits are only learnable if they're polite: the
   halt must hold a stride OUT (near/far window), not on contact, or
   every loop looks like a scripted avoidance, not a courtesy.
+
+## arc 45 — his face (commuter wrongness set + 5 anomalies)
+
+The inspector's nightmares borrowed by the civilian. `drawFace(tex,
+variant)` already drives the walker's faceless/grin looks — the same
+repaint works on `commuter.fig.faceplate` unchanged (the figure builder
+names everything off its seed: `commuter.fig.face.tex`,
+`commuter.fig.feat.*` relief boxes, `.stripe`/`.cap.*`/`.idcard` kit).
+405 implemented / 329 registered.
+
+- `commuter.face.blank` — smooth skin: `drawFace(t,"blank")` + every
+  `commuter.fig.feat.*` disabled (walker.faceless's recipe — smooth head,
+  not features on blank skin).
+- `commuter.face.eyes` — hollow sockets: `drawFace(t,"eyeless")`, relief
+  KEPT — everything else right is the horror.
+- `commuter.face.grin` — `drawFace(t,"grin")`, the smile that shouldn't
+  be (deep-shift, unmistakable).
+- `commuter.uniform` — he's one of them tonight: the Authority kit is
+  only ever `setEnabled(false)` at build — enabling `.stripe`, `.cap.*`,
+  `.idcard` dresses him without a single new mesh.
+- `commuter.askew` — he reads crooked: `setDozePoseLock(true)` hands all
+  seat/board pose writes to the anomaly; head held z≈0.42 per frame and
+  it never corrects (misnamed lock — it gates the waking pose writes
+  too, not just doze).
+
+Lessons: face anomalies repaint the SAME DynamicTexture in place — no
+material swap needed, cleanup is `drawFace(t,"normal")`. The probe's
+`teleport(x,y,z,yaw)` yaw is real but the view drifts under intro/
+glance sway — for mechanical verification prefer `meshInfo` asserts and
+let screenshots be opportunistic.
