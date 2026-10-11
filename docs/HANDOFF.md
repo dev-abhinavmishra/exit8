@@ -1824,3 +1824,21 @@ namespace map (`rg -o 'register\("[a-z]+'` + uniq) — `drain` collided
 with BOTH `dress.drain.*` meshes (merge-prefix guard) and an existing
 `drain.channel` fixture; `gully` was also taken. `alarm.*` was open.
 There is no `mats.paper` — placards get their own StandardMaterial.
+
+## arc 52 — the roach (floor creature + 5 anomalies)
+
+A glossy dark beetle at the west wall base z36 by the drain channel —
+the moth's floor-level sibling. `roach`/`roach.body` registered.
+440 implemented / 329.
+
+- `roach.gone` — absent.
+- `roach.huge` — 8x scale, y lifted to stay on the tile.
+- `roach.dead` — rot.x pi belly-up, legs curled.
+- `roach.swarm` — 12 sibling boxes along the wall base.
+- `roach.flees` — update-driven: closes within ~3.2m from behind →
+  quadratic-ease dart +4m up the wall with a 60Hz yaw wobble. The
+  first player-reactive anomaly on a fixture (ctx.player.position).
+
+Lessons: ctx.player.position is live inside anomaly update() —
+reactive behavior needs no new plumbing. A flee reflex reads better
+as discrete quadratic darts than continuous creep.

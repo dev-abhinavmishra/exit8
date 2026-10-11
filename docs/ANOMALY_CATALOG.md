@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **435 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **440 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1051,3 +1051,8 @@ sound-led anomaly carries a visual cue path.
 | 433 | `alarm.gone` | No Alarm Tonight | The pull station is unbolted — a pale scar and two screw stubs on the tile. | unmistakable | 2 | spatial |
 | 434 | `alarm.knob.gone` | No Knob To Pull | The lever's pull knob is missing, the stem left bare. | subtle | 1 | object |
 | 435 | `alarm.blink` | It Is Blinking | A pin of red blinks inside the face — the heartbeat of a panel already tripped. | moderate | 2 | lighting |
+| 436 | `roach.gone` | No Roach Tonight | The speck at the west wall base that was always there isn't. | subtle | 1 | spatial |
+| 437 | `roach.huge` | The Wrong Size | Eight times the size it should be, glossy shell spanning a floor tile. | unmistakable | 3 | character |
+| 438 | `roach.dead` | On Its Back | Belly-up on the tile, legs curled toward the ceiling. | moderate | 1 | character |
+| 439 | `roach.swarm` | It Was Never One | A dozen siblings hold the wall base along four metres, all angled the same way. | unmistakable | 2 | character |
+| 440 | `roach.flees` | It Runs Ahead | Close within three metres and it skitters four metres further up the wall — never caught. | unmistakable | 2 | character |

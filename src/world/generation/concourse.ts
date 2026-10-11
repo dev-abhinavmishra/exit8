@@ -3172,6 +3172,30 @@ export function buildConcourse(
     registry.register("alarm.knob", aknob);
   }
 
+  // ─── the roach — a dark beetle holding still at the west wall
+  // base z36 by the drain channel, glossy enough to catch a troffer
+  // line. Floor-level sibling of the moth: a learnable speck whose
+  // stillness anomalies can break. ───
+  {
+    const roach = new TransformNode("roach", scene);
+    roach.parent = root;
+    roach.position = new Vector3(-1.52, 0.006, 36.0);
+    roach.rotation.y = -0.4; // angled off the wall line, mid-amble
+    const roachMat = new StandardMaterial("mat.roach", scene);
+    roachMat.diffuseColor = new Color3(0.1, 0.06, 0.03);
+    roachMat.specularColor = new Color3(0.45, 0.35, 0.25); // wet shell
+    const rbody = kit.box("roach.body", 0.035, 0.011, 0.05, roachMat, scene, roach);
+    rbody.position = new Vector3(0, 0.006, 0);
+    const rhead = kit.box("roach.head", 0.02, 0.008, 0.014, roachMat, scene, roach);
+    rhead.position = new Vector3(0, 0.005, 0.03);
+    for (const sx of [-1, 1]) {
+      const legs = kit.box(`roach.legs.${sx < 0 ? "l" : "r"}`, 0.012, 0.006, 0.044, roachMat, scene, roach);
+      legs.position = new Vector3(sx * 0.026, 0.004, 0);
+    }
+    registry.register("roach", roach);
+    registry.register("roach.body", rbody);
+  }
+
   // ─── the niche — a staff rest corner surface-mounted on the east
   // wall z≈5.2: peg rail with a hi-vis jacket, a shelf with a thermos
   // and a lunch parcel, a low stool and the boots under it. The most
