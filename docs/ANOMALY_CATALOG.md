@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **450 implemented** — 334 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **455 implemented** — 334 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1066,3 +1066,8 @@ sound-led anomaly carries a visual cue path.
 | 448 | `ads.dead` | Slots Unpaid | Every column lightbox is dark. | moderate | 1 | lighting |
 | 449 | `ads.breath` | Lamp Down Cycle | The north column lightbox's lamp breathes on a six-second swell. | subtle | 2 | lighting |
 | 450 | `ads.watch` | It Found You First | The south column lightbox is a portrait whose eyes track you in five steps. | unmistakable | 3 | character |
+| 451 | `feed.lag` | The Feed Drags | The corridor monitor's player dot trails ~4s behind where you actually stand. | moderate | 2 | object |
+| 452 | `feed.ahead` | It Shows You Next | The feed's ringed dot walks ~4s ahead of you — it only knows a future you keep giving it. | unmistakable | 3 | object |
+| 453 | `feed.empty` | Empty Corridor | The camera that plainly sees you shows a corridor with nobody in it. | moderate | 2 | object |
+| 454 | `feed.figure` | A Third Dot | A presence with no ring stands mid-frame on the tape where nobody stands. | moderate | 3 | character |
+| 455 | `feed.static` | Signal Loss | The pane rolls noise bands and the corridor underneath drops out in seconds-long fits. | moderate | 2 | object |

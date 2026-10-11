@@ -1905,3 +1905,39 @@ Note on counting: catalog rows number continuously (450 now) but
 ALL_ANOMALIES.length is the live def count — 404 as of arc54. The
 "in the bag" figure in the catalog header is arc16's stale cut line;
 use ALL_ANOMALIES.length for truth.
+
+## arc 54 — the lightboxes (shipped, post-merge fixes)
+
+Two late fixes rode #50's tail: gen-ordering (the lightbox block sat at
+L2269 BEFORE the colonnade registered at L2656 — registry.get() undefined
+crashed world-gen on boot; moved after the colonnade scope), material
+recipe (disableLighting+emissive blew white → poster recipe
+diffuse+emissive+specular 0.02), and drawAd missing t.update() so
+anomaly repaints never reached the GPU. All probe-verified live.
+
+## arc 55 — the feed (in flight)
+
+The corridor's recursion beat shipped as a player-facing monitor on the
+east wall at z21.2 (north of the CCTV, clear of the standpipe valve
+drop at z22.6) showing CAM 01's corridor view — a painted feed texture
+(not RTT): floor band, west-wall strip, troffer pools, and TWO live
+dots: the walker at his live z, the player ringed at their live x/z.
+Baseline driver in loopManager repaints tex.feed ~4Hz unless a feed.*
+def is active (the clock-sweep exemption pattern). Registered
+feed.monitor / feed.screen / feed.pin.
+
+- `feed.lag` — ring-buffer; the player dot trails ~4s behind.
+- `feed.ahead` — smoothed-velocity extrapolation; the dot walks ~4s
+  ahead of where you stand (stops when you stop).
+- `feed.empty` — drawFeed(empty) — nobody on the tape at all.
+- `feed.figure` — a third presence stands at z31.4 mid-frame.
+- `feed.static` — rolling noise band + dots dropping out in fits.
+
+Placement lessons: pipe.vdrop.0 (red standpipe valve) drops at z22.6
+dead through the first mount — always grep the pipe/vdrop spans before
+east-wall placements. feed.screen rotation.y must be +π/2 for an east
+wall facing (−π/2 aims the normal +x into the tile — same trap as
+arc46's head-on shots). Index wiring deferred until the arc54 suite
+finished (sweep reads index.ts live).
+
+455 implemented.

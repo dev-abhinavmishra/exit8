@@ -405,6 +405,11 @@ import { adsSwap } from "./adsSwap";
 import { adsDead } from "./adsDead";
 import { adsBreath } from "./adsBreath";
 import { adsWatch } from "./adsWatch";
+import { feedLag } from "./feedLag";
+import { feedAhead } from "./feedAhead";
+import { feedEmpty } from "./feedEmpty";
+import { feedFigure } from "./feedFigure";
+import { feedStatic } from "./feedStatic";
 import { stallsShut } from "./stallsShut";
 import { dispenserUnrolled } from "./dispenserUnrolled";
 import { basinFull } from "./basinFull";
@@ -815,4 +820,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   adsDead,
   adsBreath,
   adsWatch,
+  feedLag,
+  feedAhead,
+  feedEmpty,
+  feedFigure,
+  feedStatic,
 ];

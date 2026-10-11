@@ -2995,6 +2995,41 @@ export function buildConcourse(
     registry.register("cctv.led", led);
   }
 
+  // ─── the feed — the corridor's recursion beat. A staff monitor hangs
+  // on the east wall a metre below the camera that watches this stretch,
+  // tilted down at eye height: bezel box on a short wall bracket, a
+  // repainted feed pane inside (tex.feed — the camera's own view with
+  // live dots for the walker and the player). Poster recipe for the
+  // screen material: dual texture + low specular, emissive ~0.5 reads
+  // as a lit CRT against the tile. ───
+  {
+    const feedMat = new StandardMaterial("mat.feed", scene);
+    feedMat.diffuseTexture = tex.feed;
+    feedMat.emissiveTexture = tex.feed;
+    feedMat.emissiveColor = new Color3(0.5, 0.52, 0.5);
+    feedMat.specularColor = new Color3(0.02, 0.02, 0.02);
+    const bracket = kit.box("feed.bracket", 0.1, 0.05, 0.05, mats.steel, scene, root);
+    bracket.position = new Vector3(C.xHalf - 0.1, 2.02, 21.2);
+    const monitor = new TransformNode("feed.monitor", scene);
+    monitor.parent = root;
+    monitor.position = new Vector3(C.xHalf - 0.16, 1.86, 21.2);
+    monitor.rotation.z = -0.24; // top edge back to the wall — face aimed down
+    const body2 = kit.box("feed.body", 0.06, 0.42, 0.34, mats.rubber, scene, monitor);
+    body2.position = new Vector3(0, 0, 0);
+    const screen = kit.plane("feed.screen", 0.3, 0.36, feedMat, scene, monitor);
+    screen.position = new Vector3(-0.033, 0, 0);
+    screen.rotation.y = Math.PI / 2; // face -x, out over the lane
+    // CAM pin on the bezel corner — same red as the camera's recording pin
+    const pinMat = new StandardMaterial("mat.feed.pin", scene);
+    pinMat.diffuseColor = new Color3(0.25, 0.02, 0.02);
+    pinMat.emissiveColor = new Color3(0.75, 0.05, 0.04);
+    const pin = kit.box("feed.pin", 0.012, 0.014, 0.014, pinMat, scene, monitor);
+    pin.position = new Vector3(-0.032, 0.185, -0.145);
+    registry.register("feed.monitor", monitor);
+    registry.register("feed.screen", screen);
+    registry.register("feed.pin", pin);
+  }
+
   // ─── the underworld — a maintenance well set into the west lane at
   // z31: a raised steel rim frame, a dark pit mouth (the alcove-drain
   // trick — pure darkness inside a frame reads as depth), a bolted

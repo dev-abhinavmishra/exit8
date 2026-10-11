@@ -117,6 +117,7 @@ export interface TextureSet {
   blinds: DynamicTexture; // horizontal venetian slats, alpha-gapped
   puddle: DynamicTexture; // radial damp patch for floor drains
   trofferFace: DynamicTexture; // louver-cell diffuser face for lit troffers
+  feed: DynamicTexture; // live CCTV feed pane — repainted every ~0.25s
 }
 
 /** Speckled terrazzo with brass divider strips. Tiles every 1.2 m. */
@@ -678,6 +679,144 @@ export function drawAd(
   t.update();
 }
 
+/** What the east-wall camera sees: an elevated side view of its own
+ * stretch — floor fills the frame, the west wall is a band along the
+ * top, the corridor's long axis reads left-to-right. Repainted live:
+ * the walker and the player are both dots on it. */
+export interface FeedView {
+  /** player x/z, corridor coords */
+  px: number;
+  pz: number;
+  /** walker z (his x hovers mid-lane) */
+  wz: number;
+  /** a third static presence at this z — feed.figure */
+  ghostZ?: number;
+  /** draw nobody at all — feed.empty */
+  empty?: boolean;
+  /** 0..1 static roll — feed.static */
+  statik?: number;
+}
+
+export function drawFeed(t: DynamicTexture, v: FeedView): void {
+  const w = 256;
+  const h = 192;
+  const c = ctx(t);
+  const sz = t.getSize();
+  c.scale(sz.width / w, sz.height / h);
+  // Z ranges the lens can see: 22m centered on its mount at z22.
+  const zMin = 14;
+  const zMax = 34;
+  const sx = (z: number) => ((z - zMin) / (zMax - zMin)) * w;
+  // X (east near → west far) maps to depth: floor band runs y122..186.
+  const sy = (x: number) => 186 - ((x + 1.8) / 3.6) * 64;
+
+  // ── the room ──
+  c.fillStyle = "#0b0d0e";
+  c.fillRect(0, 0, w, h);
+  // west wall band — dim lit face above the baseboard seam
+  const wallG = c.createLinearGradient(0, 34, 0, 122);
+  wallG.addColorStop(0, "#232a2c");
+  wallG.addColorStop(1, "#313a3c");
+  c.fillStyle = wallG;
+  c.fillRect(0, 34, w, 88);
+  // fixture marks on the wall: the z16.5 lightbox glows faint, a dark
+  // recess at z18 washroom mouth edge, panels as charcoal rects
+  c.fillStyle = "#454f4e";
+  c.fillRect(sx(16.1), 58, sx(17) - sx(16.1), 34); // lightbox glow
+  c.fillStyle = "#141819";
+  c.fillRect(sx(24.4), 46, sx(25.6) - sx(24.4), 76); // dark recess/edge
+  c.fillStyle = "#1a1f20";
+  c.fillRect(sx(28.4), 60, sx(29.4) - sx(28.4), 62); // another panel seam
+  // baseboard seam
+  c.fillStyle = "#101415";
+  c.fillRect(0, 120, w, 3);
+  // floor field
+  const floorG = c.createLinearGradient(0, 122, 0, h);
+  floorG.addColorStop(0, "#262b2c");
+  floorG.addColorStop(1, "#171b1c");
+  c.fillStyle = floorG;
+  c.fillRect(0, 123, w, h - 123);
+  // tactile guide strip — a pale dashed line across the floor at its lane
+  c.fillStyle = "rgba(150,140,90,0.5)";
+  for (let z = zMin; z < zMax; z += 0.8) {
+    c.fillRect(sx(z), sy(-0.6), 3, 2);
+  }
+  // troffer pools — soft ellipses where the lane light lands
+  for (const tz of [19, 27]) {
+    const g = c.createRadialGradient(sx(tz), sy(0), 2, sx(tz), sy(0), 26);
+    g.addColorStop(0, "rgba(190,200,195,0.28)");
+    g.addColorStop(1, "rgba(190,200,195,0)");
+    c.fillStyle = g;
+    c.beginPath();
+    c.ellipse(sx(tz), sy(0), 26, 12, 0, 0, Math.PI * 2);
+    c.fill();
+  }
+  // ── the dots ──
+  const dot = (x: number, z: number, r: number, col: string, ring = false) => {
+    const dx = sx(z);
+    const dy = sy(x);
+    if (dx < 4 || dx > w - 4) return; // out of frame
+    // contact smudge first, then the body
+    c.fillStyle = "rgba(0,0,0,0.55)";
+    c.beginPath();
+    c.ellipse(dx, dy + r * 0.9, r * 1.6, r * 0.5, 0, 0, Math.PI * 2);
+    c.fill();
+    c.fillStyle = col;
+    c.beginPath();
+    c.ellipse(dx, dy, r, r * 1.7, 0, 0, Math.PI * 2);
+    c.fill();
+    if (ring) {
+      c.strokeStyle = "rgba(230,235,230,0.5)";
+      c.lineWidth = 1;
+      c.beginPath();
+      c.ellipse(dx, dy, r + 3.5, r * 1.7 + 3.5, 0, 0, Math.PI * 2);
+      c.stroke();
+    }
+  };
+  if (!v.empty) {
+    dot(v.px, v.pz, 4.5, "#c7cdc9", true); // the player — ringed
+    dot(0.55, v.wz, 4, "#9aa49f"); // the inspector, mid-lane
+    if (v.ghostZ !== undefined) dot(0.1, v.ghostZ, 4.2, "#6f7a75");
+  }
+  // ── the glass ──
+  if (v.statik && v.statik > 0) {
+    const bandY = (v.statik * 7919) % h; // deterministic roll position
+    for (let y = 0; y < h; y += 3) {
+      const near = Math.abs(y - bandY) < 14 ? 0.3 : 0.05;
+      c.fillStyle = `rgba(210,220,215,${near * v.statik})`;
+      c.fillRect(0, y, w, 1);
+    }
+    c.fillStyle = `rgba(8,10,10,${0.4 * v.statik})`;
+    c.fillRect(0, 0, w, h);
+  } else {
+    // faint scanlines always
+    c.fillStyle = "rgba(0,0,0,0.06)";
+    for (let y = 0; y < h; y += 3) c.fillRect(0, y, w, 1);
+  }
+  // ── the overlay ──
+  c.fillStyle = "rgba(190,200,195,0.8)";
+  c.font = "bold 11px monospace";
+  c.textAlign = "left";
+  c.fillText("CAM 01", 8, 16);
+  c.fillText("CORRIDOR E", 8, 28);
+  c.fillStyle = "#d84040";
+  c.beginPath();
+  c.arc(w - 34, 12, 3.5, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = "rgba(190,200,195,0.8)";
+  c.textAlign = "right";
+  c.fillText("REC", w - 8, 16);
+  c.textAlign = "center";
+  c.fillText("LOOP 7", w / 2, h - 8);
+  t.update();
+}
+
+function makeFeed(scene: Scene): DynamicTexture {
+  const t = tex("tex.feed", 512, 384, scene);
+  drawFeed(t, { px: 0.9, pz: 1.5, wz: 22 });
+  return finish(t);
+}
+
 function makeAds(scene: Scene): DynamicTexture[] {
   return AD_DEFS.map((d, i) => {
     const t = tex(`tex.ads.${i}`, 512, 768, scene);
@@ -887,6 +1026,7 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     condensation: makeCondensation(scene),
     posters: makePosters(scene),
     ads: makeAds(scene),
+  feed: makeFeed(scene),
     clockFace: makeClockFace(scene),
     signs: signMap,
     terminal: makeTerminal(scene),
