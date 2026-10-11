@@ -1578,6 +1578,7 @@ export function buildConcourse(
     for (const [i, bz] of [17.8, 18.9].entries()) {
       const basin = kit.box(`wash.basin.${i}`, 0.3, 0.05, 0.44, mats.rubber, scene, root);
       basin.position = new Vector3(washBackX - 0.24, 0.885, bz);
+      registry.register(`wash.basin.${i}`, basin);
       const rim = kit.box(`wash.basin.rim.${i}`, 0.34, 0.02, 0.5, washPorcelain, scene, root);
       rim.position = new Vector3(washBackX - 0.24, 0.9, bz);
       // tap: column + downturned nozzle over the well
@@ -1592,6 +1593,7 @@ export function buildConcourse(
       const noz = kit.box(`wash.tap.noz.${i}`, 0.03, 0.05, 0.03, mats.steel, scene, tap);
       noz.position = new Vector3(-0.15, 0.135, 0);
     }
+    registry.register("wash.vanity", scene.getMeshByName("wash.vanity")!);
     // the mirror — plane over the vanity facing the door. Its material
     // paints a dim smear of the room (no RTT); wash.mirror repaints it
     // with a figure that shouldn't be there
@@ -1640,6 +1642,8 @@ export function buildConcourse(
     disp.position = new Vector3(washBackX - 0.09, 1.4, 17.05);
     const displit = kit.box("wash.dispenser.slit", 0.02, 0.03, 0.18, mats.rubber, scene, root);
     displit.position = new Vector3(washBackX - 0.17, 1.31, 17.05);
+    registry.register("wash.dispenser", disp);
+    registry.register("wash.dispenser.slit", displit);
     const bin = kit.box("wash.bin", 0.26, 0.4, 0.3, mats.steel, scene, root);
     bin.position = new Vector3(washBackX - 0.32, 0.2, 17.0);
     // two stalls on the north wall — partitions + doors with a real

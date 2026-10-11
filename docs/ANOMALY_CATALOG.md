@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **425 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **430 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1041,3 +1041,8 @@ sound-led anomaly carries a visual cue path.
 | 423 | `ceil.lit` | Light In The Plenum | Panel seated, but a warm sodium glow leaks the seam — the void above should be dark. | unmistakable | 2 | lighting |
 | 424 | `ceil.cord` | The Cord Hangs Down | Panel slid aside, a pull-cord swaying at head height on a draft that isn't there. | unmistakable | 2 | spatial |
 | 425 | `ceil.fallen` | It Fell Overnight | The panel lies flat on the corridor floor below, the mouth bare overhead. | unmistakable | 2 | spatial |
+| 426 | `stall.feet` | He Never Left | Whoever shut the stall door never left — trouser cuffs and shoe toes under the partition gap. | unmistakable | 2 | character |
+| 427 | `stalls.shut` | Both Stalls Shut | Every stall door is closed tonight; the room reads occupied without anything to point at. | moderate | 2 | spatial |
+| 428 | `dispenser.unrolled` | The Whole Roll | The towel dispenser emptied itself — a tongue of paper hangs to the floor beside the bin. | moderate | 1 | object |
+| 429 | `basin.full` | Filled To The Rim | One basin is brim-full of dead-still water, a shade too dark for the tap. | moderate | 2 | object |
+| 430 | `dryer.hot` | The Dryer Is Warm | The hand dryer's cycle light is lit and warm air leaks the nozzle; nobody touched it. | moderate | 1 | lighting |

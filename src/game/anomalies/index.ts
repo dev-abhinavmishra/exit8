@@ -384,6 +384,11 @@ import { ceilOpen } from "./ceilOpen";
 import { ceilLit } from "./ceilLit";
 import { ceilCord } from "./ceilCord";
 import { ceilFallen } from "./ceilFallen";
+import { stallFeet } from "./stallFeet";
+import { stallsShut } from "./stallsShut";
+import { dispenserUnrolled } from "./dispenserUnrolled";
+import { basinFull } from "./basinFull";
+import { dryerHot } from "./dryerHot";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -765,4 +770,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   ceilLit,
   ceilCord,
   ceilFallen,
+  stallFeet,
+  stallsShut,
+  dispenserUnrolled,
+  basinFull,
+  dryerHot,
 ];

@@ -1789,3 +1789,20 @@ Lessons: the same fixture grammar works overhead — rim frame + dark
 mouth plane + removable cover node; only the y budget flips (void
 slightly ABOVE rim top, plate below). A cord that must sway gets its
 pivot set to the mouth end with `setPivotPoint`.
+
+## arc 50 — the washroom (5 room-interior anomalies)
+
+The staff washroom (real room behind wall.right.0b/c, vanity +
+two basins + dispenser + bin + dryer + two pivoted stalls) was
+under-anomalied at 5 ids; this batch fills the room's classic set.
+430 implemented / 329.
+
+- `stall.feet` — door.1 shut + cuffs and shoe toes under the gap.
+- `stalls.shut` — both stall doors at yaw 0.
+- `dispenser.unrolled` — paper tongue to the floor + a sheet curl.
+- `basin.full` — dark water plane flush at basin.1's rim.
+- `dryer.hot` — dryer.led emissive warm amber.
+
+Lessons: stall doors register as `wash.stall.door.<i>` (loop-registered;
+grep `register.*wash` pattern misses the loop). Under-gap shins sell
+an occupied stall better than any upper-body geometry.
