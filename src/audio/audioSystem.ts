@@ -562,13 +562,19 @@ export class AudioSystem {
    *  ambience: a long low rumble swell with the wheel-clatter pulse
    *  riding on top and a faint brake whistle trailing off. Not
    *  spatialized: it's always distant, everywhere in the loop. */
-  playTrainPass(): void {
-    this.duckAmbience(6);
+  playTrainPass(near = false): void {
+    this.duckAmbience(near ? 8 : 6);
     if (!this.ctx || !this.noiseBuffer) return;
     const ctx = this.ctx;
     const t0 = ctx.currentTime;
     const dur = 7 + this.rng.draw() * 3;
     const bus = this.bus("ambience");
+    // near passes ride the wall: brighter body, harder clatter, a
+    // whistle that cuts instead of trailing
+    const bodyLp = near ? 210 : 110;
+    const bodyGain = near ? 0.3 : 0.14;
+    const clatGain = near ? 0.07 : 0.035;
+    const whistleGain = near ? 0.03 : 0.012;
 
     // low body — the rolling mass
     const src = ctx.createBufferSource();
@@ -576,11 +582,11 @@ export class AudioSystem {
     src.playbackRate.value = 0.45;
     const lp = ctx.createBiquadFilter();
     lp.type = "lowpass";
-    lp.frequency.value = 110;
+    lp.frequency.value = bodyLp;
     const g = ctx.createGain();
     g.gain.setValueAtTime(0, t0);
-    g.gain.linearRampToValueAtTime(0.14, t0 + dur * 0.35);
-    g.gain.setValueAtTime(0.14, t0 + dur * 0.6);
+    g.gain.linearRampToValueAtTime(bodyGain, t0 + dur * 0.35);
+    g.gain.setValueAtTime(bodyGain, t0 + dur * 0.6);
     g.gain.linearRampToValueAtTime(0, t0 + dur);
     src.connect(lp).connect(g).connect(bus);
     src.start(t0, 0, dur + 0.1);
@@ -602,7 +608,7 @@ export class AudioSystem {
         const tg = ctx.createGain();
         const at = t + off;
         const swell = Math.sin(((at - t0) / dur) * Math.PI); // ride the rumble
-        tg.gain.setValueAtTime(0.035 * swell, at);
+        tg.gain.setValueAtTime(clatGain * swell, at);
         tg.gain.exponentialRampToValueAtTime(0.001, at + 0.05);
         tick.connect(bp).connect(tg).connect(bus);
         tick.start(at, 0.2, 0.07);
@@ -618,12 +624,12 @@ export class AudioSystem {
     w.frequency.linearRampToValueAtTime(1300, t0 + dur * 0.95);
     const wg = ctx.createGain();
     wg.gain.setValueAtTime(0, t0 + dur * 0.55);
-    wg.gain.linearRampToValueAtTime(0.012, t0 + dur * 0.68);
+    wg.gain.linearRampToValueAtTime(whistleGain, t0 + dur * 0.68);
     wg.gain.linearRampToValueAtTime(0, t0 + dur * 0.97);
     w.connect(wg).connect(bus);
     w.start(t0 + dur * 0.55);
     w.stop(t0 + dur);
-    this.caption("distant train", null);
+    this.caption(near ? "a train — too near, on the wrong side of the wall" : "distant train", null);
   }
 
   /** Low groan — a slow pressure swell, used by vent anomalies and worse. */

@@ -1428,7 +1428,6 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   '8 CIRCULAR SERVICE / NEXT TRAIN 23:47' reads correctly both ways.
   Lesson: ANY mesh meant to carry readable text should be a plane —
   box faces mirror textures on the far-side surface.
-  ||||||| parent of 959ada3 (arc 37: the niche — staff rest corner on the east wall + 5 anomalies (#361-365))
 
 ## arc 37 — the niche (fixture + 5 anomalies)
 
@@ -1508,3 +1507,28 @@ trace). Catalog: 375 implemented / 329 registered.
   update() args (app.ts wires walkerPos), never reach across worlds
   inside a generation module. Anomalies can read counterpart state via
   ctx.world.* handles — keep those read-only in defs.
+
+## arc 40 — the timetable (ambient-schedule anomalies × 5)
+
+The loop's ambient schedule is now anomaly-addressable: `AnomalyDef`
+gained `ambientMute?: ("pa" | "train" | "drip")[]` — loopManager
+freezes those baseline timers while the anomaly runs (the paMuted
+id-check still guards the legacy three: lights.blackout, pa.deadair,
+announce.spatial). `playTrainPass(near=false)` gained a near voicing —
+brighter lowpass (210), doubled body/clatter/whistle gains, longer
+duck, its own caption.
+
+Anomalies #376-380: train.overdue (the line never runs — pure
+absence), train.surge (five passes inside ~40s), train.near (three
+passes in the near voicing), pa.overdue (the horns never key),
+drip.sync (every vent plinks in unison on a ~6.5s beat).
+Catalog: 380 implemented / 329 registered.
+
+### lessons
+
+- Suppression anomalies schedule their own beats inside update()
+  AFTER owning the timer via ambientMute — same compose rule as
+  announce.spatial's hardcoded mute, now declarative.
+- Audio-layer "absence" anomalies carry update():{} — the wrongness
+  is a frozen timer; nothing exists to probe visually. Verify via the
+  suite's forced activation + the caption/spec contract.

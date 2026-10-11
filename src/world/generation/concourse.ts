@@ -3379,7 +3379,7 @@ export function buildConcourse(
     [1, 12.2, 1],
     [-1, 40.5, -1],
   ] as const) {
-    const base = kit.box(`dress.pahorn.${pz}`, 0.06, 0.16, 0.14, mats.steel, scene, root);
+    const base = kit.box(`pa.horn.${pz}`, 0.06, 0.16, 0.14, mats.steel, scene, root);
     base.position = new Vector3(sx * (C.xHalf - 0.05), 2.5, pz);
     const horn = CreateCylinder(
       `dress.pahorn.${pz}.cone`,
@@ -3389,6 +3389,7 @@ export function buildConcourse(
     horn.material = mats.rubber;
     horn.position = new Vector3(sx * (C.xHalf - 0.05), 2.5, pz + dirZ * 0.12);
     horn.rotation.x = dirZ > 0 ? Math.PI / 2 : -Math.PI / 2;
+    registry.register(`pa.horn.${pz}`, base);
   }
 
   // caution A-frame — the folding wet-floor sign left out mid-route
