@@ -15,6 +15,10 @@ export interface DebugHandle {
   anomaly(): string | null;
   stability(): number;
   pos(): { x: number; y: number; z: number };
+  /** patrolling inspector's z — probe choreography hooks */
+  walkerZ(): number;
+  /** commuter presence tag for probes */
+  commuterMode(): string;
   /** current walk-speed multiplier (pace.dissolves diagnostics) */
   speedScale(): number;
   teleport(x: number, y: number, z: number, yaw?: number): void;
@@ -61,6 +65,8 @@ export function installDebugHandle(app: App): void {
       const p = refs().player.position;
       return { x: p.x, y: p.y, z: p.z };
     },
+    walkerZ: () => refs().world.ambientWalker.root.position.z,
+    commuterMode: () => (refs().world.commuter.isPresent() ? "present" : "absent"),
     speedScale: () => refs().player.speedScale,
     teleport: (x, y, z, yaw) => {
       refs().player.teleport(new Vector3(x, y, z), yaw ?? 0);
