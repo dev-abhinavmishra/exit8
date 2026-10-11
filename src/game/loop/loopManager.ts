@@ -262,7 +262,12 @@ export class LoopManager {
     // on some loops he is up checking the board — a second baseline
     // habit, so a commuter in the wrong place at the wrong pose reads
     // as divergence rather than absence
-    const commuterMode = commuterPresent && this.commuterRng.chance(0.3) ? "board" : "seat";
+    const commuterMode =
+      commuterPresent && this.commuterRng.chance(0.3)
+        ? ("board" as const)
+        : commuterPresent && this.commuterRng.chance(0.18)
+          ? ("doze" as const)
+          : ("seat" as const);
     this.world.commuter.reset(commuterPresent, commuterMode);
     // and on some seated loops he finishes his read and leaves — the
     // commute's end, a third learnable habit; anomalies can retarget,

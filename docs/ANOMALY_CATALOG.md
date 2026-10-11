@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **385 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **390 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1001,3 +1001,8 @@ sound-led anomaly carries a visual cue path.
 | 383 | `commuter.north` | The Wrong Way Out | He departs toward the sealed north end and stands there, facing the door that never opens. | moderate | 2 | character |
 | 384 | `commuter.fled` | He Hurries Out | The departure plays at sprint pace — gather snaps, stride doubles, bag swinging; gone in seconds. | moderate | 3 | character |
 | 385 | `commuter.midflee` | Stopped Mid-Stride | Partway to the door he stops dead mid-route and turns to face you, bag at his side. | unmistakable | 3 | character |
+| 386 | `commuter.startle` | Snapped Awake | He dozes until you come within arm's reach — then he's awake, and he stays watching you. | moderate | 2 | character |
+| 387 | `commuter.deadsleep` | Greets In His Sleep | Asleep on the bench, chin to chest — and he still lifts his chin when the inspector crosses. | subtle | 2 | character |
+| 388 | `commuter.doze.stands` | Asleep On His Feet | At the departure board as always, except he's asleep standing — tipped just past balance. | moderate | 3 | character |
+| 389 | `commuter.doze.talks` | Talking In His Sleep | Asleep and murmuring: low phrases on a slow cadence, head jerking with each one. | subtle | 2 | character |
+| 390 | `commuter.doze.mid` | Drifted Off Mid-Page | He starts the loop reading and sinks into sleep while you watch — the transition is the tell. | subtle | 1 | character |

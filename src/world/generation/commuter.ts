@@ -39,8 +39,18 @@ export interface Commuter {
   /** app pulses the south door while this reads true */
   readonly wantsDoor: boolean;
   /** per-loop rebaseline: seat him (or not), or stand him at the
-   * departure board checking times — a second learnable baseline */
-  reset(present: boolean, mode?: "seat" | "board"): void;
+   * departure board checking times — or dozing upright on the bench,
+   * a third learnable habit (no greet, no glance, breathing bob) */
+  reset(present: boolean, mode?: "seat" | "board" | "doze"): void;
+  /** mid-loop slide into sleep — he starts seated/reading and sinks
+   * into the doze over ~2.5s (commuter.doze.mid) */
+  startDoze(): void;
+  /** anomaly owns the pose writes this loop — commuter.update returns
+   *  early once depart handling is done (startle/deadsleep/stands) */
+  setDozePoseLock(h: boolean): void;
+  /** allow the passing-greeting while dozing — he nods at the
+   * inspector IN HIS SLEEP (commuter.deadsleep) */
+  setDozeGreetAllowed(on: boolean): void;
   /** anomaly handle — the figure root (position/rotation/enabled) */
   root: TransformNode;
   /** figure pivots (hips, arms, headPivot) for anomaly posing */
@@ -104,7 +114,11 @@ export function buildCommuter(
   registry.register("commuter.bag", bag);
 
   let present = true;
-  let mode: "seat" | "board" = "seat";
+  let mode: "seat" | "board" | "doze" = "seat";
+  let dozeTransT = -1; // <0 = settled into the doze pose already
+  let poseLocked = false;
+  let dozeGreetAllowed = false;
+  let breathT = 0;
   let greetEnabled = true;
   let greeted = false;
   let greetT = 0;
@@ -137,6 +151,22 @@ export function buildCommuter(
     bag.rotation.y = 0.3;
   };
 
+  const doze = () => {
+    // seated like seat() but sunk: chin to chest, arms slack, paper
+    // slid to the lap edge — asleep upright
+    g.position.set(SEAT_X, SEAT_Y, SEAT_Z);
+    g.rotation.set(0.04, Math.PI / 2 - 0.15, 0);
+    hips[0]!.rotation.x = -1.4;
+    hips[1]!.rotation.x = -1.45;
+    arms[0]!.rotation.x = -0.35;
+    arms[1]!.rotation.x = -0.32;
+    head.rotation.set(0.85, 0.08, 0.06);
+    paper.position.set(0.04, 0.34, 0.2);
+    paper.rotation.set(-0.3, Math.PI, 0.18);
+    bag.position.set(SEAT_X - 0.05, SEAT_Y + 0.11, SEAT_Z + 0.44);
+    bag.rotation.y = 0.3;
+  };
+
   const atBoard = () => {
     // standing north of the departure board at z40, tipped back to
     // read the flaps, paper folded under his arm, bag left at the seat
@@ -157,7 +187,7 @@ export function buildCommuter(
     root: g,
     fig,
     isPresent: () => present,
-    reset(p: boolean, m: "seat" | "board" = "seat") {
+    reset(p: boolean, m: "seat" | "board" | "doze" = "seat") {
       present = p;
       mode = m;
       g.setEnabled(p);
@@ -170,8 +200,25 @@ export function buildCommuter(
       gatherT = 0;
       walkT = 0;
       doorWanted = false;
+      dozeTransT = -1;
+      poseLocked = false;
+      dozeGreetAllowed = false;
+      breathT = 0;
       if (m === "board") atBoard();
+      else if (m === "doze") doze();
       else seat();
+    },
+    startDoze() {
+      if (mode === "seat") {
+        mode = "doze";
+        dozeTransT = 2.5;
+      }
+    },
+    setDozePoseLock(h: boolean) {
+      poseLocked = h;
+    },
+    setDozeGreetAllowed(on: boolean) {
+      dozeGreetAllowed = on;
     },
     setDepart(opts) {
       depart = opts ? { at: opts.at, north: opts.north === true, speed: opts.speed ?? 1 } : null;
@@ -269,7 +316,7 @@ export function buildCommuter(
       // the passing-greeting: the inspector crossing the bench z gets a
       // chin-lift and a dipped paper. Fires once per pass, re-arms when
       // he is clear of the bench again.
-      if (greetEnabled && mode === "seat" && walkerPos) {
+      if (greetEnabled && (mode === "seat" || (mode === "doze" && dozeGreetAllowed)) && walkerPos) {
         if (!greeted && Math.abs(walkerPos.z - 33.3) < 1.4) {
           greetT = 1.15;
           greeted = true;
@@ -285,6 +332,30 @@ export function buildCommuter(
         paper.rotation.x = -0.5 - lift * 0.2;
         return; // the greeting holds his pose for its beat
       }
+      // a man asleep doesn't greet, glance, or turn pages — only
+      // breathes; the pose-lock variant hands every write to the anomaly
+      if (mode === "doze") {
+        if (poseLocked) return;
+        breathT += dt;
+        const sink = dozeTransT >= 0 ? 1 - Math.max(0, dozeTransT) / 2.5 : 1;
+        if (dozeTransT >= 0) {
+          dozeTransT -= dt;
+          // slide from the reading pose into the slump
+          head.rotation.x = 0.42 + sink * 0.43;
+          arms[0]!.rotation.x = -0.62 + sink * 0.27;
+          arms[1]!.rotation.x = -0.7 + sink * 0.38;
+          paper.position.y = 0.52 - sink * 0.18;
+          paper.rotation.z = 0.06 + sink * 0.12;
+          if (dozeTransT <= 0) doze();
+        } else {
+          // slow breathing — a chin that rises and settles, and the
+          // odd deeper dip that almost wakes him
+          head.rotation.x = 0.85 + Math.sin(breathT * 1.5) * 0.025;
+          head.rotation.z = 0.06 + Math.sin(breathT * 0.41) * 0.02;
+        }
+        return;
+      }
+      if (poseLocked) return;
       // glance up when someone passes close — a learned baseline habit;
       // anomalies that hold his gaze override this in their own update
       if (mode === "board") {
