@@ -773,7 +773,7 @@ export class LoopManager {
 
     // baseline clock: slow real-time sweep so the corridor feels alive
     this.baseClockMinute -= dt * 0.0016;
-    if (!this.activeDef || (this.activeDef.id !== "clock.reverse" && this.activeDef.id !== "clock.stopped")) {
+    if (!this.activeDef || !["clock.reverse", "clock.stopped", "clock.watches"].includes(this.activeDef.id)) {
       this.world.clock.minutePivot.rotation.z = this.baseClockMinute;
       this.world.clock.hourPivot.rotation.z = this.baseClockHour - this.baseClockMinute / 60;
     }
