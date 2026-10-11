@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **390 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **395 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1006,3 +1006,8 @@ sound-led anomaly carries a visual cue path.
 | 388 | `commuter.doze.stands` | Asleep On His Feet | At the departure board as always, except he's asleep standing — tipped just past balance. | moderate | 3 | character |
 | 389 | `commuter.doze.talks` | Talking In His Sleep | Asleep and murmuring: low phrases on a slow cadence, head jerking with each one. | subtle | 2 | character |
 | 390 | `commuter.doze.mid` | Drifted Off Mid-Page | He starts the loop reading and sinks into sleep while you watch — the transition is the tell. | subtle | 1 | character |
+| 391 | `commuter.steps.linger` | Steps Past The Door | The door seals behind him and his footsteps keep going four strides more on the other side. | subtle | 2 | character |
+| 392 | `commuter.steps.ahead` | Steps Ahead Of Him | Every footfall of his departure lands ~3.5 m ahead of his body — the sound and the walk refuse to line up. | moderate | 2 | character |
+| 393 | `commuter.steps.off` | Too Many Steps | His departure walks at its usual pace while the footfalls run near twice the stride. | moderate | 3 | character |
+| 394 | `commuter.paper.flurry` | Speed-Reading | Seated all loop, and a page rustles every second and a half — a speed no one reads at. | subtle | 1 | character |
+| 395 | `commuter.doze.breath` | His Breath Carries | Asleep, and his breathing reaches the far end of the corridor — a doubled inhale each cycle. | moderate | 2 | character |

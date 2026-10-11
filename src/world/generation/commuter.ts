@@ -51,6 +51,15 @@ export interface Commuter {
   /** allow the passing-greeting while dozing — he nods at the
    * inspector IN HIS SLEEP (commuter.deadsleep) */
   setDozeGreetAllowed(on: boolean): void;
+  /** per-stride step callback during departure walks — the app wires
+   *  playFootstep at ~0.45; anomalies may swap it (walkSilence pattern) */
+  onStep?: ((pos: Vector3) => void) | undefined;
+  /** soft-goods foley — page turns + the bag gather; the app wires
+   *  playRustle, and the call site passes the caption (null = none) */
+  onRustle?: (pos: Vector3, caption: string | null) => void;
+  /** slow doze breathing every other cycle (~8.4s) — the app wires
+   *  playBreath at low gain, no caption (ambient texture, not a tell) */
+  onBreath?: (pos: Vector3) => void;
   /** anomaly handle — the figure root (position/rotation/enabled) */
   root: TransformNode;
   /** figure pivots (hips, arms, headPivot) for anomaly posing */
@@ -133,6 +142,8 @@ export function buildCommuter(
   let departClock = 0;
   let gatherT = 0;
   let walkT = 0;
+  let lastStepPh = 0;
+  let lastBreathPh = -1;
   let doorWanted = false;
 
   const seat = () => {
@@ -183,7 +194,7 @@ export function buildCommuter(
     bag.rotation.y = 0.3;
   };
 
-  return {
+  const api: Commuter = {
     root: g,
     fig,
     isPresent: () => present,
@@ -199,6 +210,8 @@ export function buildCommuter(
       departClock = 0;
       gatherT = 0;
       walkT = 0;
+      lastStepPh = 0;
+      lastBreathPh = -1;
       doorWanted = false;
       dozeTransT = -1;
       poseLocked = false;
@@ -271,6 +284,13 @@ export function buildCommuter(
           const bob = Math.abs(Math.sin(walkT * 3.4)) * 0.028;
           p.y = bob;
           const swing = Math.sin(walkT * 3.4);
+          // footfalls on the same π-phase clock as the walker's —
+          // his stride reads at the corridor's ordinary cadence
+          const ph = Math.floor((walkT * 3.4) / Math.PI);
+          if (ph !== lastStepPh) {
+            lastStepPh = ph;
+            api.onStep?.(g.position);
+          }
           hips[0]!.rotation.x = swing * 0.5;
           hips[1]!.rotation.x = -swing * 0.5;
           arms[0]!.rotation.x = -swing * 0.28;
@@ -311,6 +331,7 @@ export function buildCommuter(
         if (departClock >= depart.at && departPhase === "none") {
           departPhase = "gather";
           gatherT = 0;
+          api.onRustle?.(g.position, "he gathers his things");
         }
       }
       // the passing-greeting: the inspector crossing the bench z gets a
@@ -352,6 +373,11 @@ export function buildCommuter(
           // odd deeper dip that almost wakes him
           head.rotation.x = 0.85 + Math.sin(breathT * 1.5) * 0.025;
           head.rotation.z = 0.06 + Math.sin(breathT * 0.41) * 0.02;
+          const bph = Math.floor((breathT * 1.5) / (Math.PI * 2));
+          if (bph !== lastBreathPh) {
+            lastBreathPh = bph;
+            if (bph % 2 === 0) api.onBreath?.(g.position);
+          }
         }
         return;
       }
@@ -385,6 +411,7 @@ export function buildCommuter(
       if (mode === "board") return;
       if (pageT > 28) {
         pageT = 0;
+        api.onRustle?.(g.position, "a page turns");
         arms[1]!.rotation.x = -0.7 - 0.35;
         setTimeout(() => {
           arms[1]!.rotation.x = -0.7;
@@ -392,4 +419,5 @@ export function buildCommuter(
       }
     },
   };
+  return api;
 }

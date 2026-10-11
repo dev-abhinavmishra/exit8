@@ -219,6 +219,12 @@ export class App {
     // the other inspector's stride — his footsteps are part of normal,
     // a distant softer cadence on the same bus as the player's own
     this.world.ambientWalker.onStep = (pos) => this.audio.playFootstep(pos, 0.5);
+    // the commuter's foley — same recipe, quieter: a civilian leaving
+    // doesn't tread like the inspector; rustles + sleeper's breath are
+    // the small sounds that keep a second presence honest
+    this.world.commuter.onStep = (pos) => this.audio.playFootstep(pos, 0.45);
+    this.world.commuter.onRustle = (pos, c) => this.audio.playRustle(pos, c);
+    this.world.commuter.onBreath = (pos) => this.audio.playBreath(pos, null, 0.3);
     // gamepad: A uses the focused interactable, start toggles pause
     this.player.onPadButton(0, () => {
       if (this.focused && this.state === "playing") this.focused.onUse();

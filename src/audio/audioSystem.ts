@@ -1239,7 +1239,7 @@ export class AudioSystem {
   /** Pages turning behind the records bank — four irregular soft
    *  rustles, lowpassed like paper in a dead room. Ambience bus:
    *  it's almost room tone. */
-  playRustle(pos: Vector3): void {
+  playRustle(pos: Vector3, caption: string | null = "pages turn behind the cabinets"): void {
     if (!this.ctx || !this.noiseBuffer) return;
     const ctx = this.ctx;
     const t0 = ctx.currentTime;
@@ -1266,7 +1266,7 @@ export class AudioSystem {
       src.start(t0 + at);
       src.stop(t0 + at + 0.38);
     }
-    this.caption("pages turn behind the cabinets", pos);
+    if (caption) this.caption(caption, pos);
   }
 
   /** A door shaken from inside — three quick low thuds in fast
@@ -1334,7 +1334,7 @@ export class AudioSystem {
   /** A breathy exhale — one long lowpassed noise swell with a soft
    *  attack and a slow fall, close enough to feel. Spatialized.
    *  Caption names the source — a shoulder, a drain, a vent. */
-  playBreath(pos: Vector3, caption = "a breath, close behind you"): void {
+  playBreath(pos: Vector3, caption: string | null = "a breath, close behind you", gain = 1): void {
     if (!this.ctx || !this.noiseBuffer) return;
     const ctx = this.ctx;
     const t0 = ctx.currentTime;
@@ -1347,14 +1347,14 @@ export class AudioSystem {
     lp.frequency.exponentialRampToValueAtTime(300, t0 + 0.55);
     const g = ctx.createGain();
     g.gain.setValueAtTime(0.001, t0);
-    g.gain.exponentialRampToValueAtTime(0.16 * sp.gain, t0 + 0.12);
+    g.gain.exponentialRampToValueAtTime(0.16 * gain * sp.gain, t0 + 0.12);
     g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.6);
     const pan = ctx.createStereoPanner();
     pan.pan.value = sp.pan;
     src.connect(lp).connect(g).connect(pan).connect(this.bus("voices"));
     src.start(t0, 0, 0.65);
     src.stop(t0 + 0.65);
-    this.caption(caption, pos);
+    if (caption) this.caption(caption, pos);
   }
 
   /** Inner door slide — a soft pneumatic hiss + servo whirr on open,
