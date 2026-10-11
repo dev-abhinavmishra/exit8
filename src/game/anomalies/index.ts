@@ -316,6 +316,7 @@ import { posterSwapped } from "./posterSwapped";
 import { postersMirror } from "./postersMirror";
 import { sheetsAdded } from "./sheetsAdded";
 import { noticeAmends } from "./noticeAmends";
+import { clockGone } from "./clockGone";
 
 import { corridorBreathes } from "./corridorBreathes";
 
@@ -633,4 +634,5 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   postersMirror,
   sheetsAdded,
   noticeAmends,
+  clockGone,
 ];
