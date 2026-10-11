@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **347 implemented** — 301 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **353 implemented** — 307 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -964,3 +964,9 @@ sound-led anomaly carries a visual cue path.
 | 345 | `arrow.extra` | A Fourth Route Mark | A fourth decal appears off-sequence on the west lane edge at z51. | subtle | 1 | object |
 | 346 | `gaze.shift` | The Figure Walks Away | INSPECTION POINT sign's pictogram strides left against its own right arrow. | subtle | 2 | object |
 | 347 | `chalk.marks` | Tally Marks | Chalk five-bar gates scratched on the east wall tiles. | subtle | 1 | object |
+| 348 | `bayplate.gone` | Missing Bay Plate | One records-bank label plate absent, frame and slip both gone. | subtle | 2 | object |
+| 349 | `ext.missing` | Missing Extinguisher | Extinguisher gone beside the fire point; bracket, cabinet and plaque remain. | subtle | 1 | object |
+| 350 | `mop.gone` | Mop Bucket Missing | The mop bucket by the west wall simply not there. | subtle | 2 | object |
+| 351 | `dir.gone` | Directory Sign Missing | ROUTE DIRECTORY wall sign gone; bare tile over the radiator. | subtle | 2 | object |
+| 352 | `intake.gone` | Intake Sign Missing | NORTH INTAKE sign gone; bare wall over the spawn stretch. | subtle | 2 | object |
+| 353 | `bell.gone` | Counter Bell Missing | The service bell on the clinic counter simply not there. | subtle | 2 | object |

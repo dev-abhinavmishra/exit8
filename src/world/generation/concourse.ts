@@ -2409,8 +2409,8 @@ export function buildConcourse(
   extTop.position.y = 0.24;
   const extHose = kit.box("prop.ext.hose", 0.025, 0.18, 0.03, mats.rubber, scene, ext);
   extHose.position = new Vector3(0.045, 0.13, 0);
-  const extBracket = kit.box("prop.ext.bracket", 0.04, 0.3, 0.16, mats.rubber, scene, ext);
-  extBracket.position = new Vector3(0.05, 0.02, 0);
+  const extBracket = kit.box("prop.ext.bracket", 0.04, 0.3, 0.16, mats.rubber, scene, root);
+  extBracket.position = new Vector3(C.xHalf - 0.2 + 0.05, 0.78 + 0.02, 18.55);
   registry.register("prop.extinguisher", ext);
 
   // vent grilles at the ambience anchors (high on the walls)
@@ -3880,6 +3880,7 @@ export function buildConcourse(
   bell.material = mats.steel;
   bell.parent = counter;
   bell.position = new Vector3(0.15, 0.59, 0.9);
+  registry.register("clinic.counter.bell", bell);
   // shutter hardware — bottom lock band + center lock case + wicket slot
   const lockband = kit.box("clinic.shutter.lockband", 0.02, 0.14, 4.2, mats.rubber, scene);
   lockband.parent = shutter;

@@ -304,6 +304,12 @@ import { arrowPoints } from "./arrowPoints";
 import { arrowExtra } from "./arrowExtra";
 import { gazeShift } from "./gazeShift";
 import { chalkMarks } from "./chalkMarks";
+import { bayplateGone } from "./bayplateGone";
+import { extMissing } from "./extMissing";
+import { mopGone } from "./mopGone";
+import { dirGone } from "./dirGone";
+import { intakeGone } from "./intakeGone";
+import { bellGone } from "./bellGone";
 
 import { corridorBreathes } from "./corridorBreathes";
 
@@ -609,4 +615,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   arrowExtra,
   gazeShift,
   chalkMarks,
+  bayplateGone,
+  extMissing,
+  mopGone,
+  dirGone,
+  intakeGone,
+  bellGone,
 ];

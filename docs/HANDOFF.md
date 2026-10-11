@@ -1364,3 +1364,21 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
 - Opposite of the torn-bundle lesson but same family: probe
   screenshots are the ground truth for "does it even render" — the
   first decal material looked plausible in code and rendered ~black.
+
+## arc33 — the absences
+
+- Six pure-removal anomalies, all the Exit 8 "it's simply not there"
+  type: `bayplate.gone` (one rng-picked records-bank plate + its paper
+  slip), `ext.missing` (whole extinguisher unit off the wall, bracket
+  left behind), `mop.gone`, `dir.gone` (ROUTE DIRECTORY off its tile),
+  `intake.gone` (NORTH INTAKE off the spawn stretch), `bell.gone`
+  (clinic counter bell).
+- Gen-time prep needed for honesty: `clinic.counter.bell` was never
+  registered (one-line fix); each `bay.plate.<z>.slip` was an
+  unregistered sibling of its plate — both registered so the paper
+  label leaves with the frame; `prop.ext.bracket` was parented to the
+  extinguisher node — reparented to root so the bracket stays when the
+  unit goes.
+- meshInfo can't see TransformNodes (getMeshByName meshes only) —
+  verify node hides via child-mesh state or screenshot diff; plain
+  registry names in requires[] still validate.
