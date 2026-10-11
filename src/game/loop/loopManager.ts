@@ -27,7 +27,7 @@ import { RngStream } from "../state/rng";
 import { StabilityIndex, type JudgmentResult } from "../progression/stability";
 import type { AnomalyRegistry } from "../anomalies/registry";
 import type { AnomalyContext, AnomalyDef, AnomalyInstance } from "../anomalies/types";
-import { drawTerminal, drawSign } from "../../world/generation/textures";
+import { drawTerminal, drawSign, drawFeed } from "../../world/generation/textures";
 import { COPY, SIGNS } from "../../data/signage";
 import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTexture";
 
@@ -128,6 +128,7 @@ export class LoopManager {
     return mat;
   }
   private baseClockMinute = 0;
+  private feedAcc = 0;
   private baseClockHour = 0;
 
   constructor(
@@ -776,6 +777,18 @@ export class LoopManager {
     if (!this.activeDef || !["clock.reverse", "clock.stopped", "clock.watches"].includes(this.activeDef.id)) {
       this.world.clock.minutePivot.rotation.z = this.baseClockMinute;
       this.world.clock.hourPivot.rotation.z = this.baseClockHour - this.baseClockMinute / 60;
+    }
+
+    // baseline feed: the corridor monitor repaints ~4 Hz with live dots
+    // for the walker and the player — feed.* anomalies own the pane
+    this.feedAcc += dt;
+    if (this.feedAcc >= 0.25 && (!this.activeDef || !this.activeDef.id.startsWith("feed."))) {
+      this.feedAcc = 0;
+      drawFeed(this.world.textures.feed, {
+        px: this.player.position.x,
+        pz: this.player.position.z,
+        wz: this.world.ambientWalker.root.position.z,
+      });
     }
   }
 }
