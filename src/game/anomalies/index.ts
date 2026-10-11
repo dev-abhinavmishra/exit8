@@ -410,6 +410,11 @@ import { feedAhead } from "./feedAhead";
 import { feedEmpty } from "./feedEmpty";
 import { feedFigure } from "./feedFigure";
 import { feedStatic } from "./feedStatic";
+import { skinDeepest } from "./skinDeepest";
+import { skinPristine } from "./skinPristine";
+import { skinSplit } from "./skinSplit";
+import { skinShift } from "./skinShift";
+import { adsAsh } from "./adsAsh";
 import { stallsShut } from "./stallsShut";
 import { dispenserUnrolled } from "./dispenserUnrolled";
 import { basinFull } from "./basinFull";
@@ -825,4 +830,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   feedEmpty,
   feedFigure,
   feedStatic,
+  skinDeepest,
+  skinPristine,
+  skinSplit,
+  skinShift,
+  adsAsh,
 ];

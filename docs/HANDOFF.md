@@ -1941,3 +1941,23 @@ arc46's head-on shots). Index wiring deferred until the arc54 suite
 finished (sweep reads index.ts live).
 
 455 implemented.
+
+## arc 56 — the skin spreads (in flight)
+
+Reskin parity + skin-anomaly layer. applyChapterSkin refactored into
+applyZoneTier (per-zone) + applyFixtureTiers (per-MESH zone lookup via
+getAbsolutePosition().z → zoneAt): lit fixtures (ads faces, feed
+screen, help.lamp, cctv.lens, board faces) now dim/tint with the zone
+they hang in — recording pins deliberately exempt (the red pin stays
+honest while the corridor dies). extraLights now save per-light
+intensities (was a compounding live-multiply). getChapterSkin()
+exposes the applied tier; applySplitSkin(north,south) splits the route
+at the zone midpoint.
+
+- `skin.deepest` — CH III skin a tier early.
+- `skin.pristine` — deep-shift loop arrives showroom-clean.
+- `skin.split` — north half today's skin, south half red dusk.
+- `skin.shift` — skin drifts a tier deeper and back every ~14s.
+- `ads.ash` — the three lightboxes die in sequence, stay dark.
+
+460 implemented.
