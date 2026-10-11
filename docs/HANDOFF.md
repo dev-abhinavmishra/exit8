@@ -1323,3 +1323,21 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
 - Wall-mounted box: position x=-C.xHalf+0.06 with rotation.y=π/2 — the
   local frame's +z faces the corridor. getAbsolutePosition on a rotated
   child gives true corridor coords for spawned debris (help.torn).
+
+## arc31 — the dead air
+
+- Five audio-layer anomalies, no new geometry: `announce.spatial`
+  (phantom PA over the gallery — `playAnnouncement` from a position no
+  horn covers), `horn.crackle` (new `audio.playCrackle` — 4–8 jittered
+  relay spits, band-passed noise bursts, distinct from `pa.deadair`'s
+  keyed carrier), `walk.silence` (wraps `ambientWalker.onStep` to a
+  no-op — restores the app's own wiring, not a stale closure),
+  `pitch.sags` (`setMachinePitch` drifting ~a semitone flat over
+  80–110 s via ease-in), `temp.drift` (gallery `LightZone` point +
+  `extraLights` diffuse lerped warm→cool on a smoothstep over ~20 s,
+  troffer glass untouched).
+- Reminder: cross-check catalog manifest ids against implemented
+  semantic equivalents before staging — the manifest's `svc.`/`cctv.`
+  prefixes map to shorter shipped ids, and `corridor.breathes` already
+  existed as a wall-motion spatial anomaly (staged dup caught by
+  typecheck's duplicate-identifier error).

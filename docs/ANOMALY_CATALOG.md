@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **337 implemented** — 291 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **342 implemented** — 296 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -954,3 +954,8 @@ sound-led anomaly carries a visual cue path.
 | 335 | `help.offhook` | The Handset Is Off | Handset hangs by its cord off the cradle. | moderate | 1 | object |
 | 336 | `help.torn` | The Grille Is Torn | Speaker grille wrenched off on the floor; black cavity behind. Ch II+. | moderate | 2 | object |
 | 337 | `help.gone` | The Help Point Is Gone | Whole unit unbolted; pale wall scar + cord stub. Ch II+. | moderate | 2 | object |
+| 338 | `announce.spatial` | Phantom PA | Announcement keys up over open gallery tile where no horn exists; 30–60 s cadence. | subtle | 3 | sound |
+| 339 | `horn.crackle` | Horn Spits Static | One PA horn spits clusters of relay static with no carrier; 2–3 volleys a loop. | subtle | 2 | sound |
+| 340 | `walk.silence` | Steps Swallowed | The inspector keeps his patrol cadence but his footsteps make no sound. | subtle | 2 | sound |
+| 341 | `pitch.sags` | The Hum Sags | Junction machinery thrum drifts ~a semitone flat over ~80–110 s and never resolves. | subtle | 2 | sound |
+| 342 | `temp.drift` | Cooling Light | Gallery zone's light throw slides warm→cool over ~20 s and holds. | subtle | 3 | lighting |

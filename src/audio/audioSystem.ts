@@ -868,6 +868,36 @@ export class AudioSystem {
     this.caption("the PA clicks — dead air", pos);
   }
 
+  /** A horn spits static — burst-cluster of relay spits, no carrier.
+   *  horn.crackle drives this; distinct from the keyed-mic dead air. */
+  playCrackle(pos: Vector3): void {
+    if (!this.ctx || !this.noiseBuffer) return;
+    const ctx = this.ctx;
+    const t0 = ctx.currentTime;
+    const sp = this.spatialParams(pos);
+    const pan = ctx.createStereoPanner();
+    pan.pan.value = sp.pan;
+    pan.connect(this.bus("voices"));
+    const spits = 4 + Math.floor(this.rng.draw() * 5); // 4–8 spits
+    let at = t0;
+    for (let i = 0; i < spits; i++) {
+      const src = ctx.createBufferSource();
+      src.buffer = this.noiseBuffer;
+      src.playbackRate.value = 2.4 + this.rng.draw() * 1.6;
+      const hp = ctx.createBiquadFilter();
+      hp.type = "highpass";
+      hp.frequency.value = 1800 + this.rng.draw() * 1400;
+      const g = ctx.createGain();
+      const dur = 0.02 + this.rng.draw() * 0.05;
+      g.gain.setValueAtTime(0.055 * sp.gain, at);
+      g.gain.exponentialRampToValueAtTime(0.001, at + dur);
+      src.connect(hp).connect(g).connect(pan);
+      src.start(at, this.rng.draw() * 0.8, dur + 0.02);
+      at += dur + 0.03 + this.rng.draw() * 0.14;
+    }
+    this.caption("static spits from a horn", pos);
+  }
+
   /** A vent sighs — the duct breathes once: airy noise swelling then
    *  dying over ~2.5s, band-limited like air through louvres, pitch
    *  sagging as the breath runs out. Spatialized to the grille. */
