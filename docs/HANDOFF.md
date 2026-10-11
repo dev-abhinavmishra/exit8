@@ -1562,3 +1562,32 @@ Catalog: 385 implemented / 329 registered.
 - Door ownership: loopManager ORs `commuter.wantsDoor` into the south
   door pulse — the auto-open stays player-proximity; anomalies never
   touch door targets directly.
+
+## arc 42 — the nap (doze baseline + 5 anomalies)
+
+Third seated habit: ~18% of seated loops he is ASLEEP upright —
+`reset(p, "doze")` sets the sunk pose (chin to chest, slack arms,
+paper slid). Doze update: breathing bob only — no greet, glance, or
+page turn; `startDoze()` slides a seated man under over ~2.5s.
+`setDozePoseLock` hands every pose write to the anomaly (anomaly
+update runs BEFORE commuter.update — the lock is what keeps baseline
+writes off him). `setDozeGreetAllowed` re-enables the greet while
+asleep. Departures stay seat-only; dozers never leave.
+
+Anomalies #386-390: commuter.startle (snaps awake inside arm's
+reach, stares the rest of the route), commuter.deadsleep (nods at the
+inspector while asleep — the impossible courtesy),
+commuter.doze.stands (asleep on his feet at the board),
+commuter.doze.talks (murmurs + head jerks on a cadence),
+commuter.doze.mid (seated-reading → sinks under live, mid-page).
+Catalog: 390 implemented / 329 registered.
+
+### lessons
+
+- Update order: loop.update (anomaly instance) runs BEFORE
+  commuter.update each frame — anomaly pose writes are clobbered
+  unless the baseline writer is locked out (poseLocked) or the pose
+  lives behind an early-return (departHold).
+- A new baseline mode must decay `lookT`/greet/page cleanly — gate
+  each baseline behavior on `mode ===` explicitly rather than
+  assuming modes are seat/board only.

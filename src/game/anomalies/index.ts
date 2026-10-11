@@ -344,6 +344,11 @@ import { commuterReturns } from "./commuterReturns";
 import { commuterNorth } from "./commuterNorth";
 import { commuterFled } from "./commuterFled";
 import { commuterMidflee } from "./commuterMidflee";
+import { commuterStartle } from "./commuterStartle";
+import { commuterDeadsleep } from "./commuterDeadsleep";
+import { commuterDozeStands } from "./commuterDozeStands";
+import { commuterDozeTalks } from "./commuterDozeTalks";
+import { commuterDozeMid } from "./commuterDozeMid";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -685,4 +690,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   commuterNorth,
   commuterFled,
   commuterMidflee,
+  commuterStartle,
+  commuterDeadsleep,
+  commuterDozeStands,
+  commuterDozeTalks,
+  commuterDozeMid,
 ];
