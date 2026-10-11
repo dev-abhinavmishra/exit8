@@ -262,6 +262,11 @@ import { commuterStare } from "./commuterStare";
 import { commuterGonePaper } from "./commuterGonePaper";
 import { commuterBench } from "./commuterBench";
 import { commuterDown } from "./commuterDown";
+import { boardDark } from "./boardDark";
+import { boardNotin } from "./boardNotin";
+import { boardFlick } from "./boardFlick";
+import { boardTilt } from "./boardTilt";
+import { boardGone } from "./boardGone";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -542,6 +547,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   commuterGonePaper,
   commuterBench,
   commuterDown,
+  boardDark,
+  boardNotin,
+  boardFlick,
+  boardTilt,
+  boardGone,
   walkerEyeless,
   walkerCrawl,
   signLoop8,

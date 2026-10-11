@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **327 implemented** — 281 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **332 implemented** — 286 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -944,3 +944,8 @@ sound-led anomaly carries a visual cue path.
 | 325 | `commuter.gone.paper` | He Left Mid-Read | No commuter; his folded paper still on the seat. | subtle | 1 | character |
 | 326 | `commuter.bench` | Wrong Bench Tonight | Same pose + paper on the NORTH bench. Ch II+. | moderate | 2 | character |
 | 327 | `commuter.down` | Slumped On The Bench | Slumped forward off the seat back, arm hanging. Ch III. | unmistakable | 3 | character |
+| 328 | `board.dark` | The Board Is Dead | Both faces sit black on the dead glass; rest of corridor lit. | moderate | 1 | lighting |
+| 329 | `board.notin` | Not In Service | Lower line reads NOT IN SERVICE where a departure should be. | subtle | 1 | object |
+| 330 | `board.flick` | It Keeps Re-Shuffling | Both lines keep re-shuffling split-flap glyphs all loop. Ch II+. | unmistakable | 2 | object |
+| 331 | `board.tilt` | The Board Hangs Crooked | Board racked ~7.5° off level on its stem, still reads fine. | moderate | 1 | object |
+| 332 | `board.gone` | The Board Is Gone | Housing + faces unbolted; stem dangles, plaster scar on ceiling. | moderate | 2 | object |

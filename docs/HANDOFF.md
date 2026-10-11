@@ -1294,3 +1294,18 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   so anomaly cleanups just call c.reset(wasPresent).
 - 5 anomalies manipulate the same node; all restore via reset(). Watch:
   commuter.upright positions him WEST of the walker's x=0.55 lane.
+
+## arc29 — the departure board (live text fixture)
+
+- Double-faced split-flap board on the centerline z40 (troffer pairs
+  ride x±0.9 — spine x=0 stays clear like clock z30). ONE DynamicTexture
+  - ONE StandardMaterial drives both faces: anomalies rewrite/kill via
+    drawBoard(t, content) once, affects both. emissiveTexture = same tex +
+    disableLighting so the board self-glows.
+- drawBoard(t, {line1, line2, dead}) in textures.ts — BOARD_BASE is the
+  restore content for every cleanup. board.flick shuffles glyphs ~7Hz
+  in update(); pass rng as `() => ctx.rng.draw()` (draw is a method —
+  unbound refs lose this).
+- Faces registered separately (board.face.n/s) for requires[]; the head
+  is board.head for whole-fixture anomalies (tilt/gone traverse
+  getChildMeshes excluding board.stem).

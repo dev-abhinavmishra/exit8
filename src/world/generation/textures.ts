@@ -1329,3 +1329,42 @@ export function makePhoneFace(scene: Scene): DynamicTexture {
   t.update();
   return finish(t);
 }
+
+// ─── the departure board face — split-flap amber on dead green-black.
+// Board content is passed in whole so anomalies can rewrite the same
+// texture (notin / flick / dark all draw through drawBoard). ────────
+export type BoardContent = { line1: string; line2: string; dead?: boolean };
+
+export const BOARD_BASE: BoardContent = {
+  line1: "8  CIRCULAR SERVICE",
+  line2: "NEXT TRAIN  23:47",
+};
+
+export function makeBoardFace(scene: Scene): DynamicTexture {
+  const t = tex("tex.board", 512, 128, scene);
+  drawBoard(t, BOARD_BASE);
+  return finish(t);
+}
+
+/** Paint the board. `dead` leaves the glass black (feed cut). */
+export function drawBoard(t: DynamicTexture, d: BoardContent): void {
+  const c = ctx(t);
+  c.fillStyle = "#070805";
+  c.fillRect(0, 0, 512, 128);
+  if (d.dead) {
+    t.update();
+    return;
+  }
+  // faint split-flap cell ruling
+  c.fillStyle = "rgba(255,180,92,0.06)";
+  for (let y = 8; y < 128; y += 8) c.fillRect(0, y, 512, 1);
+  c.fillStyle = "rgba(255,180,92,0.03)";
+  for (let x = 8; x < 512; x += 8) c.fillRect(x, 0, 1, 128);
+  c.textAlign = "center";
+  c.fillStyle = "#ffb45c";
+  c.font = "bold 34px 'Courier New', monospace";
+  c.fillText(d.line1, 256, 52);
+  c.font = "bold 30px 'Courier New', monospace";
+  c.fillText(d.line2, 256, 98);
+  t.update();
+}
