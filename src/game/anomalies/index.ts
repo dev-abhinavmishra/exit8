@@ -310,6 +310,12 @@ import { mopGone } from "./mopGone";
 import { dirGone } from "./dirGone";
 import { intakeGone } from "./intakeGone";
 import { bellGone } from "./bellGone";
+import { posterChanged } from "./posterChanged";
+import { posterDup } from "./posterDup";
+import { posterSwapped } from "./posterSwapped";
+import { postersMirror } from "./postersMirror";
+import { sheetsAdded } from "./sheetsAdded";
+import { noticeAmends } from "./noticeAmends";
 
 import { corridorBreathes } from "./corridorBreathes";
 
@@ -621,4 +627,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   dirGone,
   intakeGone,
   bellGone,
+  posterChanged,
+  posterDup,
+  posterSwapped,
+  postersMirror,
+  sheetsAdded,
+  noticeAmends,
 ];

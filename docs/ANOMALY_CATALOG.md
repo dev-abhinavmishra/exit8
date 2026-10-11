@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **353 implemented** — 307 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **359 implemented** — 313 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -970,3 +970,9 @@ sound-led anomaly carries a visual cue path.
 | 351 | `dir.gone` | Directory Sign Missing | ROUTE DIRECTORY wall sign gone; bare tile over the radiator. | subtle | 2 | object |
 | 352 | `intake.gone` | Intake Sign Missing | NORTH INTAKE sign gone; bare wall over the spawn stretch. | subtle | 2 | object |
 | 353 | `bell.gone` | Counter Bell Missing | The service bell on the clinic counter simply not there. | subtle | 2 | object |
+| 354 | `poster.changed` | Rewritten Poster | First notice-row poster's copy rewritten; same border, same paper. | subtle | 1 | object |
+| 355 | `poster.dup` | Duplicated Poster | A second frame reprints poster zero's art verbatim. | subtle | 1 | object |
+| 356 | `poster.swapped` | Posters Out Of Order | Two notice-row posters trade artwork in their frames. | subtle | 1 | object |
+| 357 | `posters.mirror` | Mirrored Prints | Every print on the notice row is mirrored; type reads backwards. | subtle | 2 | object |
+| 358 | `sheets.added` | A Sixth Memo | A sixth typed memo pinned crooked among the board's five. | subtle | 1 | object |
+| 359 | `notice.amends` | Amended Bulletin | A dominant sheet over the cork: INSPECTIONS SUSPENDED UNTIL FURTHER NOTICE. | subtle | 2 | object |
