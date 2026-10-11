@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **430 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **435 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1046,3 +1046,8 @@ sound-led anomaly carries a visual cue path.
 | 428 | `dispenser.unrolled` | The Whole Roll | The towel dispenser emptied itself — a tongue of paper hangs to the floor beside the bin. | moderate | 1 | object |
 | 429 | `basin.full` | Filled To The Rim | One basin is brim-full of dead-still water, a shade too dark for the tap. | moderate | 2 | object |
 | 430 | `dryer.hot` | The Dryer Is Warm | The hand dryer's cycle light is lit and warm air leaks the nozzle; nobody touched it. | moderate | 1 | lighting |
+| 431 | `alarm.pulled` | It Was Pulled | The pull lever hangs at its tripped angle — the call already went out. | moderate | 1 | spatial |
+| 432 | `alarm.open` | The Face Is Open | The station's face plate swung open on its hinge, works exposed, lever untouched. | moderate | 2 | spatial |
+| 433 | `alarm.gone` | No Alarm Tonight | The pull station is unbolted — a pale scar and two screw stubs on the tile. | unmistakable | 2 | spatial |
+| 434 | `alarm.knob.gone` | No Knob To Pull | The lever's pull knob is missing, the stem left bare. | subtle | 1 | object |
+| 435 | `alarm.blink` | It Is Blinking | A pin of red blinks inside the face — the heartbeat of a panel already tripped. | moderate | 2 | lighting |

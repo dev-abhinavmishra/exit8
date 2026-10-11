@@ -3136,6 +3136,42 @@ export function buildConcourse(
     registry.register("ceil.panel", ceilPanel);
   }
 
+  // ─── the pull station — a fire-alarm pull on the east wall at z47,
+  // reach height: a red steel box, a face plate on its hinge edge,
+  // and the pull lever inside with its knob. The corridor's one red
+  // thing that is allowed to be red. Registered so anomalies can pull
+  // the lever, swing the face, take the knob, or unbolt the box. ───
+  {
+    const alarm = new TransformNode("alarm", scene);
+    alarm.parent = root;
+    alarm.position = new Vector3(C.xHalf - 0.04, 1.5, 47.0);
+    const alarmMat = new StandardMaterial("mat.alarm", scene);
+    alarmMat.diffuseColor = new Color3(0.5, 0.05, 0.04);
+    alarmMat.specularColor = new Color3(0.3, 0.2, 0.2);
+    const abox = kit.box("alarm.box", 0.09, 0.15, 0.07, alarmMat, scene, alarm);
+    abox.position = new Vector3(0, 0, 0);
+    // face plate hinged on its north edge — anomalies swing it open
+    const aface = new TransformNode("alarm.face", scene);
+    aface.parent = alarm;
+    aface.position = new Vector3(-0.046, 0, -0.031);
+    const aplate = kit.box("alarm.face.plate", 0.008, 0.13, 0.062, alarmMat, scene, aface);
+    aplate.position = new Vector3(0, 0, 0.031);
+    // pull lever inside, pivoted at its top, knob on its end
+    const alever = kit.box("alarm.lever", 0.014, 0.07, 0.018, mats.rubber, scene, alarm);
+    alever.setPivotPoint(new Vector3(0, 0.033, 0));
+    alever.position = new Vector3(-0.038, 0.005, 0);
+    const aknob = kit.box("alarm.knob", 0.02, 0.026, 0.026, alarmMat, scene, alarm);
+    aknob.position = new Vector3(-0.038, -0.032, 0);
+    const alPlacardMat = new StandardMaterial("mat.alarm.placard", scene);
+    alPlacardMat.diffuseColor = new Color3(0.85, 0.83, 0.78);
+    const alPlacard = kit.box("alarm.placard", 0.006, 0.04, 0.09, alPlacardMat, scene, alarm);
+    alPlacard.position = new Vector3(-0.045, 0.115, 0);
+    registry.register("alarm", alarm);
+    registry.register("alarm.face", aface);
+    registry.register("alarm.lever", alever);
+    registry.register("alarm.knob", aknob);
+  }
+
   // ─── the niche — a staff rest corner surface-mounted on the east
   // wall z≈5.2: peg rail with a hi-vis jacket, a shelf with a thermos
   // and a lunch parcel, a low stool and the boots under it. The most
@@ -3850,7 +3886,7 @@ export function buildConcourse(
 
   // trench drain — a continuous grated channel along the west wall
   // base (trench drains cross thresholds; the bay mouth keeps it too)
-  const drainTex = new DynamicTexture("tex.drain.channel", { width: 1024, height: 64 }, scene, false);
+  const drainTex = new DynamicTexture("tex.gully.channel", { width: 1024, height: 64 }, scene, false);
   {
     const dctx = drainTex.getContext();
     dctx.fillStyle = "#14161a";
@@ -3864,13 +3900,13 @@ export function buildConcourse(
     dctx.fillRect(0, 58, 1024, 6);
     drainTex.update();
   }
-  const drainMat = new StandardMaterial("mat.drain.channel", scene);
+  const drainMat = new StandardMaterial("mat.gully.channel", scene);
   drainMat.diffuseTexture = drainTex;
   drainMat.specularColor = new Color3(0.03, 0.03, 0.03);
-  const drainCh = kit.plane("drain.channel", 0.24, C.z1 - C.z0 - 0.8, drainMat, scene, root);
+  const drainCh = kit.plane("gully.channel", 0.24, C.z1 - C.z0 - 0.8, drainMat, scene, root);
   drainCh.position = new Vector3(-(C.xHalf - 0.17), 0.009, (C.z0 + C.z1) / 2);
   drainCh.rotation.x = -Math.PI / 2;
-  registry.register("drain.channel", drainCh);
+  registry.register("gully.channel", drainCh);
 
   // pilot lamps beside each airlock mouth — the amber "route open"
   // indicator you learn to glance at before committing

@@ -1806,3 +1806,21 @@ under-anomalied at 5 ids; this batch fills the room's classic set.
 Lessons: stall doors register as `wash.stall.door.<i>` (loop-registered;
 grep `register.*wash` pattern misses the loop). Under-gap shins sell
 an occupied stall better than any upper-body geometry.
+
+## arc 51 — the pull station (fire-alarm pull + 5 anomalies)
+
+A red fire-alarm pull station on the east wall at z47, reach height:
+red steel box, hinge-pivoted `alarm.face` TransformNode plate,
+top-pivoted `alarm.lever` + `alarm.knob`, placard plate. 435 / 329.
+
+- `alarm.pulled` — lever swung down ~55° on its top pivot.
+- `alarm.open` — face plate yaw −1.9 into the corridor.
+- `alarm.gone` — node disabled + pale scar rectangle + screw stubs.
+- `alarm.knob.gone` — knob disabled, stem bare.
+- `alarm.blink` — mat.alarm emissive pulse on a 2.6s sine gate.
+
+Lessons: before inventing a fixture family, dump the registered-id
+namespace map (`rg -o 'register\("[a-z]+'` + uniq) — `drain` collided
+with BOTH `dress.drain.*` meshes (merge-prefix guard) and an existing
+`drain.channel` fixture; `gully` was also taken. `alarm.*` was open.
+There is no `mats.paper` — placards get their own StandardMaterial.
