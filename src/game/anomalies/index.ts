@@ -149,6 +149,11 @@ import { alarmOpen } from "./alarmOpen";
 import { alarmGone } from "./alarmGone";
 import { alarmKnobGone } from "./alarmKnobGone";
 import { alarmBlink } from "./alarmBlink";
+import { roachGone } from "./roachGone";
+import { roachHuge } from "./roachHuge";
+import { roachDead } from "./roachDead";
+import { roachSwarm } from "./roachSwarm";
+import { roachFlees } from "./roachFlees";
 import { figureDoubles } from "./figureDoubles";
 import { faceGlass } from "./faceGlass";
 import { airlockDark } from "./airlockDark";
@@ -785,4 +790,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   alarmGone,
   alarmKnobGone,
   alarmBlink,
+  roachGone,
+  roachHuge,
+  roachDead,
+  roachSwarm,
+  roachFlees,
 ];
