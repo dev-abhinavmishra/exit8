@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **370 implemented** — 324 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **375 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -986,3 +986,8 @@ sound-led anomaly carries a visual cue path.
 | 368 | `commuter.bag.gone` | Bag Missing | He reads his paper as always, but the satchel at his feet is gone. | subtle | 1 | object |
 | 369 | `commuter.gates` | Waiting at the Gates | He stands at the fare gates facing the way out, waiting. | moderate | 2 | character |
 | 370 | `commuter.twin` | Two Men, One Bench | A second man sits at the bench's far end — same clothes, same paper. | unmistakable | 3 | character |
+| 371 | `commuter.ignores` | No Passing Greeting | The inspector crosses the bench and the commuter never looks up. | subtle | 2 | character |
+| 372 | `commuter.follows` | Watching the Inspector Pass | The commuter stands at the bench edge, head tracking the inspector's whole pass. | moderate | 3 | character |
+| 373 | `walker.greets` | He Returns the Nod | The inspector's head turns to the bench as he crosses — he never acknowledges the man. | subtle | 2 | character |
+| 374 | `commuter.offers` | Offering the Paper | The commuter holds the paper out toward the lane as the inspector passes. | moderate | 2 | character |
+| 375 | `commuter.gone.bag` | Gone, Bag Left Behind | He is absent tonight and the satchel — not the paper — sits on the seat. | subtle | 2 | character |

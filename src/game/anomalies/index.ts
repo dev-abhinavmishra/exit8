@@ -259,6 +259,10 @@ import { patinaScratch } from "./patinaScratch";
 import { commuterUpright } from "./commuterUpright";
 import { commuterStare } from "./commuterStare";
 import { commuterGonePaper } from "./commuterGonePaper";
+import { commuterFollows } from "./commuterFollows";
+import { commuterGoneBag } from "./commuterGoneBag";
+import { commuterIgnores } from "./commuterIgnores";
+import { commuterOffers } from "./commuterOffers";
 import { commuterBench } from "./commuterBench";
 import { commuterBagGone } from "./commuterBagGone";
 import { commuterGates } from "./commuterGates";
@@ -329,6 +333,7 @@ import { noticeAmends } from "./noticeAmends";
 import { clockGone } from "./clockGone";
 
 import { corridorBreathes } from "./corridorBreathes";
+import { walkerGreets } from "./walkerGreets";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -354,6 +359,7 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   posterBacks,
   counterWorker,
   walkerBackwards,
+  walkerGreets,
   walkerStare,
   walkerMidstep,
   walkerOfflane,
@@ -586,6 +592,10 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   commuterGonePaper,
   commuterBench,
   commuterBagGone,
+  commuterFollows,
+  commuterGoneBag,
+  commuterIgnores,
+  commuterOffers,
   commuterGates,
   commuterMidboard,
   commuterPaperBlank,

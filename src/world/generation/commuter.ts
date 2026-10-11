@@ -19,8 +19,13 @@ import type { MaterialSet } from "../materials/library";
 import type { WorldRegistry } from "../registry";
 
 export interface Commuter {
-  /** per-frame baseline motion — head turns to a close passerby */
-  update(dt: number, playerPos?: Vector3): void;
+  /** per-frame baseline motion — head turns to a close passerby;
+   *  walkerPos feeds the passing-greeting: as the inspector crosses the
+   *  bench he lifts his chin and dips the paper — a learned baseline
+   *  courtesy (never returned). */
+  update(dt: number, playerPos?: Vector3, walkerPos?: Vector3): void;
+  /** anomalies may suppress the passing-greeting (commuter.ignores) */
+  setGreetEnabled(on: boolean): void;
   /** per-loop rebaseline: seat him (or not), or stand him at the
    * departure board checking times — a second learnable baseline */
   reset(present: boolean, mode?: "seat" | "board"): void;
@@ -88,6 +93,9 @@ export function buildCommuter(
 
   let present = true;
   let mode: "seat" | "board" = "seat";
+  let greetEnabled = true;
+  let greeted = false;
+  let greetT = 0;
   let lookT = 0;
   let pageT = 0;
 
@@ -135,8 +143,30 @@ export function buildCommuter(
       if (m === "board") atBoard();
       else seat();
     },
-    update(dt: number, playerPos?: Vector3) {
+    setGreetEnabled(on: boolean) {
+      greetEnabled = on;
+    },
+    update(dt: number, playerPos?: Vector3, walkerPos?: Vector3) {
       if (!present || !playerPos) return;
+      // the passing-greeting: the inspector crossing the bench z gets a
+      // chin-lift and a dipped paper. Fires once per pass, re-arms when
+      // he is clear of the bench again.
+      if (greetEnabled && mode === "seat" && walkerPos) {
+        if (!greeted && Math.abs(walkerPos.z - 33.3) < 1.4) {
+          greetT = 1.15;
+          greeted = true;
+        } else if (Math.abs(walkerPos.z - 33.3) > 2.6) {
+          greeted = false;
+        }
+      }
+      if (greetT > 0) {
+        greetT -= dt;
+        const lift = Math.min(1, (1.15 - greetT) * 4) * Math.min(1, greetT * 3);
+        head.rotation.x = 0.42 - lift * 0.55; // chin up, off the page
+        paper.position.y = 0.52 - lift * 0.08;
+        paper.rotation.x = -0.5 - lift * 0.2;
+        return; // the greeting holds his pose for its beat
+      }
       // glance up when someone passes close — a learned baseline habit;
       // anomalies that hold his gaze override this in their own update
       if (mode === "board") {

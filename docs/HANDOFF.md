@@ -1428,7 +1428,7 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   '8 CIRCULAR SERVICE / NEXT TRAIN 23:47' reads correctly both ways.
   Lesson: ANY mesh meant to carry readable text should be a plane —
   box faces mirror textures on the far-side surface.
-||||||| parent of 959ada3 (arc 37: the niche — staff rest corner on the east wall + 5 anomalies (#361-365))
+  ||||||| parent of 959ada3 (arc 37: the niche — staff rest corner on the east wall + 5 anomalies (#361-365))
 
 ## arc 37 — the niche (fixture + 5 anomalies)
 
@@ -1485,3 +1485,26 @@ Catalog: 370 implemented / 324 registered.
   StandardMaterial → `.diffuseTexture` (DynamicTexture).
 - Live-texture anomalies repaint the spec in cleanup rather than
   swapping meshes — same rule as the poster redraws.
+
+## arc 39 — the brief exchange (walker↔commuter courtesy + 5 anomalies)
+
+Baseline choreography: when the inspector crosses the bench z (33.3),
+the commuter lifts his chin and dips the paper — a learned greeting.
+`commuter.update(dt, playerPos, walkerPos)` fires it once per pass
+(`greetT` anim, re-arms >2.6m off the bench); `setGreetEnabled(false)`
+suppresses it for anomalies. AmbientWalker grew `root`, `fig`, and
+`setGreetAt(gz)` — an armed `greetZ` crossing plays a ~1.1s head-turn
+toward the bench in the neutral pose branch; baseline never arms it.
+
+Anomalies #371-375: commuter.ignores (no greeting), commuter.follows
+(on his feet, head tracking the whole pass), walker.greets (armed
+greetAt — he returns the nod), commuter.offers (paper held out to the
+lane), commuter.gone.bag (absent, satchel left on the seat — the wrong
+trace). Catalog: 375 implemented / 329 registered.
+
+### lessons
+
+- Cross-agent choreography: pass the counterpart's position through
+  update() args (app.ts wires walkerPos), never reach across worlds
+  inside a generation module. Anomalies can read counterpart state via
+  ctx.world.* handles — keep those read-only in defs.
