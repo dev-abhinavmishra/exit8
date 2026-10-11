@@ -267,6 +267,11 @@ import { boardNotin } from "./boardNotin";
 import { boardFlick } from "./boardFlick";
 import { boardTilt } from "./boardTilt";
 import { boardGone } from "./boardGone";
+import { helpLit } from "./helpLit";
+import { helpRings } from "./helpRings";
+import { helpOffhook } from "./helpOffhook";
+import { helpTorn } from "./helpTorn";
+import { helpGone } from "./helpGone";
 import { walkerEyeless } from "./walkerEyeless";
 import { walkerCrawl } from "./walkerCrawl";
 import { signLoop8 } from "./signLoop8";
@@ -552,6 +557,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   boardFlick,
   boardTilt,
   boardGone,
+  helpLit,
+  helpRings,
+  helpOffhook,
+  helpTorn,
+  helpGone,
   walkerEyeless,
   walkerCrawl,
   signLoop8,
