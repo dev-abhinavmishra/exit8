@@ -181,6 +181,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   // floor damp patch — dark radial wash with a sheen, nearly flat
   tex.puddle.hasAlpha = true;
   const puddle = new StandardMaterial("mat.puddle", scene);
+  puddle.zOffset = -2;
   puddle.diffuseTexture = tex.puddle;
   puddle.opacityTexture = tex.puddle;
   puddle.specularColor = new Color3(0.5, 0.5, 0.5);
@@ -197,12 +198,14 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
 
   // damp staining / wall wear — translucent dark wash decal
   const grime = new StandardMaterial("mat.grime", scene);
+  grime.zOffset = -2;
   grime.diffuseColor = new Color3(0.05, 0.045, 0.04);
   grime.specularColor = new Color3(0, 0, 0);
   grime.emissiveColor = new Color3(0.05, 0.045, 0.04);
   grime.alpha = 0.3;
 
   const aoStrip = new StandardMaterial("mat.aoStrip", scene);
+  aoStrip.zOffset = -2;
   aoStrip.diffuseTexture = tex.fadeStrip;
   aoStrip.useAlphaFromDiffuseTexture = true;
   aoStrip.disableLighting = true;
@@ -213,6 +216,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   const clockFace = new StandardMaterial("mat.clockFace", scene);
   clockFace.diffuseTexture = tex.clockFace;
   clockFace.emissiveColor = new Color3(0.18, 0.18, 0.17);
+  clockFace.zOffset = -2;
 
   const clockHand = new StandardMaterial("mat.clockHand", scene);
   clockHand.diffuseColor = new Color3(0.16, 0.17, 0.19);
@@ -228,6 +232,8 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     m.diffuseTexture = t;
     m.emissiveColor = new Color3(0.45, 0.45, 0.45);
     m.specularColor = new Color3(0.02, 0.02, 0.02);
+    // flat overlay — pull depth a notch so near-flush planes never fight
+    m.zOffset = -2;
     sign.set(id, m);
   }
 
@@ -237,6 +243,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     m.emissiveTexture = t;
     m.emissiveColor = new Color3(0.3, 0.3, 0.3);
     m.specularColor = new Color3(0.03, 0.03, 0.03);
+    m.zOffset = -2;
     return m;
   });
 
@@ -249,6 +256,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     m.emissiveTexture = t;
     m.emissiveColor = new Color3(0.55, 0.55, 0.55);
     m.specularColor = new Color3(0.02, 0.02, 0.02);
+    m.zOffset = -2;
     return m;
   });
 
@@ -257,8 +265,10 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   terminal.emissiveTexture = tex.terminal;
   terminal.emissiveColor = new Color3(0.9, 0.9, 0.9);
   terminal.disableLighting = true;
+  terminal.zOffset = -2;
 
   const condensation = new StandardMaterial("mat.condensation", scene);
+  condensation.zOffset = -2;
   condensation.diffuseTexture = tex.condensation;
   condensation.opacityTexture = tex.condensation;
   condensation.emissiveTexture = tex.condensation;

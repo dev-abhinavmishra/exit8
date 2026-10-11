@@ -20,7 +20,7 @@ export interface InputState {
   strafe: number; // -1..1
 }
 
-const WALK_SPEED = 2.6;
+const WALK_SPEED = 1.9; // Exit-8 pace — deliberate inspect-as-you-walk, not a jog
 const ACCEL = 14;
 const DECEL = 18;
 const BOB_FREQ = 1.85; // Hz at full speed — ~step cadence
@@ -150,7 +150,7 @@ export class PlayerController {
     if (!this.enabled) return;
     const s = 0.0022 * this.settings.controls.sensitivity;
     this.yaw -= dx * s;
-    this.pitch -= dy * s * (this.settings.controls.invertY ? -1 : 1);
+    this.pitch += dy * s * (this.settings.controls.invertY ? -1 : 1); // mouse down = look down; invertY flips
     this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, this.pitch));
   }
 
@@ -230,7 +230,7 @@ export class PlayerController {
     if (this.enabled && (rx !== 0 || ry !== 0)) {
       const rate = 2.6 * this.settings.controls.sensitivity;
       this.yaw -= rx * rate * dt;
-      this.pitch -= ry * rate * dt * (this.settings.controls.invertY ? -1 : 1);
+      this.pitch += ry * rate * dt * (this.settings.controls.invertY ? -1 : 1);
       this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, this.pitch));
     }
     const lx = dz(gp.axes[0] ?? 0);

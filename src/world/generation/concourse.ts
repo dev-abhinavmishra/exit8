@@ -165,6 +165,7 @@ function hazardBandMaterial(scene: Scene): StandardMaterial {
   _hazardBandMat = new StandardMaterial("mat.hazardBand", scene);
   _hazardBandMat.diffuseTexture = tex;
   _hazardBandMat.specularColor = Color3.Black();
+  _hazardBandMat.zOffset = -2;
   return _hazardBandMat;
 }
 
@@ -189,6 +190,7 @@ function paperMaterial(scene: Scene): StandardMaterial {
   _paperMat.emissiveTexture = t;
   _paperMat.emissiveColor = new Color3(0.35, 0.35, 0.33); // readable in dim zones
   _paperMat.specularColor = new Color3(0.02, 0.02, 0.02);
+  _paperMat.zOffset = -2;
   return _paperMat;
 }
 
@@ -770,6 +772,7 @@ export function buildConcourse(
   gd3.position = new Vector3(C.xHalf + 0.46, 0.88, 30);
   // keyboards + paper clutter on the desk tops
   const galPaper = new StandardMaterial("mat.gal.paper", scene);
+  galPaper.zOffset = -2;
   galPaper.diffuseColor = new Color3(0.72, 0.7, 0.64);
   galPaper.emissiveColor = new Color3(0.07, 0.065, 0.05);
   for (const dz of [22.5, 26.5, 30]) {
@@ -1223,6 +1226,7 @@ export function buildConcourse(
     stencilMat.emissiveColor = new Color3(0.25, 0.25, 0.23);
     stencilMat.opacityTexture = stencilTex;
     stencilMat.disableLighting = true;
+    stencilMat.zOffset = -2;
     const stencilPlane = kit.plane("junction.bay.stencil", 0.7, 0.35, stencilMat, scene);
     stencilPlane.position = new Vector3(backFace + 0.02, 2.0, BAY_Z0 + 0.7);
     stencilPlane.rotation.y = Math.PI / 2;
@@ -3008,6 +3012,7 @@ export function buildConcourse(
     feedMat.emissiveTexture = tex.feed;
     feedMat.emissiveColor = new Color3(0.5, 0.52, 0.5);
     feedMat.specularColor = new Color3(0.02, 0.02, 0.02);
+    feedMat.zOffset = -2;
     const bracket = kit.box("feed.bracket", 0.1, 0.05, 0.05, mats.steel, scene, root);
     bracket.position = new Vector3(C.xHalf - 0.1, 2.02, 21.2);
     const monitor = new TransformNode("feed.monitor", scene);
