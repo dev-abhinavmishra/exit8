@@ -2930,6 +2930,86 @@ export function buildConcourse(
     registry.register("help.handset", handset);
   }
 
+  // ─── the niche — a staff rest corner surface-mounted on the east
+  // wall z≈5.2: peg rail with a hi-vis jacket, a shelf with a thermos
+  // and a lunch parcel, a low stool and the boots under it. The most
+  // human square metre in the corridor — somebody works here. ───────
+  {
+    const nook = new TransformNode("niche", scene);
+    nook.parent = root;
+    const nx = C.xHalf - 0.1;
+    const nRail = kit.box("niche.rail", 0.05, 0.06, 0.62, mats.steel, scene, nook);
+    nRail.position = new Vector3(nx, 1.86, 5.2);
+    registry.register("niche.rail", nRail);
+    for (let pi = 0; pi < 3; pi++) {
+      const nPeg = kit.box(`niche.peg.${pi}`, 0.07, 0.03, 0.03, mats.steel, scene, nook);
+      nPeg.position = new Vector3(nx - 0.05, 1.83, 5.0 + pi * 0.2);
+      registry.register(`niche.peg.${pi}`, nPeg);
+    }
+    const nJacket = new TransformNode("niche.jacket", scene);
+    nJacket.parent = nook;
+    nJacket.position = new Vector3(nx - 0.1, 1.52, 5.2);
+    const nJbody = kit.box("niche.jacket.body", 0.1, 0.56, 0.3, mats.cabinetRed, scene, nJacket);
+    nJbody.position = new Vector3(0, -0.1, 0);
+    for (const sz of [1, -1]) {
+      const nSleeve = kit.box(
+        `niche.jacket.sleeve.${sz > 0 ? "f" : "b"}`,
+        0.08,
+        0.44,
+        0.07,
+        mats.cabinetRed,
+        scene,
+        nJacket,
+      );
+      nSleeve.position = new Vector3(-0.01, -0.14, sz * 0.19);
+      nSleeve.rotation.z = 0.12;
+    }
+    const nJcol = kit.box("niche.jacket.collar", 0.1, 0.07, 0.22, mats.rubber, scene, nJacket);
+    nJcol.position = new Vector3(0, 0.22, 0);
+    const nJstripe = kit.box("niche.jacket.stripe", 0.11, 0.05, 0.28, mats.commitmentStripe, scene, nJacket);
+    nJstripe.position = new Vector3(0, -0.08, 0);
+    registry.register("niche.jacket", nJacket);
+    const nShelf = kit.box("niche.shelf", 0.24, 0.03, 0.72, mats.steel, scene, nook);
+    nShelf.position = new Vector3(nx - 0.06, 1.32, 5.2);
+    registry.register("niche.shelf", nShelf);
+    const nThermos = kit.box("niche.thermos", 0.09, 0.18, 0.09, mats.steel, scene, nook);
+    nThermos.position = new Vector3(nx - 0.08, 1.425, 5.02);
+    registry.register("niche.thermos", nThermos);
+    const nLunch = kit.box("niche.lunch", 0.12, 0.07, 0.18, mats.grime, scene, nook);
+    nLunch.position = new Vector3(nx - 0.08, 1.37, 5.4);
+    nLunch.rotation.y = 0.2;
+    registry.register("niche.lunch", nLunch);
+    const nStool = new TransformNode("niche.stool", scene);
+    nStool.parent = nook;
+    nStool.position = new Vector3(nx - 0.34, 0.24, 5.55);
+    kit.box("niche.stool.seat", 0.3, 0.05, 0.3, mats.steel, scene, nStool);
+    for (const [lx, lz] of [
+      [1, 1],
+      [1, -1],
+      [-1, 1],
+      [-1, -1],
+    ] as const) {
+      const nLeg = kit.box(`niche.stool.leg.${lx}.${lz}`, 0.04, 0.22, 0.04, mats.steel, scene, nStool);
+      nLeg.position = new Vector3(lx * 0.11, -0.135, lz * 0.11);
+    }
+    registry.register("niche.stool", nStool);
+    colliders.push(
+      kit.collider("niche.stool.col", 0.34, 0.5, 0.34, new Vector3(nx - 0.34, 0.24, 5.55), scene, root),
+    );
+    for (let bi = 0; bi < 2; bi++) {
+      const nBoot = new TransformNode(`niche.boot.${bi}`, scene);
+      nBoot.parent = nook;
+      nBoot.position = new Vector3(nx - 0.34, 0, 5.28 + bi * 0.11);
+      nBoot.rotation.y = -0.15 + bi * 0.1;
+      const nFoot = kit.box(`niche.boot.${bi}.foot`, 0.1, 0.07, 0.22, mats.rubber, scene, nBoot);
+      nFoot.position = new Vector3(0, 0.035, 0.05);
+      const nShaft = kit.box(`niche.boot.${bi}.shaft`, 0.09, 0.18, 0.1, mats.rubber, scene, nBoot);
+      nShaft.position = new Vector3(0, 0.09, -0.03);
+      registry.register(`niche.boot.${bi}`, nBoot);
+    }
+    registry.register("niche", nook);
+  }
+
   // ─── route decals — three worn painted arrows on the terrazzo's
   // right-lane edge, pointing south to the inspection point. The only
   // floor-level wayfinding; each registers so anomalies can lose one,

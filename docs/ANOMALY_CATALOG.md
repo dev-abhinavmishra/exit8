@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **360 implemented** — 314 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **365 implemented** — 319 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -976,3 +976,8 @@ sound-led anomaly carries a visual cue path.
 | 357 | `posters.mirror` | Mirrored Prints | Every print on the notice row is mirrored; type reads backwards. | subtle | 2 | object |
 | 358 | `sheets.added` | A Sixth Memo | A sixth typed memo pinned crooked among the board's five. | subtle | 1 | object |
 | 359 | `notice.amends` | Amended Bulletin | A dominant sheet over the cork: INSPECTIONS SUSPENDED UNTIL FURTHER NOTICE. | subtle | 2 | object |
+| 361 | `niche.bare` | Jacket Gone Off the Hooks | The staff nook's peg rail is empty; the hi-vis jacket is gone. | subtle | 2 | object |
+| 362 | `niche.stool.down` | Stool Tipped Over | The nook's stool lies on its side; the boots are knocked askew. | moderate | 1 | object |
+| 363 | `niche.boots.extra` | A Second Pair of Boots | A second pair of work boots stands beside the usual pair. | subtle | 2 | object |
+| 364 | `niche.shelf.bare` | Shelf Cleared Out | The nook's shelf is empty — thermos and lunch parcel both gone. | subtle | 1 | object |
+| 365 | `niche.thermos.steam` | Steam Off the Thermos | A thin wisp rises off the thermos; somebody was just here. | moderate | 1 | object |

@@ -307,6 +307,11 @@ import { chalkMarks } from "./chalkMarks";
 import { bayplateGone } from "./bayplateGone";
 import { extMissing } from "./extMissing";
 import { mopGone } from "./mopGone";
+import { nicheBare } from "./nicheBare";
+import { nicheBootsExtra } from "./nicheBootsExtra";
+import { nicheShelfBare } from "./nicheShelfBare";
+import { nicheStoolDown } from "./nicheStoolDown";
+import { nicheThermosSteam } from "./nicheThermosSteam";
 import { dirGone } from "./dirGone";
 import { intakeGone } from "./intakeGone";
 import { bellGone } from "./bellGone";
@@ -625,6 +630,11 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   bayplateGone,
   extMissing,
   mopGone,
+  nicheBare,
+  nicheBootsExtra,
+  nicheShelfBare,
+  nicheStoolDown,
+  nicheThermosSteam,
   dirGone,
   intakeGone,
   bellGone,

@@ -1428,3 +1428,36 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   '8 CIRCULAR SERVICE / NEXT TRAIN 23:47' reads correctly both ways.
   Lesson: ANY mesh meant to carry readable text should be a plane —
   box faces mirror textures on the far-side surface.
+||||||| parent of 959ada3 (arc 37: the niche — staff rest corner on the east wall + 5 anomalies (#361-365))
+
+## arc 37 — the niche (fixture + 5 anomalies)
+
+East wall z≈5.2 (between the intake sign and the report board): a
+staff rest corner surface-mounted on `wall.right.0` — peg rail with a
+hi-vis jacket, shelf with thermos + lunch parcel, low stool (own
+collider), boots beneath. Registered `niche.*`: rail, peg.0-2, jacket,
+shelf, thermos, lunch, stool, boot.0/1.
+
+Anomalies #361-365: niche.bare (jacket off the hooks),
+niche.stool.down (tipped + boots askew), niche.boots.extra (a second
+pair), niche.shelf.bare (thermos+lunch gone),
+niche.thermos.steam (fresh pour wisp). All probe-verified live.
+Catalog: 365 implemented / 319 registered.
+
+### lessons
+
+- MaterialSet in concourse.ts has NO coat/hiviz/paper/wood/cabinet
+  keys — `sign` is a Map and `poster` an array, not Materials.
+  Workwear red = `mats.cabinetRed`; bright stripe =
+  `mats.commitmentStripe`; dull parcel = `mats.grime`.
+- The merge-prefix validator maps kit.* var names → mesh names per
+  file; reusing common vars (rail, leg, foot, boot) collides with
+  earlier dress.* assignments and flags false positives. Prefix
+  block-local vars uniquely (nRail, nBoot...).
+- Probe gotcha: `meshInfo` only resolves Mesh names — TransformNode
+  roots (niche.jacket/stool/boot) return null; probe the child
+  meshes (jacket.body, stool.seat, boot.N.foot).
+- `?e2e=1` alone still tries WebGPU first and logs a fatal before
+  falling back — ready takes up to ~2min under SwiftShader; wait
+  150s like the specs do. Yaw convention: -π/2 faces west (-x);
+  positive yaw turns toward -z.
