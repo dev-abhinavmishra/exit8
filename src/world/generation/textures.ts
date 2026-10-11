@@ -675,6 +675,7 @@ export function drawAd(
     c.font = "12px Arial, sans-serif";
     c.fillText("ADVERTISING — CIVIC TRANSIT", w / 2, h - 44);
   }
+  t.update();
 }
 
 function makeAds(scene: Scene): DynamicTexture[] {
