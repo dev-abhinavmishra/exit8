@@ -2966,6 +2966,97 @@ export function buildConcourse(
     registry.register("cctv.led", led);
   }
 
+  // ─── the underworld — a maintenance well set into the west lane at
+  // z31: a raised steel rim frame, a dark pit mouth (the alcove-drain
+  // trick — pure darkness inside a frame reads as depth), a bolted
+  // cover plate with grip slots, and a rung ladder riding just under
+  // the cover where it can never be seen. The corridor's one way down.
+  // Cover and ladder are transform-registered so anomalies can slide
+  // the cover aside, lean it on the wall, lift the ladder out, or let
+  // a glow leak the seam. ───
+  {
+    const well = new TransformNode("well", scene);
+    well.parent = root;
+    well.position = new Vector3(-0.85, 0, 31.0);
+    // rim: four steel bars, outer 0.9 x 1.5, mouth 0.72 x 1.32, top y≈0.045
+    const rimMat = mats.steel;
+    const rimN = kit.box("well.rim.n", 0.9, 0.045, 0.09, rimMat, scene, well);
+    rimN.position = new Vector3(0, 0.0225, -0.705);
+    const rimS = kit.box("well.rim.s", 0.9, 0.045, 0.09, rimMat, scene, well);
+    rimS.position = new Vector3(0, 0.0225, 0.705);
+    const rimE = kit.box("well.rim.e", 0.09, 0.045, 1.32, rimMat, scene, well);
+    rimE.position = new Vector3(0.405, 0.0225, 0);
+    const rimW = kit.box("well.rim.w", 0.09, 0.045, 1.32, rimMat, scene, well);
+    rimW.position = new Vector3(-0.405, 0.0225, 0);
+    // the pit: a near-black slab filling the mouth — reads as a hole
+    const pitMat = new StandardMaterial("mat.well.pit", scene);
+    pitMat.diffuseColor = new Color3(0.008, 0.009, 0.012);
+    pitMat.specularColor = new Color3(0.04, 0.05, 0.06);
+    const pit = kit.box("well.pit", 0.74, 0.006, 1.34, pitMat, scene, well);
+    pit.position = new Vector3(0, 0.006, 0);
+    // the ladder: two rails + three rungs, parked under the cover
+    const wellLadder = new TransformNode("well.ladder", scene);
+    wellLadder.parent = well;
+    wellLadder.position = new Vector3(-0.28, -0.16, 0);
+    wellLadder.rotation.z = 0.16; // leaning to the west rail
+    for (const rx of [-0.09, 0.09]) {
+      const rail = kit.box(
+        `well.ladder.rail.${rx < 0 ? "a" : "b"}`,
+        0.024,
+        0.9,
+        0.024,
+        mats.steel,
+        scene,
+        wellLadder,
+      );
+      rail.position = new Vector3(rx, 0, 0);
+    }
+    for (let r = 0; r < 3; r++) {
+      const rung = kit.box(`well.ladder.rung.${r}`, 0.18, 0.02, 0.03, mats.steel, scene, wellLadder);
+      rung.position = new Vector3(0, 0.34 - r * 0.28, 0);
+    }
+    // the cover: bolted plate, a touch narrower than the mouth so the
+    // seam line stays visible; grip slots + corner bolts ride along
+    const wellCover = new TransformNode("well.cover", scene);
+    wellCover.parent = well;
+    wellCover.position = new Vector3(0, 0.052, 0);
+    const coverPlate = kit.box("well.cover.plate", 0.68, 0.022, 1.26, rimMat, scene, wellCover);
+    coverPlate.position = new Vector3(0, 0, 0);
+    for (const gz of [-0.42, 0.42]) {
+      const grip = kit.box(
+        `well.cover.g.${gz < 0 ? "n" : "s"}`,
+        0.09,
+        0.024,
+        0.03,
+        mats.rubber,
+        scene,
+        wellCover,
+      );
+      grip.position = new Vector3(0, 0.001, gz);
+    }
+    for (const [bx, bz] of [
+      [-0.29, -0.58],
+      [0.29, -0.58],
+      [-0.29, 0.58],
+      [0.29, 0.58],
+    ] as const) {
+      const bolt = kit.box(
+        `well.cover.b.${bx < 0 ? "w" : "e"}${bz < 0 ? "n" : "s"}`,
+        0.035,
+        0.026,
+        0.035,
+        mats.rubber,
+        scene,
+        wellCover,
+      );
+      bolt.position = new Vector3(bx, 0.002, bz);
+    }
+    registry.register("well", well);
+    registry.register("well.pit", pit);
+    registry.register("well.cover", wellCover);
+    registry.register("well.ladder", wellLadder);
+  }
+
   // ─── the niche — a staff rest corner surface-mounted on the east
   // wall z≈5.2: peg rail with a hi-vis jacket, a shelf with a thermos
   // and a lunch parcel, a low stool and the boots under it. The most
