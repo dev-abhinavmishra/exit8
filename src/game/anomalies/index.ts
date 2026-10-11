@@ -379,6 +379,11 @@ import { mothSwarm } from "./mothSwarm";
 import { mothDead } from "./mothDead";
 import { mothHuge } from "./mothHuge";
 import { mothOrbit } from "./mothOrbit";
+import { ceilAjar } from "./ceilAjar";
+import { ceilOpen } from "./ceilOpen";
+import { ceilLit } from "./ceilLit";
+import { ceilCord } from "./ceilCord";
+import { ceilFallen } from "./ceilFallen";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -755,4 +760,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   mothDead,
   mothHuge,
   mothOrbit,
+  ceilAjar,
+  ceilOpen,
+  ceilLit,
+  ceilCord,
+  ceilFallen,
 ];

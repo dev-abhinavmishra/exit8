@@ -3083,6 +3083,55 @@ export function buildConcourse(
     registry.register("moth.body", mb);
   }
 
+  // ─── the plenum — a ceiling access panel in the tee grid at z28,
+  // between the troffer lanes: a steel rim frame, a dark void plane
+  // inside the mouth (the well recipe, overhead), and a removable
+  // panel with grip slots. The corridor's one way UP. Panel and void
+  // registered so anomalies can slide it ajar, drop it to the floor,
+  // hang a cord through, or let a glow leak the seam. ───
+  {
+    const ceil = new TransformNode("ceil", scene);
+    ceil.parent = root;
+    ceil.position = new Vector3(0.35, C.height - 0.015, 28.0);
+    const rimMat = mats.steel;
+    // rim: four bars, outer 0.65 x 0.95, mouth 0.5 x 0.8
+    const crN = kit.box("ceil.rim.n", 0.65, 0.03, 0.075, rimMat, scene, ceil);
+    crN.position = new Vector3(0, -0.01, -0.44);
+    const crS = kit.box("ceil.rim.s", 0.65, 0.03, 0.075, rimMat, scene, ceil);
+    crS.position = new Vector3(0, -0.01, 0.44);
+    const crE = kit.box("ceil.rim.e", 0.075, 0.03, 0.8, rimMat, scene, ceil);
+    crE.position = new Vector3(0.29, -0.01, 0);
+    const crW = kit.box("ceil.rim.w", 0.075, 0.03, 0.8, rimMat, scene, ceil);
+    crW.position = new Vector3(-0.29, -0.01, 0);
+    // the void: near-black plane closing the mouth from above
+    const voidMat = new StandardMaterial("mat.ceil.void", scene);
+    voidMat.diffuseColor = new Color3(0.008, 0.009, 0.012);
+    voidMat.specularColor = new Color3(0.03, 0.04, 0.05);
+    const voidPlane = kit.box("ceil.void", 0.52, 0.005, 0.82, voidMat, scene, ceil);
+    voidPlane.position = new Vector3(0, 0.005, 0);
+    // the panel: sits in the mouth, a touch narrower so the seam reads
+    const ceilPanel = new TransformNode("ceil.panel", scene);
+    ceilPanel.parent = ceil;
+    ceilPanel.position = new Vector3(0, -0.018, 0);
+    const plate = kit.box("ceil.panel.plate", 0.47, 0.018, 0.77, rimMat, scene, ceilPanel);
+    plate.position = new Vector3(0, 0, 0);
+    for (const gz of [-0.22, 0.22]) {
+      const grip = kit.box(
+        `ceil.panel.g.${gz < 0 ? "n" : "s"}`,
+        0.07,
+        0.02,
+        0.025,
+        mats.rubber,
+        scene,
+        ceilPanel,
+      );
+      grip.position = new Vector3(0, -0.001, gz);
+    }
+    registry.register("ceil", ceil);
+    registry.register("ceil.void", voidPlane);
+    registry.register("ceil.panel", ceilPanel);
+  }
+
   // ─── the niche — a staff rest corner surface-mounted on the east
   // wall z≈5.2: peg rail with a hi-vis jacket, a shelf with a thermos
   // and a lunch parcel, a low stool and the boots under it. The most

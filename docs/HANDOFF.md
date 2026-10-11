@@ -1749,14 +1749,15 @@ cover slides on the node's local z because `well` has no yaw.
 One night moth resting on the under-face of the gallery-left troffer
 z24.5 — a dark silhouette against the lit louver, wings held in a
 shallow V. A small second living thing for the ceiling. `moth` (node)
-+ `moth.body` registered. 420 implemented / 329 registered.
 
-- `moth.gone` — node disabled; a learned absence.
-- `moth.swarm` — eight moth clusters (body + 2 V-wings, own heading)
+- `moth.body` registered. 420 implemented / 329 registered.
+
+* `moth.gone` — node disabled; a learned absence.
+* `moth.swarm` — eight moth clusters (body + 2 V-wings, own heading)
   scattered over the same lamp face + ceiling seam beside it.
-- `moth.dead` — node disabled + a folded moth on the terrazzo below.
-- `moth.huge` — node scaled 6× on the face; same pose, wrong size.
-- `moth.orbit` — update(): lazy circuit under its own lamp (r≈0.55,
+* `moth.dead` — node disabled + a folded moth on the terrazzo below.
+* `moth.huge` — node scaled 6× on the face; same pose, wrong size.
+* `moth.orbit` — update(): lazy circuit under its own lamp (r≈0.55,
   ~4.6s/lap, y-dip ±0.16), wings beating ~11 Hz, heading tangent with
   a wander term. Cleanup restores the rest pose + wing angles.
 
@@ -1766,3 +1767,25 @@ coords, not the troffer registered. (2) Scaling a resting silhouette
 reads as a NEW anomaly instantly — no new geometry needed. (3) A
 static baseline prop sells the UPDATE-driven anomaly hardest: the
 moth flying is only wrong because it always sits.
+
+## arc 49 — the plenum (ceiling access panel + 5 anomalies)
+
+The corridor's one way up: a removable access panel in the tee grid
+at z28 between the troffer lanes — steel rim frame, dark `ceil.void`
+mouth (the well recipe overhead), panel plate with grip slots.
+`ceil`/`ceil.void`/`ceil.panel` registered. 425 implemented / 329.
+
+- `ceil.ajar` — panel slid +z 0.38; dark slit overhead.
+- `ceil.open` — panel jammed on the rim edge dropped sideways +
+  two sheared cable stubs out of the mouth.
+- `ceil.lit` — `ceil.void` goes warm emissive — sodium light leaking
+  the seam (well.lit's mirror, and deliberately a DIFFERENT hue).
+- `ceil.cord` — panel slid + a pull-cord + bead hanging to head
+  height, update-driven sway on two incommensurate cycles.
+- `ceil.fallen` — panel on the floor below, slightly skewed ("it
+  fell, it wasn't placed").
+
+Lessons: the same fixture grammar works overhead — rim frame + dark
+mouth plane + removable cover node; only the y budget flips (void
+slightly ABOVE rim top, plate below). A cord that must sway gets its
+pivot set to the mouth end with `setPivotPoint`.
