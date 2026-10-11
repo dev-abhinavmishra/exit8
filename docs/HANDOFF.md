@@ -1591,3 +1591,67 @@ Catalog: 390 implemented / 329 registered.
 - A new baseline mode must decay `lookT`/greet/page cleanly — gate
   each baseline behavior on `mode ===` explicitly rather than
   assuming modes are seat/board only.
+
+## arc 43 — his sounds (commuter foley + 5 anomalies)
+
+The second presence was silent; now he has a sound layer:
+`commuter.onStep` (departure footfalls on the walker's π/3.4 phase
+clock, playFootstep 0.45), `commuter.onRustle(pos, caption)` (28s page
+turn "a page turns" + gather "he gathers his things"),
+`commuter.onBreath` (every other doze-breath cycle, playBreath at
+0.3 gain, no caption — ambient texture, not a tell). `playRustle` and
+`playBreath` gained `string | null` captions (null suppresses) and
+playBreath a `gain` multiplier — anomaly callers keep their old
+defaults. Anomalies voice him by swapping `commuter.onStep` exactly
+like walker.onStep (walkSilence pattern — save prev, restore in
+cleanup); interface fields take `| undefined` for
+exactOptionalPropertyTypes.
+
+Anomalies #391-395: commuter.steps.linger (four fading footfalls
+under the sealed cap after he's gone), commuter.steps.ahead (steps
+land 3.5m ahead of his body), commuter.steps.off (footfalls at ~2×
+his visible stride), commuter.paper.flurry (page + rustle every 1.4s,
+he never departs), commuter.doze.breath (doubled inhale audible
+corridor-length). Catalog: 395 implemented / 329 registered.
+
+### lessons
+
+- Caption discipline: baseline sounds either don't caption (footsteps,
+  breath) or caption plainly ("a page turns"); the anomaly register is
+  for the wrongness, not the sound itself. Passing null caption keeps
+  an anomaly's sounds honest when the tell is timing/placement.
+- Swap, don't mute: to replace a baseline sound an anomaly reassigns
+  the callback in activate and restores it in cleanup — no new API
+  per anomaly, and parallel anomalies can't both "own" him at once
+  (excludes carry that).
+
+## arc 44 — the give-way (player-blocking departure + 5 anomalies)
+
+The departure walk used to ignore the player — stand in his lane and
+he walked through you. Now the walk branch runs the walker's courtesy
+check: `|player.x − p.x| < lane && (player.z − p.z)*dir ∈ (near, far)`
+→ he halts a stride out, settles the limbs, lifts his chin off the
+route and tracks you. `setGiveWay({enabled,lane,near,far,hold,detour})`
+rewrites the window — the anomaly surface is the rule set, not a pose
+hook: through disables it, hold latches the halt forever (holdLatch
+survives the per-frame clear), detour steers to x +0.55 without
+slowing, and lane/near/far alone make a brush-past or an absurdly
+early yield. `giveWayBlocked()` exposes the halted state for
+choreographers. reset() restores the base window + clears the latch.
+
+Anomalies #396-400: commuter.walks.through (he keeps coming, passes
+through the space you occupy), commuter.waits.forever (halts and
+never resumes), commuter.brushes.past (threads within inches),
+commuter.waits.far (yields from four metres), commuter.detour (swings
+to the east lane without breaking stride). Catalog: 400 implemented
+/ 329 registered — row 400, a round-number arc.
+
+### lessons
+
+- Behavioral baselines belong INSIDE the state machine, configured by
+  small option objects — anomalies then read as "changed rules", which
+  is exactly how players reason about the corridor ("he used to stop
+  for me").
+- Player-blocking habits are only learnable if they're polite: the
+  halt must hold a stride OUT (near/far window), not on contact, or
+  every loop looks like a scripted avoidance, not a courtesy.
