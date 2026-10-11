@@ -245,9 +245,10 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
   // the ad art legible instead of a white slab.
   const ads = tex.ads.map((t, i) => {
     const m = new StandardMaterial(`mat.ads.${i}`, scene);
+    m.diffuseTexture = t;
     m.emissiveTexture = t;
-    m.emissiveColor = new Color3(0.62, 0.62, 0.62);
-    m.disableLighting = true;
+    m.emissiveColor = new Color3(0.55, 0.55, 0.55);
+    m.specularColor = new Color3(0.02, 0.02, 0.02);
     return m;
   });
 

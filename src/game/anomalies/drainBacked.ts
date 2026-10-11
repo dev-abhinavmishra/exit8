@@ -13,13 +13,13 @@ export const drainBacked: AnomalyDef = {
   detectability: "subtle",
   weight: 0.85,
   progressionRange: [10, 100],
-  requires: ["drain.channel"],
+  requires: ["gully.channel"],
   excludes: ["corridor.mirror", "corridor.long", "corridor.narrow", "floor.flood"],
   testSeed: "test.drain.backed",
   dangerous: false,
   activate(ctx: AnomalyContext) {
     const { scene, rng } = ctx;
-    const ch = ctx.world.registry.mesh("drain.channel");
+    const ch = ctx.world.registry.mesh("gully.channel");
     const p = ch.getAbsolutePosition();
     // a backed-up film across a three-metre clinic stretch
     // thin boxes — floor CreatePlanes don't render in the corridor
