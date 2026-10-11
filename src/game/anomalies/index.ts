@@ -144,6 +144,11 @@ import { trofferSparks } from "./trofferSparks";
 import { clockStopped } from "./clockStopped";
 import { panelWires } from "./panelWires";
 import { drainGurgles } from "./drainGurgles";
+import { alarmPulled } from "./alarmPulled";
+import { alarmOpen } from "./alarmOpen";
+import { alarmGone } from "./alarmGone";
+import { alarmKnobGone } from "./alarmKnobGone";
+import { alarmBlink } from "./alarmBlink";
 import { figureDoubles } from "./figureDoubles";
 import { faceGlass } from "./faceGlass";
 import { airlockDark } from "./airlockDark";
@@ -775,4 +780,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   dispenserUnrolled,
   basinFull,
   dryerHot,
+  alarmPulled,
+  alarmOpen,
+  alarmGone,
+  alarmKnobGone,
+  alarmBlink,
 ];
