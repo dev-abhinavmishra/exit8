@@ -1863,3 +1863,21 @@ Lessons: player-reactive reads: approach-with-freeze needs a still
 window (>1s no-move) so walking doesn't jitter it; proximity-driven
 jitter wants a ramp energy term so it swells and dies instead of
 toggling.
+
+## arc 54 — the lightboxes (planned)
+
+Wall-space audit: print posters + notice board + gallery art exist, but
+no BACKLIT ad frames — the real corridor's third light source. New
+`ads.*` family: 3 recessed lightboxes on the west wall field between
+pilasters (aluminum frame, opal backlit face, ad art from signage
+fiction — coffee/exhibit/lost-pet), wallwash pool.
+
+- `ads.face` — a face inside one ad where the product photo should be.
+- `ads.swap` — all three show the same ad.
+- `ads.dead` — every lightbox dark.
+- `ads.breath` — one's backlight breathes (~6s swell).
+- `ads.watch` — the person inside an ad turns to track you (head-track
+  grammar from cctv.gaze).
+
+Lessons pending. Check poster.* (print-only) stays distinct: backlit
+vs unlit stock, frames vs paper.
