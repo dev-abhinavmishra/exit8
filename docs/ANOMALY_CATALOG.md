@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **332 implemented** — 286 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **337 implemented** — 291 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -949,3 +949,8 @@ sound-led anomaly carries a visual cue path.
 | 330 | `board.flick` | It Keeps Re-Shuffling | Both lines keep re-shuffling split-flap glyphs all loop. Ch II+. | unmistakable | 2 | object |
 | 331 | `board.tilt` | The Board Hangs Crooked | Board racked ~7.5° off level on its stem, still reads fine. | moderate | 1 | object |
 | 332 | `board.gone` | The Board Is Gone | Housing + faces unbolted; stem dangles, plaster scar on ceiling. | moderate | 2 | object |
+| 333 | `help.lit` | The Help Point Is Lit | Status dome burns amber like somebody pressed it. | moderate | 1 | lighting |
+| 334 | `help.rings` | It Rings For Nobody | Call lamp pulses a slow amber ring rhythm all loop. | moderate | 1 | object |
+| 335 | `help.offhook` | The Handset Is Off | Handset hangs by its cord off the cradle. | moderate | 1 | object |
+| 336 | `help.torn` | The Grille Is Torn | Speaker grille wrenched off on the floor; black cavity behind. Ch II+. | moderate | 2 | object |
+| 337 | `help.gone` | The Help Point Is Gone | Whole unit unbolted; pale wall scar + cord stub. Ch II+. | moderate | 2 | object |

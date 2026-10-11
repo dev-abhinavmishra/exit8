@@ -32,6 +32,7 @@ import {
   drawNote,
   makeBoardFace,
   makeFasciaBand,
+  makeHelpFace,
   makePhoneFace,
   makeVendingFace,
   type TextureSet,
@@ -2882,6 +2883,43 @@ export function buildConcourse(
       registry.register(`board.face.${fz > 0 ? "n" : "s"}`, face);
     }
     registry.register("board.head", board);
+  }
+
+  // ─── the help point — emergency intercom on the west wall z13.5:
+  // orange back box + HELP POINT face plate, dark speaker grille, red
+  // call button, amber status dome, handset on its hook. Every part is
+  // registered so anomalies can ring, light, tear, or lift it. ───────
+  {
+    const help = new TransformNode("help.box", scene);
+    help.parent = root;
+    help.position = new Vector3(C.xHalf - 0.06, 1.52, 45.5);
+    help.rotation.y = -Math.PI / 2; // face -x, into the corridor
+    const hb = kit.box("help.housing", 0.36, 0.5, 0.1, mats.steel, scene, help);
+    hb.position = new Vector3(0, 0, -0.045);
+    const helpTex = makeHelpFace(scene);
+    const helpFaceMat = new StandardMaterial("mat.help.face", scene);
+    helpFaceMat.diffuseTexture = helpTex;
+    const hf = kit.box("help.face", 0.3, 0.42, 0.014, helpFaceMat, scene, help);
+    hf.position = new Vector3(0, 0.02, 0.008);
+    const grille = kit.box("help.grille", 0.16, 0.1, 0.012, mats.rubber, scene, help);
+    grille.position = new Vector3(0, 0.1, 0.016);
+    const button = kit.box("help.button", 0.06, 0.06, 0.024, mats.cabinetRed, scene, help);
+    button.position = new Vector3(0, -0.04, 0.02);
+    const lampMat = new StandardMaterial("mat.help.lamp", scene);
+    lampMat.diffuseColor = new Color3(0.3, 0.18, 0.05);
+    lampMat.emissiveColor = new Color3(0, 0, 0);
+    const lamp = CreateSphere("help.lamp", { diameter: 0.05, segments: 8 }, scene);
+    lamp.material = lampMat;
+    lamp.parent = help;
+    lamp.position = new Vector3(0, 0.2, 0.014);
+    const handset = kit.box("help.handset", 0.05, 0.2, 0.05, mats.rubber, scene, help);
+    handset.position = new Vector3(0.2, -0.02, 0.01);
+    registry.register("help.box", help);
+    registry.register("help.face", hf);
+    registry.register("help.grille", grille);
+    registry.register("help.button", button);
+    registry.register("help.lamp", lamp);
+    registry.register("help.handset", handset);
   }
 
   // ─── ceiling duct run — galvanized trunk line suspended under the

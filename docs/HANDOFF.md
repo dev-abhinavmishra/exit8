@@ -1309,3 +1309,17 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
 - Faces registered separately (board.face.n/s) for requires[]; the head
   is board.head for whole-fixture anomalies (tilt/gone traverse
   getChildMeshes excluding board.stem).
+
+## arc30 — the help point (emergency intercom fixture)
+
+- Wall-mounted JR help point on the WEST wall z13.5 (rotated +90° to
+  face the corridor): steel housing, orange HELP POINT face plate
+  (makeHelpFace texture), dark grille, red call button, amber status
+  dome, side handset — six separately registered parts (help.box/face/
+  grille/button/lamp/handset) so requires[] can target each.
+- Lamp anomalies drive `mat.help.lamp` emissiveColor — clone e0 in
+  activate and restore in cleanup (rings pulses it at ~4.2 rad/s in
+  update()).
+- Wall-mounted box: position x=-C.xHalf+0.06 with rotation.y=π/2 — the
+  local frame's +z faces the corridor. getAbsolutePosition on a rotated
+  child gives true corridor coords for spawned debris (help.torn).

@@ -1368,3 +1368,23 @@ export function drawBoard(t: DynamicTexture, d: BoardContent): void {
   c.fillText(d.line2, 256, 98);
   t.update();
 }
+
+// ─── help-point face plate — emergency intercom label: white HELP
+// POINT text on the orange face, small enough to stay a wall decal. ──
+export function makeHelpFace(scene: Scene): DynamicTexture {
+  const t = tex("tex.helpface", 256, 128, scene);
+  const c = ctx(t);
+  c.fillStyle = "#c7521f";
+  c.fillRect(0, 0, 256, 128);
+  c.strokeStyle = "#8c3413";
+  c.lineWidth = 6;
+  c.strokeRect(4, 4, 248, 120);
+  c.fillStyle = "#f5ead8";
+  c.textAlign = "center";
+  c.font = "bold 40px Arial, sans-serif";
+  c.fillText("HELP", 128, 58);
+  c.font = "bold 22px Arial, sans-serif";
+  c.fillText("POINT", 128, 94);
+  t.update();
+  return finish(t);
+}
