@@ -15,7 +15,7 @@ export const bayplateGone: AnomalyDef = {
   detectability: "subtle",
   weight: 0.8,
   progressionRange: [10, 100],
-  requires: ZS.flatMap((z) => [`bay.plate.${z}`, `bay.plate.${z}.slip`]),
+  requires: ["bay.plate.15.5", "bay.plate.18.5", "bay.plate.21.5", "bay.plate.24.5", "bay.plate.27.5", "bay.plate.30.5"],
   excludes: [],
   testSeed: "test.bayplate.gone",
   dangerous: false,

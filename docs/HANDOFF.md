@@ -1382,3 +1382,19 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
 - meshInfo can't see TransformNodes (getMeshByName meshes only) —
   verify node hides via child-mesh state or screenshot diff; plain
   registry names in requires[] still validate.
+
+## arc34 — the board
+
+- The notice row + cork board's paperwork layer: `poster.changed`
+  (poster.0 redrawn with amended sub-copy), `poster.dup` (poster.0's
+  def reprinted into a second rng frame), `poster.swapped` (def0/def1
+  exchanged on both textures), `posters.mirror` (drawPoster mirror=true
+  on every print — type reads backwards), `sheets.added` (a sixth
+  crooked memo drawn via drawNote onto a spawned plane parented to
+  notice.board), `notice.amends` (a dominant INSPECTIONS SUSPENDED
+  sheet pinned over the board center).
+- Poster/sheet redraws reuse the live DynamicTexture on each mesh's
+  material — `registry.mesh(name).material.diffuseTexture` + drawPoster/
+  drawNote; cleanup repaints the spec, never swaps meshes.
+- Spawned paper needs `sheet.parent = board` + `rotation.y = π/2`
+  (board's local −x faces the corridor) and full disposal in cleanup.
