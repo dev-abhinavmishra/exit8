@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **365 implemented** — 319 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **370 implemented** — 324 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -981,3 +981,8 @@ sound-led anomaly carries a visual cue path.
 | 363 | `niche.boots.extra` | A Second Pair of Boots | A second pair of work boots stands beside the usual pair. | subtle | 2 | object |
 | 364 | `niche.shelf.bare` | Shelf Cleared Out | The nook's shelf is empty — thermos and lunch parcel both gone. | subtle | 1 | object |
 | 365 | `niche.thermos.steam` | Steam Off the Thermos | A thin wisp rises off the thermos; somebody was just here. | moderate | 1 | object |
+| 366 | `commuter.midboard` | Reading Where No Board Hangs | He checks times four metres south of the board, tipped back at bare ceiling. | moderate | 2 | character |
+| 367 | `commuter.paper.blank` | Blank Paper | His folded paper has no headline, no columns — a blank sheet. | subtle | 2 | character |
+| 368 | `commuter.bag.gone` | Bag Missing | He reads his paper as always, but the satchel at his feet is gone. | subtle | 1 | object |
+| 369 | `commuter.gates` | Waiting at the Gates | He stands at the fare gates facing the way out, waiting. | moderate | 2 | character |
+| 370 | `commuter.twin` | Two Men, One Bench | A second man sits at the bench's far end — same clothes, same paper. | unmistakable | 3 | character |

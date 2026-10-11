@@ -1461,3 +1461,27 @@ Catalog: 365 implemented / 319 registered.
   falling back — ready takes up to ~2min under SwiftShader; wait
   150s like the specs do. Yaw convention: -π/2 faces west (-x);
   positive yaw turns toward -z.
+
+## arc 38 — the round trip (commuter board-check + 5 anomalies)
+
+The commuter learned a second baseline habit: on ~30% of present loops
+he stands at the departure board (z40) checking times — standing pose,
+paper folded under his arm, bag left at the seat. `commuter.reset(now
+takes (present, "seat"|"board")`; loopManager draws the mode off the
+same commuterRng stream (0.65 present, then 0.3 board-if-present).
+Board-mode update keeps the passerby glance but skips the page-turn.
+
+Anomalies #366-370: commuter.midboard (board-pose 4.5m south, reading
+bare ceiling), commuter.paper.blank (DynamicTexture repainted blank —
+cleanup repaints the column spec), commuter.bag.gone, commuter.gates
+(waiting at the fare gates, square on), commuter.twin (buildFigure
+second civilian on the bench's far end; node disposed in cleanup).
+Catalog: 370 implemented / 324 registered.
+
+### lessons
+
+- `registry.get` returns TransformNode|AbstractMesh — use
+  `registry.mesh()` (or cast) for `.material`; then cast Material →
+  StandardMaterial → `.diffuseTexture` (DynamicTexture).
+- Live-texture anomalies repaint the spec in cleanup rather than
+  swapping meshes — same rule as the poster redraws.

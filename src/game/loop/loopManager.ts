@@ -258,7 +258,12 @@ export class LoopManager {
     this.world.ambientWalker.reset();
     // the commuter keeps his own baseroll: present most loops, absent
     // sometimes — a learnable rhythm, not a divergence either way
-    this.world.commuter.reset(this.commuterRng.chance(0.65));
+    const commuterPresent = this.commuterRng.chance(0.65);
+    // on some loops he is up checking the board — a second baseline
+    // habit, so a commuter in the wrong place at the wrong pose reads
+    // as divergence rather than absence
+    const commuterMode = commuterPresent && this.commuterRng.chance(0.3) ? "board" : "seat";
+    this.world.commuter.reset(commuterPresent, commuterMode);
     // loop 1 is always clean — the first corridor teaches the baseline
     // the way Exit 8's does; anomalies start rolling on loop 2.
     // the odds lean wrong as the route deepens — late loops are rarely

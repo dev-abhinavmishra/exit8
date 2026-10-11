@@ -21,8 +21,9 @@ import type { WorldRegistry } from "../registry";
 export interface Commuter {
   /** per-frame baseline motion — head turns to a close passerby */
   update(dt: number, playerPos?: Vector3): void;
-  /** per-loop rebaseline: seat him (or not), restore seated pose */
-  reset(present: boolean): void;
+  /** per-loop rebaseline: seat him (or not), or stand him at the
+   * departure board checking times — a second learnable baseline */
+  reset(present: boolean, mode?: "seat" | "board"): void;
   /** anomaly handle — the figure root (position/rotation/enabled) */
   root: TransformNode;
   /** figure pivots (hips, arms, headPivot) for anomaly posing */
@@ -86,6 +87,7 @@ export function buildCommuter(
   registry.register("commuter.bag", bag);
 
   let present = true;
+  let mode: "seat" | "board" = "seat";
   let lookT = 0;
   let pageT = 0;
 
@@ -105,26 +107,52 @@ export function buildCommuter(
     bag.rotation.y = 0.3;
   };
 
+  const atBoard = () => {
+    // standing north of the departure board at z40, tipped back to
+    // read the flaps, paper folded under his arm, bag left at the seat
+    g.position.set(0.35, 0, 38.7);
+    g.rotation.set(0, 0.08, 0);
+    hips[0]!.rotation.x = 0;
+    hips[1]!.rotation.x = 0;
+    arms[0]!.rotation.x = -0.45;
+    arms[1]!.rotation.x = -0.1;
+    head.rotation.set(-0.38, 0.02, 0);
+    paper.position.set(0.06, 0.42, 0.16);
+    paper.rotation.set(-0.9, Math.PI, 0.4);
+    bag.position.set(SEAT_X - 0.05, SEAT_Y + 0.11, SEAT_Z + 0.44);
+    bag.rotation.y = 0.3;
+  };
+
   return {
     root: g,
     fig,
     isPresent: () => present,
-    reset(p: boolean) {
+    reset(p: boolean, m: "seat" | "board" = "seat") {
       present = p;
+      mode = m;
       g.setEnabled(p);
       bag.setEnabled(p);
-      seat();
+      if (m === "board") atBoard();
+      else seat();
     },
     update(dt: number, playerPos?: Vector3) {
       if (!present || !playerPos) return;
       // glance up when someone passes close — a learned baseline habit;
       // anomalies that hold his gaze override this in their own update
+      if (mode === "board") {
+        const d2b = playerPos.subtract(g.getAbsolutePosition()).lengthSquared();
+        if (d2b < 4.5) {
+          lookT = Math.min(1, lookT + dt * 3.2);
+        } else {
+          lookT = Math.max(0, lookT - dt * 2.2);
+        }
+      }
       const d2 = playerPos.subtract(g.getAbsolutePosition()).lengthSquared();
       const near = d2 < 4.5;
       lookT += dt * (near ? 3.2 : -2.2);
       lookT = Math.max(0, Math.min(1, lookT));
       const lift = lookT * lookT;
-      head.rotation.x = 0.42 - lift * 0.5;
+      head.rotation.x = (mode === "board" ? -0.38 : 0.42) - lift * 0.5;
       // drift his chin toward the player's bearing, gently
       if (lift > 0.02) {
         const dx = playerPos.x - g.getAbsolutePosition().x;
@@ -135,6 +163,7 @@ export function buildCommuter(
       }
       // page turn every half minute or so — both arms flick a beat
       pageT += dt;
+      if (mode === "board") return;
       if (pageT > 28) {
         pageT = 0;
         arms[1]!.rotation.x = -0.7 - 0.35;
