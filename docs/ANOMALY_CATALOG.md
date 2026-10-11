@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **410 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **415 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1026,3 +1026,8 @@ sound-led anomaly carries a visual cue path.
 | 408 | `cctv.dead` | Feeds Cut | Recording pin dark, head slumped low off the bracket, lens matte. | moderate | 2 | object |
 | 409 | `cctv.double` | Two Eyes | A second camera head rides the same bracket 1.5m along — the mount was never installed twice. | subtle | 2 | object |
 | 410 | `cctv.inward` | It Watches The Wall | The head swung a half-turn and stares point-blank into the tile it hangs off of. | subtle | 1 | spatial |
+| 411 | `well.ajar` | The Cover Is Slid | The well's bolted cover plate is dragged half off its rim — the south mouth stands open to the dark. | moderate | 1 | spatial |
+| 412 | `well.lifted` | It's Been Lifted | The cover is off entirely, leaned against the west wall — the whole pit mouth exposed. | moderate | 1 | spatial |
+| 413 | `well.lit` | Light From Below | Cover still bolted, but a cold blue-green glow leaks the seam around it — something is lit under the floor. | unmistakable | 2 | lighting |
+| 414 | `well.grip` | A Hand On The Rim | Cover dragged aside, four pale fingers curled over the south rim bar, palm sunk in the dark. It does not move. | unmistakable | 2 | character |
+| 415 | `well.riser` | The Ladder Is Up | The cover is aside and the well's rung ladder stands raised — its top rungs poke above the rim where no ladder should reach. | unmistakable | 3 | spatial |

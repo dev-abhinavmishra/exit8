@@ -1715,3 +1715,31 @@ herring this arc. Always `getByRole("button",{name:/BEGIN SHIFT/})`
 in probes before reading update-driven state. (2) TransformNode heads
 can't be read via meshInfo — probe a child mesh's ABSOLUTE position
 (the lens swings under yaw) or an attached mesh's local rot.
+
+## arc 47 — the underworld (floor maintenance well + 5 anomalies)
+
+The corridor's only way down: a recessed maintenance well on the west
+lane z31 — raised steel rim frame, a dark pit mouth (the alcove-drain
+recipe — near-black slab inside a frame reads as a hole at eye
+height), a bolted cover plate with grip slots + corner bolts, and a
+rung ladder parked out of sight under the cover. Cover, pit, and
+ladder all transform/mesh-registered. 415 implemented / 329 registered.
+
+- `well.ajar` — cover dragged half off (cover.position.z = −0.5).
+- `well.lifted` — cover off and leaned on the west wall, mouth fully
+  open.
+- `well.lit` — cover stays bolted; `well.pit`'s material goes emissive
+  cold (0.35,0.85,0.8) — the cover is 3cm narrower than the mouth, so
+  the glow reads as a lit seam outline on the floor.
+- `well.grip` — cover slid + hatchHand capsule recipe: palm sunk in the
+  mouth, four fingers curled over the south rim bar.
+- `well.riser` — cover slid + `well.ladder` raised to y≈0.52 shifted
+  south into the open half: three rungs poke above the rim.
+
+Lessons: (1) `hatch.*` was already taken by the wall service panels —
+check the anomaly id namespace before naming a new family. (2) Pit
+depth is FAKED — the floor is a solid slab; don't cut it, put the dark
+mouth plane at floor-top inside a raised rim, same trick as the bay
+drains. (3) A TransformNode part (cover/ladder) moved to lean or rise
+needs rotation.z around the lean edge AND the mesh's own local axes —
+cover slides on the node's local z because `well` has no yaw.

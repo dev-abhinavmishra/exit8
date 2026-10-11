@@ -369,6 +369,11 @@ import { cctvShy } from "./cctvShy";
 import { cctvDead } from "./cctvDead";
 import { cctvDouble } from "./cctvDouble";
 import { cctvInward } from "./cctvInward";
+import { wellAjar } from "./wellAjar";
+import { wellLifted } from "./wellLifted";
+import { wellLit } from "./wellLit";
+import { wellGrip } from "./wellGrip";
+import { wellRiser } from "./wellRiser";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -735,4 +740,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   cctvDead,
   cctvDouble,
   cctvInward,
+  wellAjar,
+  wellLifted,
+  wellLit,
+  wellGrip,
+  wellRiser,
 ];
