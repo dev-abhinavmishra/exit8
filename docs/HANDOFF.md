@@ -1900,3 +1900,8 @@ lightboxes on open wall fields kept landing on posts (z20.2, 37.5,
 12.0, 11.4 all bisected). Column faces (0.6m flat, collider already
 owned) are the only guaranteed-clean mount; real stations do the same.
 450 implemented / 334.
+
+Note on counting: catalog rows number continuously (450 now) but
+ALL_ANOMALIES.length is the live def count — 404 as of arc54. The
+"in the bag" figure in the catalog header is arc16's stale cut line;
+use ALL_ANOMALIES.length for truth.
