@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **375 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **380 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -991,3 +991,8 @@ sound-led anomaly carries a visual cue path.
 | 373 | `walker.greets` | He Returns the Nod | The inspector's head turns to the bench as he crosses — he never acknowledges the man. | subtle | 2 | character |
 | 374 | `commuter.offers` | Offering the Paper | The commuter holds the paper out toward the lane as the inspector passes. | moderate | 2 | character |
 | 375 | `commuter.gone.bag` | Gone, Bag Left Behind | He is absent tonight and the satchel — not the paper — sits on the seat. | subtle | 2 | character |
+| 376 | `train.overdue` | The Line Never Runs | The working line beyond the walls never passes tonight — the distant rumble cadence is silent all loop. | subtle | 1 | sound |
+| 377 | `train.surge` | Train After Train | Express hour: five passes inside ~40s where the baseline spaces them minutes apart. | moderate | 2 | sound |
+| 378 | `train.near` | On the Wrong Side of the Wall | The pass sounds like it switched to the corridor side — louder, brighter, whistle cutting instead of trailing. | moderate | 3 | sound |
+| 379 | `pa.overdue` | No Announcements Tonight | The horns never key up at all — the feed simply never comes. | subtle | 2 | sound |
+| 380 | `drip.sync` | The Vents Keep Time | Every vent plinks at once on a slow regular beat — unison where baseline drips are scattered. | moderate | 2 | sound |

@@ -724,7 +724,9 @@ export class LoopManager {
       // muffled PA — fires only while the corridor is open: endings
       // and judgments keep their own quiet, and anomalies that own the
       // horns (or kill the feed they run on) mute it entirely
+      const ambientMute = new Set(this.activeDef?.ambientMute ?? []);
       const paMuted =
+        ambientMute.has("pa") ||
         this.activeDef?.id === "lights.blackout" ||
         this.activeDef?.id === "pa.deadair" ||
         this.activeDef?.id === "announce.spatial";
@@ -733,12 +735,12 @@ export class LoopManager {
         this.paT = 40 + this.paRng.range(0, 45);
         this.audio.playAnnouncement(this.paRng.pick(this.world.anchors.paHorns));
       }
-      this.trainT -= dt;
+      if (!ambientMute.has("train")) this.trainT -= dt;
       if (this.trainT <= 0) {
         this.trainT = 90 + this.trainRng.range(0, 60);
         this.audio.playTrainPass();
       }
-      this.dripT -= dt;
+      if (!ambientMute.has("drip")) this.dripT -= dt;
       if (this.dripT <= 0) {
         this.dripT = 55 + this.dripRng.range(0, 70);
         const vents = this.world.anchors.vents;
