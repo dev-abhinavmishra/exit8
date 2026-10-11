@@ -27,6 +27,8 @@ export interface MaterialSet {
   cabinetRed: StandardMaterial;
   sign: Map<string, StandardMaterial>;
   poster: StandardMaterial[];
+  /** backlit ad lightbox faces — unlit emissive, the corridor's third glow source */
+  ads: StandardMaterial[];
   terminal: StandardMaterial;
   condensation: StandardMaterial;
   anomalousRoom: StandardMaterial;
@@ -238,6 +240,17 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     return m;
   });
 
+  // Lightbox faces: the only fixture besides troffers that emits its own
+  // light. disableLighting + 0.62 emissive scale (the blowout rule) keeps
+  // the ad art legible instead of a white slab.
+  const ads = tex.ads.map((t, i) => {
+    const m = new StandardMaterial(`mat.ads.${i}`, scene);
+    m.emissiveTexture = t;
+    m.emissiveColor = new Color3(0.62, 0.62, 0.62);
+    m.disableLighting = true;
+    return m;
+  });
+
   const terminal = new StandardMaterial("mat.terminal", scene);
   terminal.diffuseTexture = tex.terminal;
   terminal.emissiveTexture = tex.terminal;
@@ -277,6 +290,7 @@ export function buildMaterials(scene: Scene, tex: TextureSet): MaterialSet {
     cabinetRed,
     sign,
     poster,
+    ads,
     terminal,
     condensation,
     anomalousRoom,

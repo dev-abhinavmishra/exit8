@@ -105,6 +105,8 @@ export interface TextureSet {
   darkGlassNote: DynamicTexture; // subtle smudge map for the gallery glass
   condensation: DynamicTexture; // alpha patch — footsteps.extra visual cue
   posters: DynamicTexture[];
+  /** backlit ad lightbox art — one texture per frame */
+  ads: DynamicTexture[];
   clockFace: DynamicTexture;
   signs: Map<string, DynamicTexture>;
   terminal: DynamicTexture; // airlock terminal screen (live-updated)
@@ -592,6 +594,97 @@ function makePosters(scene: Scene): DynamicTexture[] {
   });
 }
 
+/** Backlit ad lightboxes — fictional concourse advertising, brighter
+ * register than the print posters (these glow; those don't). */
+export const AD_DEFS: PosterDef[] = [
+  {
+    title: "HARBOUR LINE COFFEE",
+    sub: ["ROASTED AT PIER 9", "SERVED 05:30 – 23:00", "STALL B — SOUTH END"],
+    bg: "#1d2b33",
+    fg: "#e8c06a",
+  },
+  {
+    title: "THE DEEP PLATFORMS",
+    sub: ["A PHOTOGRAPHIC SURVEY", "OF THE LOWER ROUTES", "CIVIC ARCHIVE — FREE"],
+    bg: "#23201c",
+    fg: "#b8cdd8",
+  },
+  {
+    title: "LOST: ONE MITTEN",
+    sub: ["GREY WOOL, LEFT HAND", "LOST NEAR THE CLOCK", "REWARD: A THANK YOU"],
+    bg: "#2b2620",
+    fg: "#d8d0c0",
+  },
+];
+
+/** Redraw an ad face in place — build and ads.* anomalies. `face`
+ * replaces the art with a lit portrait; `gaze` slides its eyes −1..1. */
+export function drawAd(
+  t: DynamicTexture,
+  d: PosterDef,
+  face = false,
+  gaze = 0,
+): void {
+  const w = 256;
+  const h = 384;
+  const c = ctx(t);
+  const sz = t.getSize();
+  c.scale(sz.width / w, sz.height / h);
+  c.fillStyle = d.bg;
+  c.fillRect(0, 0, w, h);
+  c.strokeStyle = d.fg;
+  c.lineWidth = 5;
+  c.strokeRect(8, 8, w - 16, h - 16);
+  if (face) {
+    // lit portrait that is not in the ad: head too large, lit too evenly
+    const cx = w / 2, cy = h * 0.44;
+    c.fillStyle = "#cfc4b4";
+    c.beginPath();
+    c.ellipse(cx, cy, 62, 84, 0, 0, Math.PI * 2);
+    c.fill();
+    // hair cap
+    c.fillStyle = "#241f1c";
+    c.beginPath();
+    c.ellipse(cx, cy - 58, 58, 34, 0, Math.PI, Math.PI * 2);
+    c.fill();
+    // eyes — gaze slides the pupils ±10px
+    const off = gaze * 10;
+    for (const ex of [-26, 26]) {
+      c.fillStyle = "#1a1715";
+      c.beginPath();
+      c.ellipse(cx + ex + off, cy - 8, 7, 5, 0, 0, Math.PI * 2);
+      c.fill();
+    }
+    c.fillStyle = "#8a7a68";
+    c.fillRect(cx - 4, cy + 8, 8, 22); // nose
+    c.fillStyle = "#6b5a4c";
+    c.fillRect(cx - 18, cy + 48, 36, 5); // mouth, flat
+    c.fillStyle = d.fg;
+    c.font = "bold 18px Arial, sans-serif";
+    c.textAlign = "center";
+    c.fillText(d.title, w / 2, h - 40);
+  } else {
+    c.fillStyle = d.fg;
+    c.font = "bold 22px Arial, sans-serif";
+    c.textAlign = "center";
+    c.fillText(d.title, w / 2, 84);
+    c.font = "15px Arial, sans-serif";
+    d.sub.forEach((l, i) => c.fillText(l, w / 2, 170 + i * 42));
+    // bottom brand bar — the lightbox ad read
+    c.fillRect(30, h - 68, w - 60, 3);
+    c.font = "12px Arial, sans-serif";
+    c.fillText("ADVERTISING — CIVIC TRANSIT", w / 2, h - 44);
+  }
+}
+
+function makeAds(scene: Scene): DynamicTexture[] {
+  return AD_DEFS.map((d, i) => {
+    const t = tex(`tex.ads.${i}`, 512, 768, scene);
+    drawAd(t, d);
+    return finish(t);
+  });
+}
+
 /** Field-note paper — cream memo stock, typed header, small body lines. */
 export function drawNote(t: DynamicTexture, d: { title: string; lines: string[] }): void {
   const w = 256;
@@ -792,6 +885,7 @@ export function buildTextureSet(scene: Scene, rng: RngStream, signs: SignSpec[])
     darkGlassNote: makeSmudge(scene, rng),
     condensation: makeCondensation(scene),
     posters: makePosters(scene),
+    ads: makeAds(scene),
     clockFace: makeClockFace(scene),
     signs: signMap,
     terminal: makeTerminal(scene),
