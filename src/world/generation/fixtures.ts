@@ -373,6 +373,7 @@ function buildDressing(scene: Scene, root: TransformNode, mats: MaterialSet, reg
     );
     slip.position = new Vector3(CABINET_FACE + 0.032, 1.92, z);
     registry.register(`bay.plate.${z}`, plate);
+    registry.register(`bay.plate.${z}.slip`, slip);
   }
 
   // ---- the service hatch that is always shut (east wall, z=40) ----
