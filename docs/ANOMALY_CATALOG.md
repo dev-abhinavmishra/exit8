@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **420 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **425 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1036,3 +1036,8 @@ sound-led anomaly carries a visual cue path.
 | 418 | `moth.dead` | On The Floor | The moth isn't at its lamp; it's folded flat on the terrazzo below it. | subtle | 1 | object |
 | 419 | `moth.huge` | The Wrong Size | Still resting in its shallow-V pose — but the wings span most of the louver. | unmistakable | 2 | character |
 | 420 | `moth.orbit` | It's Flying Tonight | It isn't resting — a loose wobbling circuit under its own lamp, wings beating the whole loop. | moderate | 1 | character |
+| 421 | `ceil.ajar` | The Panel Is Slid | The ceiling access panel is dragged half off its frame — a dark slit in the tee grid overhead. | moderate | 1 | spatial |
+| 422 | `ceil.open` | Open To The Plenum | The panel is off and two sheared cable stubs hang out of the black mouth above. | unmistakable | 2 | spatial |
+| 423 | `ceil.lit` | Light In The Plenum | Panel seated, but a warm sodium glow leaks the seam — the void above should be dark. | unmistakable | 2 | lighting |
+| 424 | `ceil.cord` | The Cord Hangs Down | Panel slid aside, a pull-cord swaying at head height on a draft that isn't there. | unmistakable | 2 | spatial |
+| 425 | `ceil.fallen` | It Fell Overnight | The panel lies flat on the corridor floor below, the mouth bare overhead. | unmistakable | 2 | spatial |
