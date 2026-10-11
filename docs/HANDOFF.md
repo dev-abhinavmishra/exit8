@@ -1961,3 +1961,19 @@ at the zone midpoint.
 - `ads.ash` — the three lightboxes die in sequence, stay dark.
 
 460 implemented.
+
+## arc 57 — the plate (in flight)
+
+The PASS 0N counter on the south cap was repainted every roll but
+never wronged — five anomalies on the count itself, all via drawSign
+on the shared sign.attempt texture (loopManager repaints it at next
+roll, so cleanup stays empty). Requires anchor: sign.attempt.face.
+
+- `plate.ahead` — reads streak+2, one filing on credit.
+- `plate.zero` — PASS 00, a number it was never built to show.
+- `plate.countdown` — decrements ~every 9s mid-loop.
+- `plate.blank` — border + no print (destructure sub out of spec —
+  exactOptionalPropertyTypes rejects sub:undefined).
+- `plate.smeared` — ink dragged sideways through the title band.
+
+465 implemented.

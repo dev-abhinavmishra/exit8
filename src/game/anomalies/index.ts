@@ -415,6 +415,11 @@ import { skinPristine } from "./skinPristine";
 import { skinSplit } from "./skinSplit";
 import { skinShift } from "./skinShift";
 import { adsAsh } from "./adsAsh";
+import { plateAhead } from "./plateAhead";
+import { plateZero } from "./plateZero";
+import { plateCountdown } from "./plateCountdown";
+import { plateBlank } from "./plateBlank";
+import { plateSmeared } from "./plateSmeared";
 import { stallsShut } from "./stallsShut";
 import { dispenserUnrolled } from "./dispenserUnrolled";
 import { basinFull } from "./basinFull";
@@ -835,4 +840,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   skinSplit,
   skinShift,
   adsAsh,
+  plateAhead,
+  plateZero,
+  plateCountdown,
+  plateBlank,
+  plateSmeared,
 ];
