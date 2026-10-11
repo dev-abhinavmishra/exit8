@@ -1624,3 +1624,34 @@ corridor-length). Catalog: 395 implemented / 329 registered.
   the callback in activate and restores it in cleanup — no new API
   per anomaly, and parallel anomalies can't both "own" him at once
   (excludes carry that).
+
+## arc 44 — the give-way (player-blocking departure + 5 anomalies)
+
+The departure walk used to ignore the player — stand in his lane and
+he walked through you. Now the walk branch runs the walker's courtesy
+check: `|player.x − p.x| < lane && (player.z − p.z)*dir ∈ (near, far)`
+→ he halts a stride out, settles the limbs, lifts his chin off the
+route and tracks you. `setGiveWay({enabled,lane,near,far,hold,detour})`
+rewrites the window — the anomaly surface is the rule set, not a pose
+hook: through disables it, hold latches the halt forever (holdLatch
+survives the per-frame clear), detour steers to x +0.55 without
+slowing, and lane/near/far alone make a brush-past or an absurdly
+early yield. `giveWayBlocked()` exposes the halted state for
+choreographers. reset() restores the base window + clears the latch.
+
+Anomalies #396-400: commuter.walks.through (he keeps coming, passes
+through the space you occupy), commuter.waits.forever (halts and
+never resumes), commuter.brushes.past (threads within inches),
+commuter.waits.far (yields from four metres), commuter.detour (swings
+to the east lane without breaking stride). Catalog: 400 implemented
+/ 329 registered — row 400, a round-number arc.
+
+### lessons
+
+- Behavioral baselines belong INSIDE the state machine, configured by
+  small option objects — anomalies then read as "changed rules", which
+  is exactly how players reason about the corridor ("he used to stop
+  for me").
+- Player-blocking habits are only learnable if they're polite: the
+  halt must hold a stride OUT (near/far window), not on contact, or
+  every loop looks like a scripted avoidance, not a courtesy.
