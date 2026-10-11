@@ -2930,6 +2930,42 @@ export function buildConcourse(
     registry.register("help.handset", handset);
   }
 
+  // ─── the eye — a CCTV bullet cam on the east wall upper corner z22:
+  // a bracket arm out of the tile, a yaw-able head carrying the body,
+  // a dark glass lens, and a red recording pin — aimed fixed at the
+  // mid-lane floor so its stare is learnable. Every part is registered
+  // so anomalies can track, shy away, kill the feed, double it, or
+  // point it at the wall. ───
+  {
+    const cctv = new TransformNode("cctv", scene);
+    cctv.parent = root;
+    cctv.position = new Vector3(C.xHalf - 0.08, 2.58, 22.0);
+    cctv.rotation.y = -Math.PI / 2; // face -x, into the corridor
+    const br = kit.box("cctv.bracket", 0.05, 0.05, 0.16, mats.steel, scene, cctv);
+    br.position = new Vector3(0, 0.06, 0.05);
+    const cctvHead = new TransformNode("cctv.head", scene);
+    cctvHead.parent = cctv;
+    cctvHead.position = new Vector3(0, -0.03, 0.13);
+    cctvHead.rotation.x = 0.42; // fixed down-aim at the mid-lane floor
+    const body = kit.box("cctv.body", 0.08, 0.08, 0.18, mats.rubber, scene, cctvHead);
+    body.position = new Vector3(0, 0, 0.02);
+    const lensMat = new StandardMaterial("mat.cctv.lens", scene);
+    lensMat.diffuseColor = new Color3(0.02, 0.02, 0.03);
+    lensMat.specularColor = new Color3(0.4, 0.4, 0.45);
+    const lens = kit.box("cctv.lens", 0.05, 0.05, 0.012, lensMat, scene, cctvHead);
+    lens.position = new Vector3(0, 0, 0.115);
+    const ledMat = new StandardMaterial("mat.cctv.led", scene);
+    ledMat.diffuseColor = new Color3(0.3, 0.02, 0.02);
+    ledMat.emissiveColor = new Color3(0.9, 0.06, 0.05);
+    const led = kit.box("cctv.led", 0.014, 0.014, 0.012, ledMat, scene, cctvHead);
+    led.position = new Vector3(0.052, 0.045, 0.06);
+    registry.register("cctv", cctv);
+    registry.register("cctv.head", cctvHead);
+    registry.register("cctv.body", body);
+    registry.register("cctv.lens", lens);
+    registry.register("cctv.led", led);
+  }
+
   // ─── the niche — a staff rest corner surface-mounted on the east
   // wall z≈5.2: peg rail with a hi-vis jacket, a shelf with a thermos
   // and a lunch parcel, a low stool and the boots under it. The most

@@ -364,6 +364,11 @@ import { commuterFaceEyes } from "./commuterFaceEyes";
 import { commuterFaceGrin } from "./commuterFaceGrin";
 import { commuterUniform } from "./commuterUniform";
 import { commuterAskew } from "./commuterAskew";
+import { cctvFollows } from "./cctvFollows";
+import { cctvShy } from "./cctvShy";
+import { cctvDead } from "./cctvDead";
+import { cctvDouble } from "./cctvDouble";
+import { cctvInward } from "./cctvInward";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -725,4 +730,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   commuterFaceGrin,
   commuterUniform,
   commuterAskew,
+  cctvFollows,
+  cctvShy,
+  cctvDead,
+  cctvDouble,
+  cctvInward,
 ];

@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **405 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **410 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1021,3 +1021,8 @@ sound-led anomaly carries a visual cue path.
 | 403 | `commuter.face.grin` | He Is Smiling | Corners climbing past where a smile stops, held while he reads. | unmistakable | 3 | character |
 | 404 | `commuter.uniform` | One Of Them Tonight | The civilian keeps his bench and his paper — in the Authority kit: hi-vis, peaked cap, ID card. | moderate | 2 | character |
 | 405 | `commuter.askew` | He Reads Crooked | Head cocked to the shoulder at an angle a neck shouldn't hold — it never corrects. | subtle | 2 | character |
+| 406 | `cctv.follows` | The Eye Follows | The corridor camera tracks you on its bracket, head yaw matching your z end to end. | unmistakable | 2 | character |
+| 407 | `cctv.shy` | It Looks Away | It tracks you while your view is elsewhere; raise your view to it and it's already staring at the corner. | moderate | 3 | character |
+| 408 | `cctv.dead` | Feeds Cut | Recording pin dark, head slumped low off the bracket, lens matte. | moderate | 2 | object |
+| 409 | `cctv.double` | Two Eyes | A second camera head rides the same bracket 1.5m along — the mount was never installed twice. | subtle | 2 | object |
+| 410 | `cctv.inward` | It Watches The Wall | The head swung a half-turn and stares point-blank into the tile it hangs off of. | subtle | 1 | spatial |
