@@ -400,6 +400,11 @@ import { ceilLit } from "./ceilLit";
 import { ceilCord } from "./ceilCord";
 import { ceilFallen } from "./ceilFallen";
 import { stallFeet } from "./stallFeet";
+import { adsFace } from "./adsFace";
+import { adsSwap } from "./adsSwap";
+import { adsDead } from "./adsDead";
+import { adsBreath } from "./adsBreath";
+import { adsWatch } from "./adsWatch";
 import { stallsShut } from "./stallsShut";
 import { dispenserUnrolled } from "./dispenserUnrolled";
 import { basinFull } from "./basinFull";
@@ -805,4 +810,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   wellRattles,
   roachStalks,
   alarmLeverDrops,
+  adsFace,
+  adsSwap,
+  adsDead,
+  adsBreath,
+  adsWatch,
 ];

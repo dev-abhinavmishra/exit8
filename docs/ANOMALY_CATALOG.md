@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **445 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **450 implemented** — 334 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1061,3 +1061,8 @@ sound-led anomaly carries a visual cue path.
 | 443 | `well.rattles` | It Feels Your Weight | Stand over the well and the cover starts shivering on its seat; step off and it stills. | moderate | 2 | spatial |
 | 444 | `roach.stalks` | It Only Moves When You're Still | Stand anywhere and it creeps closer along the wall; move and it freezes dead. | unmistakable | 3 | character |
 | 445 | `alarm.lever.drops` | It Pulls Itself | Linger near the pull station and the lever eases down toward tripped, staying where you left it. | moderate | 2 | character |
+| 446 | `ads.face` | The Slot Sold | The middle column lightbox is a lit portrait instead of the route survey. | unmistakable | 2 | character |
+| 447 | `ads.swap` | Single Buyer | All three column lightboxes run the same ad. | subtle | 1 | object |
+| 448 | `ads.dead` | Slots Unpaid | Every column lightbox is dark. | moderate | 1 | lighting |
+| 449 | `ads.breath` | Lamp Down Cycle | The north column lightbox's lamp breathes on a six-second swell. | subtle | 2 | lighting |
+| 450 | `ads.watch` | It Found You First | The south column lightbox is a portrait whose eyes track you in five steps. | unmistakable | 3 | character |

@@ -1881,3 +1881,27 @@ fiction — coffee/exhibit/lost-pet), wallwash pool.
 
 Lessons pending. Check poster.* (print-only) stays distinct: backlit
 vs unlit stock, frames vs paper.
+
+## arc 54 — the lightboxes (in flight)
+
+`ads.*` family: three backlit ad lightboxes riding the colonnade's
+corridor faces (col.w.0 z16.5, col.w.1 z33, col.e.2 z43.5) — the
+corridor's third light source. Parented to the col nodes so
+col.missing takes its ad down with the column.
+
+- `ads.face` — middle box: lit portrait where the ad should be.
+- `ads.swap` — all three run the same ad.
+- `ads.dead` — every box dark (emissive 0.62 → 0.015).
+- `ads.breath` — north box's lamp on a 6s swell.
+- `ads.watch` — south box portrait's eyes track in 5 quantized steps.
+
+Placement lesson: EVERY wall run's edge carries a seam-trim post —
+lightboxes on open wall fields kept landing on posts (z20.2, 37.5,
+12.0, 11.4 all bisected). Column faces (0.6m flat, collider already
+owned) are the only guaranteed-clean mount; real stations do the same.
+450 implemented / 334.
+
+Note on counting: catalog rows number continuously (450 now) but
+ALL_ANOMALIES.length is the live def count — 404 as of arc54. The
+"in the bag" figure in the catalog header is arc16's stale cut line;
+use ALL_ANOMALIES.length for truth.

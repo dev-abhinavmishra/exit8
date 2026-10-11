@@ -2261,7 +2261,7 @@ export function buildConcourse(
     pframe.position = new Vector3(0, 0, 0.013);
   });
 
-  // Hanging totems — the wayfinding rhythm: ARCHIVES over the records
+// Hanging totems — the wayfinding rhythm: ARCHIVES over the records
   // bank, INSPECTION LOOP 7 over the mid-route
   const totem = kit.hangingSign("sign.totem.north", mats, scene, root, registry, C.height);
   totem.position.x = 0;
@@ -2700,6 +2700,31 @@ export function buildConcourse(
       }
     }
   }
+
+  // Ad lightboxes ride the colonnade's corridor faces — the only flat
+  // 0.6m fields the walls guarantee (every wall run's edge carries a
+  // seam trim, and mouths/vends fill the rest). Parented to the col
+  // node so col.missing takes its ad with the column, correctly.
+  // The corridor's third light source after troffers + signage strips.
+  for (const [i, [colName, side]] of ([
+    ["col.w.0", -1],
+    ["col.w.1", -1],
+    ["col.e.2", 1],
+  ] as const).entries()) {
+    const colNode = registry.get(colName) as TransformNode;
+    const hood = kit.box(`dress.ads.hood.${i}`, 0.08, 0.95, 0.58, mats.steel, scene, colNode);
+    hood.position = new Vector3(-side * 0.19, 1.95, 0);
+    const face = kit.plane(`ads.face.${i}`, 0.5, 0.82, mats.ads[i]!, scene, colNode);
+    face.position = new Vector3(-side * 0.235, 1.95, 0);
+    face.rotation.y = (side * Math.PI) / 2;
+    registry.register(`ads.face.${i}`, face);
+    // shallow rain visor over the frame — stations box their lit frames
+    const visor = kit.box(`dress.ads.visor.${i}`, 0.12, 0.03, 0.62, mats.steel, scene, colNode);
+    visor.position = new Vector3(-side * 0.2, 2.44, 0);
+  }
+
+  
+
 
   // ─── the service layer — access panels, floor vents, junction boxes
   // and their grime streaks surface-mounted on the flat wall fields.
