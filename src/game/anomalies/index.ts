@@ -144,7 +144,6 @@ import { trofferSparks } from "./trofferSparks";
 import { clockStopped } from "./clockStopped";
 import { panelWires } from "./panelWires";
 import { drainGurgles } from "./drainGurgles";
-import { corridorBreathes } from "./corridorBreathes";
 import { figureDoubles } from "./figureDoubles";
 import { faceGlass } from "./faceGlass";
 import { airlockDark } from "./airlockDark";
@@ -295,6 +294,12 @@ import { ceilingCrack } from "./ceilingCrack";
 import { ceilingWeeps } from "./ceilingWeeps";
 import { floorFlood } from "./floorFlood";
 import { lightsBlackout } from "./lightsBlackout";
+import { announceSpatial } from "./announceSpatial";
+import { hornCrackle } from "./hornCrackle";
+import { walkSilence } from "./walkSilence";
+import { pitchSags } from "./pitchSags";
+import { tempDrift } from "./tempDrift";
+import { corridorBreathes } from "./corridorBreathes";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -588,4 +593,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   vendDead,
   vendEmpty,
   sheetsCleared,
+  announceSpatial,
+  hornCrackle,
+  walkSilence,
+  pitchSags,
+  tempDrift,
 ];
