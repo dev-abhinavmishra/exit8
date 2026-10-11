@@ -3057,6 +3057,32 @@ export function buildConcourse(
     registry.register("well.ladder", wellLadder);
   }
 
+  // ─── the moth — one night moth resting on the under-face of the
+  // gallery-left troffer z24.5: a dark silhouette against the lit
+  // louver, wings held in a shallow V. Baseline ambient — it's simply
+  // THERE until an anomaly makes it move, swarm, grow, or vanish.
+  // Registered as a node so anomalies can hide, scale, or fly it. ───
+  {
+    const moth = new TransformNode("moth", scene);
+    moth.parent = root;
+    moth.position = new Vector3(-0.9, 2.935, 24.5);
+    const mothMat = new StandardMaterial("mat.moth", scene);
+    mothMat.diffuseColor = new Color3(0.16, 0.13, 0.1);
+    mothMat.specularColor = new Color3(0.02, 0.02, 0.02);
+    const mb = kit.box("moth.body", 0.012, 0.007, 0.026, mothMat, scene, moth);
+    mb.position = new Vector3(0, 0, 0);
+    for (const [wx, wtag, wrz] of [
+      [-0.014, "l", -0.16],
+      [0.014, "r", 0.16],
+    ] as const) {
+      const wing = kit.box(`moth.wing.${wtag}`, 0.024, 0.003, 0.02, mothMat, scene, moth);
+      wing.position = new Vector3(wx, 0.002, 0.001);
+      wing.rotation.z = wrz; // shallow resting V
+    }
+    registry.register("moth", moth);
+    registry.register("moth.body", mb);
+  }
+
   // ─── the niche — a staff rest corner surface-mounted on the east
   // wall z≈5.2: peg rail with a hi-vis jacket, a shelf with a thermos
   // and a lunch parcel, a low stool and the boots under it. The most

@@ -374,6 +374,11 @@ import { wellLifted } from "./wellLifted";
 import { wellLit } from "./wellLit";
 import { wellGrip } from "./wellGrip";
 import { wellRiser } from "./wellRiser";
+import { mothGone } from "./mothGone";
+import { mothSwarm } from "./mothSwarm";
+import { mothDead } from "./mothDead";
+import { mothHuge } from "./mothHuge";
+import { mothOrbit } from "./mothOrbit";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
   clockReverse,
@@ -745,4 +750,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   wellLit,
   wellGrip,
   wellRiser,
+  mothGone,
+  mothSwarm,
+  mothDead,
+  mothHuge,
+  mothOrbit,
 ];

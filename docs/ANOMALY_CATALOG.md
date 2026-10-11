@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **415 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **420 implemented** — 329 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -1031,3 +1031,8 @@ sound-led anomaly carries a visual cue path.
 | 413 | `well.lit` | Light From Below | Cover still bolted, but a cold blue-green glow leaks the seam around it — something is lit under the floor. | unmistakable | 2 | lighting |
 | 414 | `well.grip` | A Hand On The Rim | Cover dragged aside, four pale fingers curled over the south rim bar, palm sunk in the dark. It does not move. | unmistakable | 2 | character |
 | 415 | `well.riser` | The Ladder Is Up | The cover is aside and the well's rung ladder stands raised — its top rungs poke above the rim where no ladder should reach. | unmistakable | 3 | spatial |
+| 416 | `moth.gone` | No Moth Tonight | The moth isn't at its lamp — the lit under-face of the gallery troffer is bare. | subtle | 1 | object |
+| 417 | `moth.swarm` | Every One Of Them | Eight moths rest scattered across the louver and the ceiling seam beside it — a crowd where one lives. | unmistakable | 2 | character |
+| 418 | `moth.dead` | On The Floor | The moth isn't at its lamp; it's folded flat on the terrazzo below it. | subtle | 1 | object |
+| 419 | `moth.huge` | The Wrong Size | Still resting in its shallow-V pose — but the wings span most of the louver. | unmistakable | 2 | character |
+| 420 | `moth.orbit` | It's Flying Tonight | It isn't resting — a loose wobbling circuit under its own lamp, wings beating the whole loop. | moderate | 1 | character |

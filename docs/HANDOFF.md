@@ -1743,3 +1743,26 @@ mouth plane at floor-top inside a raised rim, same trick as the bay
 drains. (3) A TransformNode part (cover/ladder) moved to lean or rise
 needs rotation.z around the lean edge AND the mesh's own local axes —
 cover slides on the node's local z because `well` has no yaw.
+
+## arc 48 — the moth (ambient creature + 5 anomalies)
+
+One night moth resting on the under-face of the gallery-left troffer
+z24.5 — a dark silhouette against the lit louver, wings held in a
+shallow V. A small second living thing for the ceiling. `moth` (node)
++ `moth.body` registered. 420 implemented / 329 registered.
+
+- `moth.gone` — node disabled; a learned absence.
+- `moth.swarm` — eight moth clusters (body + 2 V-wings, own heading)
+  scattered over the same lamp face + ceiling seam beside it.
+- `moth.dead` — node disabled + a folded moth on the terrazzo below.
+- `moth.huge` — node scaled 6× on the face; same pose, wrong size.
+- `moth.orbit` — update(): lazy circuit under its own lamp (r≈0.55,
+  ~4.6s/lap, y-dip ±0.16), wings beating ~11 Hz, heading tangent with
+  a wander term. Cleanup restores the rest pose + wing angles.
+
+Lessons: (1) troffer names follow `troffer.<zi>.<r|l>.<z.toFixed(0)>` —
+x=±0.9 lanes, z = zone.z0+2.5 step 4; a perched moth just needs world
+coords, not the troffer registered. (2) Scaling a resting silhouette
+reads as a NEW anomaly instantly — no new geometry needed. (3) A
+static baseline prop sells the UPDATE-driven anomaly hardest: the
+moth flying is only wrong because it always sits.
