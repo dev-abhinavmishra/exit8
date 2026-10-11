@@ -2881,8 +2881,13 @@ export function buildConcourse(
     boardMat.emissiveTexture = boardTex;
     boardMat.disableLighting = true;
     for (const fz of [1, -1]) {
-      const face = kit.box(`board.face.${fz > 0 ? "n" : "s"}`, 1.82, 0.44, 0.012, boardMat, scene, board);
+      // planes, not boxes — a box's big faces sample this texture
+      // mirrored; every other reading surface in the corridor is a
+      // plane and reads correctly
+      const face = kit.plane(`board.face.${fz > 0 ? "n" : "s"}`, 1.82, 0.44, boardMat, scene, board);
       face.position = new Vector3(0, 0, fz * 0.066);
+      // CreatePlane's normal faces -z: the south face needs the π turn
+      if (fz > 0) face.rotation.y = Math.PI;
       registry.register(`board.face.${fz > 0 ? "n" : "s"}`, face);
     }
     registry.register("board.head", board);

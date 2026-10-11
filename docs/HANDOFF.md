@@ -1411,3 +1411,20 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   svc.jbox.severed→jbox.severed. Rows repointed. With clock.gone built
   the catalog is 360 implemented / 314 registered — complete.
 - Next beats are quality, not coverage: backlog in this file above.
+
+## arc36 — his rounds (presence beats) + the board face fix
+
+- The inspector's baseline routine is now a ROUND, not a metronome:
+  north end keeps the clipboard inspect; south end he stops under his
+  exit and reads the departure board up the corridor (head up ~5s);
+  mid-route at z33 he halts on ALTERNATING passes to check the time
+  (parity counter flips in reset()); and when he halts for the player
+  he gives a small head nod after ~0.7s of being held. All poses ease
+  on the same lift curve; scripted modes are exempt (no signals eaten).
+- REAL BUG FIXED — the departure board's faces were kit.box boxes:
+  box UVs sample tex.board mirrored, so the split-flap rows read
+  backwards on BOTH faces since arc29. Faces are now kit.plane planes
+  (normal -z default; south face gets rotation.y=π). E2E-verified:
+  '8 CIRCULAR SERVICE / NEXT TRAIN 23:47' reads correctly both ways.
+  Lesson: ANY mesh meant to carry readable text should be a plane —
+  box faces mirror textures on the far-side surface.

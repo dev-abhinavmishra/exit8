@@ -117,6 +117,12 @@ export function buildAmbientWalker(
   let dir = 1; // walking south (+z) at loop start
   let pauseT = 0;
   let inspectT = 0; // clipboard-read beat during the north-end pause
+  let boardT = 0; // departure-board read beat during the south-end pause
+  let watchT = 0; // mid-route watch-check beat (every other pass)
+  let watchArm = -1; // which direction the armed watch check fires on
+  let resets = 0; // parity driving the alternating watch check
+  let nodT = 0; // the small head dip he gives when he halts for you
+  let blockedT = 0;
   let bobT = 0;
   let lastStepPh = 0;
   let mode: WalkerMode = "normal";
@@ -139,6 +145,12 @@ export function buildAmbientWalker(
       dir = 1;
       pauseT = 0;
       inspectT = 0;
+      boardT = 0;
+      watchT = 0;
+      resets += 1;
+      watchArm = resets % 2 === 0 ? -1 : 1; // he checks the time on alternating passes
+      nodT = 0;
+      blockedT = 0;
       fig.headPivot.rotation.x = 0;
       g.setEnabled(true);
       g.position.set(LANE_X, 0, z);
@@ -266,6 +278,9 @@ export function buildAmbientWalker(
       if (pauseT > 0) {
         pauseT -= dt;
         if (inspectT > 0) inspectT -= dt;
+        if (boardT > 0) boardT -= dt;
+        if (watchT > 0) watchT -= dt;
+        if (nodT > 0) nodT -= dt;
       } else {
         // he gives way: if the player is planted on his lane ahead, he
         // halts and waits rather than walking through them. Baseline
@@ -278,17 +293,39 @@ export function buildAmbientWalker(
           dir * (playerPos.z - z) > 0.25 &&
           dir * (playerPos.z - z) < 1.15;
         if (blocked) {
+          blockedT += dt;
+          // acknowledge you with a small nod once he's been held a beat —
+          // learned baseline: he gives way politely every loop, so the
+          // anomalies that DON'T are louder.
+          if (blockedT > 0.7 && nodT <= -1.2) nodT = 0.9;
+          if (nodT > 0) nodT -= dt;
           for (const p of [...legPivots, ...armPivots]) p.rotation.x *= 0.85;
-          fig.headPivot.rotation.x *= 0.85;
+          const dip = nodT > 0 ? Math.sin(Math.PI * Math.min(1, (0.9 - nodT) / 0.9)) * 0.22 : 0;
+          fig.headPivot.rotation.x = fig.headPivot.rotation.x * 0.85 + dip;
           g.rotation.y = dir > 0 ? 0 : Math.PI;
           g.position.set(lane, 0, z);
           return;
         }
+        blockedT = 0;
+        nodT = Math.max(0, nodT - dt);
         z += dir * SPEED * dt * pace;
+        // mid-route watch check — every other pass he halts a step
+        // under the colonnade to check the time. Alternation keeps it a
+        // habit, not a metronome; anomalies that take his schedule get
+        // read against this.
+        if (mode === "normal" && watchT <= 0 && dir === watchArm && Math.abs(z - 33) < 0.35) {
+          pauseT = 2.2;
+          watchT = 2.2;
+          watchArm = 0; // spent for this pass — reset re-arms the other
+        }
         if (z >= WALK_Z1 && dir > 0) {
           z = WALK_Z1;
           dir = -1;
           pauseT = PAUSE_S;
+          // the south-end beat: he stops under his exit and reads the
+          // departure board up the corridor (z40 hangs high on the
+          // centreline) — head up, still. Same beat every pass.
+          boardT = PAUSE_S * 0.7;
         } else if (z <= WALK_Z0 && dir < 0) {
           z = WALK_Z0;
           dir = 1;
@@ -324,8 +361,26 @@ export function buildAmbientWalker(
         const lift = Math.min(rise, settle);
         armPivots[0]!.rotation.x = -1.05 * lift;
         fig.headPivot.rotation.x = 0.34 * lift;
+      } else if (boardT > 0) {
+        // reading the board: head tips up toward the ceiling-hung rows,
+        // a hint of lean on the trailing leg. Eases like the inspect.
+        const lift = Math.min(
+          Math.min(1, Math.max(0, PAUSE_S - pauseT - 0.15) * 3.2),
+          Math.min(1, boardT * 2.4),
+        );
+        fig.headPivot.rotation.x = -0.3 * lift;
+        fig.headPivot.rotation.y = -0.12 * lift; // board rides his left
+      } else if (watchT > 0) {
+        // the time check: left wrist up, eyes down — a shorter beat with
+        // a quicker ease so it reads as reflex, not ceremony.
+        const lift = Math.min(Math.min(1, Math.max(0, 2.2 - watchT - 0.1) * 4.5), Math.min(1, watchT * 3.0));
+        armPivots[0]!.rotation.x = -0.8 * lift;
+        armPivots[0]!.rotation.z = 0.35 * lift;
+        fig.headPivot.rotation.x = 0.42 * lift;
       } else {
         fig.headPivot.rotation.x = 0;
+        fig.headPivot.rotation.y = 0;
+        armPivots[0]!.rotation.z = 0;
       }
       stepIfLanded(stepping);
     },
