@@ -847,7 +847,7 @@ Also: ★ `totem.sways` — junction totem swings gently on its hangers
      walls close in, door mouths shrink, the ceiling bars crowd. Your
      shoulders remember the width.
 
-Slice count: **342 implemented** — 296 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
+Slice count: **347 implemented** — 301 in the bag after the arc-16 playability cut (obvious-first law: moderate+unmistakable outweigh subtle). Dangerous class
 (`dangerous: true` — engaging the anomaly itself costs, floored so a
 scare never ends a run): `figure.rush`, `walker.charge`, `floor.flood`,
 `lights.blackout` (a standoff, not a chase — close inspection costs).
@@ -959,3 +959,8 @@ sound-led anomaly carries a visual cue path.
 | 340 | `walk.silence` | Steps Swallowed | The inspector keeps his patrol cadence but his footsteps make no sound. | subtle | 2 | sound |
 | 341 | `pitch.sags` | The Hum Sags | Junction machinery thrum drifts ~a semitone flat over ~80–110 s and never resolves. | subtle | 2 | sound |
 | 342 | `temp.drift` | Cooling Light | Gallery zone's light throw slides warm→cool over ~20 s and holds. | subtle | 3 | lighting |
+| 343 | `arrows.gone` | Route Decals Missing | All six painted floor marks absent from the terrazzo. | subtle | 2 | object |
+| 344 | `arrow.points` | Arrow Points North | One floor mark's chevron aims north while its neighbors still point south. | subtle | 2 | object |
+| 345 | `arrow.extra` | A Fourth Route Mark | A fourth decal appears off-sequence on the west lane edge at z51. | subtle | 1 | object |
+| 346 | `gaze.shift` | The Figure Walks Away | INSPECTION POINT sign's pictogram strides left against its own right arrow. | subtle | 2 | object |
+| 347 | `chalk.marks` | Tally Marks | Chalk five-bar gates scratched on the east wall tiles. | subtle | 1 | object |

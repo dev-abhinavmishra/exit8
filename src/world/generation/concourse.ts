@@ -21,6 +21,8 @@ import { DynamicTexture } from "@babylonjs/core/Materials/Textures/dynamicTextur
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import type { Material } from "@babylonjs/core/Materials/material";
 import { CreateCylinder } from "@babylonjs/core/Meshes/Builders/cylinderBuilder";
+import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
+import { Mesh } from "@babylonjs/core/Meshes/mesh";
 import { CreateSphere } from "@babylonjs/core/Meshes/Builders/sphereBuilder";
 import { Color4 } from "@babylonjs/core/Maths/math.color";
 import type { Scene } from "@babylonjs/core/scene";
@@ -33,6 +35,7 @@ import {
   makeBoardFace,
   makeFasciaBand,
   makeHelpFace,
+  makeDecalFace,
   makePhoneFace,
   makeVendingFace,
   type TextureSet,
@@ -2920,6 +2923,35 @@ export function buildConcourse(
     registry.register("help.button", button);
     registry.register("help.lamp", lamp);
     registry.register("help.handset", handset);
+  }
+
+  // ─── route decals — three worn painted arrows on the terrazzo's
+  // right-lane edge, pointing south to the inspection point. The only
+  // floor-level wayfinding; each registers so anomalies can lose one,
+  // repoint one, or add one where the sequence never ran.
+  {
+    const decalTex = makeDecalFace(scene, () => dressRng.draw());
+    const decalMat = new StandardMaterial("mat.route.decal", scene);
+    decalMat.diffuseTexture = decalTex;
+    decalMat.opacityTexture = decalTex;
+    decalMat.disableLighting = true;
+    decalMat.backFaceCulling = false;
+    decalTex.hasAlpha = true;
+    const decalZs = [9, 24, 39];
+    for (let i = 0; i < decalZs.length; i++) {
+      const d = CreatePlane(
+        `route.decal.${i}`,
+        { width: 0.42, height: 0.66, sideOrientation: Mesh.DOUBLESIDE },
+        scene,
+      );
+      d.material = decalMat;
+      d.parent = root;
+      // plane local +y maps to world +z (south) under this rotation
+      d.rotation.x = -Math.PI / 2;
+      d.rotation.z = Math.PI; // arrow drawn toward +y on the face reads as pointing north; flip so decals point south
+      d.position = new Vector3(0.85, 0.012, decalZs[i]!);
+      registry.register(`route.decal.${i}`, d);
+    }
   }
 
   // ─── ceiling duct run — galvanized trunk line suspended under the

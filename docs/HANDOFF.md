@@ -1341,3 +1341,26 @@ OBVIOUS. The catalog law flipped from "quiet-first" to "obvious-first"
   prefixes map to shorter shipped ids, and `corridor.breathes` already
   existed as a wall-motion spatial anomaly (staged dup caught by
   typecheck's duplicate-identifier error).
+
+## arc32 — the route marks
+
+- Floor wayfinding made anomaly-bearing: three new chevron decals
+  (`route.decal.0/1/2`, east lane edge x0.85 at z9/24/39, drawn by
+  `makeDecalFace` in textures.ts) beside the three older
+  `floor.arrow.10/30/48` painted marks — all six now require-anchored
+  into `arrows.gone` (all hidden) and `arrow.points` (one spun π).
+- Floor decal material: copy the `floor.arrow` recipe exactly —
+  `diffuseTexture`+`opacityTexture` = the same DynamicTexture,
+  `disableLighting = true`, `backFaceCulling = false`. Lit-material
+  floor decals render nearly black under the corridor's dim zones
+  (verified: ~0x30 grey vs the unlit recipe's worn tan ~#6a5c37).
+- `arrow.extra` spawns a fourth chevron at (-0.85, 0.012, 51.2) — the
+  off-sequence west-lane mark; reuses the shared decal material.
+- `gaze.shift` redraws `sign.exit.south` with `figure: "left"` only
+  (arrow stays) — verified by pixel-diff on the pictogram.
+- `chalk.marks`: tally five-bar gates DynamicTexture on a wall plane —
+  first placement z43.6 was fully occluded by the vend body; probe
+  BEFORE assuming a wall span is clear. Now at z25.5 east.
+- Opposite of the torn-bundle lesson but same family: probe
+  screenshots are the ground truth for "does it even render" — the
+  first decal material looked plausible in code and rendered ~black.

@@ -299,6 +299,12 @@ import { hornCrackle } from "./hornCrackle";
 import { walkSilence } from "./walkSilence";
 import { pitchSags } from "./pitchSags";
 import { tempDrift } from "./tempDrift";
+import { arrowsGone } from "./arrowsGone";
+import { arrowPoints } from "./arrowPoints";
+import { arrowExtra } from "./arrowExtra";
+import { gazeShift } from "./gazeShift";
+import { chalkMarks } from "./chalkMarks";
+
 import { corridorBreathes } from "./corridorBreathes";
 
 export const ALL_ANOMALIES: AnomalyDef[] = [
@@ -598,4 +604,9 @@ export const ALL_ANOMALIES: AnomalyDef[] = [
   walkSilence,
   pitchSags,
   tempDrift,
+  arrowsGone,
+  arrowPoints,
+  arrowExtra,
+  gazeShift,
+  chalkMarks,
 ];
